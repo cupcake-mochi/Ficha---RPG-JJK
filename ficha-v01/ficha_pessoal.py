@@ -163,6 +163,12 @@ def _faixa(c1, l1, c2, l2, aba=""):
     return f"{aba}${ix._letras(c1)}${l1}:${ix._letras(c2)}${l2}"
 
 
+def quantidade_equipavel(celula):
+    """Quantidade efetiva. Zero e dados inválidos não oferecem unidades."""
+    return (f'IFERROR(IF({celula}="",1,'
+            f'IF(AND(ISNUMBER({celula}),{celula}>0,INT({celula})={celula}),{celula},0)),0)')
+
+
 def _endereco(coord, aba):
     """o endereço em fórmula, que anda sozinho se alguém inserir linha (o mesmo molde do índice da FICHA)"""
     return f"=ADDRESS(ROW({aba}{coord}),COLUMN({aba}{coord}),4)"
@@ -173,17 +179,26 @@ def _endereco_faixa(c1, c2, aba):
             f"ADDRESS(ROW({aba}{c2}),COLUMN({aba}{c2}),4)")
 
 
-def descontos(missoes):
+def descontos(missoes, maximo=None, corte=0):
     """o menu de desconto da missão: as posições da semana que pagam menos que cheio, da tabela do livro, e a falha
     que pagou metade. O livro aplica as duas juntas ("200 × ½ × ½ = 50 XP" na terceira longa que falhou), e o Mizuki
     decidiu em 04/10/2026 que o menu traz as duas opções: cada posição que paga menos ganha também a versão com falha,
-    pela metade dela."""
-    pos = []
+    pela metade dela.
+
+    12/11/2026 (fora do livro, decisão do Mizuki): a missão que fica abaixo do `corte` (25 XP) paga 0. A primeira
+    posição em que nem a maior missão possível (`maximo`: o maior tipo vezes o maior adicional) chega ao corte vira
+    "Nª ou mais", com fração 0, e as posições depois dela saem do menu. As versões com falha ficam só para as posições
+    que ainda pagam."""
+    pos, resto = [], []
     for p, pct in missoes["desconto_da_semana"].items():
         v = float(pct.rstrip("%").replace(",", ".")) / 100
-        if v < 1:
-            pos.append((f"{p} · {pct}", v))
-    return pos + [("Falha · metade", 0.5)] + [(f"{n} · falha", v / 2) for n, v in pos]
+        if v >= 1:
+            continue
+        if maximo is not None and int(round(maximo * v, 4)) < corte:
+            resto = [(f"{p} ou mais", 0)]
+            break
+        pos.append((f"{p} · {pct}", v))
+    return pos + resto + [("Falha · metade", 0.5)] + [(f"{n} · falha", v / 2) for n, v in pos]
 
 
 def regras(CAT=None):
@@ -243,7 +258,9 @@ def regras(CAT=None):
         "situacoes": [s[0].upper() + s[1:] for s in eq["situacoes_do_traje"]] + [OUTRA_SITUACAO],
         "soco": [eq["soco_por_maestria"][str(i)] for i in range(1, 5)],
         "leve": leve, "limite_base": int(re.match(r"(\d+) \+ Força", eq["volume"]["limite"]).group(1)),
-        "tipos": tipos, "multiplicadores": list(fora["xp_adicional"].items()), "descontos": descontos(CAT["missoes"]),
+        "tipos": tipos, "multiplicadores": list(fora["xp_adicional"].items()), "descontos": descontos(CAT["missoes"], max(v for _, v in tipos) * max(fora["xp_adicional"].values()),
+                                fora["xp_minimo_da_missao"]),
+        "xp_minimo": fora["xp_minimo_da_missao"],
         "niveis": CAT["progressao"]["tabela_impressa"], "limiar": CAT["progressao"]["limiar_do_feito"]["nivel"],
         # 14/10/2026 (B46): as Origens do livro R45, que o extrair_origens.py lê do capítulo 5
         "origens_do_livro": json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "origens-do-livro.json"),
@@ -378,7 +395,9 @@ def trocas(layout, CAT=None):
     tabela("sit", ["situação do traje"], [[s] for s in R["situacoes"]])
     tabela("tipo", ["tipo de missão", "xp do tipo"], [list(t) for t in R["tipos"]])
     tabela("mult", ["adicional da missão", "multiplicador"], [list(t) for t in R["multiplicadores"]])
-    tabela("desc", ["desconto da missão", "fração paga"], [list(t) for t in R["descontos"]])
+    # 12/11/2026: com o corte de 25 XP o menu caiu de 11 para 10 linhas. A faixa guarda a 11ª vazia para o endereço
+    # (DADOS!CR5:CS15) das fórmulas, do menu e das fichas já instaladas não mudar.
+    tabela("desc", ["desconto da missão", "fração paga"], [list(t) for t in R["descontos"]] + [[None, None]] * max(0, 11 - len(R["descontos"])))
     tabela("grau_ferramenta", ["grau da ferramenta"], [["—"]] + [[p[0]] for p in R["patentes"]])
     # o nível em que o XP sozinho para de subir: dali em diante o livro pede um feito
     tabela("limiar", ["limiar do feito"], [[R["limiar"]]])
@@ -397,41 +416,66 @@ def trocas(layout, CAT=None):
     FOR, MAE, NIV = (_A(idx[k], "FICHA!") for k in ("atr_Força", "maestria", "nivel"))
     UNIF, GRAUS = faixa_t("unif"), faixa_t("grau")
 
-    def da_tabela(quem, coluna, numero=False, vazio='""'):
-        v = f'VLOOKUP({quem},{TAB},{desloc[coluna]},FALSE)'
+    # A coluna entre as contas e os menus estava vazia. As contas existentes
+    # mantêm seus endereços, inclusive os consumidos pelas fichas já montadas.
+    ini, fim = G["equip_ini"], G["equip_fim"]
+    eq_linhas = range(ini, fim + 1)
+    eq_nome, eq_cat, eq_mao = (_faixa(C(c), ini, C(c), fim, FP) for c in ("D", "M", "S"))
+    eq_sec = f'(({eq_cat}="Escudo")+({eq_mao}=1)>0)'
+    c_qtd = c_contas + 2
+    eq_qtd = _faixa(c_qtd, lin_cab + 1, c_qtd, lin_cab + len(eq_linhas), "DADOS!")
+    principal = _abs(c_qtd, lin_cab + len(eq_linhas) + 1, "DADOS!")
+    secundaria = _abs(c_qtd, lin_cab + len(eq_linhas) + 2, "DADOS!")
+
+    def helper(linha, formula):
+        coord = _a1(c_qtd, linha)
+        if coord in cel["DADOS"] or dcel.get(coord, (None, None))[1] is not None:
+            raise ValueError(f"Auxiliar de estoque ocuparia DADOS!{coord}")
+        cel["DADOS"][coord] = (formula, coord)
+
+    for i, linha in enumerate(eq_linhas, lin_cab + 1):
+        helper(i, "=" + quantidade_equipavel(_abs(C("K"), linha, FP)))
+    for i, nome, pode in ((1, P, f'{eq_cat}<>"Escudo"'), (2, S, eq_sec)):
+        helper(lin_cab + len(eq_linhas) + i,
+               f'=IF({nome}="",0,IFERROR(MATCH(1,ARRAYFORMULA(({eq_nome}={nome})*({eq_qtd}>0)*({pode})),0),0))')
+
+    def da_tabela(linha, coluna, numero=False, vazio='""'):
+        v = f'IF({linha}=0,"",INDEX({TAB},{linha},{desloc[coluna]}))'
         return f'IFERROR(VALUE({v}&""),0)' if numero else f'IFERROR({v}&"",{vazio})'
+
+    def estoque_secundario(nome):
+        return f'SUMPRODUCT(--({eq_nome}={nome}),--{eq_sec},{eq_qtd})>IF(AND({nome}={P},{principal}>0),1,0)'
 
     conta("força", f"=N({FOR})")
     conta("soco na principal", f'=IF(OR({P}="",{P}="{SOCO}"),1,0)')
     soco = H["soco na principal"]
-    conta("categoria da principal", f'=IF({soco}=1,"{SOCO}",{da_tabela(P, "Categoria")})')
-    conta("mão da principal", f'=IF({soco}=1,1,{da_tabela(P, "Mão", True)})')
+    conta("categoria da principal", f'=IF({soco}=1,"{SOCO}",{da_tabela(principal, "Categoria")})')
+    conta("mão da principal", f'=IF({soco}=1,1,{da_tabela(principal, "Mão", True)})')
     conta("dado da principal", f'=IF({soco}=1,CHOOSE(MIN(4,MAX(1,N({MAE}))),' + ",".join(f'"{d}"' for d in R["soco"]) +
-          f'),{da_tabela(P, "Dado")})')
-    conta("propriedades da principal", f'=IF({soco}=1,"",{da_tabela(P, "Propriedades")})')
-    conta("força da principal", f'=IF({soco}=1,0,{da_tabela(P, "Força", True)})')
-    conta("nas duas mãos", f'=IF(AND(ISNUMBER(SEARCH("Versátil",{H["propriedades da principal"]})),{S}="{NAS_DUAS}"),1,0)')
+          f'),{da_tabela(principal, "Dado")})')
+    conta("propriedades da principal", f'=IF({soco}=1,"",{da_tabela(principal, "Propriedades")})')
+    conta("força da principal", f'=IF({soco}=1,0,{da_tabela(principal, "Força", True)})')
+    conta("nas duas mãos", f'=IF(AND({H["mão da principal"]}=1,ISNUMBER(SEARCH("Versátil",{H["propriedades da principal"]})),{S}="{NAS_DUAS}"),1,0)')
     d_ = H["dado da principal"]
-    conta("dado em uso", f'=IF({H["nas duas mãos"]}=1,IF({d_}="d6","d8",IF({d_}="d8","d10",IF({d_}="d10","d12",{d_}))),{d_})')
-    conta("alcance da principal", f'=IFERROR(VLOOKUP({P},{EQUIP},8,FALSE)&"","")')
-    conta("recarga da principal", f'=IFERROR(VLOOKUP({P},{EQUIP},9,FALSE)&"","")')
+    conta("dado em uso", f'=IF({H["nas duas mãos"]}=1,SWITCH({d_},"d6","d8","1d6","1d8","d8","d10","1d8","1d10","d10","d12","1d10","1d12",{d_}),{d_})')
+    conta("alcance da principal", f'=IF({principal}=0,"",IFERROR(VLOOKUP({P},{EQUIP},8,FALSE)&"",""))')
+    conta("recarga da principal", f'=IF({principal}=0,"",IFERROR(VLOOKUP({P},{EQUIP},9,FALSE)&"",""))')
     # treinada: a caixa da arma; se a arma foi digitada numa linha livre, a caixa do grupo da categoria dela
     conta("treino da principal",
-          f'=IF({soco}=1,1,IF(IFERROR(VLOOKUP({P},{EQUIP},10,FALSE),'
-          f'IFERROR(VLOOKUP({H["categoria da principal"]},{faixa_t("categ")},4,FALSE),FALSE))=TRUE,1,0))')
-    conta("secundária vale", f'=IF(AND({H["mão da principal"]}<>2,{S}<>"",{S}<>"{MAO_LIVRE}",{S}<>"{NAS_DUAS}"),1,0)')
+          f'=IF({soco}=1,1,IF({principal}=0,0,IF(IFERROR(VLOOKUP({P},{EQUIP},10,FALSE),'
+          f'IFERROR(VLOOKUP({H["categoria da principal"]},{faixa_t("categ")},4,FALSE),FALSE))=TRUE,1,0)))')
+    conta("secundária vale", f'=IF(AND({H["mão da principal"]}<>2,{S}<>"",{S}<>"{MAO_LIVRE}",{S}<>"{NAS_DUAS}",{secundaria}>0,{estoque_secundario(S)}),1,0)')
     sv = H["secundária vale"]
-    conta("categoria da secundária", f'=IF({sv}=1,{da_tabela(S, "Categoria")},"")')
+    conta("categoria da secundária", f'=IF({sv}=1,{da_tabela(secundaria, "Categoria")},"")')
     conta("escudo na secundária", f'=IF(AND({sv}=1,{H["categoria da secundária"]}="Escudo"),1,0)')
-    conta("dado da secundária", f'=IF({sv}=1,{da_tabela(S, "Dado")},"")')
-    conta("propriedades da secundária", f'=IF({sv}=1,{da_tabela(S, "Propriedades")},"")')
-    conta("força da secundária", f'=IF({sv}=1,{da_tabela(S, "Força", True)},0)')
+    conta("dado da secundária", f'=IF({sv}=1,{da_tabela(secundaria, "Dado")},"")')
+    conta("propriedades da secundária", f'=IF({sv}=1,{da_tabela(secundaria, "Propriedades")},"")')
+    conta("força da secundária", f'=IF({sv}=1,{da_tabela(secundaria, "Força", True)},0)')
     conta("alcance da secundária", f'=IF({sv}=1,IFERROR(VLOOKUP({S},{EQUIP},8,FALSE)&"",""),"")')
     conta("recarga da secundária", f'=IF({sv}=1,IFERROR(VLOOKUP({S},{EQUIP},9,FALSE)&"",""),"")')
     # quantos equipáveis guardados entram no menu de cada mão: com zero, a linha embaixo da mão diz como pôr um lá
-    eq_nome, eq_cat, eq_mao = (_faixa(C(c_), G["equip_ini"], C(c_), G["equip_fim"], FP) for c_ in ("D", "M", "S"))
-    conta("guardados para a principal", f'=SUMPRODUCT(--({eq_nome}<>""),--({eq_cat}<>"Escudo"))')
-    conta("guardados para a secundária", f'=SUMPRODUCT(--({eq_nome}<>""),--((({eq_cat}="Escudo")+({eq_mao}=1))>0))')
+    conta("guardados para a principal", f'=SUMPRODUCT(--({eq_nome}<>""),--({eq_cat}<>"Escudo"),--({eq_qtd}>0))')
+    conta("guardados para a secundária", f'=SUMPRODUCT(--({eq_nome}<>""),--{eq_sec},--({eq_qtd}>0))')
     conta("uniforme vale", f'=IF(ISNUMBER(MATCH({V},{faixa_t("unif", so=0)},0)),1,0)')
     uv = H["uniforme vale"]
     for nome, col in (("proteção do uniforme", 2), ("teto do uniforme", 3), ("força do uniforme", 4),
@@ -444,9 +488,9 @@ def trocas(layout, CAT=None):
     conta("falta força na principal", f'=IF({H["força da principal"]}>{f_},1,0)')
     conta("falta força na secundária", f'=IF(AND({sv}=1,{H["força da secundária"]}>{f_}),1,0)')
     conta("falta força no uniforme", f'=IF(AND({uv}=1,{H["força do uniforme"]}>{f_}),1,0)')
-    vols = [_faixa(C("AG"), G["equip_ini"], C("AG"), G["equip_fim"], FP)] + \
-           [_faixa(C(cols[2][1]), G["itens_ini"], C(cols[2][1]), G["itens_fim"], FP) for cols in COLS_ITENS]
-    conta("volume guardado", "=" + "+".join(f"SUM({v})" for v in vols))
+    vol_equip = _faixa(C("AG"), ini, C("AG"), fim, FP)
+    vol_itens = [_faixa(C(cols[2][1]), G["itens_ini"], C(cols[2][1]), G["itens_fim"], FP) for cols in COLS_ITENS]
+    conta("volume guardado", f'=SUMIF({eq_qtd},">0",{vol_equip})+' + "+".join(f"SUM({v})" for v in vol_itens))
     # o livro soma sem arredondar; o ROUND em duas casas só tira o resto de ponto flutuante (0,1 + 0,2)
     conta("carga", f'=ROUND({H["volume guardado"]}+{H["volume do uniforme"]},2)')
     # 08/10/2026 (B42): o Buff/Debuff da carga soma no limite (uma habilidade que deixa carregar mais, ou menos)
@@ -496,13 +540,14 @@ def trocas(layout, CAT=None):
     prox[0] = c_contas + 3
 
     # --- os menus que mudam com a ficha: as duas mãos e o que o Grau deixa vestir
-    eq_linhas = range(G["equip_ini"], G["equip_fim"] + 1)
     nome_, cat_, mao_ = (lambda l: _abs(C("D"), l, FP)), (lambda l: _abs(C("M"), l, FP)), (lambda l: _abs(C("S"), l, FP))
+    qtd_ = lambda l: _abs(c_qtd, lin_cab + 1 + l - ini, "DADOS!")
     tabela("menu_principal", ["menu da mão principal"],
-           [[SOCO]] + [[f'=IF(AND({nome_(l)}<>"",{cat_(l)}<>"Escudo"),{nome_(l)},"")'] for l in eq_linhas])
+           [[SOCO]] + [[f'=IF(AND({nome_(l)}<>"",{cat_(l)}<>"Escudo",{qtd_(l)}>0),{nome_(l)},"")'] for l in eq_linhas])
     tabela("menu_secundaria", ["menu da mão secundária"],
-           [[MAO_LIVRE], [f'=IF(AND({H["mão da principal"]}<>2,ISNUMBER(SEARCH("Versátil",{H["propriedades da principal"]}))),"{NAS_DUAS}","")']] +
-           [[f'=IF(AND({H["mão da principal"]}<>2,{nome_(l)}<>"",OR({cat_(l)}="Escudo",N({mao_(l)})=1)),{nome_(l)},"")'] for l in eq_linhas])
+           [[MAO_LIVRE], [f'=IF(AND({H["mão da principal"]}=1,ISNUMBER(SEARCH("Versátil",{H["propriedades da principal"]}))),"{NAS_DUAS}","")']] +
+           [[f'=IF(AND({H["mão da principal"]}<>2,{nome_(l)}<>"",OR({cat_(l)}="Escudo",N({mao_(l)})=1),'
+             f'{qtd_(l)}>0,{estoque_secundario(nome_(l))}),{nome_(l)},"")'] for l in eq_linhas])
     col_u = T["unif"][0]
     tabela("menu_vestindo", ["menu do vestindo"],
            [[SEM_UNIFORME]] + [[f'=IF({H["ordem do grau"]}>={_abs(col_u + 5, T["unif"][1] + i, "DADOS!")},'
@@ -659,8 +704,25 @@ def trocas(layout, CAT=None):
     # (estado_do_personagem.py); numa exportação de antes dela, a conta fica como era
     import estado_do_personagem as _ep
     metros = f'({m.group(1)})/IF({H["meia marcha"]}=1,2,1)'
-    if idx.get("exaustão"):
-        metros = f'MIN(IF(N({_A(idx["exaustão"])})>=2,{_ep.LIMITE_DA_EXAUSTAO},9999),{metros})'
+    limite = (f'IF(N({_A(idx["exaustão"])})>=2,{_ep.LIMITE_DA_EXAUSTAO},9999)'
+              if idx.get("exaustão") else "9999")
+    atual, maximo = _A(idx["integridade"]), _A(idx["integridade_max"])
+    metade = f'AND(ISNUMBER({atual}),N({maximo})>0,{atual}<={maximo}/2)'
+    # Compare os limites de Exaustão e Integridade antes de arredondar a distância reduzida.
+    metros = (f'LET(distancia,{metros},tetoExaustao,{limite},'
+              f'IF({metade},IF({atual}<=0,0,FLOOR(MAX(0,MIN(tetoExaustao,distancia/2)),1.5)),'
+              'MIN(tetoExaustao,distancia)))')
+    estagios = [(c, f) for c, f, _ in fcel.values()
+                if isinstance(f, str) and f.startswith("=") and "Estágio 4 · Você não é mais você mesmo" in f]
+    (c_estagio, formula_estagio), = estagios
+    inicio_estagio = f'=IF({atual}="",'
+    if not formula_estagio.startswith(inicio_estagio):
+        raise ValueError("A fórmula do estágio de Integridade mudou")
+    formula_estagio = formula_estagio.replace(inicio_estagio, f'=IF(OR({atual}="",{maximo}=0),', 1)
+    cel["FICHA"][c_estagio] = (
+        formula_estagio.replace("Estágio 4 · Você não é mais você mesmo", "Estágio 4 · Inconsciente e Derrotado")
+        .replace("Estágio 3 · Desvantagem em ataques e TRs",
+                 "Estágio 3 · Desvantagem em ataques e TRs, Classe máxima à metade"), c_estagio)
     cel["FICHA"][des_c] = (f'=IF({H["parado pela carga"]}=1,0,{metros})&" m"', des_c)
     # 14/10/2026 (B46): o espelho da Origem, embaixo das barras (estado_do_personagem.py): o nome de cada capacidade e a
     # frequência dela, do livro, ou "Criada com o mestre"
@@ -821,7 +883,7 @@ NOTAS = {
     "carga": "O limite é 5 + Força, em Volume, mais o Buff/Debuff ao lado. Cada item leve vale 0,1. Acima do limite e até o dobro, "
              "o deslocamento cai pela metade e os TR Físicos têm desvantagem; acima do dobro, você não se desloca. Arrastar, "
              "empurrar ou levantar vai até o dobro.",
-    "carga_buff": "Soma no limite de carga o que a conta do livro não cobre, como uma habilidade. Número negativo reduz.",
+    "carga_buff": "Bolsa Orgânica já aumenta automaticamente o limite em Maestria quando válida. Use este Buff para outros ajustes; número negativo reduz. Ao atualizar uma ficha antiga, confira a compensação manual dessa menor para não aplicá-la duas vezes.",
     "ienes": "Digite quanto você tem. A ficha nova começa com a mensalidade do Grau 4, que é o fundo da criação.",
     "salario": "Sai do Grau, pela tabela Salário por patente do livro.",
     "requisito": "Olha a arma de cada mão, o escudo e o uniforme. Quando algo pede mais Força do que você tem, a nota "
@@ -851,11 +913,12 @@ NOTAS = {
     "xp": "Escolha o tipo da missão. {tipos}.",
     "adicional": "O multiplicador da missão, quando a mesa dá: {mults}. Em branco, a missão vale o XP do tipo.",
     "desconto": "Para a missão que pagou menos. Na sua semana, as duas primeiras pagam cheio, a terceira 50%, a quarta 25%, "
-                "a quinta 12,5%, a sexta 6,25%, e cada uma depois paga metade da anterior. Missão que falhou e o mestre deu "
-                "metade é Falha; se ela também foi da terceira em diante, escolha a posição com falha (a terceira longa "
-                "que falhou paga 200 × ½ × ½ = 50). Em branco, paga cheio.",
-    "total": "O XP do tipo, vezes o Adicional, vezes o Desconto, arredondado para baixo só no fim. Quando a conta dá mais "
-             "que zero e menos que 1, a missão paga 1.",
+                "a quinta 12,5% e a sexta 6,25%. Da sétima em diante, escolha 7ª ou mais: nenhuma missão chega a 25 XP "
+                "ali, e pela regra da casa ela paga 0. Missão que falhou e o mestre deu metade é Falha; se ela também "
+                "foi da terceira em diante, escolha a posição com falha (a terceira longa que falhou paga 200 × ½ × ½ = "
+                "50). Em branco, paga cheio.",
+    "total": "O XP do tipo, vezes o Adicional, vezes o Desconto, arredondado para baixo só no fim. Regra da casa: abaixo "
+             "de 25, a missão paga 0 (25 paga).",
     "extensao": "Mais duas tabelas de missão, para quando as duas primeiras encherem. O XP total soma as quatro. Elas ficam "
                 "num grupo de colunas fechado, dentro do painel.",
     "niveis": "A curva do livro, fixa. Para subir é o que custa sair daquele nível. Acumulado é o XP total em que você "
@@ -1054,7 +1117,8 @@ def aba(layout, tr):
     f.add("peq", "S", L + 4, "AF", L + 4,
           f'=IF({H["mão da principal"]}=2,"Ocupada: a arma da outra mão é de duas mãos",'
           f'IF({S}="{NAS_DUAS}",IF({duas}=1,"A mesma arma, nas duas mãos","A arma da outra mão não é Versátil"),'
-          f'IF({sv}=0,IF({H["guardados para a secundária"]}=0,"{T_GUARDE_S}","Mão livre"),'
+          f'IF({sv}=0,IF(AND({S}<>"",{S}<>"{MAO_LIVRE}"),"Sem unidade disponível para a mão secundária",'
+          f'IF({H["guardados para a secundária"]}=0,"{T_GUARDE_S}","Mão livre")),'
           f'IF({H["categoria da secundária"]}="","Não está nos equipáveis guardados",'
           f'IF({esc}=1,"Escudo · "&{H["propriedades da secundária"]},' +
           detalhe(H["dado da secundária"], H["propriedades da secundária"], H["alcance da secundária"],
@@ -1106,7 +1170,7 @@ def aba(layout, tr):
     # --- os equipáveis guardados
     L = _titulo(f, L_EQUIP, "D", "AT", "EQUIPÁVEIS GUARDADOS", NOTAS["livre"])
     EQUIP = tr["faixa_t"]("equip")
-    notas_col = {"Qtd.": NOTAS["qtd"], "Vol.": NOTAS["vol"], "Grau": NOTAS["grau_ferramenta"], "Estigma": NOTAS["estigma"],
+    notas_col = {"Qtd.": "Use um inteiro a partir de zero. Em branco vale 1. Zero deixa o item fora de uso.", "Vol.": NOTAS["vol"], "Grau": NOTAS["grau_ferramenta"], "Estigma": NOTAS["estigma"],
                  "Desgaste": NOTAS["desgaste"]}
     for rot, a, b in COLS_EQUIP:
         f.add("rot", a, L + 1, b, L + 1, rot.upper(), notas_col.get(rot))
@@ -1119,7 +1183,7 @@ def aba(layout, tr):
             if com_menu and rot in da_dados:
                 v = f'=IF($D{lin}="","",IFERROR(VLOOKUP($D{lin},{EQUIP},{da_dados[rot]},FALSE),""))'
             elif com_menu and rot == "Vol.":
-                v = f'=IF($D{lin}="","",IFERROR(IF($K{lin}="",1,$K{lin})*VLOOKUP($D{lin},{EQUIP},7,FALSE),""))'
+                v = f'=IF($D{lin}="","",IFERROR({quantidade_equipavel(f'$K{lin}')}*VLOOKUP($D{lin},{EQUIP},7,FALSE),""))'
             f.add("cel_esq" if rot in esquerda else "cel", a, lin, b, lin, v)
     for lin in range(G["equip_ini"] + EQUIP_MENU, G["equip_fim"] + 1):
         f.notas[f"D{lin}"] = NOTAS["linha_livre"]
@@ -1166,9 +1230,10 @@ def aba(layout, tr):
             f.add("cel", cd, lin, ct - 1, lin)
             v = (f'ROUND(VLOOKUP({x},{TIPO},2,FALSE)*IF({a}="",1,VLOOKUP({a},{MULT},2,FALSE))*'
                  f'IF({d}="",1,VLOOKUP({d},{DESC},2,FALSE)),4)')
-            # o livro: arredonda para baixo só o XP final; positivo e menor que 1 vira 1
+            # o livro arredonda para baixo só o XP final. 12/11/2026 (fora do livro, decisão do Mizuki): abaixo de 25
+            # a missão paga 0, no lugar do mínimo de 1 do livro
             formulas_total.append(f.add("cel", ct, lin, b + ULT, lin,
-                  f'=IF({x}="","",IFERROR(IF({v}>0,MAX(1,FLOOR({v},1)),0),""))'))
+                  f'=IF({x}="","",IFERROR(IF(FLOOR({v},1)>={R["xp_minimo"]},FLOOR({v},1),0),""))'))
         f.menu(f"{ix._letras(cx)}{G['missao_ini']}:{ix._letras(cx)}{G['missao_fim']}", tr["faixa_t"]("tipo", so=0))
         f.menu(f"{ix._letras(ca)}{G['missao_ini']}:{ix._letras(ca)}{G['missao_fim']}", tr["faixa_t"]("mult", so=0))
         f.menu(f"{ix._letras(cd)}{G['missao_ini']}:{ix._letras(cd)}{G['missao_fim']}", tr["faixa_t"]("desc", so=0))
@@ -1221,6 +1286,10 @@ def aba(layout, tr):
         "altura_padrao": ficha.get("altura_padrao"), "grade": False,
         "celulas": [[k, v[0], v[1]] for k, v in f.cel.items()],
         "mescladas": f.mesclas, "menus": f.menus, "condicional": [], "imagens": imagens,
+        "validacoes_formula": [
+            [f"K{r}", f'=IFERROR((K{r}="")+ISNUMBER(K{r})*(K{r}>=0)*(INT(K{r})=K{r})>0)']
+            for r in range(G["equip_ini"], G["equip_fim"] + 1)
+        ],
         "notas": f.notas,
         # o painel é um grupo de colunas fechado, e a extensão é outro, dentro dele, também fechado
         "grupos": {"linhas": [[G["treino_ini"], G["treino_fim"], False],

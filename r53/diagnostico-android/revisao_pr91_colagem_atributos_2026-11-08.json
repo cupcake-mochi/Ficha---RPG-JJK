@@ -1,0 +1,138 @@
+{
+  "schema": 1,
+  "date": "2026-11-08",
+  "review": {
+    "pr": 91,
+    "head": "b804d1a45bbdd83c04411b45b3ed30525ba8eb34",
+    "base": "4eeb276b3938105f9e33a647e9fa0657a700b4f8",
+    "checks": [
+      42541110669,
+      42541086468
+    ],
+    "allSuccess": true,
+    "noBlockingFindings": true,
+    "localPlanByteIdentical": true,
+    "modelPositions": 280056,
+    "modelTabs": 26,
+    "formulas": 24,
+    "notes": 1,
+    "deltaAlreadyInstalledBoth": true
+  },
+  "newFinding": {
+    "id": "ATR-N-TEXTO",
+    "legacy": true,
+    "reproducedViaNativeValuePasteBoth": true,
+    "source": "INVOCAÇÕES!O21",
+    "target": "INVOCAÇÕES!Q20",
+    "gestures": [
+      "apóstrofo e 3",
+      "Ctrl+C",
+      "Ctrl+Shift+V"
+    ],
+    "copies": [
+      "Era",
+      "Ciclo"
+    ]
+  },
+  "evidence": [
+    {
+      "copy": 0,
+      "heading": {
+        "formula": "=DADOS_INVOC!$HT$2",
+        "display": "⚠ PERÍCIAS · 3 DE 4 · REPETIDA",
+        "blankObserved": true,
+        "automatic": true
+      },
+      "textPaste": {
+        "source": {
+          "stringValue": "3"
+        },
+        "target": {
+          "stringValue": "3"
+        },
+        "validationStrict": true,
+        "con": 0,
+        "spent": 6,
+        "hp": 5
+      },
+      "numberPaste": {
+        "source": {
+          "numberValue": 3
+        },
+        "target": {
+          "numberValue": 3
+        },
+        "validationStrict": true,
+        "con": 3,
+        "spent": 9,
+        "hp": 8
+      },
+      "restore": {
+        "copy": 0,
+        "active": false,
+        "restoredScope": 22,
+        "changedValuesRestored": 10,
+        "changedFormatsRestored": 2
+      },
+      "preservation": {
+        "copy": 0,
+        "inputsRestored": true,
+        "scopeDifferences": [],
+        "montagensDifferences": [],
+        "metadataEqual": true,
+        "mountPositions": 85887,
+        "positions": 86494
+      }
+    },
+    {
+      "copy": 1,
+      "heading": {
+        "formula": "=DADOS_INVOC!$HT$2",
+        "display": "⚠ PERÍCIAS · 3 DE 4 · REPETIDA",
+        "blankObserved": true,
+        "automatic": true
+      },
+      "textPaste": {
+        "source": {
+          "stringValue": "3"
+        },
+        "target": {
+          "stringValue": "3"
+        },
+        "validationStrict": true,
+        "con": 0,
+        "spent": 6,
+        "hp": 5
+      },
+      "numberPaste": {
+        "source": {
+          "numberValue": 3
+        },
+        "target": {
+          "numberValue": 3
+        },
+        "validationStrict": true,
+        "con": 3,
+        "spent": 9,
+        "hp": 8
+      },
+      "restore": {
+        "copy": 1,
+        "active": false,
+        "restoredScope": 22,
+        "changedValuesRestored": 10,
+        "changedFormatsRestored": 2
+      },
+      "preservation": {
+        "copy": 1,
+        "inputsRestored": true,
+        "scopeDifferences": [],
+        "montagensDifferences": [],
+        "metadataEqual": true,
+        "mountPositions": 85887,
+        "positions": 86494
+      }
+    }
+  ],
+  "tabCleanup": true
+}

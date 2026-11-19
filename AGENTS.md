@@ -1,3 +1,1633 @@
+# Continuar daqui · 12/11/2026
+
+Sessão nova, em qualquer máquina: leia `r53/diagnostico-android/PROMPT-CONTINUAR-2026-11-12.md`. Ele tem as regras do
+Mizuki, as QAs e o estado delas, e o que está pendente:
+- o pacote do dia 12/11 nas oficiais, com o ok dele;
+- o aviso na nota da missão congelada, opcional;
+- a auditoria da CONFIGURAÇÃO (feita, e os achados fechados em 14/11);
+- as decisões abertas dele.
+
+# ANALISE estática · 17/11/2026
+
+Leia `r53/diagnostico-android/ANALISE-ESTATICA-2026-11-17.md`. A coluna B da ANALISE vira valor numa exportação sob
+pedido (`apps-script/AnaliseEstatica.gs`); os modelos moram na aba oculta `ANALISE_MODELOS`. Exporta pelo menu Bot, pela
+caixa da CARTEIRA AT4 (o celular não tem menu) e no fim do `construir()`. A primeira edição depois marca
+`analise.estado = desatualizada`. Formato 13 no `ESQUEMA-ANALISE.md`.
+
+- Ganchos no Codigo de entrada do pacote (`r53/empacotar_script.py`), não no `apps-script/Codigo.gs`.
+- Fórmula nova na ANALISE: escreva na coluna B e rode o menu Bot, que junta aos modelos.
+- Teste: `r53/testes/analise_estatica.js` (24 defeitos plantados).
+- Com a ANALISE viva, cada leitura da planilha custa 2 a 3 s, do tamanho que for: a caixa lê uma vez só. Escrita
+  pendente se perde quando o tempo acaba: `flush` antes de guardar propriedade que aponte para ela. Prova na Era no documento.
+- Oficiais: só depois do bot ler o formato 13, com o Mizuki no PC e backup (roteiro no documento).
+
+# Datas do salário sem hora · 16/11/2026
+
+Achado do ChatGPT numa cópia descartável: a cada fechamento as datas do livro SALÁRIOS ganhavam 9 horas. O
+`salarioCongelar_` grava o fim do período ao meio-dia UTC (09:00 em Brasília) e a fórmula do início do período
+(`DADOS_SALARIOS!Q2`) lia esse fim sem tirar a hora. Cada ciclo durava o intervalo mais 9 h: com intervalo de 1 dia,
+7 dias pagavam 5 salários em vez de 7.
+
+- Conserto: a fórmula usa `MAX(INT(ult);em)`. Reforço: o `salarioCongelar_` arredonda o dia antes de gravar.
+- `preparar_salario_datas.js` é o último da cadeia do `Salarios.gs` (depois do `preparar_xp_linha_congelada.js`).
+- Planilha já montada precisa das duas coisas: o trecho no Codigo e a fórmula nova no Q2 (`FORMULA_Q2`, pela API).
+  Só com o código, a hora para de acumular mas fica um dia de atraso; a fórmula é que resolve.
+- Livro que já andou não é recalculado: o ciclo segue do último fim gravado, arredondado para o dia.
+- Teste: `r53/testes/salario_datas.js` (9 defeitos plantados). Ele também guarda o pente-fino de 16/11: nenhuma
+  fórmula do salário compara data gravada com hora (N2, O38, O48, O69, livro) sem `INT`. Não achou outro defeito.
+- Oficiais: a fórmula do Q2 está nas duas (#129). Falta o trecho no Codigo, com o Mizuki no PC:
+  `r53/diagnostico-android/ROTEIRO-PC-SALARIO-DATAS-2026-11-16.md`.
+
+# Atalho das edições livres religado · 16/11/2026
+
+Depois da rodada nas oficiais, todo Buff, vida, texto ou nota passou a rodar o onEdit inteiro (~3–5 s a mais).
+O `R53_LIVRE_HASHES_[0]` ficou no 9dc3480a: o #105 trocou o pacote (bd42b535) e o achatador deixou só a fonte
+35d00ae2 no `r53Modulo_`. O `r53LivreValido_` não acha o hash e desliga o atalho calado.
+
+- `preparar_religar_atalho.js` troca o hash, só para trocas conferidas (lista `VERIFICADAS`). Conferir troca nova:
+  `--conferir <pasta antes> <pasta depois>` lista as células livres cujo molde mudou.
+- O achatador agora leva o atalho junto e **recusa** Codigo com o atalho já desligado.
+- Teste: `r53/testes/religar_atalho.js`. Nas oficiais, só com o Mizuki no PC e backup antes.
+
+# Módulo achatado e DADOS_CUSTOM sem INDIRECT · 15/11/2026
+
+Leia `r53/diagnostico-android/DESEMPENHO-MODULO-E-INDIRECT-2026-11-15.md`. Só desempenho, nenhuma conta muda.
+
+**Achatador**
+- `preparar_modulo_achatado.js` é o último preparador da cadeia.
+- Aplica os remendos de texto uma vez, na instalação, e tira o SHA-256 da execução.
+- Na cópia descartável, o módulo caiu de 1,7–4,1 s para 1,8–3,0 s por edição.
+- Recusa Codigo já achatado: um preparador novo roda sobre o backup não achatado, e o achatador roda de novo.
+
+**INDIRECT**
+- Os 525 `INDIRECT(SWITCH(...))` da DADOS_CUSTOM viraram `CHOOSE(IFERROR(MATCH(...)))`.
+- A troca está no gerador e nos `.gs`.
+- Planilha já montada: os dois `findReplace` do `preparar_custom_sem_indirect.js`, conferidos na cópia fria com 0
+  diferenças.
+
+**Fora desta rodada**
+- Nada nas oficiais.
+- Nenhum `construir()`.
+
+# Técnica Máxima no livro R67 · 14/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-MAXIMA-R67-2026-11-14.md`.
+
+**O que mudou**
+- A Forma e a base da função saem dos dados-base.
+- Os pontos pagam só as Melhorias.
+- PV temporários viram função.
+- Sem dano tem uma caixa própria e ganha o reforço de Controle.
+- A conta da MONTAGEM mostra "pontos − Melhorias = sobra".
+
+**Testes**
+- `test_maxima_r67` com 11 defeitos plantados, mais a conta.
+
+**QAs**
+- Aplicado nas duas, conferido e reposto. Nenhuma QA ficou com a R67.
+- O EditorR53 das QAs não foi trocado.
+
+**Fora desta rodada**
+- Nada nas oficiais.
+- Nenhum `construir()`.
+- ~~Fica para o Mizuki: a linha 9975 do livro nega o reforço que a R67-08 dá.~~ Resolvido pelo livro R68 (v0.379).
+  As duas frases de Controle foram trocadas no catálogo da ficha, e o registro está em
+  `referencias-r53/ALTERACOES-R67-para-R68.json`. Não muda conta nem `.gs`.
+
+# Caixa ± pendente fica âmbar · 14/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-AVISO-CAIXA-PM-2026-11-14.md`. Enquanto a caixa ± (FICHA AM26/AM30/AM34 e as 12
+das invocações) tem número, ela fica âmbar; se continuar depois de um minuto, a edição se perdeu, e a nota manda
+conferir e digitar de novo. A conta não mudou. Aplicado nas duas QAs e testado digitando no Ciclo; nada nas oficiais.
+O mesmo ramo corrige as faixas do B/D decimal nas fichas 2 a 6.
+
+# As pontas do mapa de cobertura · 14/11/2026
+
+Leia `r53/diagnostico-android/PONTAS-DO-MAPA-2026-11-14.md`.
+- A Kaori pela API no Ciclo: os seis números batem.
+- `cartas_custom`/`marcas_custom` ficam históricos.
+- O menu Aplicar cura não existe no Android; no celular vale a caixa ± com a metade.
+- A varredura da caixa ± na rajada não é segura (aplicaria em dobro um evento atrasado). Só um aviso visual é possível;
+  feito no mesmo dia (ver acima).
+- O Ciclo tem `FICHA!P30` = 10 (sobra de teste), também à espera dele.
+
+# Buff/Debuff decimal fica âmbar nas INVOCAÇÕES · 14/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-AVISO-DECIMAL-BD-2026-11-14.md`. A caixa B/D mostrava 1,5 como "B/D +2" e a conta
+usava 1. Agora a letra fica âmbar quando há decimal (168 caixas, 36 faixas, uma regra) e a nota de O21 explica. A
+conta não mudou. Aplicado e visto nas duas QAs; nada nas oficiais.
+
+# Achados da CONFIGURAÇÃO decididos · 14/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-ACHADOS-CONFIGURACAO-2026-11-14.md`. Decisões do Mizuki:
+- as notas dizem "livro", sem a versão;
+- "Não autônoma" fica, como regra da casa que vai sair num livro de guias, registrada em `fora_do_livro` do catálogo
+  (com conferência contra o `familias_invocacao.py`);
+- a vida rolada diz "Anote só o dado; a ficha soma a Constituição.";
+- o Buff/Debuff de vida (`FICHA!P26`) foi esvaziado nas duas QAs.
+
+Nenhum número mudou. Nada nas oficiais.
+
+# CONFIGURAÇÃO auditada contra o R66 · 12/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-CONFIGURACAO-2026-11-12.md`. Nenhum número diverge do R66 (a R67 do mesmo dia só
+mexe na Técnica Máxima). Batem as regras de campanha, o custo de XP, o dado e a vida dos seis Caminhos e as Famílias das
+invocações e da técnica. Ensaio no Ciclo, reposto: o exemplo da Kaori (Bastião, CON 2, 23 de vida) com a vida rolada, e o
+dado acima do d12 dá aviso. Achados abertos, com decisão do Mizuki: as notas citam o R51; "Não autônoma" está fora do
+catálogo `fora_do_livro` e tem o nome que o R66 usa para o corpo sem alma; as notas da vida rolada parecem se
+contradizer; e o Buff/Debuff de vida está em 24 nas duas QAs. Nada mudou na ficha.
+
+# A linha congelada · 12/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-XP-LINHA-CONGELADA-2026-11-12.md`. Substitui o nome no registro (#109), a pedido
+do Mizuki. As missões que estavam no painel na hora do XP digitado (FICHA!AN11) ficam congeladas, e nada na linha
+descongela: o mesmo nome, o nome com erro, outra missão ou a caixa vazia não mexem no XP total. Missão nova vai numa
+linha vazia. Para liberar a linha, esvazie a caixa e digite o XP de novo, ou apague a marca. Sai o `salarioMesmoNome_`.
+Preparador `preparar_xp_linha_congelada.js`, no fim da cadeia. Instalado nas duas QAs (`4f6600227cd1`; a Era recebeu
+junto o corte de 25 e o #109) e ensaiado no Ciclo, reposto. O ensaio do #109 que sobrou na Era foi reposto.
+
+# XP congelado preso à mesma missão pelo nome · 12/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-XP-CONGELADO-NOME-2026-11-12.md`. Apagar e redigitar o nome de uma missão
+congelada (XP digitado na FICHA!AN11) não conta mais de novo: com outro id, o mesmo nome do registro dono da marca
+(DADOS_SALARIOS, mesma caixa) mantém o congelamento e passa a marca; nome diferente conta inteira. Comparação sem
+maiúscula, espaço e acento (`salarioMesmoNome_`); a caixa vazia guarda a marca com 0; só decide quando a caixa forma
+missão, no caminho que lê os registros (`map`). Preparador `preparar_xp_congelado_nome.js`, no fim da cadeia. QAs
+pendentes (Chrome desconectado): instalar o trecho e ensaiar na Era.
+
+# Corte do XP da missão abaixo de 25 · 12/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-CORTE-XP-25-2026-11-12.md`. Regra da casa, fora do livro (catálogo
+`fora_do_livro.xp_minimo_da_missao`): a missão cujo XP final fica abaixo de 25 paga 0, cada missão por si, e vale para
+as já anotadas. O menu de desconto tem 10 linhas ("7ª ou mais" com fração 0); a CR15:CS15 fica vazia para a faixa não
+mudar. Geração c86ee6159f0e8463: 292 fórmulas do TOTAL, 4 caixas da DADOS e 8 notas. Os moldes do salário mudam no json
+e no Salarios.gs pela mesma troca (`preparar_corte_xp_missao.js`); a camada entra por dentro da do texto no Extra nos
+comparadores. Fórmulas, menu e notas instalados e ensaiados nas duas QAs; o `SALARIO_MISSOES_MOLDES_` do Codigo das QAs
+ficou pendente (Chrome desconectado).
+
+# Um nível por missão · 12/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-TRAVA-NIVEL-MISSAO-2026-11-12.md`. Livro R66: no máximo um nível por missão. No
+painel de missões, só a edição que mexe no nome ou no tipo sobe o nível, no máximo um por missão tocada
+(`salarioMissoesDaEdicao_`); o adicional e o desconto sozinhos guardam o XP. O feito e o XP ou nível digitados à mão
+continuam livres. Mudança no Salarios.gs entra como preparador da cadeia (`preparar_trava_nivel_missao.js`, depois do
+`preparar_xp_atualizar.js`). Instalado e ensaiado nas duas QAs, entradas repostas.
+
+# Progressão e XP auditados · 12/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-PROGRESSAO-XP-2026-11-12.md`. A curva de XP, o XP das missões, o desconto da
+semana, o arredondamento, o Limiar do nível 20 e os marcos batem com o R66. Ensaio na QA da Era: 20000 de XP para no
+nível 20; o nível 23 digitado (o feito) guarda o XP. Achados abertos, com decisão do Mizuki: a missão com adicional 2x
+pode subir dois níveis (o livro manda no máximo um por missão), e o menu de desconto para no 7º da semana. O
+`xp_atualizar.js` tinha o Final de arco em 400 e agora confere os tipos contra o catálogo. Nada mudou na ficha.
+
+# Frequência por cena nas cartas · 12/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-FREQUENCIA-CENA-2026-11-12.md`. O R66 trocou "uma vez por combate" por "uma vez
+por cena" em cinco habilidades (Especial Combinada, Resposta Técnica da Dupla, Um Passo à Frente, Sentença Final,
+Trajetória Perfeita). As oito frases moram em `r53/textos_revisados.py` (`FREQUENCIA_POR_CENA`), e o
+`extrair_habilidades.py` as aplica sobre o manual R53, parando se uma frase sumir ou sobrar "por combate". Nas QAs, o
+`instalar_frequencia_cena.js` troca as frases no módulo R53 e no caminho leve do `Codigo.gs`, conferindo os dois
+hashes. Instalado e ensaiado nas duas QAs, entradas repostas.
+
+# Menu de atributo sem #N/A · 10/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-AVISO-ATRIBUTO-2026-11-10.md`. Com o menu Z67, AK67 ou AE70 vazio ou fora dos
+cinco nomes, a CD, a Conjuração e os ataques (FICHA linha 63) mostram "Escolha o atributo" no lugar do #N/A, sem
+reescrever o menu. Com a caixa fixada pela CONFIGURAÇÃO não avisa. O aviso fica por fora do envoltório da
+configuração (`configuracao.avisa_menu`), e o `anterior` o desfaz. Geração 10101178be8ab3cb, só 4 fórmulas. A camada
+`preparar_aviso_atributo.reverterModelo` vem antes da do Buff decimal nos comparadores. Instalado e ensaiado nas duas QAs.
+
+# Iniciativa, CD e ataques do jogador auditados · 10/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-COMBATE-JOGADOR-2026-11-10.md`. As cinco fórmulas e a maestria batem com o
+livro R66, e a Kaori no nível 10 bate no Sheets. Achado aberto, com decisão do Mizuki: os menus Z67, AK67 e AE70 não
+são estritos, e vazio ou "FORCA" sem cedilha dá #N/A na caixa e na ANALISE. Constituição no menu de ataque não tem
+fonte no livro. Nenhuma fórmula mudou.
+
+# Ponto fora de 0 a 6 na ficha do jogador · 10/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-PONTOS-FICHA-2026-11-10.md`. O resumo dos pontos (FICHA Z15) e o do
+Corpo (AK14) acusam "Ponto fora de 0 a N" quando uma caixa é negativa, fracionada ou passa do teto ("1/2" vira
+data e também acusa). Nada é reescrito nem arredondado; texto não numérico vale 0 em silêncio. O teto dos pontos
+segue a campanha (`DADOS_CONFIG!$S$5`); o do Corpo é 6 fixo. Geração 66aa9dde4fdec0b1: só 2 fórmulas.
+Instalado e ensaiado nas duas QAs, entradas repostas. Bot sem mudança; `ler-analise.py` atrasado, fica para depois.
+
+# Mapa de cobertura do pente-fino · 10/11/2026
+
+Leia `r53/diagnostico-android/MAPA-COBERTURA-2026-11-10.md` antes de escolher o próximo recorte. Nas
+invocações, toda área teve olhar dedicado. Na ficha do jogador, nunca foram olhados: iniciativa, CD e ataques,
+TR, ofícios e as travas da criação contra colagem. Talentos e Aptidões só têm teste local. Quatro testes
+não provam o que parecem (`vida_bloquear_molde`, `menu_origem`, `cartas_custom`, `marcas_custom`).
+
+# Buff/Debuff decimal contra o dono · 10/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-BUFF-DECIMAL-2026-11-10.md`. As duas fichas usam a mesma leitura de
+Buff/Debuff (`ficha-v01/leitura_buff.py`): ganho decimal desce e nunca fica abaixo de 1, custo decimal sobe.
+Texto só vale quando é número simples ("1/2" vale 0). Geração c8c2dae1ce50fa1b: 206 fórmulas, só a troca do
+leitor (FICHA 11, DADOS_AM 5, DADOS_INVOC 168, DADOS_CONFIG 22). A camada `preparar_buff_decimal.reverterModelo`
+vem antes da Reserva/Bolsa nos comparadores históricos. Instalado e ensaiado nas duas QAs, entradas repostas.
+O achado 2 da revisão dos treinos (`nper`) foi decidido: segue pelos pontos.
+
+# TR treinado das entidades com aviso · 09/11/2026
+
+Leia `r53/diagnostico-android/REVISAO-TREINOS-ENTIDADES-2026-11-09.md`.
+Com nome e `trT` vazio ou fora dos quatro testes, nenhum TR recebia a
+maestria, em silêncio. Corrigido: `d_titulo` (HG2:HG13, 12 fórmulas)
+mostra "REVISAR: escolha o TR treinado", sem reescrever a entrada. O
+`NivelObtido` grava e restaura esse mesmo título; seus 12 pares da coluna
+215 ganharam o trecho, senão o pacote recusava o modelo e a restauração
+apagava o aviso. Geração 4fd2e2ede2c04f51. Ensaiado nas duas QAs (vazio
+e "Fisico" avisam; "Vigor" e "Espírito" limpam), nome e TR repostos.
+Achado 2 (`nper` pelos pontos, não pelo total) segue com o Mizuki.
+
+# Pontos forçados por colagem confirmados · 09/11/2026
+
+Leia `r53/diagnostico-android/REVISAO-PONTOS-FORCADOS-2026-11-09.md`.
+Colar especial › Só os valores grava qualquer número por cima do menu
+estrito dos pontos. Negativo e fração fecham o orçamento sem aviso; o 7
+só passa sem aviso a partir do nível 18 (deduzido da fórmula). Corrigido:
+`d_pontos` (HL2:HL13, 12 fórmulas) acusa erro e "PONTO FORA DE 0 A 6",
+sem reescrever a entrada. Geração a55595143d33c5e1, só 12 fórmulas no
+modelo. Ensaiado nas duas QAs (negativo e fração acusam, controles
+limpos), delta instalado nelas, pontos repostos. Ramo
+`codex/revisao-pontos-forcados-20261109`, sobre a PR93.
+
+# Colagem de Buff/Debuff corrigida · 09/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-COLAGEM-BUFFS-2026-11-09.md`
+e `buffs_entidades_validacao_2026-11-09.json`. As famílias u, us e ut
+(168 fórmulas DO:DS e DW:EE das 12 entidades) passam a aceitar inteiro
+ASCII com sinal colado como texto; o resto do texto continua zero e o
+caminho numérico permanece. Decimal textual fora, pendente de locale.
+
+Geração 6701a3e4b549d436. Modelo de 280.056 posições e 26 abas: só as
+168 fórmulas mudaram. Pacote integral não gerado nem instalado.
+
+Colagem real pelo menu nas duas QAs: Era `-2` deu CON −2, PV 10,
+Vigor −4; Ciclo `+2` deu CON 2, PV 14, Vigor 4; controles numéricos
+iguais. Entradas e formatos repostos, nota da O21 intacta. MONTAGENS
+só na grade, sem comparação célula a célula. Delta segue instalado.
+
+Ramo `codex/corrige-colagem-buffs-20261109`, sobre a PR92.
+Privados em `nuvem-b47/saidas/correcao-colagem-buffs-20261109/`.
+Sem merge, oficiais, jogador ou PR31.
+
+# Colagem de pontos de atributo corrigida · 08/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-COLAGEM-ATRIBUTOS-2026-11-08.md`
+e `atributos_entidades_validacao_2026-11-08.json`. ATR-N-TEXTO corrigido
+nas 60 fórmulas DJ:DN das 12 entidades. Dígito textual 0–6 passa a
+contar no cálculo, preservando o valor digitado e o menu estrito.
+Os outros textos não somam pontos e o caminho numérico permanece.
+
+Geração ec14f1ff36db9816. Modelo integral de 280.056 posições e 26
+abas conferido. Só 60 fórmulas mudaram. Candidato testado igual ao
+delta regenerado. Pacote integral regenerado, não instalado.
+
+96 observações nativas, 480 conferências de entrada e quatro colagens
+reais nas duas QAs. Na colagem de 3 textual, CON 3, nove pontos e
+PV 8, iguais ao controle numérico. Entradas e formatos dos ensaios
+repostos. 86.594 posições/cópia, MONTAGENS inteira e metadados
+conferidos. Só ficaram as 60 alterações de fórmula. Abas fechadas.
+
+Ramo `codex/corrige-colagem-atributos-20261108`, sobre a PR91.
+Privados em `nuvem-b47/saidas/correcao-colagem-atributos-20261108/`.
+Sem merge, oficiais, jogador ou PR31. Preservar suportes anteriores
+e escape ANALISE.
+
+# PR91 revisada e colagem de atributos confirmada · 08/11/2026
+
+Leia `r53/diagnostico-android/REVISAO-PR91-E-COLAGEM-ATRIBUTOS-2026-11-08.md`
+e `revisao_pr91_colagem_atributos_2026-11-08.json`. PR91 b804d1a sobre
+PR90 4eeb276, dois workflows SUCCESS, sem bloqueio no delta revisado.
+Modelo e preparador reconferidos. 25 alvos nativos já atualizados.
+O37 nas duas QAs recuperou a fórmula e o aviso após Backspace real.
+
+ATR-N-TEXTO agora reproduzido pela interface comum nas duas QAs.
+O21 recebe apóstrofo e 3, Ctrl+C, Ctrl+Shift+V em Q20. Fica texto 3
+com validação estrita, CON 0, seis pontos gastos, PV 5. Número 3 pelo
+mesmo caminho dá CON 3, nove pontos, PV 8. Legado, fora do delta PR91.
+Próximo item é tratar pontos textuais válidos preservando entrada e menu.
+Não extrapolar as outras entradas forçadas do parecer da PR90.
+
+22 posições do cenário por cópia. Dez valores e dois formatos repostos.
+86.494 posições por cópia, MONTAGENS inteira incluída. Zero diferenças
+nos campos comparados e metadados iguais. Abas de teste fechadas.
+Ramo `codex/revisao-pr91-fila-20261108`, só parecer e diagnóstico.
+Privados em `nuvem-b47/saidas/revisao-pr91-fila-20261108/`, ignorados.
+Sem merge, oficiais, jogador ou PR31. Preservar suportes anteriores e
+escape ANALISE.
+
+# Contagem de perícias das entidades corrigida · 08/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-PERICIAS-ENTIDADES-2026-11-08.md`
+e `pericias_entidades_validacao_2026-11-08.json`. PT01/PT02/PT03 corrigidos
+no gerador e nas duas QAs. Resumo conta apenas escolhas válidas e distintas
+e sinaliza repetição, fora do catálogo e limite. Mantém as entradas e a
+validação de ofícios. Nota ensina cadastro em CONFIGURAÇÃO.
+
+Delta de 24 fórmulas GU/HT e nota L42. Geração 8c985bea26747123.
+Modelo integral: 280.056 posições, 26 abas, delta exato. Smoke local
+passou. Pacote integral regenerado, não instalado. Cópias mantêm
+o Apps Script da PR90 e receberam somente as 25 alterações de célula.
+
+52 observações nativas aprovadas. Repetição pela interface mostrou
+3 de 4 com aviso em ambas. Ofício recém-cadastrado aceito em ambas.
+Ciclo recusou digitação inicial e aceitou seleção pelo menu. 63 entradas
+restauradas por cópia, 86.494 posições comparadas com MONTAGENS inteira.
+Apenas os 25 campos esperados divergiram. Abas de teste fechadas.
+
+Ramo `codex/corrige-pericias-entidades-20261108`, sobre a PR90.
+Privados em `nuvem-b47/saidas/correcao-pericias-entidades-20261108/`.
+Sem merge, oficiais, jogador ou PR31. Preservar suportes anteriores,
+escape ANALISE e correções incrementais já instaladas.
+
+# Perícias e treinos das entidades auditados · 08/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-PERICIAS-TREINOS-ENTIDADES-2026-11-08.md`
+e `auditoria_pericias_treinos_entidades_2026-11-08.json`. Ramo separado
+`codex/auditoria-pericias-entidades-20261108`, sobre o parecer 1eb4965.
+40 observações nativas nas entidades 1/12 das duas QAs, com 34 controles
+aprovados e seis reproduções. Cobertas as 23 perícias, Inteligência base
+0–6, os quatro TRs, Físico em Força/Destreza, buffs e degraus de Maestria.
+
+PT01: repetir Atletismo ocupa duas vagas e exibe 4/4 com três perícias
+distintas, inclusive pelo menu real nas duas QAs. PT02: retirar perícia
+custom do cadastro mantém nome e vaga, perde bônus e não avisa no resumo.
+Repor o cadastro recupera o bônus. PT03: nota do Ofício Compatível omite
+o cadastro custom e a digitação fora do menu foi recusada nas duas QAs.
+Achados documentados. Fórmulas e código instalado não foram alterados.
+
+61 entradas/cópia restauradas. Comparadas 86.474 posições por cópia,
+incluindo MONTAGENS inteira A1:I9543, sem diferenças nos campos lidos.
+Metadados com condicional iguais e abas de teste fechadas. Privados em
+`nuvem-b47/saidas/auditoria-pericias-entidades-20261108/`, ignorados.
+Sem merge, oficiais, jogador, PR31, acesso ou acionadores. PR31 em
+765e3b2. Preservar suportes e escape ANALISE descritos abaixo.
+
+# PR90 revisada e atributos das invocações auditados · 08/11/2026
+
+Leia `r53/diagnostico-android/REVISAO-PR90-E-ATRIBUTOS-2026-11-08.md` e
+`revisao_pr90_atributos_2026-11-08.json`. PR90 em 4eeb276, sobre PR89
+e2b0330: sem bloqueio novo no delta revisado, dois workflows SUCCESS
+(42534146894/42534090450). Testes focais de nível/transporte real e modelo
+repetidos; 280.056 posições/26 abas, delta exato. Evidências anteriores
+240 casos/12 recuperações/código relido revisadas, NÃO repetidas nesta rodada.
+
+Pente-fino novo: 44 observações de atributos nas entidades 1/12 das duas QAs,
+34 controles aprovados e dez sondagens forçadas. Criação, orçamento, Marcos,
+teto seis e buffs passaram no domínio testado. Menus de pontos já estritos
+0–6. N(texto) perde pontos/Constituição/PV se texto conseguir ficar gravado:
+3 textual calculou 0/6 gastos/5 PV; 3 numérico, 3/9/8. Estado reproduzido
+via API e typeText automatizado nas duas. Teclado convencional recusou texto
+nas duas; colagem explícita e fórmula textual recusadas na Era. Registrar
+como robustez condicional, NÃO bug comprovado do fluxo comum ou da PR90.
+Não corrigido; antes de priorizar, reproduzir manualmente ou definir suporte
+a dados externos. Não contar negativos/frações/7 via API como bugs comuns.
+
+29 entradas/cópia restauradas; 86.000 posições/cópia comparadas, MONTAGENS
+inteira A1:I9543 incluída. Zero diferenças nos cinco campos de célula lidos;
+metadados com condicional iguais. Formato numérico Q20 restaurado após
+inserção automatizada; baseline individual da Ciclo, pares/gerador na Era.
+Visuais restaurados, auxiliares ocultas, duas abas de teste fechadas. Não
+houve instalação de fórmula/script nem nova autorização Google nesta rodada.
+
+Ramo separado `codex/revisao-pr90-auditoria-20261108`, só parecer/diagnóstico.
+Privados válidos em `nuvem-b47/saidas/revisao-pr90-atributos-20261108/`,
+ignorados. Sem merge, oficiais, jogador, PR31, acesso ou acionadores.
+PR31 continua 765e3b2. Preservar código instalado b709ad14…, 60 suportes
+PR90, 49 suportes PR89, IF da PR88 e escape ANALISE. Pacote integral NÃO
+instalado. Próximo recorte plausível: perícias/treinos das entidades e limites.
+Sol/Medium revisão; Sol/High novo ensaio/implementação, sem mudar configurações
+ou abrir agentes. Não afirmar conclusão do pente-fino global.
+
+# AQ02 corrigido e ensaiado nas duas QAs · 08/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-NIVEL-OBTIDO-2026-11-08.md` e
+`nivel_obtido_validacao_2026-11-08.json`. Texto só com dígitos 1–30 vira
+nível válido; número inteiro 1–30 válido; vazio mantém a prévia. Demais
+entradas ficam preservadas e sinalizadas como inválidas: -1 em nfixo,
+nível calculado provisório 1 e REVISAR no título/lista para domada/criada.
+Aquisições que acompanham o invocador ignoram esse campo. ANALISE mantém
+chaves/tipos/fórmulas/endereços; nivel_fixo agora sinaliza inválido com -1.
+Não foi alterado/testado consumidor ou PR31.
+
+Incremento nas descartáveis: 36 fórmulas, duas notas e 12 menus estritos
+(50 pedidos/cópia). Código fresco ffd349c9…; código salvo, reaberto e relido
+integralmente igual b709ad14b6340c132279f5a44030cb9a737c3f1251322c9929c6ffd341d9f38e.
+Conservar 60 moldes vizinhos novos inalterados, 49 suportes da PR89, IF da
+PR88 e escape da ANALISE. Conferência manual do pacote concluiu nas duas.
+
+240 casos nativos, seis controles de interface, 12 recuperações reais e
+16 onEdit Concluído. 49 entradas/cópia restauradas. Comparadas
+86.178 posições/cópia, incluindo MONTAGENS inteira A1:I9543 (85.887).
+Só os 50 campos previstos mudaram; zero extras; metadados com formatação
+condicional iguais. Auxiliares ocultas, visuais restaurados e abas de teste
+fechadas. O usuário pediu não acumular abas desnecessárias.
+
+Geração fe4f36eb411d303b; 280.056 posições/26 abas, delta exato e modelo
+incremental igual ao integral. Pacote integral regenerado, NÃO instalado.
+Smoke local 124/124; guardas offline de suporte/FO repetidas focalmente após
+o smoke, sem mudança do código Google. Geração inicial 143 não vale como
+aprovação; pipeline persistente final teve quatro saídas zero.
+
+Ramo `codex/validacao-nivel-obtido-20261108`, sobre PR89 e2b0330 e parecer
+0a1ad65. Entrega para revisão, sem merge, oficiais, jogador ou PR31; PR31
+continua 765e3b2. Privados só em
+`nuvem-b47/saidas/validacao-nivel-obtido-20261108/`, ignorado. Para eventual
+aplicação: snapshot fresco e preflight de código, valores, suporte, notas
+e validações; exige base final PR89. Não repetir testes sem causa nem
+reconstruir preenchidas. Sol/Medium para revisar, Sol/High para novo
+ensaio/implementação; não alterar configurações ou abrir agentes.
+
+# Retomada Linux · PR89 revisada e AQ02 confirmado · 08/11/2026
+
+Leia `r53/diagnostico-android/REVISAO-PR89-E-ENTRADAS-NIVEL-2026-11-08.md`
+e `revisao_pr89_entradas_nivel_2026-11-08.json`. Windows concluiu a PR88
+em ab05bcf e abriu a PR89 em e2b0330; não retomar o antigo WIP Linux.
+PR89 revisada no delta de níveis inteiros válidos, sem novo achado nesse
+escopo; dois jobs smoke SUCCESS. Testes focais/transporte/modelo repetidos,
+13 valores e três notas relidos nas duas QAs. Não repetidos os eventos,
+smoke integral ou readback integral do código Google registrados no Windows.
+
+AQ02 [P2] legado, não corrigido: nível obtido aceita texto/frações/booleanos.
+Texto 7 vira nível 30 (92 PV e oito espaços em vez de 23 PV/dois na primeira
+entidade); 7,5 produz nível/PV fracionados. N(entrada) perde a distinção de
+tipo e zero cai na prévia do invocador. O vazio é comportamento compatível
+intencional, não erro. Mesma causa em Criação e Maldição domada, anterior à
+PR89. Matriz nova: 40 configurações, 80 observações, entidades 1/12 nas duas
+descartáveis; API nativa, sem evento real nesta rodada.
+
+Nove entradas/cópia restauradas; 11.371 posições/cópia comparadas, incluindo
+11.322 MONTAGENS em 34 contextos. Zero diferenças, metadados iguais no escopo
+original, visual restaurado e auxiliares ocultas. Não é MONTAGENS inteira;
+formatação condicional não tinha baseline nesta rodada. Privados somente em
+`nuvem-b47/saidas/auditoria-nivel-obtido-20261108/`, ignorado e agora válidos.
+
+Ramo `codex/revisao-pr89-entradas-20261108`, somente parecer/diagnóstico.
+Próximo: corrigir AQ02 em ramo próprio, snapshots frescos e incremento mínimo
+nas duas QAs, preservando montagens, compatibilidade do vazio, suportes/IF e
+escape da ANALISE. Sem merge, oficiais, jogador, PR31, acesso ou acionadores.
+PR31 continua 765e3b2; PR89 e2b0330. Sol/High para implementar/ensaiar,
+Sol/Medium para revisar o parecer; não mudar configurações nem abrir agentes.
+
+# Criação com nível fixo concluída nas QAs · 08/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-CRIACAO-NIVEL-FIXO-2026-11-08.md`
+e `criacao_nivel_fixo_validacao_2026-11-08.json`. AQ01 corrigido: Criação
+conserva o nível fabricado registrado, até o invocador. Vazio conserva a
+prévia histórica; preencher para fixar. Delta: BQ5, FO2:FO13 e três notas
+I46/K46/O12 (o modelo real não tinha 36 notas). Catálogo/extração com
+referência focal R66 explícita; manual histórico não reescrito.
+
+Incremento salvo e relido nas duas descartáveis. Base fresca 36ca73ef…;
+código final ffd349c9299342d735917697355d3f278f526ff74b9e009706ce61a8b0784352.
+312 casos e 26 controles de débito passaram. Dez edições reais finais
+passaram e constam Concluído. FM2:FQ3 exigiu 24 moldes vizinhos adicionais:
+suporte final 49, inalterado na instalação. Não retirar esses moldes,
+os IF da PR88 ou o escape da ANALISE. Matriz anterior ao ajuste só de suporte.
+
+49 entradas/cópia restauradas; 86.082 posições/cópia comparadas, 85.887
+de MONTAGENS inteira. Somente 16 deltas previstos, zero extras, metadados
+iguais e visuais restaurados. Auxiliares ocultas. Geração 72fa80b901f2249c;
+280.056 posições/26 abas, só 13 valores e três notas. Smoke final 123 checks
+aprovado. Pacote integral regenerado, NÃO instalado. Windows: PYTHONUTF8=1
+para subprocessos. Regressão/arnes Calc atualizados, mas Calc não executado.
+
+Ramo `codex/criacao-nivel-fixo-20261108`; privativos só em
+`nuvem-b47/saidas/criacao-nivel-fixo/retomada-08/`, ignorado. Entrega para
+revisão, sem merge, oficiais, jogador, main ou PR31. PR88 em ab05bcf,
+PR31 em 765e3b2. Sol/Medium para revisão; Sol/High para nova implementação
+ou ensaio, sem mudar configurações nem delegar a subagentes.
+As entradas abaixo são o histórico anterior à retomada concluída.
+
+# Pausa para manutenção do disco E · 08/11/2026
+
+Usuário pediu parar e salvar. Não retomar sem nova instrução. Leia
+`r53/diagnostico-android/PROMPT-RETOMADA-CRIACAO-2026-11-08.md`.
+WIP em `codex/wip-criacao-nivel-fixo-20261108`, sobre fe52bb1.
+Correção AQ01 parcialmente escrita; não pronta, não instalada e sem PR.
+Faltam três JSONs de plano/notas/suporte, integração do bootstrap e testes.
+
+Geração com `-X utf8` terminou em saída 0, mas não foi validada. Gerados
+guardados em `nuvem-b47/saidas/criacao-nivel-fixo/gerados-wip/`, ignorado;
+artefatos versionados repostos à base. Fontes parciais conservadas no WIP.
+Não ficou processo de geração ativo. Dois códigos frescos das QAs tinham
+SHA 36ca73ef…; refazer leituras e snapshots completos antes de aplicar.
+Snapshots da sessão só em memória NÃO servem de backup para instalação.
+
+Nenhuma escrita Google nesta sessão: sem entradas de teste ou restauração
+pendente. Oficiais, jogador, PR88, PR31 e main intactos; sem merge.
+Não pressupor caminhos antigos no disco E ao retomar. Sol/High para
+correção/ensaio; sem mudar configurações ou delegar a subagentes.
+
+# Aquisição de invocações auditada · 07/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-AQUISICAO-INVOCACOES-2026-11-07.md`
+e `aquisicao_invocacoes_resultados_2026-11-07.json`. AQ01 [P2] confirmado:
+Criação ainda acompanha o invocador até o fim da Classe (R44), mas R66
+conserva o nível de fabricação. Ex.: criada no 1 chega ao 4, 14 PV e dois
+espaços em vez de 5 PV e um espaço. Não é regressão da PR88.
+
+120 casos nas duas descartáveis: 106 conformes, 14 divergentes da mesma
+causa. Débito de espaços conhecidos, inclusive nomes numéricos/booleanos,
+passou. Diagnóstico somente; nenhuma correção de código/fórmula instalada.
+49 entradas/cópia restauradas; 86.067 posições/cópia comparadas, 85.887
+da MONTAGENS inteira. Zero diferenças inesperadas, metadados iguais,
+visuais conferidos e auxiliares ocultas. Sem ensaio novo de onEdit.
+
+Ramo separado `codex/auditoria-aquisicao-invocacoes-20261107`. Próximo passo:
+reconciliar catálogo/extração, progressão, notas e moldes de recuperação;
+snapshots frescos e delta incremental nas duas QAs, sem pacote integral.
+Cobrir níveis abaixo/igual/acima, obtido vazio e novo projeto. Sol/High
+para corrigir/ensaiar; Sol/Medium para revisar este diagnóstico. Não mudar
+configurações nem delegar a subagentes. Privados só em
+`nuvem-b47/saidas/aquisicao-invocacoes/`, ignorado. Sem oficiais, jogador,
+merge, main ou PR31. PR88 preservada em ab05bcf; PR31 em 765e3b2.
+
+# Revisão final da PR88 · 07/11/2026
+
+Leia `r53/diagnostico-android/REVISAO-ISOLAMENTO-PR88-2026-11-07.md` e
+`revisao_isolamento_pr88_2026-11-07.json`. Head ab05bcf revisado contra
+PR87 0554071: sem novos achados acionáveis no escopo; R88-01 resolvido.
+PR aberta, sem conflitos, dois smoke SUCCESS no head revisado.
+
+Repetidos testes focais com os insumos Android privados e duas bases,
+comparação de 280.056 posições/26 abas (só 24 fórmulas), editor LF/CRLF
+e três testes Python. Auditoria das evidências guardadas confirmou código,
+preservação, dez recuperações completas e dez onEdit Concluído.
+Matrizes/eventos nativos e smoke integral NÃO repetidos nesta revisão.
+Nenhuma escrita Google ou mudança no código da PR88 nesta etapa.
+
+Parecer separado em `codex/revisao-isolamento-pr88-20261107`. Sem merge,
+oficiais, jogador, PR31 ou main. Privados só em
+`nuvem-b47/saidas/revisao-isolamento-pr88/`, ignorado. Próximo pente-fino:
+Sol/High em fronteira delimitada; Sol/Medium para conferir o parecer.
+Não mudar configurações. Aplicar em oficiais exige instrução específica.
+
+# Isolamento dos nomes da PR88 concluído · 07/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-ISOLAMENTO-NOMES-PR88-2026-11-07.md`
+e `isolamento_nomes_validacao_2026-11-07.json` na mesma pasta. R88-01 corrigido:
+FILTER restringe categoria/entidade antes de LEN, conservando erros próprios,
+números/zero/FALSE e o vazio por fórmula. Só 24 fórmulas IE/JJ mudam.
+
+Aplicação incremental concluída nas descartáveis Era/Ciclo. Código fresco
+8935211c… conferido antes; proposta 36ca73efd1eca6809fd8ddfa1be324eebaad2f5aef0830d4c25c6aaeaaaff3bc
+salva, projetos reabertos e relidos integralmente iguais. Dez onEdit reais
+Concluído: quatro formatos de bloco e um controle com erro próprio por cópia.
+288 casos de contagem e 16 configurações globais de isolamento passaram.
+
+160 entradas por cópia restauradas. Comparação de 53.554 posições/cópia,
+53.334 MONTAGENS: apenas as 24 mudanças previstas, zero diferenças extras.
+Metadados iguais, visuais conferidos e auxiliares ocultas. Geração
+e4537f58af975d8c; 280.056 posições/26 abas, somente 24 fórmulas diferentes.
+Smoke final 122 checks aprovado. Pacote integral regenerado, NÃO instalado.
+Cabeçalho gzip da Expansão e CRLF do editor normalizados para Windows,
+com testes; hash/base estritos preservados. Privados somente na pasta
+ignorada `nuvem-b47/saidas/isolamento-windows/`.
+
+Atualizar/revisar na PR88, sem merge, oficiais, jogador, PR31 ou force push.
+PR31 preservada em 765e3b2. Sol/Medium para revisão, Sol/High para novo
+ensaio/implementação; não mudar configurações automaticamente.
+As entradas abaixo registram o histórico anterior à retomada concluída.
+
+# Pausa para Windows · isolamento PR88 · 07/11/2026
+
+Usuário pediu parar e salvar para continuar no Windows. Leia
+`r53/diagnostico-android/PROMPT-RETOMADA-ISOLAMENTO-PR88-2026-11-07.md`.
+Checkpoint WIP em `codex/wip-isolamento-pr88-20261107`, separado da PR88.
+Não está pronto para revisão: geração interrompida, GS ainda c59bcb593daf38af,
+propostas JSON já atualizadas. Snapshots privados antes-0/1 ficaram truncados:
+NÃO usar. Não há processo de geração deixado em execução. Refazer snapshots
+e geração/empacotamento em série antes de aplicar.
+
+Implementação WIP filtra categoria/entidade antes de LEN, preservando erros
+próprios. Nove casos do protótipo na Era passaram e foram restaurados.
+Python focal e testes JS de transporte/recuperação passaram; as duas rotas
+de preparação produziram proposta 36ca73efd1eca6809fd8ddfa1be324eebaad2f5aef0830d4c25c6aaeaaaff3bc.
+Não aplicada nas QAs, sem matriz final/edição real/smoke final. Código
+instalado esperado nas duas ainda 8935211c6e87cd4515b0df860bd0d71524f316d08e42013f86cc9fa6b1d53bea;
+exige releitura fresca. Verificar conexões no Windows, sem presumir acesso.
+
+PR88 remota continua em 4d22fb7; incorporar este WIP nela apenas após validar,
+preservando atualizações concorrentes. Sem merge, oficiais, jogador ou PR31.
+Privados em nuvem-b47/saidas/isolamento-pr88/, ignorado. Sol/High para retomar
+implementação/ensaios; Sol/Medium para revisão, sem mudar configurações.
+
+# Revisão PR88 com bloqueio · 07/11/2026
+
+Leia `r53/diagnostico-android/REVISAO-PR88-ERROS-NOMES-2026-11-07.md` e
+`revisao_pr88_erros_nomes_2026-11-07.json`. PR88 `4d22fb7` segue aberta,
+sem conflitos e com dois checks SUCCESS, mas R88-01 [P2] impede considerá-la
+pronta: LEN avalia todo B2:B253 antes do filtro de identidade e propaga
+erro de nome de uma básica para os 12 cabeçalhos/12 requisitos normais.
+
+Reproduzido nas duas QAs com J71 =1/0 e =NA(). Texto, número e fórmula
+vazia são controles corretos. A/B com a fórmula anterior em IE2 confirmou
+a regressão da PR88; tudo foi reposto. Não voltar a COUNTIFS ?*, que perde
+números, nem esconder toda a conta com IFERROR(…,0). Isolar a avaliação,
+mantendo erro na origem e avisos mecânicos legítimos. Código não corrigido
+nesta rodada; não instalado pacote ou script. PR88/PR31 não alteradas.
+
+Testes focais de preparação/recuperação e modelo passaram novamente.
+Dez cenários globais (quatro com propagação, seis controles), 240 resultados
+observados; um defeito, não 240. Treze entradas/cópia restauradas; amostra
+de 1.038 posições, 999 MONTAGENS, zero diferenças ou erros remanescentes.
+Metadados idênticos, visual restaurado e auxiliares ocultas nas duas.
+Não houve ensaio de eventos; API de entrada não dispara onEdit.
+
+Ramo só de revisão `codex/revisao-pr88-contagens-20261107`. Dados privados
+em `nuvem-b47/saidas/revisao-pr88-contagens/`, ignorado. Sem merge, oficiais,
+jogador ou PR31. Próximo passo é corrigir R88-01 antes de ampliar o pente-fino.
+Sol/High para corrigir/ensaiar; Sol/Medium para revisar a evidência.
+
+# Contagem das especiais normais corrigida · 07/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-CONTAGEM-ESPECIAIS-2026-11-07.md` e
+`contagem_especiais_validacao_2026-11-07.json`. Ramo separado
+`codex/contagem-especiais-20261107`, sobre auditoria `95820b8`/PR87 `0554071`.
+SUMPRODUCT por identidade normal e LEN do nome convertido em texto corrige
+números/zero/booleanos e exclui fórmula que retorna vazio. Tipos preservados.
+Só 24 fórmulas IE2:IE13/JJ2:JJ13; sem apagar ou regravar montagens salvas.
+
+288 casos nativos passaram nas 12 entidades das duas QAs. COUNTIFS com <>
+reprovou no vazio por fórmula e foi substituído. Apagamento misto IE:IF
+atingiu 30 s na tentativa intermediária: acrescentados 12 moldes IF
+inalterados à recuperação leve. Não retirar esses moldes nem o escape
+da ANALISE. Oito edições reais na versão final passaram; oito onEdit
+Concluído no histórico. Matriz não foi repetida após só adicionar suporte.
+
+Código final salvo e relido nas duas QAs, SHA-256
+`8935211c6e87cd4515b0df860bd0d71524f316d08e42013f86cc9fa6b1d53bea`.
+Geração final `c59bcb593daf38af`, cinco partes; pacote integral NÃO instalado.
+Comparação do modelo: 280.056 posições/26 abas, apenas 24 alterações.
+121 verificações locais passaram. Entradas temporárias restauradas:
+158/cópia; 33.494 posições, 31.968 MONTAGENS, só 24 deltas previstos,
+zero diferenças inesperadas e erros nas faixas. Auxiliares ocultas;
+cabeçalhos e estado restaurado conferidos visualmente.
+
+Preparador exige base PR87 exata e snapshot fresco. Sem merge, oficiais,
+jogador ou PR31. Dados privados só em `nuvem-b47/saidas/correcao-contagem/`.
+Sol/Medium para revisão; Sol/High para integração futura em base diferente.
+
+# Revisão PR87 e orçamento normal · 07/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-REPERTORIO-NORMAL-2026-11-07.md`.
+PR87 `0554071` revisada, aberta, sem conflitos e com dois checks SUCCESS.
+Repetidos os testes focais de preparação/recuperação e de equivalência do
+modelo (280.056 posições/26 abas). Sem bloqueio novo no escopo dos extras.
+O ramo da PR87 e seu código instalado foram preservados.
+
+Pente-fino confirmou N01: orçamento das especiais normais usa ?* nos nomes,
+ignorando números/booleanos e fórmulas numéricas. Duas especiais 7/8 mais
+Completa no nível próprio 14 mostram 0+3 de 4, sem avisar do gasto real 5/4.
+Um defeito, com 120 reproduções e 120 controles em 240 casos nas duas QAs,
+nas 12 entidades. Critério vem da PR86; extras da PR87 já usam <>.
+Nenhuma correção nova aplicada. Não substituir ?* globalmente.
+
+158 entradas/cópia restauradas, zero diferenças e erros nas faixas lidas:
+33.458 posições solicitadas, 31.968 de MONTAGENS (incluem vazios implícitos).
+Conferência visual nativa final passou. Não houve ensaio novo de onEdit.
+Evidência sanitizada em `repertorio_normal_resultados_2026-11-07.json`;
+dados privados em `nuvem-b47/saidas/auditoria-repertorio-normal/`, ignorado.
+Ramo separado `codex/auditoria-repertorio-normal-20261107`, sobre a PR87.
+Sem merge, oficiais, jogador ou PR31. Sol/Medium para revisar diagnóstico;
+Sol/High para corrigir N01 e ensaiar atualização/recuperação incremental.
+
+# Correção do repertório das Trilhas · 07/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-REPERTORIO-TRILHA-2026-11-07.md` e a
+evidência sanitizada `repertorio_trilha_validacao_2026-11-07.json`.
+Ramo `codex/repertorio-trilha-20261107`, sobre auditoria `81b1745`/PR86
+`6568838`. Concessão por Caminho/Trilha/nível/atributo e limite compartilhado
+entre três capacidades e três talentos agora geram REVISAR, sem apagar compras.
+Conjunto escolhe atributo permanente em INVOCAÇÕES!D35, independente da Defesa.
+
+Geração `d09f5a8d7aa821e6`: 102 valores/fórmulas, 14 notas, três mesclas;
+72 fórmulas FY/FZ inalteradas acompanham recuperação mista. Pacote integral
+regenerado, NÃO instalado. Só incremental nas duas QAs Era/Ciclo.
+Código salvo e relido nas duas, SHA-256
+`26b78470c8eda2443ee74f650b5a925cde1fdbeea7a79c8387c3304e9767968c`.
+Guardas leves preservam escolha, cache de versões e recuperação externa.
+O módulo Android antigo omite DADOS_R53/ANALISE: não injetar aba parcial.
+Preservar novos moldes GA e escape dos literais da ANALISE.
+
+234 casos nativos e 16 ações reais aprovados. Falha inicial de recuperação
+dos rótulos mesclados corrigida e repetida. Nome numérico/booleano também
+ocupa vaga: manter critério <> na contagem dos cartões, sem coagir entradas.
+13.644 posições/cópia, 11.988 de MONTAGENS: apenas 118 células previstas
+de delta, zero diferenças inesperadas ou erros de fórmula nos intervalos.
+Entradas temporárias restauradas, auxiliares ocultas e visual conferido.
+120 verificações locais e comparação de 280.056 posições/26 abas passaram.
+
+Entrega para revisão, sem merge. Oficiais, jogador e PR31 intactos.
+Antes de futura instalação: snapshot fresco e base Código PR86 exata
+`5b7bb420739efeeb28e036b8da79f38bcc0e19b20d4d14f229f0effaac74e7ef`.
+Reversão de valores não desfaz notas/formatação/mesclas; guardar tudo.
+Evidências privadas só em `nuvem-b47/saidas/correcao-repertorio/`, ignorado.
+Sol/Medium para revisão e Sol/High para futura integração/ensaio.
+
+# Revisão PR86 e auditoria de repertório da Trilha · 07/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-REPERTORIO-TRILHA-2026-11-07.md`.
+PR86 `6568838` revisada, sem conflitos e com dois checks aprovados.
+Testes focais de preparação, fórmula e modelo passaram novamente.
+Nenhum bloqueio novo confirmado dentro do escopo da PR86.
+
+Nas descartáveis Era/Ciclo, 40 cenários por cópia confirmaram duas lacunas
+legadas: as escolhas extras não validam aquisição por Trilha/nível/atributo,
+e as três capacidades e três talentos não compartilham limite consolidado.
+São 22 excedentes e 18 controles por cópia; não são 22 defeitos diferentes.
+O VÁLIDO atual avalia a montagem, sem aprovação completa da aquisição.
+Não debitar esses extras dos espaços comuns ou da Expansão da domada.
+
+Duas edições reais recuperaram M173. As 183 entradas foram repostas por
+cópia. Conferidas 3.535 posições, incluindo 1.998 de MONTAGENS, com zero
+diferenças e zero erros. As 84 origens diretas e 12 multicélula amostradas
+da ANALISE estão corretas nas duas. Auxiliares permanecem ocultas.
+Nenhuma correção nova aplicada; código das QAs e PR86 preservado.
+Auditoria separada em `codex/auditoria-repertorio-trilha-20261107`.
+Sem merge e sem alterações nas oficiais, jogador ou PR31.
+Sol/Medium para revisão e Sol/High para futura correção/ensaio.
+
+# Correção da Expansão da domada · 07/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-EXPANSAO-DOMADA-2026-11-07.md`.
+Base PR85 `735d499`, geração `ed25e7759cd26b7e`. Requisitos estruturados e
+orçamento conjunto agora pedem revisão; aquisição ocupa 2/3/5 no total.
+Sem Barreiras mostra PE fechado/aberto sem reduzir o grau adquirido.
+Os 12 exp.acerto da ANALISE passam a resultado; chaves, B e C preservados.
+Técnica própria, histórico de aquisição e permissões de tipo custom seguem
+em conferência explícita da mesa, sem aprovação automática universal.
+
+512 cenários nativos por QA Era/Ciclo passaram. Oito edições reais recuperaram
+cabeçalhos, o bloco misto de PE/Acerto/requisito e os registros inicial/final
+na ANALISE, preservando o escape dos apóstrofos. Seleção real e visual passaram.
+As entradas temporárias foram restauradas; 4.658 posições por cópia, incluindo
+2.072 de MONTAGENS, tiveram somente 48 células e 36 notas previstas de delta.
+Zero diferenças adicionais e zero erros nos intervalos lidos. Auxiliares ocultas.
+Código incremental salvo e relido, SHA-256
+`5b7bb420739efeeb28e036b8da79f38bcc0e19b20d4d14f229f0effaac74e7ef`.
+O pacote Android antigo omite ANALISE do retrato: o preparador preserva essa
+separação. Não retirar a recuperação externa nem seu escape de literais.
+
+Comparação do modelo: 280.001 posições e 26 abas, somente o delta previsto.
+Relatório local do smoke: 119 aprovações. Zopfli só na preparação permite manter
+cinco partes (3.854.032 bytes Base64); formato gzip padrão, sem serviço novo.
+A entrega exige Código PR85 e snapshot fresco. Pacote integral regenerado,
+não instalado. Oficiais, jogador e PR31 intactos, sem merge. Sol/Medium para
+revisão e Sol/High para futura integração/ensaio.
+
+# Auditoria da Expansão da domada · 07/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-EXPANSAO-DOMADA-2026-11-07.md`.
+Base `109dff6`, implementação PR85 `735d499` nas QAs Era e Ciclo.
+Foram 210 cenários por cópia: 168 de contas nas 12 posições, 24 de
+requisitos e 18 de gastos. Contas de PE e Acerto corresponderam à R66.
+
+Confirmadas duas lacunas legadas de validação: requisito do domínio
+é só texto e gasto de domínio não é consolidado com as especiais.
+Completa + duas especiais no nível 14 soma 5/4 sem alerta conjunto.
+As 12 chaves exp.acerto da ANALISE saem como entrada apesar da
+origem calculada. Valores e origens estavam corretos; consumidor externo
+não foi auditado. Nenhuma correção aplicada. Separar grau adquirido e
+modo fechado/aberto antes de automatizar o gasto permanente 2/3/5.
+
+Restauradas 332 entradas por cópia, incluindo as 108 posições de Família.
+Comparação de 4.443 posições por cópia, incluindo 2.072 de MONTAGENS,
+com zero diferenças e zero erros. Ensaios via API, sem onEdit nesta matriz.
+Sol/Medium para revisar achados e Sol/High para futura correção/ensaio.
+
+# Revisão PR85 e auditoria de trunfos · 07/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-TRUNFOS-ENTIDADES-2026-11-07.md`.
+PR85 `735d499` revisada, sem conflitos e com dois checks aprovados.
+Testes focais e transporte passaram novamente. A correção segue nas
+QA Era e Ciclo, com DADOS_R53 oculta.
+
+Passaram 104 cenários nativos por cópia, na primeira e na última
+entidade, sobre aquisição, nível próprio, dados, PE, tipos e 15 peças
+da Máxima. Mais 60 montagens locais passaram nos dois modos e nas
+modalidades pessoal e de entidade. As referências dos 48 trunfos das
+12 entidades foram conferidas. Nenhum erro novo confirmado nesse escopo.
+
+As 153 entradas temporárias, incluindo as 18 posições de Família,
+foram restauradas. A comparação de 2.610 posições por cópia, incluindo
+1.184 de MONTAGENS, encontrou zero diferenças e zero erros. Não houve
+mudança no código da PR85. Expansão da domada e gastos de espaços têm
+procedimentos próprios e permanecem fora desta matriz. Sol/Medium para
+revisão da PR85 e Sol/High para continuar o pente-fino.
+
+# Correção de aquisição das Liberações · 07/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-LIBERACOES-2026-11-07.md`.
+Ramo `codex/liberacoes-niveis-20261107`, base PR84 `74d83b7`, geração
+`913e7d60d156ef11`. Os três cartões pessoais exigem níveis 10, 20 e 30.
+O delta contém GA38:GA40 e os moldes/guardas correspondentes no Código.
+
+Instalação incremental concluída nas descartáveis Era e Ciclo, após
+snapshots novos. Código salvo e relido igual nas duas, SHA-256
+`7512bf622897eb1145f3849a55ccd80419a147e8cd540a3c2b6113d84c8cdfb7`.
+Duas edições reais em bloco recuperaram as seis fórmulas.
+
+Passaram 39 cenários por cópia. As 58 entradas temporárias foram
+restauradas. A conferência de 1.121 posições por cópia, incluindo 777
+de MONTAGENS, encontrou somente o delta previsto de três fórmulas e
+zero erros. DADOS_R53 voltou a ficar oculta. Correção nas duas QAs.
+Smoke e transporte passaram. Pacote em cinco partes, margem de 304 bytes.
+Sol/Medium para revisão e Sol/High para próximo ensaio ou correção.
+
+# Instalação da PR84 nas descartáveis · 07/11/2026
+
+Leia `r53/diagnostico-android/INSTALACAO-PR84-2026-11-07.md`.
+PR84 `24a91bd` revisada, sem conflitos e com dois checks aprovados.
+Era e Ciclo receberam 251 fórmulas de FX em cinco lotes cada.
+O Código incremental foi salvo e relido. Passaram seis recuperações
+por edição real, com cartões pessoais, entidades e Classe 0.
+
+Passaram 39 controles pós-instalação por cópia, incluindo as 12
+entidades. As 330 entradas foram repostas. A comparação de 5.218
+posições por cópia, incluindo 3.647 de MONTAGENS, encontrou zero
+diferenças e zero erros. DADOS_R53 voltou a ficar oculta. PR84
+instalada nas duas descartáveis. Sol/Medium para revisão e
+Sol/High para ensaio e correção.
+
+# Correção de Corrói e Mira Livre · 07/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-CORROI-MIRA-LIVRE-2026-11-07.md`.
+Base PR83 `b6c1ac1`, geração `604968957e08baef`. Corrói passa a
+exigir Mira Livre nas quatro vagas e nas modalidades de entidade.
+O delta contém 251 fórmulas de FX e preserva preços e compras.
+
+Passaram 104 cenários por descartável, incluindo as 12 entidades,
+e 212 montagens locais. Foram repostas 330 entradas e 13 fórmulas
+focais por cópia. A comparação de 5.218 posições, incluindo 3.647
+de MONTAGENS, encontrou zero diferenças e zero erros. As duas
+descartáveis voltaram à PR83. Smoke e transporte passaram.
+
+O pacote mantém cinco partes com margem de 452 bytes. A instalação
+integral e a recuperação por edição real da correção aguardam
+ensaio. Sol/Medium para revisão e Sol/High para ensaio.
+
+# Auditoria de Mira após a PR83 · 07/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-MIRA-2026-11-07.md`.
+PR83 `b6c1ac1` contém o relatório de instalação. As descartáveis
+Era e Ciclo estão com a PR83 e a recuperação por edição real passou.
+
+Foi confirmado um erro de requisito de Família. Corrói fica VÁLIDO
+com Mira Neutra nas vagas 1 e 4, embora a R66 exija Mira Livre.
+Os controles de Mira Livre, Mira Fechada e Fura passaram. O mesmo
+problema aparece nos modos estruturado e direto do avaliador local.
+O requisito nas entidades ainda requer ensaio nativo.
+
+Passaram seis controles da PR83 por cópia. Foram repostas 18
+entradas. A comparação de 861 posições por cópia, incluindo 539
+de MONTAGENS, encontrou zero diferenças e zero erros. Sol/Medium
+para revisão e Sol/High para correção e ensaio.
+
+# Instalação da PR83 nas descartáveis · 07/11/2026
+
+Leia `r53/diagnostico-android/INSTALACAO-PR83-2026-11-07.md`.
+PR83 `02a7fc1` revisada, sem conflitos e com dois checks aprovados.
+Era e Ciclo receberam 251 fórmulas de FX cada, em 21 lotes, e o
+Código incremental foi salvo e relido. Passaram seis recuperações
+por edição real e seis controles mecânicos por cópia.
+
+As 18 entradas temporárias foram repostas. A comparação com o
+snapshot anterior à instalação cobriu 861 posições por cópia,
+incluindo 539 de MONTAGENS, sem diferenças nem erros. DADOS_R53
+voltou a ficar oculta. PR83 instalada nas duas descartáveis.
+Sol/Medium para revisão e Sol/High para ensaio e correção.
+
+# Correção de Forma e função das Melhorias · 06/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-FORMA-FUNCAO-2026-11-06.md`.
+Base PR82 `b11c46a`, geração `258490d8ac01ff61`. A correção cobre
+dez combinações de Escolher, Contorno, Perseguir, Reserva e Sugar.
+São 251 fórmulas em FX. O pacote mantém cinco partes.
+
+Passaram 18 cenários por descartável. Foram repostas duas fórmulas
+e 15 entradas por cópia. Relidas 624 células sem diferenças nem
+erros, incluindo 539 posições de MONTAGENS. As duas descartáveis
+voltaram à PR82. Smoke, transporte e recuperação simulada passaram.
+Instalação integral e recuperação por edição real ficam para o
+ensaio de instalação. Sol/Medium para revisão e Sol/High para ensaio.
+
+# Auditoria de Forma e função das Melhorias · 06/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-FORMA-FUNCAO-2026-11-06.md`.
+Era e Ciclo com PR82. Em 20 cenários por cópia foram confirmadas
+10 combinações válidas sem aviso indevidamente. Escolher e
+Contorno passam em Projétil e Toque, Perseguir passa em Cone e
+Explosão, Reserva passa sem cura e Sugar passa com dano zero.
+
+As 15 entradas foram repostas em cada rodada. A releitura de
+624 células por cópia, incluindo 539 posições de MONTAGENS,
+encontrou zero diferenças e zero erros. Sol/Medium para revisão
+e Sol/High para correção e ensaio.
+
+# Instalação da PR82 nas descartáveis · 06/11/2026
+
+Leia `r53/diagnostico-android/INSTALACAO-PR82-2026-11-06.md`.
+PR82 `b11c46a` sem conflito e com dois checks aprovados. Era e
+Ciclo receberam 753 fórmulas cada. Seis recuperações por edição
+real passaram, incluindo Classe 0 e crédito herdado da PR80.
+
+Passaram seis controles por descartável com a PR82 instalada.
+Após repor as entradas, a releitura de 624 células por cópia,
+incluindo 539 posições de MONTAGENS, encontrou zero diferenças
+e zero erros. A PR82 segue nas descartáveis. Sol/Medium para
+revisão e Sol/High para ensaio de instalação.
+
+# Correção de Frágil no catálogo · 06/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-FRAGIL-CATALOGO-2026-11-06.md`.
+Base PR81 `bfe00a5`, geração `2cc6f80b1789c0f0`. A correção cobre
+14 casos de Frágil, com tratamento separado para ajustes de área.
+São 753 fórmulas em CK, CP e FX. O pacote tem cinco partes e
+21.560 bytes de margem.
+
+Passaram 24 cenários por descartável. Foram repostas seis fórmulas
+e 21 entradas por cópia. Relidas 624 células sem diferenças,
+incluindo 539 posições de MONTAGENS. As cópias estão com a PR81.
+Smoke, transporte e recuperação simulada passaram. Instalação
+integral e recuperação por edição real ainda requerem ensaio.
+Sol/Medium para revisão e Sol/High para ensaio.
+
+# Instalação PR81 e auditoria de Frágil no catálogo · 06/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-FRAGIL-CATALOGO-2026-11-06.md`.
+PR81 `bfe00a5` sem conflito e com dois checks aprovados. Era e Ciclo
+receberam 753 fórmulas e Código relido. Seis recuperações por edição
+real passaram, incluindo os créditos totais herdados da PR80.
+
+Em 19 cenários por cópia, 14 Melhorias ainda financiaram Frágil
+em montagens que terminavam na própria resolução. Guarda e Fica
+conservaram crédito legítimo. Relidas 624 células após repor as
+entradas, incluindo 539 de MONTAGENS, sem diferenças ou erros.
+PR81 instalada nas descartáveis. Sol/Medium para revisão e
+Sol/High para correção e ensaio.
+
+# Correção de Frágil com Melhorias instantâneas · 06/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-FRAGIL-INSTANTANEO-2026-11-06.md`.
+Base PR80 `97d1b00`, geração `52bef8f75b425d85`. Frágil exclui
+Passo, Empurrão, Longe, Mais Um, Rajada e Remate do teto de gasto.
+São 753 fórmulas em CK, CP e FX. A versão compacta coube em cinco
+partes do pacote com 24.192 bytes de margem.
+
+Passaram 15 cenários por descartável na versão compacta. Foram
+repostas seis fórmulas e 21 entradas por cópia. Relidas 624 células
+sem diferenças, incluindo 539 posições de MONTAGENS. As cópias
+estão com a PR80. Smoke, transporte e recuperação simulada
+passaram. Instalação integral e recuperação por edição real
+ainda requerem ensaio. Sol/Medium para revisão e Sol/High para ensaio.
+
+# Instalação PR80 e auditoria de Frágil · 06/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-FRAGIL-INSTANTANEO-2026-11-06.md`.
+PR80 `97d1b00` sem conflito e com dois checks aprovados após ajuste
+no teste de recuperação de CZ em Classe 0. Era e Ciclo receberam
+753 fórmulas e Código relido. Seis recuperações por edição real
+passaram, incluindo CZ2, CZ253 e os avisos herdados da PR78.
+
+Em 14 cenários por cópia, seis montagens instantâneas receberam
+crédito de Frágil indevido. Guarda + Passo aceitou gasto declarado
+acima do elegível. A releitura após repor as entradas encontrou
+zero diferenças em 624 células por cópia, incluindo 539 de
+MONTAGENS. PR80 instalada nas descartáveis. Sol/Medium para
+revisão e Sol/High para correção e ensaio.
+
+# Correção de Restrições agrupadas e de Classe 0 · 06/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-RESTRICOES-AGRUPADAS-2026-11-06.md`.
+Base PR79 `4118bb9`, geração `a4a5a3cc3698c18a`. São 753 fórmulas
+em CK, CP e CZ. Pares proibidos mantêm o aviso e contam só o maior
+crédito elegível. Atrasar com Reação, Aquecer com Remate e opções
+de Classe 0 acima de Leve perdem o crédito indevido.
+
+Passaram 25 cenários por descartável, incluindo os 15 casos da
+auditoria. Foram repostas seis fórmulas e 21 entradas por cópia.
+Relidas 624 células sem diferença ou erro, incluindo 539 posições
+de MONTAGENS. PR79 nas descartáveis. Smoke e transporte passaram.
+Instalação integral e recuperação por edição real da nova geração
+ainda requerem ensaio. Sol/Medium para revisão e Sol/High para ensaio.
+
+# Instalação PR79 e auditoria de Restrições agrupadas · 06/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-RESTRICOES-AGRUPADAS-2026-11-06.md`.
+PR79 `4118bb9` sem conflito e com dois checks aprovados. Era e Ciclo
+receberam 502 fórmulas e Código relido. Seis recuperações por edição
+real passaram, incluindo dois controles herdados da PR78. A aba
+interna voltou a ficar oculta e as duas cópias estão com a PR79.
+
+Em 21 cenários por cópia foram reproduzidas 15 devoluções indevidas.
+Há quatro Restrições Médias em Classe 0 e onze combinações comuns
+com aviso. As 21 entradas de ensaio foram repostas por cópia. A
+releitura de 622 células, incluindo 539 posições de MONTAGENS,
+encontrou zero diferenças e zero erros. Sol/Medium para revisão
+e Sol/High para correção e ensaio.
+
+# Correção de devoluções incompatíveis · 06/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-DEVOLUCOES-INCOMPATIVEIS-2026-11-06.md`.
+Base PR78 `262e264`, geração `d83d3c969a6469cb`. As sete combinações
+de Queima-Roupa e Tempo perdem apenas a devolução indevida nas
+duas vagas. São 502 fórmulas nas colunas CK e CP.
+
+Passaram 20 cenários por descartável. Quatro fórmulas focais e
+21 entradas repostas por cópia. Relidas 622 células sem diferenças,
+incluindo 539 posições de MONTAGENS. A PR78 segue instalada nas
+descartáveis. Smoke e transporte passaram. Instalação integral e
+recuperação por edição real da nova geração ainda requerem ensaio.
+Sol/Medium para revisão e Sol/High para instalação e ensaio.
+
+# Instalação PR78 e auditoria de devoluções incompatíveis · 06/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-DEVOLUCOES-INCOMPATIVEIS-2026-11-06.md`.
+PR78 `262e264` com dois checks aprovados. Era e Ciclo receberam
+753 fórmulas e Código relido. Seis recuperações por edição real
+passaram. Uma tentativa no Ciclo durante os lotes excedeu 30 s.
+A repetição após a instalação passou. DADOS_R53 voltou a ficar oculta.
+
+Em 16 cenários por cópia, Queima-Roupa devolveu pontos em Toque,
+Aura, uso só em si e com Longe. Atrasar + Rápido, Parado + Reação
+e Carregar + Armado também devolveram pontos apesar do aviso.
+A releitura após o ensaio não encontrou diferenças em 622 células
+por cópia, incluindo 539 posições de MONTAGENS. PR78 instalada
+nas descartáveis. Sol/Medium para revisão e Sol/High para ensaio.
+
+# Correção de Sem Volta e devoluções de Classe 0 · 06/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-SEM-VOLTA-CLASSE-ZERO-2026-11-06.md`.
+Base PR77 `fa2acaa`, geração `0e12da1540182de5`. Sem Volta perde a
+devolução quando há efeito garantido. Na Classe 0, Sobrecusto e
+Queima-Roupa em Projétil não devolvem pontos. São 753 fórmulas.
+
+Passaram 18 cenários por descartável. Entradas e fórmulas de teste
+repostas, com 622 células relidas sem diferença por cópia, incluindo
+539 posições de MONTAGENS. PR77 nas descartáveis. Instalação integral
+e recuperação por edição real da nova geração ainda requerem ensaio.
+Sol/Medium para revisão e Sol/High para instalação e ensaio.
+
+# Instalação PR77 e auditoria de Restrições · 06/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-SEM-VOLTA-CLASSE-ZERO-2026-11-06.md`.
+PR77 `fa2acaa` sem conflito e com dois checks aprovados. Era e Ciclo
+receberam 753 fórmulas e Código relido. Seis recuperações por edição
+real passaram. A aba interna voltou a ficar oculta.
+
+Sem Volta financiou três montagens com efeito garantido. Na Classe 0,
+Sobrecusto e Queima-Roupa em Projétil deram +1d8 apesar da invalidez.
+Foram 12 cenários por cópia, com 620 células relidas após a restauração,
+incluindo 539 posições de MONTAGENS. PR77 instalada nas descartáveis.
+Sol/Medium para revisar e Sol/High para corrigir e ensaiar.
+
+# Correção de Frágil e Fica · 06/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-FRAGIL-FICA-2026-11-06.md`.
+Base PR76 `4911da8`, geração `2048c458847ad339`. Só Precisão
+não financia Frágil e Fica exige dano efetivo. São 753 fórmulas.
+
+Passaram 13 cenários por descartável. As entradas e fórmulas de
+teste voltaram à PR76. Relidas 596 células por cópia sem diferenças,
+incluindo 532 posições de MONTAGENS. Entrega e recuperação verificadas
+localmente. Instalação integral e recuperação real ainda requerem
+ensaio nativo. Sol/Medium para revisão e Sol/High para ensaio.
+
+# Instalação PR76 e auditoria de Frágil e Fica · 06/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-FRAGIL-FICA-2026-11-06.md`.
+A PR76 `4911da8` está com dois checks aprovados. Nas descartáveis
+Era e Ciclo, Código salvo e relido, 1.004 fórmulas aplicadas e três
+recuperações por edição real em cada. A aba interna voltou a ficar
+oculta. A releitura das montagens amostradas não mostrou diferenças.
+
+Pente-fino confirmou Frágil devolvendo 2 com somente Precisão e Fica
+válido com 0d8 após Toca a Alma. Nove cenários e 599 células relidas
+por cópia após repor os dados. A PR76 permanece instalada nas QAs.
+Sol/Medium para revisar e Sol/High para corrigir ou ensaiar.
+
+# Correção de Rajada e Tudo ou Nada · 06/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-RAJADA-ALVOS-2026-11-06.md`.
+Base PR75 `af22de9`, geração `7b36806bc7e5c2fe`. Rajada em área
+ou sem dados pede revisão. Tudo ou Nada sem dano pede revisão e não
+devolve pontos em nenhuma posição. São 1.004 fórmulas em DADOS_R53.
+
+Passaram os cenários focais nas descartáveis Era e Ciclo. Foram relidas
+324 células por cópia após a reversão, sem diferenças ou erros. Editor
+e montagens preservados. Recuperação ensaiada localmente. Instalação
+integral e Apps Script ainda exigem ensaio nativo antes de promoção.
+Sol/Medium para revisão e Sol/High para instalação e ensaio.
+
+# Revisão PR75 e auditoria de alvos · 06/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-RAJADA-ALVOS-2026-11-06.md`.
+PR75 `af22de9`, dois checks aprovados e sem conflito. Rajada é
+aceita em Explosão e em cura sem dano. Tudo ou Nada sem dano
+também é aceito e devolve 2 pontos. Confirmado nas descartáveis
+Era e Ciclo, com nove cenários e 319 células relidas por cópia.
+Diagnóstico no ramo `codex/auditoria-rajada-alvos-20261106`. Sol/Medium
+para revisão e Sol/High para correção ou ensaio nativo.
+
+# Carregar, Armado e duração de Guarda · 06/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-TEMPO-FEITICOS-2026-11-06.md`.
+Ramo `codex/tempo-feiticos-20261106`, base PR74 `758c571`.
+São 108 fórmulas nos cartões comuns e em suas descrições internas.
+Geração `8b5cc6b4e78f44af`.
+
+Passaram 14 cenários em cada descartável e três recuperações por
+edição real. As 13 entradas foram repostas e 426 células relidas por
+cópia, com apenas as 108 alterações previstas. Promoção exige
+snapshot atualizado e arquivos ensaiados da PR74. Sol/Medium para
+revisão.
+
+# Revisão PR74 e auditoria de Tempo · 06/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-TEMPO-FEITICOS-2026-11-06.md`.
+PR74 `758c571`, dois checks aprovados e sem conflito. Na Era e no
+Ciclo, Carregar e Armado não detalham preparo e disparo no cartão
+comum. Guarda com Concentrada/Duradoura mantém o prazo normal no
+texto interno e inclui só um aviso genérico de prolongamento.
+Foram 12 cenários por cópia, 11 entradas repostas e 320 células
+relidas sem diferenças. Diagnóstico no ramo
+`codex/auditoria-tempo-feiticos-20261106`. Sol/Medium para revisão,
+Sol/High para correção ou ensaio nativo.
+
+# Alcance de Guarda, Impulso e Firmeza · 06/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-ALCANCE-BENEFICIOS-2026-11-06.md`.
+Ramo `codex/alcance-beneficios-20261106`, base PR73 `868ebb8`.
+São 36 resumos dos feitiços comuns, geração `79a9235ee3d37edc`.
+
+Nas descartáveis Era e Ciclo passaram dez cenários por cópia e a
+recuperação de D81 por edição real nas duas. Repostas 13 entradas
+por cópia. Das 359 células relidas, incluindo 259 posições de
+MONTAGENS, só as 36 fórmulas previstas diferiram. Promoção exige
+snapshot atualizado e os arquivos ensaiados da PR73. Sol/Medium
+para revisão.
+
+# Revisão PR73 e auditoria de benefícios · 06/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-BENEFICIOS-ALCANCE-2026-11-06.md`.
+PR73 `868ebb8`, dois checks aprovados e sem conflito.
+Nas descartáveis com a PR73, Guarda, Impulso e Firmeza sem dano
+mostram 18 m em vez de 9 m na Classe 3. Com dano, Guarda e Longe,
+o resumo omite os 18 m de benefício e mostra os 36 m de dano.
+Os controles de Longe e Maior passaram. Repostas 13 entradas e
+relidas 324 células por cópia sem diferenças. Diagnóstico no ramo
+`codex/auditoria-beneficios-alcance-20261106`. Sol/Medium para revisão
+e Sol/High para correção ou ensaio nativo.
+
+# Alcance de cura e PV temporários · 06/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-ALCANCE-CURA-2026-11-06.md`.
+Ramo `codex/alcance-cura-pv-20261106`, base PR72 `b7c06b0`.
+São 36 fórmulas de resumo dos feitiços comuns e a recuperação
+correspondente. Geração `a00e1dcd00966e8b`.
+
+Nas descartáveis Era e Ciclo passaram dez cenários por cópia e
+a recuperação de D81 por edição real em ambas. A releitura de
+723 células por cópia, incluindo 518 posições de MONTAGENS, confirmou
+somente o delta de 36 fórmulas. Promoção exige snapshot atualizado
+dos alvos e dos arquivos da PR72. Sol/Medium para revisão.
+
+# Revisão PR72 e auditoria de feitiços de cura · 06/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-ALCANCE-CURA-2026-11-06.md`.
+PR72 `b7c06b0`, dois checks aprovados e sem conflitos. Diagnóstico
+no ramo `codex/auditoria-alcance-cura-20261106`. Em nove cenários por
+descartável, a base Média de cura e a alocação de dados passaram.
+O resumo de Projétil exibe somente o alcance ofensivo, inclusive
+quando há apenas cura ou PV temporários. Dez entradas repostas e 243
+células relidas por cópia sem diferenças. Sol/Medium para revisão e
+Sol/High para correção ou ensaio nativo.
+
+# Correção de Classe 0 pronta para revisão · 06/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-CLASSE-ZERO-2026-11-06.md`.
+Ramo `codex/correcao-classe-zero-20261106`, base PR71 `c54f74a`.
+São 23 fórmulas para alcance individual e teto de conhecidos,
+geração `f655b21dc9d2e46f`. As montagens conservam os endereços e valores.
+
+Nas descartáveis Era e Ciclo passaram sete cenários por cópia e quatro
+recuperações por edição real. Repostas 44 entradas em cada cópia.
+A releitura de 408 células por cópia encontrou somente as 23 mudanças
+previstas. A instalação incremental exige snapshot atualizado e os
+arquivos ensaiados da PR71. Sol/Medium para revisar.
+
+# Revisão da PR71 e auditoria de Classe 0 · 06/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-CLASSE-ZERO-2026-11-06.md`.
+PR71 `c54f74a`, dois checks aprovados e sem conflito com PR70.
+Ramo de diagnóstico `codex/auditoria-classe-zero-20261106`. Confirmado
+nas descartáveis Era e Ciclo que Impulso à distância exibe 9 m em vez de
+4,5 m e que cinco Classe 0 comuns continuam válidos com limite de dois.
+Foram restauradas 44 entradas por cópia e relidas 156 células sem
+divergências. A evidência privada está em `nuvem-b47/saidas/auditoria-classe-zero/`.
+Sol/Medium para revisão, Sol/High para implementação ou ensaio nativo.
+
+# Conjuração por Integridade pronta para revisão · 05/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-CONJURACAO-INTEGRIDADE-2026-11-05.md`.
+Ramo `codex/conjuracao-integridade-20261105`, base PR70 4324ad3.
+A correção altera 41 fórmulas de exibição e preserva o custo base, a
+validade e os dados das montagens. Geração 78c44defd6fc1285.
+
+Nas descartáveis de Era e Ciclo, passaram 24 cenários nativos e quatro
+recuperações por edição real. A releitura final de 209 células por cópia
+confirmou as mudanças previstas, sem diferenças adicionais ou erros nos
+intervalos. O smoke passou. A instalação incremental exige os arquivos
+da PR70 e um snapshot atual dos alvos. Sol/Medium para revisar.
+Somente descartáveis nesta etapa.
+
+# Prática Cotidiana concluída para revisão · 05/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-PRATICA-COTIDIANA-2026-11-05.md`.
+Ramo `codex/pratica-cotidiana-20261105`, base PR69 6928962. Duas vagas
+de Classe 0 adicionadas sem mover os 249 contextos existentes. ANALISE
+recebe 91 chaves no fim, sem mudar esquema. Geração c09878807ae4a15e.
+
+Nas novas cópias descartáveis de Era e Ciclo passaram dez cenários de
+cálculo por cópia, 17 recuperações de células por edição real, colagem
+com persistência dos dois cartões e mudança de Forma. As duas fórmulas
+da fronteira D328:T330 também voltaram por edição real. O atalho de
+edições comuns conserva o módulo e reconhece o novo editor. Zero restaurado
+como texto no código final e origem com apóstrofo íntegro. Vinte entradas
+de teste restauradas por cópia, limpeza da memória concluída e 1.750
+células relidas por cópia sem divergência ou erro nos intervalos.
+214.429 verificações locais e smoke de 94 checks passaram.
+
+Instalação incremental ensaiada sobre a PR69, com código final 50f3aa55…
+e editor 98413975… relidos. Snapshots privados em
+`nuvem-b47/saidas/correcao-pratica-cotidiana/`. Pacote integral gerado
+e testado à parte. Alterações nativas restritas às duas descartáveis.
+Sem merge, oficiais, jogador, PR31, acionadores ou novos acessos.
+Sol/Medium para revisar, Sol/High para o próximo ensaio. Sem ajuste
+automático de configurações.
+
+# Reserva/Bolsa concluída para revisão · 05/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-RESERVA-BOLSA-2026-11-05.md`/JSON.
+Ramo `codex/correcao-reserva-bolsa-20261105`, base PR68 6a5440a.
+P01/P02 corrigidos: Reserva soma 2×Essência, Bolsa soma Maestria; ambas
+as vagas e custom validada. Não recarrega PE. Trocar por permanece final.
+Seis alvos, geração `326e5d03a6aac4ee`, zero SOBRAS. Modelo integral
+preservado fora dos seis alvos e metadados de geração. Exige código PR67
+bae62817…; proposto/instalado só nas QA: 4b0d2cc1952ac3726a47a1969c66c04e30658f7397a927f7af0930615ee9daa9.
+
+207 verificações focais e smoke final passaram. 26 cenários por cópia,
+com controles de Núcleo/Fôlego, CONFIGURAÇÃO, ambas as vagas e limites de
+carga. Preflight recusa compensações possíveis, incluindo linhas +2/−2
+que se anulam; não desconta ajustes existentes. DADOS!CZ41 não tinha
+rota de recuperação: guarda estreita nova restaura só essa célula antes
+do módulo pesado. Oito fórmulas restauradas por edição real; falhas
+intermediárias registradas separadamente. Diagnóstico temporário retirado.
+Codigo.gs final salvo/reaberto e relido integralmente igual nas duas.
+
+Dezoito entradas restantes por cópia restauradas; 1.899 células por cópia
+relidas sem diferenças de valores/fórmulas, notas ou validações, exceto os
+seis alvos novos, sem erros nos intervalos. Abas voltaram à visibilidade
+anterior. SOCORRO não foi escrita. Snapshots privados em
+`nuvem-b47/saidas/correcao-reserva-bolsa/`, ignorados pelo Git.
+Pacote integral gerado/testado, não instalado. Conferir checks do head
+atual antes de promover. Uma montagem local anterior excedeu 60 s sob
+pressão de memória; repetição final passou sem ampliar o limite.
+
+Próximo: revisão desta entrega; P03/Prática Cotidiana estrutural separada,
+preservando os 249 contextos. Sem merge, oficiais, jogador, PR31,
+acionadores, agentes ou acesso novo. Sol/Medium para revisar, Sol/High
+para o próximo ensaio. Não alterar configurações automaticamente.
+
+# Revisão PR67 e passivas de Origem · 05/11/2026
+
+Leia `r53/diagnostico-android/REVISAO-PR67-2026-11-05.md` e
+`AUDITORIA-PASSIVAS-ORIGEM-2026-11-05.md`/JSON na mesma pasta.
+PR67 971228d revisada: sem novo bloqueio no escopo, dois checks SUCCESS,
+sem conflito, sem merge. Testes focais 88/138 e transporte real passaram.
+Ramo separado `codex/auditoria-passivas-origem-20261105`, somente diagnóstico.
+P01: Reserva Excedente não soma 2×Essência aos PE. P02: Bolsa Orgânica
+não soma Maestria à carga; penalidades de movimento antecipadas confirmadas.
+Ambas têm compensação manual funcional; a nota da carga orienta esse ajuste.
+P03: Prática Cotidiana ausente do mostrador e faltam duas linhas no nível 30;
+não confundir com bloqueio de conjuração, que não foi demonstrado.
+
+20 releituras de cenários por cópia; replay: 52 comparações, 28 conformes,
+24 divergentes por três causas. Quatro bônus de repertório/Talento conformes.
+Nove entradas restantes por cópia restauradas ao encerrar; 1.939 células
+comparadas nos campos disponíveis dos snapshots, sem diferenças/erros.
+Notas de Classe 0 não pedidas no snapshot focal: não certificadas; não escritas.
+Código bae62817… relido igual nas duas, sem regravação. Evidências privadas
+em `nuvem-b47/saidas/auditoria-passivas-origem/`, ignorado pelo Git.
+
+Próximo: P01/P02 com cuidado para não duplicar compensações; P03 em entrega
+estrutural separada, preservando IDs e os 249 contextos existentes.
+Não foram aplicadas correções novas. Sem merge, oficiais, jogador, PR31,
+acionadores, agentes ou acesso novo. Sol/High para corrigir/ensaiar,
+Sol/Medium para revisão, sem alterar configurações automaticamente.
+
+# PR67 · Núcleo, Fôlego e descanso leve · 05/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-ORIGENS-RECURSOS-2026-11-05.md`/JSON.
+O01–O04 corrigidos sobre PR66 f2bc70f no ramo
+`codex/auditoria-origens-recursos-20261105`. Geração `95250bc5cf94a1b0`,
+zero SOBRAS, oito alvos iguais ao plano. Código incremental SHA
+`bae62817a2ae03281dff1247c7e2f97d6ac0518a6f90271bf6de96da98a09130`.
+Exige a instalação PR66 d5845c03…; não instalar pacote integral nas existentes.
+
+Nas duas descartáveis: marcos de nível, vagas, custom válida/inválida,
+CONFIGURAÇÃO e Fôlego aprovados. Queda sem barra registrou Morrendo;
+longo com queda ativa recuperou vida/PE e encerrou o registro. Dezesseis
+restaurações de fórmula conferidas após edições reais, incluindo colagem
+nos quatro helpers. Entradas restauradas: 24 por cópia, SOCORRO incluída.
+1.433 células por cópia relidas sem diferenças de valores/fórmulas, notas
+ou validações (exceto os oito alvos novos esperados), sem erros nos intervalos.
+DADOS_CUSTOM novamente oculta. Código reaberto/relido igual nas duas, sem QA67.
+
+Local: 88 descansos, dez contas de auditoria conformes, transporte atômico,
+replay do modelo antigo e pacote aprovados. Smoke completo aprovado antes
+da última revisão de testes; uma repetição excedeu 60 s em pacote_runtime
+com menos de 800 MB disponíveis/swap cheia; repetição isolada passou.
+Consultar os checks do head atual na PR antes de promover.
+
+O05: rota curta do menu evita o módulo pesado. Um controle antes/depois:
+24,961 → 13,986 s no Google, 17,817 → 11,329 s entre marcadores do handler.
+Não prova causa única, eliminação de todos os timeouts, RAM ou abertura Android.
+As demais edições ainda seguem o pipeline completo. Perfis temporários removidos.
+Snapshots/fontes privados em `nuvem-b47/saidas/correcao-origens-recursos/`.
+Somente descartáveis alteradas. Sem merge, oficiais, jogador, PR31,
+acionadores, outros agentes ou mudanças de acesso. Sol/Medium para revisar;
+Sol/High para investigar novas bordas. Não alterar configurações automaticamente.
+
+# Revisão PR66 e auditoria de recursos de Origem · 05/11/2026
+
+Leia `r53/diagnostico-android/REVISAO-PR66-2026-11-05.md` e
+`r53/diagnostico-android/AUDITORIA-ORIGENS-RECURSOS-2026-11-05.md`/JSON.
+PR66 f2bc70f revisada, dois checks SUCCESS e sem conflito. Testes focais
+78/138 e transporte real aprovados; não houve alteração nessa PR.
+Ramo separado `codex/auditoria-origens-recursos-20261105`, diagnóstico:
+O01 PE máximo do Núcleo, O02 barra de Integridade indevida, O03 inatividade
+sem efeito em movimento/Bloquear, O04 bônus de Fôlego ausente. O05: dois
+onEdit no Ciclo atingiram tempo, com repetição concluída no mesmo código.
+Não atribuir à PR66 sem isolar causa; não houve A/B válido com código antigo.
+24 perfis/eventos nativos concluídos; dois timeouts separados. Local 10
+contas, seis conformes/quatro divergentes: diagnóstico não é teste verde.
+14 entradas por cópia restauradas; 1.609 células relidas sem diferenças
+de valores/fórmulas, notas ou validações. Código d5845c03… relido igual.
+Sem correção nova de produção, merge, oficiais, jogador, PR31 ou acionador.
+Próxima correção: ausência da barra/PE do Núcleo e apuração de O05 antes
+de ampliar leituras. Sol/High para investigar/ensaiar, Sol/Medium para revisar.
+Não mudar configurações automaticamente.
+
+# Correção de descanso/Origem · 05/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-DESCANSO-ORIGENS-2026-11-05.md`.
+PR66 sobre PR65, implementação 6e5f401 e teste histórico 5b9f6e4.
+D01/D02 corrigidos; 78 cenários locais, transporte antigo real, pacote
+leve 138 e smoke aprovados. Codigo d5845c03… salvo/reaberto nas duas
+descartáveis. Dezoito cenários nativos passaram, incluindo longo fora
+com Morrendo pelo menu Recursos nas duas. Autorizações pelo usuário.
+23 entradas por cópia e SOCORRO restauradas; releitura ampliada de 1.074
+células por cópia sem diferenças de valores/fórmulas, notas, validações
+ou formatos. Fixtures temporárias desfeitas. Nenhum código mudou após
+os 16 cenários iniciais. PR66 para revisão após checks do head final.
+Sem merge, oficiais, jogador ou PR31. Sol/Medium para revisar,
+Sol/High para próximos ensaios. Não mudar configurações automaticamente.
+
+# Auditoria de descanso/Origem · 05/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-DESCANSO-ORIGENS-2026-11-05.md`.
+PR65 5f6abea revisada, dois checks SUCCESS e sem novo bloqueio no escopo
+corrigido. No ramo separado de diagnóstico, D01/D02 confirmados por
+eventos reais nas duas cópias: Corpo Amaldiçoado recebe só metade dos PE
+no longo fora e recebe zero no curto fora com Exaustão marcada 3.
+Curto propício recupera 25% corretamente. Ainda sem correção nova.
+Treze entradas por cópia restauradas, SOCORRO relido igual.
+Sem merge, oficiais, jogador ou PR31. Sol/High para corrigir/ensaiar,
+Sol/Medium para revisar. Não mudar configurações automaticamente.
+
+# PR65 · imunidade custom corrigida · 05/11/2026
+
+Leia `r53/diagnostico-android/IMUNIDADE-CUSTOM-CORRIGIDA-2026-11-05.md`.
+Implementação f8c86e5 resolve P2 da revisão. B121 e B123 validam a base
+herdada; cadastro inválido não ganha imunidade. Sete cenários por cópia,
+duas edições reais de grau e quatro restaurações reais passaram.
+Codigo 19ae4c19… salvo/reaberto nas duas cópias. Dez entradas por cópia
+restauradas e seis alvos relidos. Smoke local e checks do código aprovados.
+Sem merge, oficiais, jogador ou PR31. Sol/Medium para revisão; Sol/High
+para próximos ensaios. Não mudar ajustes automaticamente.
+
+# Revisão da PR65 · pendência custom · 05/11/2026
+
+Leia `r53/diagnostico-android/REVISAO-PR65-2026-11-05.md`.
+Head 4286179 tinha dois checks aprovados, mas a revisão confirmou nas
+duas descartáveis que Origem custom válida com base Corpo Amaldiçoado
+perde a imunidade à Exaustão. A condição em configuracao.py consulta só
+o nome publicado, ignorando B123 validado. Nenhuma correção nova aplicada.
+Dez entradas por cópia restauradas e relidas. Sem merge, oficiais, jogador
+ou PR31. Sol/High para corrigir/ensaiar, Sol/Medium para revisão. Não mudar ajustes.
+
+# Correção de Bênçãos/imunidades · 05/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-BENCAOS-IMUNIDADES-2026-11-05.md`.
+PR65 sobre PR64, implementação 6a35402. Casco, imunidade à Exaustão e texto
+de Estímulo corrigidos. Treze cenários mecânicos por cópia, onze cartas
+por cópia e oito restaurações reais passaram. Dezenove entradas por cópia
+restauradas e seis alvos relidos. Codigo 170273ca… salvo/reaberto nas duas
+descartáveis. Smoke local aprovado. Sem merge, oficiais, jogador ou PR31.
+Sol/Medium para revisão e Sol/High para bordas restantes; não alterar ajustes.
+
+# Bênçãos/imunidades em análise · 05/11/2026
+
+Leia `r53/diagnostico-android/BENCAOS-IMUNIDADES-2026-11-05.md`.
+Ramo de diagnóstico separado sobre PR64 ffdee60. Casco não soma vida/TR
+no recálculo das duas cópias; Estímulo tem texto que exclui desarmados,
+mas os cinco degraus de dados conferem. Corpo Amaldiçoado aceita Exaustão
+2 pela interface da Era e sofre o teto de movimento. Sete entradas de
+cada cópia restauradas. Outras onze Bênçãos têm revisão textual; falta
+ensaio nativo de montagem/eventos. Não há correção nova de produção.
+PR64 pronta para revisão, dois checks SUCCESS e CLEAN, sem merge.
+PR31 preservada em 765e3b2. Sol/High para próximos ensaios, Sol/Medium
+para revisão. Não alterar configurações automaticamente.
+
+# Equipamento validado · 05/11/2026
+
+PR64 sobre PR63. Leia o reteste no início de
+`r53/diagnostico-android/RETOMADA-EQUIPAMENTO-2026-11-05.md`.
+Codigo salvo e relido nas duas descartáveis, quatro restaurações reais
+e duas rejeições de quantidade passaram. Os 63 alvos por cópia conferem.
+Bênçãos/imunidades foram ensaiadas separadamente, sem produção corrigida.
+Sem merge, oficiais, jogador ou PR31. Sol/Medium para revisão, Sol/High
+para próximos achados. Não alterar configurações automaticamente.
+
+# Pausa de equipamento · 05/11/2026
+
+Leia `r53/diagnostico-android/RETOMADA-EQUIPAMENTO-2026-11-05.md`.
+PR64 em rascunho sobre PR63, correção `a8c9bdc`. Quinze cenários nativos
+por descartável passaram, 15 entradas por cópia restauradas e relidas.
+Pendente releitura do Codigo salvo, rejeição de quantidade e restauração
+por edição real, revisão final e Bênçãos/imunidades. Sem merge, oficiais,
+jogador ou PR31. Sol/High para ensaio, Sol/Medium para revisão.
+Não alterar configurações automaticamente.
+
+# Integridade, movimento e Vigília · 04/11/2026
+
+Leia `r53/diagnostico-android/INTEGRIDADE-MOVIMENTO-2026-11-04.md`.
+PR62 pronta para revisão no commit `528e20e`. A01/A02/A05/A06 em ramo
+separado sobre a PR62. Era 16, Ciclo 9, mais um teste com compra calculada
+de Vigília e 44 controles de movimento corporal nativos, todos aprovados.
+41 alvos por cópia conferidos. 57 entradas temporárias restauradas.
+Geração `cb692d3f96e4e754` e proposta incremental `9f64aa8c…` verificadas
+offline. PR63 com 14 restaurações por onEdit no Sheets, sete por cópia.
+Os 44 alvos de cada cópia voltaram iguais ao snapshot. DADOS_INVOC foi
+relida como aba auxiliar, fora da restauração automática. Sem merge,
+oficiais, jogador, PR31, acionadores ou acesso novo. Sol/Medium para revisar, Sol/High para ensaiar a instalação.
+Não alterar configurações automaticamente.
+
+# Teto de TEMP em colagens e invocações · 04/11/2026
+
+Leia `r53/diagnostico-android/TEMP-COLAGENS-INVOCACOES-2026-11-04.md`.
+PR61 pronta para revisão no commit `cb04317`. A04/A07 em ramo separado
+sobre a PR61. Quatro cenários nativos aprovados, incluindo colagem
+sobre a fórmula de máximo. Codigo `3767fb0f…` relido; sete células
+restauradas e 47 conferidas. Locais: 667 verificações, diagnóstico onEdit
+25/25, incremental 27, pacote leve 138 e smoke aprovados. Invocações nas
+duas colunas ensaiadas no Google e as 12 rotas verificadas localmente.
+Ainda na fila: A01, A02, A05 e A06. Sem merge, oficiais, jogador, PR31
+ou acionadores. Sol/Medium para revisão, Sol/High para o próximo lote.
+Não alterar configurações automaticamente.
+
+# Tetos com máximo zero · 04/11/2026
+
+Leia `r53/diagnostico-android/MAXIMOS-ZERO-2026-11-04.md`. PR60 está
+pronta para revisão no commit `eaab143`. A00/A08 seguem em ramo separado
+sobre PR60. A00 corrige a edição manual de TEMP de vida/PE. A08 impede
+ganho por ± acima de um máximo explicitamente zero. O máximo em branco
+mantém o comportamento anterior. A regra de Integridade TEMP fica para
+análise própria. Seis cenários nativos aprovados em descartável nova,
+Código `5b81e86d…` relido e oito campos restaurados. 627 verificações
+locais, incremental 24, pacote leve 137, diagnóstico de reservas 46/46 e
+smoke aprovados. A01/A02/A04/A05/A06/A07 continuam na fila.
+Sem merge, oficiais, jogador, PR31, acionadores ou acesso novo.
+Sol/Medium para revisar. Sol/High para o próximo lote. Sem mudar configurações.
+
+# Reteste nativo da PR60 · 04/11/2026
+
+Leia o reteste no início de
+`r53/diagnostico-android/CORRECAO-FILA-RECURSOS-2026-11-04.md`.
+Codigo `6aec0d0a…` salvo e relido na mesma descartável da Era. Os outros nove
+GS mantiveram seus hashes. Os seis cenários passaram, incluindo 20 − 5 − 3 = 12
+e PE 8 − 1,5 = 6,5. A colagem preservou Y13 e levou 20,006 s nesta execução.
+12 campos restaurados e relidos iguais. Local: 543 verificações/18 rotas,
+incremental 18, pacote leve 134 e smoke aprovados. A trava espera até 12 s;
+isso não recupera eventos que o Google não entregou nem garante ordem.
+PR60 em rascunho para revisão. Sem merge, oficiais, jogador, PR31, acionadores
+ou autorização nova. Sol/Medium para revisão. Não mudar configurações.
+
+# Ensaio nativo da PR60 · 04/11/2026
+
+Leia o resultado no início de
+`r53/diagnostico-android/CORRECAO-FILA-RECURSOS-2026-11-04.md`.
+Código `e5338f56…` instalado e relido em cópia nova da integração Era.
+Os outros nove GS e os 12 campos restaurados foram conferidos.
+A03 passou em X13:Y13. A09 falhou com dois onEdit entregues, pois a segunda
+execução encontrou a trava ocupada. PE −1,5 também falhou no pt-BR, enquanto
+o inteiro na mesma caixa passou. A PR60 continua em rascunho.
+Nenhuma autorização foi pedida nos eventos testados. Sem merge, oficiais,
+jogador, PR31, acionadores ou mudanças de acesso. Sol/High para corrigir
+e repetir os casos nativos, Sol/Medium para revisar. Sem mudar configurações.
+
+# Correção preparada de ± · 04/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-FILA-RECURSOS-2026-11-04.md`.
+Ramo `codex/correcao-fila-recursos-20261104`, sobre PR59 `06b777f`.
+A03/A09 corrigidos localmente no onEdit e atalho; 504 verificações/18 rotas,
+18 verificações incrementais com snapshots privados, pacote leve 134.
+Preparador offline exige Codigo integrado `8a0f2ed6…`, produz `e5338f56…`.
+A revisão da PR60 incluiu o valor e a caixa no aviso de ajuste recusado.
+Estado anterior ao ensaio nativo acima. Não concluir latência/fila global resolvidas. Limites de eventos, colagens, concorrência e
+falha parcial estão documentados. Outros oito achados permanecem abertos.
+Sem merge, oficiais/jogador/PR31, acionadores ou acesso novo. Evidências privadas
+em `nuvem-b47/saidas/correcao-fila-recursos/`, ignorado. Revisão Sol/Medium;
+ensaio/implementação Sol/High. Não mudar configurações automaticamente.
+
+# Auditoria consolidada de mecânicas · 04/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-CONSOLIDADA-MECANICAS-2026-11-04.md`
+e seu JSON; substituem a fila preliminar da entrada seguinte. PR59, mesmo ramo
+`codex/auditoria-mecanicas-ampliada-20261104`, diagnóstico sem produção corrigida.
+Dez achados A00–A09: inclui Vigília, teto nas 12 invocações, ganho ± com máximo
+zero e perda da primeira entrada em dois descontos enfileirados. Colagens/fila
+confirmadas no onEdit completo local e/ou helper do atalho, ainda NÃO em eventos
+reais Google: navegador desativado, reconferido. Não atribuir a latência a esses
+achados sem medir. Nova cópia Ciclo confirmou A01/A02/A06, sem tocar oficiais.
+89/89 montagens e 69/69 cálculos de perícias nativos conformes; 31 abas de cada
+cópia sem erros de fórmula. Estática: 70.801 fórmulas/161.721 referências, zero
+ocorrências. OnEdit diagnóstico: 25 casos, 5 conformes/20 divergentes, não verde.
+Suítes ampliadas: 15 passaram, duas puladas por fixture privada ausente, uma
+falhou por comparar arquivo novo Socorro.gs com commit onde não existia (B01).
+Testes adicionais de personagem 50/3 e molde de Origem 19 passaram.
+Campos restaurados/relidos iguais em lotes 15/5/10/75 (há campos repetidos).
+Snapshots/recibos/IDs só em `nuvem-b47/saidas/auditoria-ampliada/`, ignorado.
+Análise disponível consolidada, não certificado de 100%: repetir eventos reais
+quando o navegador estiver habilitado; corrigir A09/A03 primeiro, separadamente.
+Sem merge, oficiais, jogador, PR31, acionadores ou mudanças de acesso.
+Sol/High para correções; Sol/Medium para revisão, sem mudar configurações.
+
+# Auditoria ampliada de mecânicas · 04/11/2026 (etapa anterior)
+
+Leia `r53/diagnostico-android/AUDITORIA-AMPLIADA-2026-11-04.md` e seu JSON.
+Ramo `codex/auditoria-mecanicas-ampliada-20261104`, sobre PR58 `11ab8d1`.
+Diagnóstico somente: Integridade não reduz deslocamento calculado (personagem
+e entidade), mínimo 1 da Integridade com vida máxima zero e resumo de estágio
+incompleto, conferidos em QA nativa. Dois problemas de colagem reproduzidos em
+helpers locais: ± da entidade apaga vizinho; TEMP multicélula ignora teto.
+Falta ensaio desses eventos no Google: navegador desativado nas configurações
+do Work; usuário consultado. API não dispara onEdit. Não afirmar 100%.
+18 cenários de recursos/condições e 16 regressões de montagem nativos; os 16
+passaram, inclusive 12 rejeições legítimas. Local: montagem 89, descanso 66,
+socorro 98 e cura 35 aprovados; eventos 2 conformes/2 divergentes.
+15 campos restaurados e relidos iguais. Evidências privadas somente em
+`nuvem-b47/saidas/auditoria-ampliada/`, ignorado. Duas abas de QA permanecem
+na descartável. Sem produção alterada, merge, oficiais, jogador ou PR31.
+PR57/58 com dois checks SUCCESS cada; PR31 em `765e3b2`, intocada.
+Fila ainda aberta no relatório: eventos, Bênçãos/imunidades, custos/Classe,
+capacidades e demais combinações contra R66. Usos por dia e condições já
+documentados como manuais não são automaticamente defeitos de automação.
+Sol/High para investigação; Sol/Medium para revisão, sem mudar configurações.
+
+# Auditoria de reservas temporárias · 04/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-RESERVAS-2026-11-04.md` e seu JSON.
+Ramo `codex/auditoria-reservas-20261104`, sobre PR57 `8db0bae`. Diagnóstico,
+sem correção de produção: `tetoTemp_` aceita vida/PE temporários com máximo zero.
+Regra conferida na R66 `e3058ad…`. Na QA nativa: sete cenários válidos, cinco
+conformes e dois divergentes pela mesma causa. Localmente 46 casos, 43 conformes
+e três divergências. Não apresentar o diagnóstico como suíte toda aprovada.
+Os 12 campos da QA foram restaurados; código nativo intacto. Evidências privadas
+em `nuvem-b47/saidas/auditoria-reservas/`, ignorado. Sem merge/oficiais/jogador/PR31.
+Próxima correção focal: Sol/High; revisão: Sol/Medium, sem mudar configurações.
+
+# Preparação incremental PRs 51–56 · recuperada · 04/11/2026
+
+Leia `r53/diagnostico-android/PREPARACAO-INCREMENTAL-5156-2026-11-04.md`.
+Ramo separado `codex/preparacao-incremental-5156-20261104`, baseado na PR56
+`618370e`. A antiga pasta de trabalho foi preservada; o novo clone é independente
+em `Claude/02-RPG/_trabalho/ficha-integracao-5156-20261104`.
+Código relido nas duas QA igual ao hash ensaiado `8a0f2ed6…`; preparador offline
+reproduz exatamente a proposta a partir do Codigo anterior `52302778…`.
+58 verificações com snapshots privados, 48 portáteis; descanso 66, cura 35,
+SOCORRO 98 e pacote leve 132 aprovados. Sem novos ensaios de menus nesta rodada.
+Snapshots recuperados em `nuvem-b47/saidas/integracao-5156/`, ignorado.
+Não são snapshots atuais das oficiais. Sem merge, alteração de oficiais/jogador
+ou PR31. Próxima revisão: Sol/Medium; futura aplicação: Sol/High, com autorização,
+backup atual e conferência de alvos. Não alterar configurações automaticamente.
+
 # Organização do HD externo · 02/11/2026 (Claude)
 
 `/media/mizuki/HD Externo II/Claude/` foi reorganizado; mapa no `LEIA-ME.md` da

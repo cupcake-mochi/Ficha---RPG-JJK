@@ -1,0 +1,432 @@
+{
+  "data": "2026-11-05",
+  "basePR66": "f2bc70fd27b73db1cda3260b108f1c78371daea9",
+  "baseLivro": "JJK---Project@e3058ad29180fdec2efec75b512446c49bf87b3d",
+  "natureza": "diagnóstico; sem correção de produção",
+  "achados": [
+    "O01 Núcleo não aumenta PE máximo",
+    "O02 Núcleo mantém barra de Integridade",
+    "O03 Núcleo inativo mantém movimento e Bloquear",
+    "O04 Fôlego não soma Classe ao descanso",
+    "O05 Dois onEdit interrompidos por tempo no Ciclo; causa não isolada"
+  ],
+  "resultados": [
+    {
+      "modelo": "Era",
+      "cenario": "controle sem Núcleo",
+      "tipo": "recálculo nativo",
+      "esperado": {
+        "peMax": 60,
+        "integridadeMax": 92,
+        "mov": "9 m",
+        "bloquearDisponivel": true,
+        "defesa": 11
+      },
+      "obtido": {
+        "peMax": 60,
+        "integridadeMax": 92,
+        "mov": "9 m",
+        "bloquearDisponivel": true,
+        "defesa": 11
+      },
+      "conforme": true
+    },
+    {
+      "modelo": "Era",
+      "cenario": "Núcleo, sem PE comum ou temporário",
+      "tipo": "recálculo nativo",
+      "esperado": {
+        "peMax": 65,
+        "integridadeMax": 0,
+        "mov": "4,5 m",
+        "bloquearDisponivel": false,
+        "defesa": 11
+      },
+      "obtido": {
+        "peMax": 60,
+        "integridadeMax": 92,
+        "mov": "9 m",
+        "bloquearDisponivel": true,
+        "defesa": 11
+      },
+      "conforme": false
+    },
+    {
+      "modelo": "Era",
+      "cenario": "Núcleo, 1 PE comum",
+      "tipo": "recálculo nativo",
+      "esperado": {
+        "peMax": 65,
+        "integridadeMax": 0,
+        "mov": "9 m",
+        "bloquearDisponivel": true,
+        "defesa": 11
+      },
+      "obtido": {
+        "peMax": 60,
+        "integridadeMax": 92,
+        "mov": "9 m",
+        "bloquearDisponivel": true,
+        "defesa": 11
+      },
+      "conforme": false
+    },
+    {
+      "modelo": "Era",
+      "cenario": "Núcleo, 1 PE temporário",
+      "tipo": "recálculo nativo",
+      "esperado": {
+        "peMax": 65,
+        "integridadeMax": 0,
+        "mov": "9 m",
+        "bloquearDisponivel": true,
+        "defesa": 11
+      },
+      "obtido": {
+        "peMax": 60,
+        "integridadeMax": 92,
+        "mov": "9 m",
+        "bloquearDisponivel": true,
+        "defesa": 11
+      },
+      "conforme": false
+    },
+    {
+      "modelo": "Era",
+      "cenario": "Núcleo na segunda vaga, Essência 4",
+      "tipo": "recálculo nativo",
+      "esperado": {
+        "peMax": 68,
+        "integridadeMax": 0,
+        "mov": "4,5 m",
+        "bloquearDisponivel": false,
+        "defesa": 11
+      },
+      "obtido": {
+        "peMax": 60,
+        "integridadeMax": 101,
+        "mov": "9 m",
+        "bloquearDisponivel": true,
+        "defesa": 11
+      },
+      "conforme": false
+    },
+    {
+      "modelo": "Era",
+      "cenario": "Núcleo ativo, Integridade atual zero",
+      "tipo": "recálculo nativo",
+      "esperado": {
+        "peMax": 65,
+        "integridadeMax": 0,
+        "mov": "9 m",
+        "bloquearDisponivel": true,
+        "defesa": 11
+      },
+      "obtido": {
+        "peMax": 60,
+        "integridadeMax": 92,
+        "mov": "0 m",
+        "bloquearDisponivel": true,
+        "defesa": 11
+      },
+      "conforme": false
+    },
+    {
+      "modelo": "Era",
+      "cenario": "controle de menor incompatível com Latente",
+      "tipo": "recálculo nativo",
+      "esperado": {
+        "peMax": 60,
+        "integridadeMax": 92,
+        "mov": "9 m",
+        "bloquearDisponivel": true,
+        "defesa": 11
+      },
+      "obtido": {
+        "peMax": 60,
+        "integridadeMax": 92,
+        "mov": "9 m",
+        "bloquearDisponivel": true,
+        "defesa": 11
+      },
+      "conforme": true
+    },
+    {
+      "modelo": "Era",
+      "cenario": "repetição de Núcleo sem energia",
+      "tipo": "recálculo nativo",
+      "esperado": {
+        "peMax": 65,
+        "integridadeMax": 0,
+        "mov": "4,5 m",
+        "bloquearDisponivel": false,
+        "defesa": 11
+      },
+      "obtido": {
+        "peMax": 60,
+        "integridadeMax": 92,
+        "mov": "9 m",
+        "bloquearDisponivel": true,
+        "defesa": 11
+      },
+      "conforme": false
+    },
+    {
+      "modelo": "Era",
+      "cenario": "Fôlego fora com grau 2",
+      "tipo": "edição real de D45; menu e resumo conferidos",
+      "esperado": 6,
+      "obtido": 3,
+      "conforme": false
+    },
+    {
+      "modelo": "Era",
+      "cenario": "Fôlego fora com grau 3",
+      "tipo": "edição real de D45; menu e resumo conferidos",
+      "esperado": 0,
+      "obtido": 0,
+      "conforme": true
+    },
+    {
+      "modelo": "Era",
+      "cenario": "Fôlego propício na segunda vaga",
+      "tipo": "edição real de D45; menu e resumo conferidos",
+      "esperado": 18,
+      "obtido": 15,
+      "conforme": false
+    },
+    {
+      "modelo": "Era",
+      "cenario": "controle sem Fôlego",
+      "tipo": "edição real de D45; menu e resumo conferidos",
+      "esperado": 15,
+      "obtido": 15,
+      "conforme": true
+    },
+    {
+      "modelo": "Ciclo",
+      "cenario": "controle sem Núcleo",
+      "tipo": "recálculo nativo",
+      "esperado": {
+        "peMax": 20,
+        "integridadeMax": 28,
+        "mov": "9 m",
+        "bloquearDisponivel": true,
+        "defesa": 11
+      },
+      "obtido": {
+        "peMax": 20,
+        "integridadeMax": 28,
+        "mov": "9 m",
+        "bloquearDisponivel": true,
+        "defesa": 11
+      },
+      "conforme": true
+    },
+    {
+      "modelo": "Ciclo",
+      "cenario": "Núcleo, sem PE comum ou temporário",
+      "tipo": "recálculo nativo",
+      "esperado": {
+        "peMax": 23,
+        "integridadeMax": 0,
+        "mov": "4,5 m",
+        "bloquearDisponivel": false,
+        "defesa": 11
+      },
+      "obtido": {
+        "peMax": 20,
+        "integridadeMax": 28,
+        "mov": "9 m",
+        "bloquearDisponivel": true,
+        "defesa": 11
+      },
+      "conforme": false
+    },
+    {
+      "modelo": "Ciclo",
+      "cenario": "Núcleo, 1 PE comum",
+      "tipo": "recálculo nativo",
+      "esperado": {
+        "peMax": 23,
+        "integridadeMax": 0,
+        "mov": "9 m",
+        "bloquearDisponivel": true,
+        "defesa": 11
+      },
+      "obtido": {
+        "peMax": 20,
+        "integridadeMax": 28,
+        "mov": "9 m",
+        "bloquearDisponivel": true,
+        "defesa": 11
+      },
+      "conforme": false
+    },
+    {
+      "modelo": "Ciclo",
+      "cenario": "Núcleo, 1 PE temporário",
+      "tipo": "recálculo nativo",
+      "esperado": {
+        "peMax": 23,
+        "integridadeMax": 0,
+        "mov": "9 m",
+        "bloquearDisponivel": true,
+        "defesa": 11
+      },
+      "obtido": {
+        "peMax": 20,
+        "integridadeMax": 28,
+        "mov": "9 m",
+        "bloquearDisponivel": true,
+        "defesa": 11
+      },
+      "conforme": false
+    },
+    {
+      "modelo": "Ciclo",
+      "cenario": "Núcleo na segunda vaga, Essência 4",
+      "tipo": "recálculo nativo",
+      "esperado": {
+        "peMax": 24,
+        "integridadeMax": 0,
+        "mov": "4,5 m",
+        "bloquearDisponivel": false,
+        "defesa": 11
+      },
+      "obtido": {
+        "peMax": 20,
+        "integridadeMax": 29,
+        "mov": "9 m",
+        "bloquearDisponivel": true,
+        "defesa": 11
+      },
+      "conforme": false
+    },
+    {
+      "modelo": "Ciclo",
+      "cenario": "Núcleo ativo, Integridade atual zero",
+      "tipo": "recálculo nativo",
+      "esperado": {
+        "peMax": 23,
+        "integridadeMax": 0,
+        "mov": "9 m",
+        "bloquearDisponivel": true,
+        "defesa": 11
+      },
+      "obtido": {
+        "peMax": 20,
+        "integridadeMax": 28,
+        "mov": "0 m",
+        "bloquearDisponivel": true,
+        "defesa": 11
+      },
+      "conforme": false
+    },
+    {
+      "modelo": "Ciclo",
+      "cenario": "controle de menor incompatível com Latente",
+      "tipo": "recálculo nativo",
+      "esperado": {
+        "peMax": 20,
+        "integridadeMax": 28,
+        "mov": "9 m",
+        "bloquearDisponivel": true,
+        "defesa": 11
+      },
+      "obtido": {
+        "peMax": 20,
+        "integridadeMax": 28,
+        "mov": "9 m",
+        "bloquearDisponivel": true,
+        "defesa": 11
+      },
+      "conforme": true
+    },
+    {
+      "modelo": "Ciclo",
+      "cenario": "repetição de Núcleo sem energia",
+      "tipo": "recálculo nativo",
+      "esperado": {
+        "peMax": 23,
+        "integridadeMax": 0,
+        "mov": "4,5 m",
+        "bloquearDisponivel": false,
+        "defesa": 11
+      },
+      "obtido": {
+        "peMax": 20,
+        "integridadeMax": 28,
+        "mov": "9 m",
+        "bloquearDisponivel": true,
+        "defesa": 11
+      },
+      "conforme": false
+    },
+    {
+      "modelo": "Ciclo",
+      "cenario": "Fôlego fora com grau 2",
+      "tipo": "edição real de D45; menu e resumo conferidos",
+      "esperado": 2,
+      "obtido": 1,
+      "conforme": false
+    },
+    {
+      "modelo": "Ciclo",
+      "cenario": "Fôlego fora com grau 3",
+      "tipo": "edição real de D45; menu e resumo conferidos",
+      "esperado": 0,
+      "obtido": 0,
+      "conforme": true
+    },
+    {
+      "modelo": "Ciclo",
+      "cenario": "Fôlego propício na segunda vaga",
+      "tipo": "edição real de D45; menu e resumo conferidos",
+      "esperado": 6,
+      "obtido": 5,
+      "conforme": false
+    },
+    {
+      "modelo": "Ciclo",
+      "cenario": "controle sem Fôlego",
+      "tipo": "edição real de D45; menu e resumo conferidos",
+      "esperado": 5,
+      "obtido": 5,
+      "conforme": true
+    }
+  ],
+  "restauracao": [
+    {
+      "modelo": "Era",
+      "camposRestaurados": 14,
+      "celulasComparadas": 1609,
+      "diferencas": [],
+      "erros": []
+    },
+    {
+      "modelo": "Ciclo",
+      "camposRestaurados": 14,
+      "celulasComparadas": 1609,
+      "diferencas": [],
+      "erros": []
+    }
+  ],
+  "operacional": {
+    "codigoSha256": "d5845c0367be94e63f12b799053d5432d0ec4af5beea3a3d05bf32b607a2a084",
+    "timeouts": [
+      {
+        "horaLocal": "10:32:28",
+        "duracaoGoogle": 30.568,
+        "status": "Tempo limite atingido"
+      },
+      {
+        "horaLocal": "10:39:32",
+        "duracaoGoogle": 30.467,
+        "status": "Tempo limite atingido"
+      }
+    ],
+    "controleRepetido": "Concluiu com o mesmo código; não houve A/B válido contra a base anterior.",
+    "origemDaDuracao": "UI de execuções do Apps Script; não é tempo de abertura, RAM ou medição Android"
+  }
+}

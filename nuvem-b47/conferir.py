@@ -56,15 +56,18 @@ def main():
         # O controlador direto é o único módulo maior: orçamento explícito de
         # 1,2 MB, conferido na instalação nativa; partes de dados seguem <900 KB.
         packed = subprocess.run([sys.executable, str(ROOT/'r53/empacotar_script.py')],
-                                cwd=ROOT, capture_output=True, text=True, timeout=60)
+                                # A compressão gzip mais densa é só de preparação;
+                                # não altera o limite de execução no Apps Script.
+                                cwd=ROOT, capture_output=True, text=True, timeout=180)
         check('empacotamento R53 a partir das fontes versionadas', packed.returncode == 0,
               packed.stderr.strip() or 'exit='+str(packed.returncode))
         if packed.returncode == 0:
             bundle = ROOT/'r53/saidas/pacote-script'
             published = json.loads((bundle/'manifesto.json').read_text())['arquivos']
             expected = {'Ficha.gs', 'Invocacoes.gs', 'Analise.gs', 'Configuracao.gs',
-                        'Origens.gs', 'EditorR53.gs', 'Codigo.gs', 'Salarios.gs', 'PaletaAndroid.gs'}
-            check('pacote R53 com salários e paleta leve', set(published) == expected, str(len(published)))
+                        'Origens.gs', 'EditorR53.gs', 'Codigo.gs', 'Salarios.gs', 'PaletaAndroid.gs',
+                        'CuraRecebida.gs', 'Socorro.gs', 'AnaliseEstatica.gs'}
+            check('pacote R53 com salários, paleta leve e cura recebida', set(published) == expected, str(len(published)))
             for name in published:
                 size = (bundle/name).stat().st_size
                 limit = 1200000 if name == 'EditorR53.gs' else 900000
@@ -96,12 +99,12 @@ def main():
             check('salários: períodos, participação e idempotência', run.returncode == 0,
                   run.stderr.strip() or run.stdout.strip())
             for name in ['salarios/testar_abertura.js', 'r53/testes/salario_lote.js',
-                         'r53/testes/missoes_integradas.js', 'r53/testes/missoes_enxutas.js', 'r53/testes/versao_publica.js',
+                         'r53/testes/missoes_integradas.js', 'r53/testes/trava_nivel_missao.js', 'r53/testes/xp_congelado_nome.js', 'r53/testes/xp_linha_congelada.js', 'r53/testes/salario_datas.js', 'r53/testes/missoes_enxutas.js', 'r53/testes/versao_publica.js',
                          'r53/testes/caminho_loader.js',
                          'r53/testes/caminho_leve.js',
                          'r53/testes/caminho_integrado.js', 'r53/testes/caminho_corrida.js',
                          'r53/testes/pacote_leve.js', 'r53/testes/pessoal_leve.js', 'r53/testes/atalho_livre.js', 'r53/testes/caixas_horizontais.js', 'r53/testes/cartas_custom.js',
-                         'r53/testes/editor_lazy.js',
+                         'r53/testes/recursos_fila.js', 'r53/testes/recursos_fila_incremental.js', 'r53/testes/integridade_movimento.js', 'r53/testes/equipamento.js', 'r53/testes/bencaos_imunidades.js', 'r53/testes/pilha_5156.js', 'r53/testes/editor_lazy.js', 'r53/testes/menu_origem_molde.js', 'r53/testes/socorro.js', 'r53/testes/cura_recebida.js', 'r53/testes/descanso.js', 'r53/testes/descanso_origens.js', 'r53/testes/origens_recursos.js', 'r53/testes/reserva_bolsa.js', 'r53/testes/pratica_cotidiana.js', 'r53/testes/pratica_instalacao.js', 'r53/testes/conjuracao_integridade.js', 'r53/testes/classe_zero.js', 'r53/testes/alcance_cura.js', 'r53/testes/alcance_beneficios.js', 'r53/testes/tempo_feiticos.js', 'r53/testes/rajada_alvos.js', 'r53/testes/fragil_fica.js', 'r53/testes/sem_volta.js', 'r53/testes/devolucoes_incompativeis.js', 'r53/testes/restricoes_agrupadas.js', 'r53/testes/fragil_instantaneo.js', 'r53/testes/fragil_catalogo.js', 'r53/testes/forma_funcao.js', 'r53/testes/corroi.js', 'r53/testes/liberacoes.js', 'r53/testes/expansao_domada.js', 'r53/testes/repertorio_trilha.js', 'r53/testes/contagem_especiais.js', 'r53/testes/isolamento_nomes.js', 'r53/testes/criacao_nivel_fixo.js', 'r53/testes/nivel_obtido.js', 'r53/testes/pericias_entidades.js', 'r53/testes/atributos_entidades.js', 'r53/testes/buffs_entidades.js', 'r53/testes/pontos_forcados.js', 'r53/testes/tr_treinado.js', 'r53/testes/buff_decimal.js', 'r53/testes/pontos_ficha.js', 'r53/testes/aviso_atributo.js', 'r53/testes/menu_oficios.js', 'r53/testes/especializacao.js', 'r53/testes/texto_extra.js', 'r53/testes/corte_xp_missao.js', 'r53/testes/frequencia_cena.js', 'r53/testes/vida_bloquear_molde.js', 'r53/testes/menu_origem.js', 'r53/testes/modulo_achatado.js', 'r53/testes/religar_atalho.js', 'r53/testes/custom_sem_indirect.js', 'r53/testes/molde_api.js', 'r53/testes/maxima_r67_rodada.js',
                          'r53/testes/abertura_salario.js', 'r53/testes/missoes_sem_registros.js', 'r53/testes/xp_atualizar.js',
                          'conteudos-b47/comum/testar-notas-contextuais.js']:
                 run = subprocess.run([node, str(ROOT/name)], cwd=ROOT, capture_output=True, text=True, timeout=300)
@@ -109,6 +112,46 @@ def main():
         run = subprocess.run([sys.executable, '-m', 'unittest', 'r53.testes.test_origens_analise'],
                              cwd=ROOT, capture_output=True, text=True, timeout=60)
         check('ANALISE: origens, tipos e migração somente de C', run.returncode == 0,
+              run.stderr.strip() or run.stdout.strip())
+        run = subprocess.run([sys.executable, '-m', 'unittest', 'r53.testes.test_rajada_alvos'],
+                             cwd=ROOT, capture_output=True, text=True, timeout=60)
+        check('Rajada e Tudo ou Nada: validação e devolução', run.returncode == 0,
+              run.stderr.strip() or run.stdout.strip())
+        run = subprocess.run([sys.executable, '-m', 'unittest', 'r53.testes.test_fragil_fica'],
+                             cwd=ROOT, capture_output=True, text=True, timeout=60)
+        check('Frágil e Fica: devolução e dano efetivo', run.returncode == 0,
+              run.stderr.strip() or run.stdout.strip())
+        run = subprocess.run([sys.executable, '-m', 'unittest', 'r53.testes.test_sem_volta'],
+                             cwd=ROOT, capture_output=True, text=True, timeout=60)
+        check('Sem Volta e Classe 0: devolução condicionada', run.returncode == 0,
+              run.stderr.strip() or run.stdout.strip())
+        run = subprocess.run([sys.executable, '-m', 'unittest', 'r53.testes.test_devolucoes_incompativeis'],
+                             cwd=ROOT, capture_output=True, text=True, timeout=60)
+        check('Queima-Roupa e Tempo: devolução de restrições incompatíveis', run.returncode == 0,
+              run.stderr.strip() or run.stdout.strip())
+        run = subprocess.run([sys.executable, '-m', 'unittest', 'r53.testes.test_restricoes_agrupadas'],
+                             cwd=ROOT, capture_output=True, text=True, timeout=60)
+        check('Restrições agrupadas e Classe 0: crédito elegível', run.returncode == 0,
+              run.stderr.strip() or run.stdout.strip())
+        run = subprocess.run([sys.executable, '-m', 'unittest', 'r53.testes.test_forma_funcao'],
+                             cwd=ROOT, capture_output=True, text=True, timeout=60)
+        check('Peças de feitiço: requisitos de Forma, cura e dano inicial', run.returncode == 0,
+              run.stderr.strip() or run.stdout.strip())
+        run = subprocess.run([sys.executable, '-m', 'unittest', 'r53.testes.test_corroi'],
+                             cwd=ROOT, capture_output=True, text=True, timeout=60)
+        check('Corrói: Mira Livre em cartões pessoais e de entidades', run.returncode == 0,
+              run.stderr.strip() or run.stdout.strip())
+        run = subprocess.run([sys.executable, '-m', 'unittest', 'r53.testes.test_maxima_r67'],
+                             cwd=ROOT, capture_output=True, text=True, timeout=300)
+        check('Técnica Máxima R67: Forma e base nos dados, defeitos plantados', run.returncode == 0,
+              run.stderr.strip() or run.stdout.strip())
+        run = subprocess.run([sys.executable, '-m', 'unittest', 'r53.testes.test_custom_sem_indirect'],
+                             cwd=ROOT, capture_output=True, text=True, timeout=60)
+        check('DADOS_CUSTOM sem INDIRECT: forma do gerador, defeitos plantados', run.returncode == 0,
+              run.stderr.strip() or run.stdout.strip())
+        run = subprocess.run([sys.executable, '-m', 'unittest', 'r53.testes.test_liberacoes', 'r53.testes.test_expansao_domada'],
+                             cwd=ROOT, capture_output=True, text=True, timeout=60)
+        check('Liberações Máximas: níveis de aquisição por posição', run.returncode == 0,
               run.stderr.strip() or run.stdout.strip())
         # Git identifica as fontes, evitando percorrer dependências em .venv.
         files = subprocess.check_output(['git', 'ls-files', '-z'], cwd=ROOT).decode().split('\0')

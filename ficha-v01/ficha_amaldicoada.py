@@ -31,6 +31,7 @@ desenha as rotas sem Fundamento (Técnica Marcial, Sem Técnica e Restrição Ce
 import json, math, os, re
 
 import indice_ficha as ix
+from leitura_buff import buff as leitura_buff  # 10/11/2026: Buff/Debuff decimal contra o dono
 import ficha_pessoal as fp
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -987,7 +988,8 @@ def trocas(layout, CAT=None, TEC=None):
         "terço do refino": f"=MAX(1,FLOOR({H['refino']}/3,1))",
         "dados da técnica máxima": f'=IFERROR(VLOOKUP({H["nível"]},{D.faixa("tm")},2,TRUE),0)',
         "montagem da técnica máxima": f'=IFERROR(VLOOKUP({H["nível"]},{D.faixa("tm")},3,TRUE),0)',
-        "gasto da técnica máxima": "=" + "+".join(f"IF({k}=0,0,INDEX({PRECOS},{H['maior classe']},{k}))" for k in tm_cod),
+        # R67: a Forma sai dos dados-base; os pontos de montagem pagam só as Melhorias (tm_cod[0] é a Forma).
+        "gasto da técnica máxima": "=" + "+".join(f"IF({k}=0,0,INDEX({PRECOS},{H['maior classe']},{k}))" for k in tm_cod[1:]),
         "fechada na técnica máxima": "=" + "+".join(tm_fech),
         "rota": f"={ROTA}",
         "equipamento": "=" + equip,
@@ -1166,9 +1168,11 @@ NOTAS = {
     "zero_mel": "Cabe uma Melhoria Leve, e ela tira um dado.",
     "zero_res": "Cabe uma Restrição Leve: ela devolve o dado que a Melhoria tirou, sem criar pontos. Toque não "
                 "concede devolução automática na Classe 0; Aura conserva seu procedimento.",
-    "tm_dano": "Fixo pela faixa de nível. Nenhum ponto compra mais dados.",
+    "tm_dano": "Dados-base pela faixa de nível. A Forma e a base da função saem deles; nenhum ponto compra mais dados.",
     "tm_pe": "{pe} × a sua maior Classe.",
-    "tm_montagem": "Os pontos de montagem compram só a Forma e as Melhorias, nos preços da sua maior Classe. O que sobrar se perde.",
+    "tm_montagem": ("Os pontos de montagem pagam só as Melhorias, nos preços da sua maior Classe; a Forma e a base da função "
+                    "saem dos dados-base. O que sobrar se perde. Ficha salva antes da R67 foi recalculada pela regra nova, "
+                    "e essa correção não gasta a revisão da Máxima."),
     "dom_refino": "Vem da FICHA. Sobe nos marcos.",
     "dom_pe": "{pe} × a sua maior Classe. Sem barreira, {pe_sem} ×.",
     "dom_dura": "Metade do refino, em rodadas. No mínimo uma.",
@@ -1198,7 +1202,7 @@ NOTAS = {
                   "energia é a Defesa sem Armadura, com os mesmos números na Lapidação.",
     "apt_canalizar": "De graça no refino 1. Dados a mais em cada ataque com arma ou desarmado: 1d4 no refino 1 e 2, 2d4 do 3 ao 5, "
                      "3d4 do 6 ao 8, 4d4 no 9 e 4d6 no 10. Na "
-                     "Restrição Celestial sem energia é o Estímulo Muscular, com o mesmo dano na arma, e só na arma.",
+                     "Restrição Celestial sem energia é o Estímulo Muscular: aplica-se a ataques com arma ou desarmados. Não entra no dano de Katas e não dobra no crítico, salvo permissão expressa de uma habilidade.",
     # 11/10/2026 (livro final R43, item 160): a Reação tira só a proteção passiva. Até 10/10 a nota dizia "você fica sem
     # proteção", que era a regra antiga (incluía o Traje, o Revestimento e o escudo)
     "apt_reacao": "Como Reação e 2 PE, reduz o dano de um golpe em 1,5 × refino, para baixo. Você perde só a proteção passiva "
@@ -1278,7 +1282,11 @@ def _carta_de_feitico(f, tr, r0, c0, i, lib, com_nota):
     f.add("cel", d, r0 + F_N1, e, r0 + F_N1, v("resolve"))
     f.add("cel", a, r0 + F_N2, a, r0 + F_N2, v("acao"))
     f.add("peq", b, r0 + F_N2, e, r0 + F_N2, v("alcance"))
-    f.add("rot", a, r0 + F_MEL, a, r0 + F_MEL + N_MEL - 1, "MELHORIAS", nota("melhorias"))
+    ajuda_melhorias = nota("melhorias")
+    if ajuda_melhorias and not lib:
+        from r53.textos_revisados import REACAO
+        ajuda_melhorias += " Reação. " + REACAO
+    f.add("rot", a, r0 + F_MEL, a, r0 + F_MEL + N_MEL - 1, "MELHORIAS", ajuda_melhorias)
     for k in range(N_MEL):
         assert f.add("cel_esq", b, r0 + F_MEL + k, c, r0 + F_MEL + k) == cel["mel"][k]
         f.add("peq", d, r0 + F_MEL + k, e, r0 + F_MEL + k, v(f"pt{k + 1}"))
@@ -1403,7 +1411,7 @@ def aba(layout, tr):
     at = [H[f"atributo do grupo {i + 1}"] for i in range(N_GRUPOS)]
     vg = [H[f"valor do grupo {i + 1}"] for i in range(N_GRUPOS)]
     primeiro = lambda xs: f'IF({at[0]}<>"",{xs[0]},IF({at[1]}<>"",{xs[1]},{xs[2]}))'
-    buff_conj, buff_cd = f'IFERROR(VALUE({FF("buff de conjuração")}&""),0)', f'IFERROR(VALUE({FF("buff de cd de feitiço")}&""),0)'
+    buff_conj, buff_cd = leitura_buff(FF("buff de conjuração")), leitura_buff(FF("buff de cd de feitiço"))
     conj_de = lambda v: f'"d20 + "&({MAE}+{v}+{buff_conj})'
     cd_de = lambda v: f'(8+{MAE}+{v}+{buff_cd})'
     pela_arma = lambda um, nenhum: f'IF({NAT}=0,"{nenhum}",IF({NAT}=1,{um},"Por grupo"))'
@@ -1630,7 +1638,7 @@ def aba(layout, tr):
     assert f.caixa(*cx[1], t, "COMPRADAS", f'=IF({anot}>{comp},"{T_ERRO} ","")&{anot}&" de "&{comp}', "num", NOTAS["apt_compradas"]) == G["apt_compradas"]
     assert G["apt_cobrir"] == f.caixa(*cx[2], t, f'=UPPER({ROT("graça 1")})', f'="Proteção "&(FLOOR({REF}/3,1)+1)', "val", NOTAS["apt_cobrir"])
     assert G["apt_canalizar"] == f.caixa(*cx[3], t, f'=UPPER({ROT("graça 2")})',
-                                 f'="+"&IF({REF}>=9,4,IF({REF}>=6,3,IF({REF}>=3,2,1)))&IF({REF}>=10,"d6","d4")&" na arma"', "val", NOTAS["apt_canalizar"])
+                                 f'="+"&IF({REF}>=9,4,IF({REF}>=6,3,IF({REF}>=3,2,1)))&IF({REF}>=10,"d6","d4")&" em arma ou desarmado"', "val", NOTAS["apt_canalizar"])
     assert G["apt_reacao"] == f.caixa(*cx[4], t, f'=UPPER({ROT("reação")})', f'="RD "&FLOOR(1.5*{REF},1)&" por 2 PE"', "val", NOTAS["apt_reacao"])
     # a linha do Estímulo Muscular: a perícia e o Teste de Resistência escolhidos na criação, e os usos
     t = G["estimulo"]

@@ -1,0 +1,86 @@
+[
+  {
+    "aba": "DADOS_INVOC",
+    "r": 2,
+    "c": 215,
+    "antes": "=IF($FM2=0,\"INVOCAÇÃO 1 · lugar vazio\",$DE2&\" · \"&$DF2&IF(AND($FN2=0,$DH2=-1),\" · REVISAR: nível obtido inválido; cálculo provisório no nível 1\",\"\")&\" · nível \"&$FO2&\" · vida \"&$GH2&\" de \"&$GF2)",
+    "depois": "=IF($FM2=0,\"INVOCAÇÃO 1 · lugar vazio\",$DE2&\" · \"&$DF2&IF(AND($FN2=0,$DH2=-1),\" · REVISAR: nível obtido inválido; cálculo provisório no nível 1\",\"\")&IF(OR($DV2=\"Físico\",$DV2=\"Vigor\",$DV2=\"Intelecto\",$DV2=\"Espírito\"),\"\",\" · REVISAR: escolha o TR treinado\")&\" · nível \"&$FO2&\" · vida \"&$GH2&\" de \"&$GF2)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 3,
+    "c": 215,
+    "antes": "=IF($FM3=0,\"INVOCAÇÃO 2 · lugar vazio\",$DE3&\" · \"&$DF3&IF(AND($FN3=0,$DH3=-1),\" · REVISAR: nível obtido inválido; cálculo provisório no nível 1\",\"\")&\" · nível \"&$FO3&\" · vida \"&$GH3&\" de \"&$GF3)",
+    "depois": "=IF($FM3=0,\"INVOCAÇÃO 2 · lugar vazio\",$DE3&\" · \"&$DF3&IF(AND($FN3=0,$DH3=-1),\" · REVISAR: nível obtido inválido; cálculo provisório no nível 1\",\"\")&IF(OR($DV3=\"Físico\",$DV3=\"Vigor\",$DV3=\"Intelecto\",$DV3=\"Espírito\"),\"\",\" · REVISAR: escolha o TR treinado\")&\" · nível \"&$FO3&\" · vida \"&$GH3&\" de \"&$GF3)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 4,
+    "c": 215,
+    "antes": "=IF($FM4=0,\"INVOCAÇÃO 3 · lugar vazio\",$DE4&\" · \"&$DF4&IF(AND($FN4=0,$DH4=-1),\" · REVISAR: nível obtido inválido; cálculo provisório no nível 1\",\"\")&\" · nível \"&$FO4&\" · vida \"&$GH4&\" de \"&$GF4)",
+    "depois": "=IF($FM4=0,\"INVOCAÇÃO 3 · lugar vazio\",$DE4&\" · \"&$DF4&IF(AND($FN4=0,$DH4=-1),\" · REVISAR: nível obtido inválido; cálculo provisório no nível 1\",\"\")&IF(OR($DV4=\"Físico\",$DV4=\"Vigor\",$DV4=\"Intelecto\",$DV4=\"Espírito\"),\"\",\" · REVISAR: escolha o TR treinado\")&\" · nível \"&$FO4&\" · vida \"&$GH4&\" de \"&$GF4)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 5,
+    "c": 215,
+    "antes": "=IF($FM5=0,\"INVOCAÇÃO 4 · lugar vazio\",$DE5&\" · \"&$DF5&IF(AND($FN5=0,$DH5=-1),\" · REVISAR: nível obtido inválido; cálculo provisório no nível 1\",\"\")&\" · nível \"&$FO5&\" · vida \"&$GH5&\" de \"&$GF5)",
+    "depois": "=IF($FM5=0,\"INVOCAÇÃO 4 · lugar vazio\",$DE5&\" · \"&$DF5&IF(AND($FN5=0,$DH5=-1),\" · REVISAR: nível obtido inválido; cálculo provisório no nível 1\",\"\")&IF(OR($DV5=\"Físico\",$DV5=\"Vigor\",$DV5=\"Intelecto\",$DV5=\"Espírito\"),\"\",\" · REVISAR: escolha o TR treinado\")&\" · nível \"&$FO5&\" · vida \"&$GH5&\" de \"&$GF5)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 6,
+    "c": 215,
+    "antes": "=IF($FM6=0,\"INVOCAÇÃO 5 · lugar vazio\",$DE6&\" · \"&$DF6&IF(AND($FN6=0,$DH6=-1),\" · REVISAR: nível obtido inválido; cálculo provisório no nível 1\",\"\")&\" · nível \"&$FO6&\" · vida \"&$GH6&\" de \"&$GF6)",
+    "depois": "=IF($FM6=0,\"INVOCAÇÃO 5 · lugar vazio\",$DE6&\" · \"&$DF6&IF(AND($FN6=0,$DH6=-1),\" · REVISAR: nível obtido inválido; cálculo provisório no nível 1\",\"\")&IF(OR($DV6=\"Físico\",$DV6=\"Vigor\",$DV6=\"Intelecto\",$DV6=\"Espírito\"),\"\",\" · REVISAR: escolha o TR treinado\")&\" · nível \"&$FO6&\" · vida \"&$GH6&\" de \"&$GF6)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 7,
+    "c": 215,
+    "antes": "=IF($FM7=0,\"INVOCAÇÃO 6 · lugar vazio\",$DE7&\" · \"&$DF7&IF(AND($FN7=0,$DH7=-1),\" · REVISAR: nível obtido inválido; cálculo provisório no nível 1\",\"\")&\" · nível \"&$FO7&\" · vida \"&$GH7&\" de \"&$GF7)",
+    "depois": "=IF($FM7=0,\"INVOCAÇÃO 6 · lugar vazio\",$DE7&\" · \"&$DF7&IF(AND($FN7=0,$DH7=-1),\" · REVISAR: nível obtido inválido; cálculo provisório no nível 1\",\"\")&IF(OR($DV7=\"Físico\",$DV7=\"Vigor\",$DV7=\"Intelecto\",$DV7=\"Espírito\"),\"\",\" · REVISAR: escolha o TR treinado\")&\" · nível \"&$FO7&\" · vida \"&$GH7&\" de \"&$GF7)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 8,
+    "c": 215,
+    "antes": "=IF($FM8=0,\"INVOCAÇÃO 7 · lugar vazio\",$DE8&\" · \"&$DF8&IF(AND($FN8=0,$DH8=-1),\" · REVISAR: nível obtido inválido; cálculo provisório no nível 1\",\"\")&\" · nível \"&$FO8&\" · vida \"&$GH8&\" de \"&$GF8)",
+    "depois": "=IF($FM8=0,\"INVOCAÇÃO 7 · lugar vazio\",$DE8&\" · \"&$DF8&IF(AND($FN8=0,$DH8=-1),\" · REVISAR: nível obtido inválido; cálculo provisório no nível 1\",\"\")&IF(OR($DV8=\"Físico\",$DV8=\"Vigor\",$DV8=\"Intelecto\",$DV8=\"Espírito\"),\"\",\" · REVISAR: escolha o TR treinado\")&\" · nível \"&$FO8&\" · vida \"&$GH8&\" de \"&$GF8)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 9,
+    "c": 215,
+    "antes": "=IF($FM9=0,\"INVOCAÇÃO 8 · lugar vazio\",$DE9&\" · \"&$DF9&IF(AND($FN9=0,$DH9=-1),\" · REVISAR: nível obtido inválido; cálculo provisório no nível 1\",\"\")&\" · nível \"&$FO9&\" · vida \"&$GH9&\" de \"&$GF9)",
+    "depois": "=IF($FM9=0,\"INVOCAÇÃO 8 · lugar vazio\",$DE9&\" · \"&$DF9&IF(AND($FN9=0,$DH9=-1),\" · REVISAR: nível obtido inválido; cálculo provisório no nível 1\",\"\")&IF(OR($DV9=\"Físico\",$DV9=\"Vigor\",$DV9=\"Intelecto\",$DV9=\"Espírito\"),\"\",\" · REVISAR: escolha o TR treinado\")&\" · nível \"&$FO9&\" · vida \"&$GH9&\" de \"&$GF9)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 10,
+    "c": 215,
+    "antes": "=IF($FM10=0,\"INVOCAÇÃO 9 · lugar vazio\",$DE10&\" · \"&$DF10&IF(AND($FN10=0,$DH10=-1),\" · REVISAR: nível obtido inválido; cálculo provisório no nível 1\",\"\")&\" · nível \"&$FO10&\" · vida \"&$GH10&\" de \"&$GF10)",
+    "depois": "=IF($FM10=0,\"INVOCAÇÃO 9 · lugar vazio\",$DE10&\" · \"&$DF10&IF(AND($FN10=0,$DH10=-1),\" · REVISAR: nível obtido inválido; cálculo provisório no nível 1\",\"\")&IF(OR($DV10=\"Físico\",$DV10=\"Vigor\",$DV10=\"Intelecto\",$DV10=\"Espírito\"),\"\",\" · REVISAR: escolha o TR treinado\")&\" · nível \"&$FO10&\" · vida \"&$GH10&\" de \"&$GF10)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 11,
+    "c": 215,
+    "antes": "=IF($FM11=0,\"INVOCAÇÃO 10 · lugar vazio\",$DE11&\" · \"&$DF11&IF(AND($FN11=0,$DH11=-1),\" · REVISAR: nível obtido inválido; cálculo provisório no nível 1\",\"\")&\" · nível \"&$FO11&\" · vida \"&$GH11&\" de \"&$GF11)",
+    "depois": "=IF($FM11=0,\"INVOCAÇÃO 10 · lugar vazio\",$DE11&\" · \"&$DF11&IF(AND($FN11=0,$DH11=-1),\" · REVISAR: nível obtido inválido; cálculo provisório no nível 1\",\"\")&IF(OR($DV11=\"Físico\",$DV11=\"Vigor\",$DV11=\"Intelecto\",$DV11=\"Espírito\"),\"\",\" · REVISAR: escolha o TR treinado\")&\" · nível \"&$FO11&\" · vida \"&$GH11&\" de \"&$GF11)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 12,
+    "c": 215,
+    "antes": "=IF($FM12=0,\"INVOCAÇÃO 11 · lugar vazio\",$DE12&\" · \"&$DF12&IF(AND($FN12=0,$DH12=-1),\" · REVISAR: nível obtido inválido; cálculo provisório no nível 1\",\"\")&\" · nível \"&$FO12&\" · vida \"&$GH12&\" de \"&$GF12)",
+    "depois": "=IF($FM12=0,\"INVOCAÇÃO 11 · lugar vazio\",$DE12&\" · \"&$DF12&IF(AND($FN12=0,$DH12=-1),\" · REVISAR: nível obtido inválido; cálculo provisório no nível 1\",\"\")&IF(OR($DV12=\"Físico\",$DV12=\"Vigor\",$DV12=\"Intelecto\",$DV12=\"Espírito\"),\"\",\" · REVISAR: escolha o TR treinado\")&\" · nível \"&$FO12&\" · vida \"&$GH12&\" de \"&$GF12)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 13,
+    "c": 215,
+    "antes": "=IF($FM13=0,\"INVOCAÇÃO 12 · lugar vazio\",$DE13&\" · \"&$DF13&IF(AND($FN13=0,$DH13=-1),\" · REVISAR: nível obtido inválido; cálculo provisório no nível 1\",\"\")&\" · nível \"&$FO13&\" · vida \"&$GH13&\" de \"&$GF13)",
+    "depois": "=IF($FM13=0,\"INVOCAÇÃO 12 · lugar vazio\",$DE13&\" · \"&$DF13&IF(AND($FN13=0,$DH13=-1),\" · REVISAR: nível obtido inválido; cálculo provisório no nível 1\",\"\")&IF(OR($DV13=\"Físico\",$DV13=\"Vigor\",$DV13=\"Intelecto\",$DV13=\"Espírito\"),\"\",\" · REVISAR: escolha o TR treinado\")&\" · nível \"&$FO13&\" · vida \"&$GH13&\" de \"&$GF13)"
+  }
+]

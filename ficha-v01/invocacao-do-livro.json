@@ -3,7 +3,17 @@
   "o_que_e": "o que a aba INVOCAÇÕES lê do livro e o catálogo não tem",
   "livro": "Ciclo Maldito R53, 411 páginas; publicação 3a810995e5211e2c21c90b02c8a5f43f67fa9d8a",
   "sha256_do_livro": "7311979bdfc61bda1d2fd5113106f072edc7dd5b8a801a02779ada53fd13a81d",
-  "gerado_por": "ficha-v01/extrair_invocacao.py"
+  "gerado_por": "ficha-v01/extrair_invocacao.py",
+  "correcoes": [
+   {
+    "repositorio": "cupcake-mochi/JJK---Project",
+    "commit": "e3058ad29180fdec2efec75b512446c49bf87b3d",
+    "arquivo": "sistema/05-material/livro/manual/60-invocacoes.md",
+    "secao": "Aquisição / Criação",
+    "trecho": "A entidade é feita com tempo, testes e os materiais que a criação exigir. As criadas não sobem de nível junto com você. O procedimento de criar pertence ao sistema de criação.",
+    "escopo": "Somente a evolução da aquisição Criação; o restante da extração conserva a fonte histórica."
+   }
+  ]
  },
  "frases": {
   "atributos": {
@@ -610,9 +620,9 @@
   {
    "nome": "Criação",
    "custa": "Teste de criação, quando o mestre permitir.",
-   "evolui": "Acompanha seu nível até o último nível da Classe dela; passar disso pede reconstruir.",
-   "acompanha": true,
-   "ate_o_fim_da_classe": true
+   "evolui": "As criadas não sobem de nível junto com você.",
+   "acompanha": false,
+   "ate_o_fim_da_classe": false
   }
  ],
  "tecnica_maxima": [

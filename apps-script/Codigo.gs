@@ -60,6 +60,11 @@ function corDeEstado_(ss, idx) {
     regras.push(SpreadsheetApp.newConditionalFormatRule()
       .whenFormulaSatisfied(formula50)
       .setFontColor('#D89B3A').setRanges([alvo]).build());
+    // 14/11/2026: a caixa de ± com número ainda não foi aplicada; se ficar assim, a edição se perdeu (a nota explica)
+    var delta = cel_(idx, r + '_delta');
+    if (delta) regras.push(SpreadsheetApp.newConditionalFormatRule()
+      .whenFormulaSatisfied('=' + delta + '<>""')
+      .setBackground('#D89B3A').setFontColor('#FFFFFF').setRanges([ficha.getRange(delta)]).build());
   });
   // 17/09/2026: as caixas de X de Y ficam vermelhas quando a conta avisa que passou. O texto do aviso
   // sai da fórmula da própria caixa, e estes trechos são os que ela escreve.
@@ -154,7 +159,9 @@ function notasDeRegra_(ss, idx) {
     'descanso': 'Escolha o tipo e a ficha aplica: o curto devolve PE (25% do máximo em lugar propício; fora dele, 25%, ' +
                 '15%, 5% ou nada, pelo degrau de Exaustão); o longo devolve vida, PE e Integridade e desmarca as Sequelas ' +
                 '(em lugar propício, tudo ao máximo e a Exaustão sai; fora, vida e PE vão à metade, se estiverem ' +
-                'abaixo, e a Exaustão fica). O mestre diz se o lugar é propício. O menu volta sozinho ao convite.',
+                'abaixo, e a Exaustão fica). Com Corpo Exaurido, o longo soma 25% dos PV máximos em lugar propício ' +
+                '(mínimo 1), e fora dele não recupera PV. Recuperação Abundante dá 40% de PE no curto propício, ' +
+                'respeitando impedimentos específicos. Confirme os cuidados com o mestre. O menu volta ao convite.',
     // 14/10/2026 (B46): no livro R50, Insistir deixou de custar vida máxima, e a ressalva do máximo perdido saiu
     'último descanso': 'O que o último descanso mudou, para conferir ou desfazer à mão. A ficha não mexe na vida ' +
                        'temporária, nos usos por dia e nas condições.',
@@ -245,7 +252,8 @@ function notasDeRegra_(ss, idx) {
     'treinado em armas': 'Automático pelo Caminho, sem escolha: Bastião, Vanguarda e Incursor treinam as ' +
                          'treze categorias; Guia, Emanador e Evocador treinam só Arma de Fogo e Balestra.',
     'nivel': 'Editável a qualquer hora, sem aviso. Anotar uma missão na FICHA PESSOAL sobe o nível ' +
-             'sozinho, pela curva do capítulo Progressão, até o 20: dali em diante o livro pede um feito, e ' +
+             'sozinho, pela curva do capítulo Progressão, no máximo um nível por missão (o XP que sobra fica ' +
+             'guardado para a próxima), até o 20: dali em diante o livro pede um feito, e ' +
              'quem sobe é você. As missões nunca descem o nível (o XP digitado na caixa de XP leva o nível junto, ' +
              'para cima ou para baixo), e quem não usa XP sobe aqui na mão. Escrever o ' +
              'nível acerta o XP: subindo, ele vai para o começo do nível novo; descendo, guarda a mesma parte do ' +
@@ -255,7 +263,8 @@ function notasDeRegra_(ss, idx) {
          'Progressão. Para trocar o XP inteiro, digite o número novo em cima desta caixa: ele vira o XP total, ' +
          'o nível acompanha (até o 20; dali em diante o livro pede um feito) e a conta volta para a caixa. As ' +
          'missões que já estavam no painel ficam congeladas, como mostra a nota da caixa delas: mudar ou apagar ' +
-         'uma delas não mexe mais no XP. As novas somam por cima. Apagar esta caixa só devolve a conta.',
+         'uma delas não mexe mais no XP, e uma missão nova escrita por cima de uma linha congelada também não ' +
+         'conta. Anote as novas numa linha vazia: elas somam por cima. Apagar esta caixa só devolve a conta.',
     'trocou por arma': 'Só vale pra Guia, Emanador e Evocador. Cada troca é 2 das 5 perícias ' +
                        'livres do Caminho por treino numa arma específica — não a categoria, não ' +
                        'o tipo, uma arma da lista. Pode repetir até 2 vezes.',
@@ -279,6 +288,13 @@ function notasDeRegra_(ss, idx) {
   });
   notas['buff de deslocamento'] = 'Soma no deslocamento, em metros, o que nenhuma outra caixa cobre. ' +
                                   'Número negativo reduz.';
+  // 14/11/2026, pedido do Mizuki ("Sim, faz o aviso"): o Google às vezes descarta uma edição numa rajada, e o número
+  // fica parado na caixa sem ser aplicado. A caixa de ± com número fica âmbar (corDeEstado_), e a nota explica.
+  ['vida', 'energia', 'integridade'].forEach(function (k) {
+    notas[k + '_delta'] = 'Escreva −9 ou +5 e aperte Enter: a ficha aplica no atual e limpa a caixa. A perda gasta o ' +
+                         'temporário primeiro.' +
+                         ' Enquanto o número está aqui, a caixa fica âmbar: ainda não foi aplicado. Se continuar depois de um minuto, ele se perdeu (o Google às vezes descarta edições rápidas em sequência): confira o atual e digite de novo.';
+  });
   var n = 0;
   // A aba é lida uma vez (valor, fórmula e nota), as notas são postas na matriz e a matriz volta numa gravação só.
   var lido = ficha.getDataRange(), valores = lido.getValues(), formulas = lido.getFormulas(), postas = lido.getNotes();
@@ -446,6 +462,24 @@ function notasDosTipos_(e) {
 function onEdit(e) {
   var inicio = e && typeof e.r53Inicio_ === 'number' ? e.r53Inicio_ : Date.now();
   if (!e || !e.range) return;
+  if (typeof r53RepertorioRestaurar_ === 'function' &&
+      (r53RepertorioRestaurar_(e) || r53RepertorioEntrada_(e))) {
+    continuarPaleta_(inicio, null, false, e.range);
+    return;
+  }
+  if (typeof r53PraticaRestaurar_ === 'function' && r53PraticaRestaurar_(e)) {
+    continuarPaleta_(inicio, null, false, e.range);
+    return;
+  }
+  if (typeof r53RestaurarCargaOrigem_ === 'function' && r53RestaurarCargaOrigem_(e)) {
+    continuarPaleta_(inicio, null, false, e.range);
+    return;
+  }
+  // O menu isolado dispensa restauradores e catálogos; colagens seguem a rota completa.
+  if (typeof r53DescansoEdit_ === 'function' && r53DescansoEdit_(e)) {
+    continuarPaleta_(inicio, null, false, e.range);
+    return;
+  }
   if (r53RestaurarVersaoPublica_(e)) { continuarPaleta_(inicio,null,false,e.range); return; }
   if (typeof salarioIntegrarMissao_ === 'function' && salarioIntegrarMissao_(e,onEdit)) return;
   if (typeof salarioEditar_ === 'function' && salarioEditar_(e)) return;
@@ -488,6 +522,7 @@ function onEdit(e) {
         ligarSaltosDe_(SpreadsheetApp.getActive(), ABA_INVOCACOES_, DADOS_DA_INVOCACAO_, null, e.range);
       }
     } catch (err) { console.log('invocações: ' + err.message); }
+    try { prenderTemp_(e); } catch (err) { console.log('invocações, TEMP: ' + err.message); }
     continuarPaleta_(inicio, null, false, e.range);
     return;
   }
@@ -850,10 +885,12 @@ function nivelDoXp_(tabela, xp) {
  * nível por anotar uma missão. E ele para no limiar do feito (o 20 do livro) enquanto o personagem não
  * passou dele: "Você chega ao nível 20 por XP. Você passa dele por feito." Quem já passou sobe normalmente.
  */
-function nivelQueSobe_(tabela, xp, atual, limiar) {
+function nivelQueSobe_(tabela, xp, atual, limiar, teto) {
   var alvo = nivelDoXp_(tabela, xp);
   if (alvo === null) return null;
   if (limiar && atual <= limiar) alvo = Math.min(alvo, limiar);
+  // 12/11/2026, livro R66: "no máximo um nível por missão concluída". Abaixo da curva, o teto é a primeira linha dela.
+  if (teto !== undefined && teto !== null && tabela.length) alvo = Math.min(alvo, Math.max(teto, Number(tabela[0].nivel)));
   return alvo > atual ? alvo : null;
 }
 
@@ -926,7 +963,8 @@ function nivelPelaMissao_(ss, dados, ip) {
   var cn = cel_(indiceDosDados_(dados), 'nivel');
   if (!cn) return;
   var caixa = ss.getSheetByName('FICHA').getRange(cn);
-  var sobe = nivelQueSobe_(tabela, total, Number(caixa.getValue()) || 0, limiar);
+  // Este caminho só roda sem o Salarios.gs, que conta as missões da edição; aqui é um nível por edição.
+  var atual = Number(caixa.getValue()) || 0, sobe = nivelQueSobe_(tabela, total, atual, limiar, atual + 1);
   if (sobe !== null) caixa.setValue(sobe);
 }
 
@@ -1316,18 +1354,7 @@ function redutorDaInvocacao_(e) {
   var onde = e.range.getA1Notation().split(':')[0];
   var r = spec.redutores.filter(function (x) { return x[0] === onde; })[0];
   if (!r) return false;
-  var passo = Number(e.range.getValue());
-  if (!passo) return true;
-  var aba = e.range.getSheet();
-  var atual = aba.getRange(r[1]), temp = aba.getRange(r[2]);
-  var max = Number(aba.getRange(r[3]).getValue()) || 0;
-  var antes = Math.max(0, Number(temp.getValue()) || 0);
-  var tem = atual.getValue();
-  var fim = aplicaPasso_(tem === '' || tem === null ? max : tem, max, antes, passo);
-  atual.setValue(fim.atual);
-  if (fim.temp !== antes) temp.setValue(fim.temp);
-  e.range.clearContent();
-  return true;
+  return r53DeltaExecutar_(e, { d: r[0], a: r[1], t: r[2], m: r[3], cheio: true }, aplicaPasso_);
 }
 
 /** Os saltos de uma aba, lidos da aba de dados dela. Devolve quantos escreveu, ou null se a aba não existe. */
@@ -1922,8 +1949,84 @@ function marcarPericiasDoCaminho_(e, idx, dados) {
  * TEMP. Quem toma dano com `Rasga Escudo` -- que ignora a temporaria -- edita
  * a reserva na mao; a A4 mantem o atual editavel exatamente para isso.
  */
+// BEGIN RECURSOS_DELTA (r53/recursos_delta.gs)
+/** ±: usa o valor do evento entregue; a trava serializa somente estes ajustes.
+ * Não reconstrói eventos descartados pelo Google nem ordena eventos fora de ordem.
+ * x = {d:delta,a:atual,m:max,t:temp,cheio:atual vazio significa máximo}.
+ * Sempre consome o caminho, mesmo numa falha: não repetir uma gravação parcial.
+ */
+function r53DeltaExecutar_(e, x, calcular) {
+  var trava, passo = null, presa = false, escreveu = false, enviou = false;
+  var aba = e.range.getSheet();
+  try {
+    var unica = e.range.getNumRows() === 1 && e.range.getNumColumns() === 1;
+    // Uma exclusão antiga não deve consumir a entrada que chegou depois dela.
+    if (unica && e.value === undefined && e.oldValue !== undefined) return true;
+    var evento = unica && e.value !== undefined;
+    if (evento) {
+      passo = Number(e.value);
+      // No pt-BR, o evento pode trazer o texto com vírgula, mesmo quando a célula é numérica.
+      if (isNaN(passo) && typeof e.value === 'string' &&
+          /^[+-]?\d+(?:\.\d{3})*,\d+$/.test(e.value.trim()) &&
+          (e.source || aba.getParent()).getSpreadsheetLocale() === 'pt_BR') {
+        passo = Number(e.value.trim().replace(/\./g, '').replace(',', '.'));
+      }
+    }
+    if (evento && (!isFinite(passo) || !passo)) return true;
+    trava = LockService.getDocumentLock();
+    // Dá tempo para o desconto anterior gravar, com espera limitada no onEdit.
+    if (!trava || !trava.tryLock(12000)) throw Error('outro ajuste de recurso ainda está em execução');
+    presa = true;
+    var enderecos = [x.d, x.a, x.m].concat(x.t ? [x.t] : []);
+    var pos = enderecos.map(function (a) {
+      var m = /^([A-Z]+)([0-9]+)$/.exec(a), c = 0;
+      if (!m) throw Error('endereço de recurso inválido');
+      for (var i = 0; i < m[1].length; i++) c = c * 26 + m[1].charCodeAt(i) - 64;
+      return [Number(m[2]), c];
+    });
+    var ls = pos.map(function (p) { return p[0]; }), cs = pos.map(function (p) { return p[1]; });
+    var l = Math.min.apply(null, ls), c = Math.min.apply(null, cs);
+    var v = aba.getRange(l, c, Math.max.apply(null, ls)-l+1, Math.max.apply(null, cs)-c+1).getValues();
+    var q = function (i) { return v[pos[i][0]-l][pos[i][1]-c]; };
+    var comandoAtual = Number(q(0));
+    if (!evento) passo = comandoAtual;
+    if (!isFinite(passo) || !passo) return true;
+    var max = q(2), atual = q(1);
+    var antes = x.t ? Math.max(0, Number(q(3)) || 0) : 0;
+    if (x.cheio && (atual === '' || atual === null)) atual = Number(max) || 0;
+    var fim = calcular(atual, max, antes, passo);
+    escreveu = true;
+    aba.getRange(x.a).setValue(fim.atual);
+    if (x.t && fim.temp !== antes) aba.getRange(x.t).setValue(fim.temp);
+    // Usa a leitura sob a trava, antes de escrever. Reler depois das escritas
+    // força um envio intermediário ao Sheets e prolonga a contenção.
+    if (comandoAtual === passo) aba.getRange(x.d).clearContent();
+    SpreadsheetApp.flush();
+    enviou = true;
+  } catch (err) {
+    console.log('ajuste ±: ' + err.message);
+    try {
+      var alvo = aba.getName() + '!' + x.d;
+      var ajuste = passo !== null && isFinite(passo) ? 'Ajuste ' + passo + ' em ' + alvo : 'Ajuste em ' + alvo;
+      var mensagem = escreveu ? ajuste + ' pode ter sido aplicado parcialmente. Confira os saldos antes de repetir.' :
+        ajuste + ' não aplicado. Confira os saldos e repita esse ajuste se necessário.';
+      (e.source || SpreadsheetApp.getActive()).toast(mensagem, 'Recursos', 10);
+    } catch (aviso) { console.log('aviso ±: ' + aviso.message); }
+  } finally {
+    if (presa) {
+      // Uma falha parcial também precisa ser enviada antes de liberar a trava.
+      try { if (escreveu && !enviou) SpreadsheetApp.flush(); }
+      catch (envio) { console.log('envio ±: ' + envio.message); }
+      try { trava.releaseLock(); }
+      catch (liberar) { console.log('trava ±: ' + liberar.message); }
+    }
+  }
+  return true;
+}
+// END RECURSOS_DELTA
 function aplicaPasso_(atual, max, temp, passo) {
   atual = Number(atual) || 0;
+  var maximoZero = max === 0 || (typeof max === 'string' && max.trim() !== '' && Number(max) === 0);
   max = Number(max) || 0;
   temp = Math.max(0, Number(temp) || 0);
   passo = Number(passo) || 0;
@@ -1937,7 +2040,7 @@ function aplicaPasso_(atual, max, temp, passo) {
     novo = atual + passo;
   }
   return {
-    atual: Math.max(0, max ? Math.min(novo, max) : novo),
+    atual: Math.max(0, max || maximoZero ? Math.min(novo, max) : novo),
     temp: temp
   };
 }
@@ -1953,11 +2056,13 @@ function aplicaPasso_(atual, max, temp, passo) {
  * O "fica a maior" da A2 não mora aqui: quem digita a temporária pode estar
  * trocando de fonte ou zerando no fim da cena, e o script não sabe qual.
  */
-function tetoTemp_(valor, max) {
+function tetoTemp_(valor, max, preservarIntegridade) {
   if (valor === '' || valor === null || valor === undefined) return valor;
   var v = Number(valor);
   if (isNaN(v)) return valor;
   v = Math.max(0, v);
+  var maximoZero = max === 0 || (typeof max === 'string' && max.trim() !== '' && Number(max) === 0);
+  if (maximoZero && !preservarIntegridade) return 0;
   max = Number(max) || 0;
   if (max <= 0) return v;
   var teto = Math.max(1, Math.floor(max / 2));
@@ -1966,14 +2071,29 @@ function tetoTemp_(valor, max) {
 
 /** Prende no teto o TEMP digitado à mão. A caixinha de ± só desce a temporária. */
 function prenderTemp_(e, idx) {
-  var ficha = SpreadsheetApp.getActive().getSheetByName('FICHA');
-  ['vida', 'energia', 'integridade'].forEach(function (r) {
-    var ct = cel_(idx, r + '_temp');
-    if (!ct || ct !== e.range.getA1Notation()) return;
-    var v = lerCelulas_(ficha, [ct, cel_(idx, r + '_max')]);
-    var antes = v[ct];
-    var depois = tetoTemp_(antes, v[cel_(idx, r + '_max')]);
-    if (depois !== antes) e.range.setValue(depois);
+  var aba = e.range.getSheet(), campos;
+  if (idx) {
+    campos = ['vida', 'energia', 'integridade'].map(function (r) {
+      return [cel_(idx, r + '_temp'), cel_(idx, r + '_max'), r === 'integridade'];
+    });
+  } else {
+    var spec = ABAS.filter(function (s) { return s.nome === ABA_INVOCACOES_; })[0];
+    campos = (spec && spec.redutores || []).map(function (r) {
+      return [r[2], r[3], false];
+    });
+  }
+
+  // Só limitar as âncoras editadas. A seleção pode também conter outras entradas.
+  var tocados = campos.filter(function (c) {
+    return c[0] && c[1] && tocaFaixa_(e.range, c[0]);
+  });
+  if (!tocados.length) return;
+  var enderecos = tocados.reduce(function (lista, c) { return lista.concat(c.slice(0, 2)); }, []);
+  var valores = lerCelulas_(aba, enderecos);
+  tocados.forEach(function (c) {
+    var antes = valores[c[0]];
+    var depois = tetoTemp_(antes, valores[c[1]], c[2]);
+    if (depois !== antes) aba.getRange(c[0]).setValue(depois);
   });
 }
 
@@ -1987,22 +2107,10 @@ function prenderTemp_(e, idx) {
  * temporária ficava parada na tela, valendo nada.
  */
 function aplicarDelta_(e, idx) {
-  var ficha = SpreadsheetApp.getActive().getSheetByName('FICHA');
   ['vida', 'energia', 'integridade'].forEach(function (r) {
     var cd = cel_(idx, r + '_delta');
     if (!cd || cd !== e.range.getA1Notation()) return;
-    var ca = cel_(idx, r), cm = cel_(idx, r + '_max'), ct = cel_(idx, r + '_temp');
-    // As quatro caixas estão na mesma linha: uma leitura em vez de quatro idas ao servidor
-    var v = lerCelulas_(ficha, [cd, ca, cm].concat(ct ? [ct] : []));
-    var passo = Number(v[cd]);
-    if (!passo) return;
-    var antes = ct ? Math.max(0, Number(v[ct]) || 0) : 0;
-
-    var fim = aplicaPasso_(v[ca], v[cm], antes, passo);
-
-    ficha.getRange(ca).setValue(fim.atual);
-    if (ct && fim.temp !== antes) ficha.getRange(ct).setValue(fim.temp);
-    e.range.clearContent();
+    r53DeltaExecutar_(e, { d: cd, a: cel_(idx, r), m: cel_(idx, r + '_max'), t: cel_(idx, r + '_temp') }, aplicaPasso_);
   });
 }
 
@@ -2039,23 +2147,37 @@ var DESCANSOS_ = {
 };
 var PE_DO_DESCANSO_CURTO_ = [25, 15, 5, 0];   // % do PE máximo, pelo degrau de Exaustão, fora de lugar propício
 
-/** `s` é {vida, vidaMax, pe, peMax, integ, integMax, sequelas, exaustao}. Devolve {vida, pe, integ, sequelas, exaustao}. */
-function contaDoDescanso_(tipo, s) {
+/** Calcula o descanso a partir dos recursos e das capacidades de Origem já selecionadas. */
+function regraDoDescanso_(tipo, s) {
   var d = DESCANSOS_[tipo];
+  return d ? { longo: d.longo, propicio: d.propicio || s.existenciaArtificial === true } : null;
+}
+
+function contaDoDescanso_(tipo, s) {
+  var d = regraDoDescanso_(tipo, s);
   if (!d) return null;
   var n = function (x) { return Number(x) || 0; };
   var fim = { vida: n(s.vida), pe: n(s.pe), integ: n(s.integ), sequelas: n(s.sequelas),
               exaustao: Math.max(0, Math.min(PE_DO_DESCANSO_CURTO_.length - 1, n(s.exaustao))) };
   var vidaMax = n(s.vidaMax), peMax = n(s.peMax), integMax = n(s.integMax);
   if (!d.longo) {
-    var pct = PE_DO_DESCANSO_CURTO_[d.propicio ? 0 : fim.exaustao];
+    var pct = d.propicio && s.recuperacaoAbundante ? 40 : PE_DO_DESCANSO_CURTO_[d.propicio ? 0 : fim.exaustao];
     var ganho = Math.floor(peMax * pct / 100);
     if (ganho < 1 && peMax * pct > 0) ganho = 1;
+    // Fôlego só complementa uma recuperação permitida; não vence a proibição do grau 3.
+    if (pct > 0 && s.folegoRecuperado) ganho += Math.max(0, Math.floor(n(s.classeDisponivel)));
     if (peMax > 0) fim.pe = Math.max(fim.pe, Math.min(peMax, fim.pe + ganho));
     return fim;
   }
   var metade = function (max) { return Math.max(1, Math.floor(max / 2)); };
-  if (vidaMax > 0) fim.vida = d.propicio ? vidaMax : Math.max(fim.vida, metade(vidaMax));
+  if (vidaMax > 0) {
+    if (!s.exaurido) {
+      fim.vida = d.propicio ? vidaMax : Math.max(fim.vida, metade(vidaMax));
+    } else if (d.propicio) {
+      var ganhoVida = Math.max(1, Math.floor(vidaMax / 4));
+      fim.vida = Math.max(fim.vida, Math.min(vidaMax, fim.vida + ganhoVida));
+    }
+  }
   if (peMax > 0) fim.pe = d.propicio ? peMax : Math.max(fim.pe, metade(peMax));
   if (integMax > 0) fim.integ = integMax;
   fim.sequelas = 0;
@@ -2065,8 +2187,10 @@ function contaDoDescanso_(tipo, s) {
 
 /** O que o descanso mudou, numa linha: é o que fica escrito ao lado do menu e o que o aviso diz. */
 function textoDoDescanso_(tipo, antes, fim) {
-  var d = DESCANSOS_[tipo];
+  var d = regraDoDescanso_(tipo, antes);
   var partes = [(d.longo ? 'Longo' : 'Curto') + (d.propicio ? ', em lugar propício' : ', fora de lugar propício')];
+  if (antes.existenciaArtificial && !DESCANSOS_[tipo].propicio)
+    partes.push('Existência Artificial: local tratado como propício');
   [['vida', 'vida'], ['PE', 'pe'], ['Integridade', 'integ'], ['Sequelas', 'sequelas'], ['Exaustão', 'exaustao']].forEach(function (p) {
     if (antes[p[1]] !== fim[p[1]]) partes.push(p[0] + ' ' + antes[p[1]] + ' → ' + fim[p[1]]);
   });
@@ -2076,10 +2200,17 @@ function textoDoDescanso_(tipo, antes, fim) {
 }
 
 /** O menu do descanso foi escolhido: aplica, registra, devolve o menu ao convite e avisa. Devolve true se descansou. */
-function descansar_(e, idx) {
+function r53DescansarComQueda(tipo, queda, jaConvertido) {
+  var idx = indiceEstatico_();
+  var ficha = SpreadsheetApp.getActive().getSheetByName('FICHA');
+  return descansar_({range: ficha.getRange(cel_(idx, 'descanso')), value: tipo}, idx, queda, jaConvertido);
+}
+
+function descansar_(e, idx, quedaConfirmada, jaConvertido) {
   var cd = cel_(idx, 'descanso');
   if (!cd || cd !== e.range.getA1Notation().split(':')[0]) return false;
-  var tipo = String(e.range.getValue());
+  // 04/11/2026: o evento já traz a escolha; ler a célula custava quase 5 s dos 30 do gatilho.
+  var tipo = String(e.value !== undefined ? e.value : e.range.getValue());
   if (!DESCANSOS_[tipo]) return false;
   var ficha = e.range.getSheet();
   var onde = { vida: 'vida', pe: 'energia', integ: 'integridade', exaustao: 'exaustão' };
@@ -2087,14 +2218,76 @@ function descansar_(e, idx) {
                                                        .filter(function (c) { return c; });
   var cExtras = cel_(idx, 'sequela extras');
   // Tudo o que o descanso consulta numa leitura só (cada ida ao servidor custa 1,5 a 2 s)
-  var lidas = ['vida_max', 'energia_max', 'integridade_max'].concat(Object.keys(onde).map(function (k) { return onde[k]; }))
+  var campos = ['descanso', 'vida_max', 'energia_max', 'integridade_max', 'origem', 'marcante', 'menor 1', 'menor 2', 'classe máxima'];
+  var lidas = campos.concat(Object.keys(onde).map(function (k) { return onde[k]; }))
     .map(function (k) { return cel_(idx, k); }).concat(caixinhas, cExtras ? [cExtras] : []).filter(function (c) { return c; });
   var v = lerCelulas_(ficha, lidas);
-  var le = function (k) { var c = cel_(idx, k); return c ? Number(v[c]) || 0 : 0; };
+  // Um evento atrasado não pode reaplicar um descanso já concluído ou substituir outra escolha.
+  // O menu vem na mesma leitura dos recursos, sem uma chamada extra ao Sheets.
+  if (!quedaConfirmada && String(v[cd]) !== tipo) return false;
+  if (quedaConfirmada && v[cd] !== SEM_DESCANSO_) throw Error('Aguarde o menu de descanso voltar a Escolha o descanso.');
+  var queda = DESCANSOS_[tipo].longo && typeof r53SocorroLer_ === 'function'
+    ? r53SocorroLer_(SpreadsheetApp.getActive()) : null;
+  var quedaAtiva = queda && r53SocorroAtivo_(queda);
+  if (quedaConfirmada && (!quedaAtiva || JSON.stringify(quedaConfirmada) !== JSON.stringify(queda))) {
+    throw Error('O registro da queda mudou. Confira SOCORRO e tente novamente.');
+  }
+  if (quedaAtiva && !quedaConfirmada) {
+    e.range.setValue(SEM_DESCANSO_);
+    SpreadsheetApp.getActive().toast('Use Recursos → Descanso longo com queda ativa.', 'Queda em andamento', 8);
+    return false;
+  }
+  var valor = function (k) { return v[cel_(idx, k)]; };
+  var le = function (k) { return Number(valor(k)) || 0; };
   var antes = { vidaMax: le('vida_max'), peMax: le('energia_max'), integMax: le('integridade_max') };
   Object.keys(onde).forEach(function (k) { antes[k] = le(onde[k]); });
   var extras = cExtras ? Math.max(0, Number(v[cExtras]) || 0) : 0;
   antes.sequelas = caixinhas.filter(function (c) { return v[c] === true; }).length + extras;
+  var corpo = valor('marcante');
+  var abundante = valor('menor 1') === 'Recuperação Abundante' || valor('menor 2') === 'Recuperação Abundante';
+  var publicado = valor('origem') === 'Restrição Celestial · Restrição corporal' &&
+    ['Corpo Debilitado', 'Corpo Quebradiço', 'Corpo Exaurido'].indexOf(corpo) >= 0;
+  antes.existenciaArtificial = valor('origem') === 'Corpo Amaldiçoado';
+  var semEnergia = valor('origem') === 'Restrição Celestial · Sem Energia';
+  // Uma leitura limitada também fornece a base válida e as duas permissões corporais.
+  var custom = !antes.existenciaArtificial && !publicado && !semEnergia ? SpreadsheetApp.getActive().getSheetByName('DADOS_CUSTOM') : null;
+  var regras = custom ? custom.getRange(121, 2, 10, 1).getValues() : [];
+  if (regras.length && regras[0][0] === true && regras[2][0] === 'Corpo Amaldiçoado')
+    antes.existenciaArtificial = true;
+  var temFolego = valor('menor 1') === 'Fôlego Recuperado' || valor('menor 2') === 'Fôlego Recuperado';
+  antes.folegoRecuperado = temFolego && (semEnergia || (regras.length > 9 && regras[9][0] === true));
+  antes.classeDisponivel = le('classe máxima');
+  if (corpo === 'Corpo Exaurido' || abundante) {
+    var corporal = publicado || (regras.length > 5 && regras[5][0] === true);
+    antes.exaurido = corporal && corpo === 'Corpo Exaurido';
+    antes.recuperacaoAbundante = corporal && abundante && (publicado || regras[6][0] === true);
+  }
+  if (quedaAtiva) {
+    var recursos = antes;
+    var conversao = r53SocorroResolverConversao_(queda, antes.vida, antes.vidaMax, jaConvertido);
+    if (conversao.convertido) recursos = Object.assign({}, antes, {vida: antes.vida + conversao.convertido});
+    var recuperados = contaDoDescanso_(tipo, recursos);
+    var encerrou = recuperados.vida >= 1 &&
+      (queda.status !== 'Derrotado' || antes.integMax === 0 || recuperados.integ >= 1);
+    var textoQueda = textoDoDescanso_(tipo, antes, recuperados) + (encerrou
+      ? ' · queda encerrada; Sequelas removidas após a recuperação'
+      : ' · queda permanece ativa; confira a recuperação com o mestre');
+    var alteracoes = [[cd, SEM_DESCANSO_], [cel_(idx, 'último descanso'), textoQueda]];
+    Object.keys(onde).forEach(function (k) {
+      if (recuperados[k] !== antes[k]) alteracoes.push([cel_(idx, onde[k]), recuperados[k]]);
+    });
+    caixinhas.forEach(function (c) { if (v[c] === true) alteracoes.push([c, false]); });
+    if (cExtras && extras) alteracoes.push([cExtras, 0]);
+    var registro = encerrou ? Object.assign({}, conversao.estado, {status: 'Encerrado no descanso'}) : conversao.estado;
+    r53SocorroGravar_(SpreadsheetApp.getActive(), registro, null, null, false,
+      alteracoes.filter(function (par) { return par[0]; }).map(function (par) {
+        var pos = limitesA1_(par[0]);
+        return {updateCells: {start: {sheetId: ficha.getSheetId(), rowIndex: pos.l1 - 1, columnIndex: pos.c1 - 1},
+          rows: [{values: [r53SocorroCelula_(par[1])]}], fields: 'userEnteredValue'}};
+      }));
+    SpreadsheetApp.getActive().toast(textoQueda, 'Descanso', 8);
+    return true;
+  }
   var fim = contaDoDescanso_(tipo, antes);
   // só o que mudou é escrito: a caixa que nasceu como conta (o atual de uma ficha intocada) fica como está
   Object.keys(onde).forEach(function (k) {
@@ -2153,7 +2346,8 @@ function testeTeto() {
     ['abaixo do teto',                       [12, 40], 12],
     ['máximo ímpar arredonda para baixo',    [99, 23], 11],
     ['campo vazio continua vazio',           ['', 40], ''],
-    ['sem máximo não há teto',               [27, 0], 27]
+    ['sem máximo não há teto',               [27, ''], 27],
+    ['máximo zero limita a zero',             [27, 0], 0]
   ];
   var falhou = 0;
   casos.forEach(function (c) {
@@ -2163,7 +2357,7 @@ function testeTeto() {
     Logger.log((ok ? 'OK   ' : 'FALHA') + ' \u00b7 ' + c[0] +
                ' \u00b7 ' + r + ' (esperado ' + c[2] + ')');
   });
-  Logger.log(falhou ? (falhou + ' FALHA(S)') : 'as 5 passaram');
+  Logger.log(falhou ? (falhou + ' FALHA(S)') : 'as ' + casos.length + ' passaram');
 }
 
 /**
@@ -3051,6 +3245,7 @@ function configurarPaleta_(ss, force) {
  * acionador instalável, sem disputar o limite de trinta segundos.
  */
 function onOpen(e) {
+  if (typeof r53CuraMenu_ === "function") r53CuraMenu_();
   var inicio = e && typeof e.r53Inicio_ === 'number' ? e.r53Inicio_ : Date.now();
   if (typeof salarioAbrir_ === 'function') salarioAbrir_();
   if (typeof r53Menu_ === 'function') r53Menu_();

@@ -1,0 +1,526 @@
+{
+  "data": "2026-11-04",
+  "base": "11ab8d1f9d3827601d9505b2788ebd08aba0c8a2",
+  "escopo": "Auditoria; sem correções, merge ou aplicação em oficiais",
+  "livro": "e3058ad29180fdec2efec75b512446c49bf87b3d",
+  "movimento": [
+    {
+      "integridade": 26,
+      "resultados": [
+        {
+          "numberValue": 26
+        },
+        {
+          "stringValue": "Alma Inteira"
+        },
+        {
+          "stringValue": "9 m"
+        }
+      ]
+    },
+    {
+      "integridade": 20,
+      "resultados": [
+        {
+          "numberValue": 20
+        },
+        {
+          "stringValue": "Alma Inteira"
+        },
+        {
+          "stringValue": "9 m"
+        }
+      ]
+    },
+    {
+      "integridade": 19,
+      "resultados": [
+        {
+          "numberValue": 19
+        },
+        {
+          "stringValue": "Estágio 1 · Desvantagem em perícias"
+        },
+        {
+          "stringValue": "9 m"
+        }
+      ]
+    },
+    {
+      "integridade": 13,
+      "resultados": [
+        {
+          "numberValue": 13
+        },
+        {
+          "stringValue": "Estágio 2 · Metade do deslocamento, +1 PE por Classe"
+        },
+        {
+          "stringValue": "9 m"
+        }
+      ]
+    },
+    {
+      "integridade": 6,
+      "resultados": [
+        {
+          "numberValue": 6
+        },
+        {
+          "stringValue": "Estágio 3 · Desvantagem em ataques e TRs"
+        },
+        {
+          "stringValue": "9 m"
+        }
+      ]
+    },
+    {
+      "integridade": 0,
+      "resultados": [
+        {
+          "numberValue": 0
+        },
+        {
+          "stringValue": "Estágio 4 · Você não é mais você mesmo"
+        },
+        {
+          "stringValue": "9 m"
+        }
+      ]
+    },
+    {
+      "integridade": 17,
+      "resultados": [
+        {
+          "numberValue": 17
+        },
+        {
+          "stringValue": "Estágio 1 · Desvantagem em perícias"
+        },
+        {
+          "stringValue": "9 m"
+        }
+      ]
+    }
+  ],
+  "condicoes": [
+    {
+      "caso": {
+        "nome": "exaustao2-sem-dano",
+        "int": 26,
+        "ex": 2,
+        "buff": 0
+      },
+      "resultados": [
+        {
+          "stringValue": "Alma Inteira"
+        },
+        {
+          "stringValue": "4,5 m"
+        }
+      ]
+    },
+    {
+      "caso": {
+        "nome": "exaustao2-integridade-metade-base6",
+        "int": 13,
+        "ex": 2,
+        "buff": -3
+      },
+      "resultados": [
+        {
+          "stringValue": "Estágio 2 · Metade do deslocamento, +1 PE por Classe"
+        },
+        {
+          "stringValue": "4,5 m"
+        }
+      ]
+    },
+    {
+      "caso": {
+        "nome": "exaustao0-integridade-metade-base12",
+        "int": 13,
+        "ex": 0,
+        "buff": 3
+      },
+      "resultados": [
+        {
+          "stringValue": "Estágio 2 · Metade do deslocamento, +1 PE por Classe"
+        },
+        {
+          "stringValue": "12 m"
+        }
+      ]
+    },
+    {
+      "caso": {
+        "nome": "carga-metade-base9",
+        "int": 26,
+        "ex": 0,
+        "buff": 0,
+        "carga": 1
+      },
+      "resultados": [
+        {
+          "stringValue": "Alma Inteira"
+        },
+        {
+          "stringValue": "4,5 m"
+        }
+      ]
+    },
+    {
+      "caso": {
+        "nome": "carga-dobro-base9",
+        "int": 26,
+        "ex": 0,
+        "buff": 0,
+        "parado": 1
+      },
+      "resultados": [
+        {
+          "stringValue": "Alma Inteira"
+        },
+        {
+          "stringValue": "0 m"
+        }
+      ]
+    }
+  ],
+  "entidade_metade": [
+    {
+      "numberValue": 32
+    },
+    {
+      "numberValue": 32
+    },
+    {
+      "stringValue": "Com alma"
+    },
+    {
+      "numberValue": 8
+    },
+    {
+      "numberValue": 16
+    },
+    {
+      "stringValue": "Estágio 2 · metade do deslocamento, +1 PE por Classe"
+    },
+    {
+      "stringValue": "9 m"
+    }
+  ],
+  "entidade_maximo_zero": [
+    {
+      "numberValue": 0
+    },
+    {
+      "numberValue": 1
+    },
+    {
+      "stringValue": "Alma inteira"
+    }
+  ],
+  "controles_entidade": [
+    {
+      "max": 1,
+      "alma": "Com alma",
+      "resultados": [
+        {
+          "numberValue": 1
+        },
+        {
+          "numberValue": 1
+        },
+        {
+          "stringValue": "Alma inteira"
+        }
+      ]
+    },
+    {
+      "max": 2,
+      "alma": "Com alma",
+      "resultados": [
+        {
+          "numberValue": 2
+        },
+        {
+          "numberValue": 1
+        },
+        {
+          "stringValue": "Alma inteira"
+        }
+      ]
+    },
+    {
+      "max": 3,
+      "alma": "Com alma",
+      "resultados": [
+        {
+          "numberValue": 3
+        },
+        {
+          "numberValue": 1
+        },
+        {
+          "stringValue": "Alma inteira"
+        }
+      ]
+    },
+    {
+      "max": 0,
+      "alma": "Sem alma",
+      "resultados": [
+        {
+          "numberValue": 0
+        },
+        {
+          "stringValue": "—"
+        },
+        {
+          "stringValue": "Sem alma · imune a dano de Alma"
+        }
+      ]
+    }
+  ],
+  "montagem": [
+    {
+      "caso": "01 • VT pessoal Classe 1",
+      "esperado": {
+        "orcamento": 3,
+        "base_funcoes": 1,
+        "saldo": 2,
+        "vida_temporaria": 6,
+        "pe": 3,
+        "valida": true
+      },
+      "passou": true
+    },
+    {
+      "caso": "05 • Amparo Fechada",
+      "esperado": {
+        "valida": false
+      },
+      "passou": true
+    },
+    {
+      "caso": "07 • Aura custa Leve",
+      "esperado": {
+        "custo_forma": 2,
+        "retorno_toque": 0,
+        "devolucao": 0,
+        "saldo": 7,
+        "valida": true
+      },
+      "passou": true
+    },
+    {
+      "caso": "07b • Explosão custa Média",
+      "esperado": {
+        "custo_forma": 3,
+        "saldo": 6,
+        "valida": true
+      },
+      "passou": true
+    },
+    {
+      "caso": "12 • Classe 0 rejeita cura",
+      "esperado": {
+        "cura_d8": 0,
+        "pe": 0,
+        "valida": false
+      },
+      "passou": true
+    },
+    {
+      "caso": "12b • Classe 0 / Melhoria e Restrição",
+      "esperado": {
+        "dano_d8": 2,
+        "devolucao": 1,
+        "pe": 0,
+        "valida": true
+      },
+      "passou": true
+    },
+    {
+      "caso": "13 • Distribuição não pode criar pontos",
+      "esperado": {
+        "valida": false
+      },
+      "passou": true
+    },
+    {
+      "caso": "13b • Parcela fracionária rejeitada",
+      "esperado": {
+        "valida": false
+      },
+      "passou": true
+    },
+    {
+      "caso": "Entidade: condição Média exige comando",
+      "esperado": {
+        "valida": false
+      },
+      "passou": true
+    },
+    {
+      "caso": "Cura e VT coletivas compartilham teto",
+      "esperado": {
+        "valida": false
+      },
+      "passou": true
+    },
+    {
+      "caso": "Teto de cura conserva sobra sem uso",
+      "esperado": {
+        "cura_d8": 6,
+        "valida": false
+      },
+      "passou": true
+    },
+    {
+      "caso": "Concentrada e Duradoura são alternativas",
+      "esperado": {
+        "valida": false
+      },
+      "passou": true
+    },
+    {
+      "caso": "Controle e dano compartilham tipo do TR",
+      "esperado": {
+        "valida": false
+      },
+      "passou": true
+    },
+    {
+      "caso": "Recuo não admite condição Pesada",
+      "esperado": {
+        "valida": false
+      },
+      "passou": true
+    },
+    {
+      "caso": "Mais Um não duplica uma área",
+      "esperado": {
+        "valida": false
+      },
+      "passou": true
+    },
+    {
+      "caso": "Família própria desconhecida fica Fechada",
+      "esperado": {
+        "valida": false
+      },
+      "passou": true
+    }
+  ],
+  "restauracao": [
+    {
+      "sheet": "FICHA",
+      "row": 34,
+      "col": 4,
+      "igual": true
+    },
+    {
+      "sheet": "FICHA",
+      "row": 34,
+      "col": 10,
+      "igual": true
+    },
+    {
+      "sheet": "FICHA",
+      "row": 67,
+      "col": 23,
+      "igual": true
+    },
+    {
+      "sheet": "FICHA",
+      "row": 48,
+      "col": 15,
+      "igual": true
+    },
+    {
+      "sheet": "DADOS_CUSTOM",
+      "row": 126,
+      "col": 2,
+      "igual": true
+    },
+    {
+      "sheet": "DADOS_CONFIG",
+      "row": 12,
+      "col": 2,
+      "igual": true
+    },
+    {
+      "sheet": "DADOS_CONFIG",
+      "row": 12,
+      "col": 3,
+      "igual": true
+    },
+    {
+      "sheet": "DADOS_CONFIG",
+      "row": 12,
+      "col": 4,
+      "igual": true
+    },
+    {
+      "sheet": "DADOS_CONFIG",
+      "row": 12,
+      "col": 5,
+      "igual": true
+    },
+    {
+      "sheet": "DADOS",
+      "row": 45,
+      "col": 104,
+      "igual": true
+    },
+    {
+      "sheet": "DADOS",
+      "row": 46,
+      "col": 104,
+      "igual": true
+    },
+    {
+      "sheet": "INVOCAÇÕES",
+      "row": 13,
+      "col": 9,
+      "igual": true
+    },
+    {
+      "sheet": "INVOCAÇÕES",
+      "row": 18,
+      "col": 21,
+      "igual": true
+    },
+    {
+      "sheet": "INVOCAÇÕES",
+      "row": 18,
+      "col": 22,
+      "igual": true
+    },
+    {
+      "sheet": "INVOCAÇÕES",
+      "row": 26,
+      "col": 18,
+      "igual": true
+    }
+  ],
+  "local": {
+    "montagem": 89,
+    "descanso": 66,
+    "socorro": 98,
+    "cura": 35,
+    "eventos": {
+      "total": 4,
+      "conformes": 2,
+      "divergentes": 2
+    }
+  },
+  "limites": [
+    "API não dispara onEdit",
+    "Eventos reais de colagem pendentes: navegador desativado",
+    "Montagem usa expectativas versionadas, não revisão integral da R66",
+    "Oficiais, jogador e PR31 intocados"
+  ]
+}

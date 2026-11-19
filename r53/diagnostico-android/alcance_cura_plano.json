@@ -1,0 +1,326 @@
+[
+  {
+    "aba": "FICHA AMALDIÇOADA",
+    "r": 81,
+    "c": 4,
+    "antes": "=IF('DADOS_R53'!$B$2=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$2,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$2),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$2+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),'DADOS_R53'!$EQ$2,'DADOS_R53'!$ES$2))",
+    "depois": "=IF('DADOS_R53'!$B$2=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$2,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$2),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$2+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),IF(OR('DADOS_R53'!$I$2,'DADOS_R53'!$J$2),LET(distdano,'DADOS_R53'!$EQ$2,distapoio,'DADOS_R53'!$ER$2,IF(AND('DADOS_R53'!$H$2,distdano<>distapoio),\"Dano \"&distdano&\" · \"&IF('DADOS_R53'!$I$2,IF('DADOS_R53'!$J$2,\"Cura/PV temp.\",\"Cura\"),\"PV temp.\")&\" \"&distapoio,distapoio)),'DADOS_R53'!$EQ$2),'DADOS_R53'!$ES$2))",
+    "cartao": "feitico.1",
+    "a1": "D81"
+  },
+  {
+    "aba": "FICHA AMALDIÇOADA",
+    "r": 81,
+    "c": 10,
+    "antes": "=IF('DADOS_R53'!$B$3=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$3,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$3),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$3+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),'DADOS_R53'!$EQ$3,'DADOS_R53'!$ES$3))",
+    "depois": "=IF('DADOS_R53'!$B$3=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$3,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$3),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$3+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),IF(OR('DADOS_R53'!$I$3,'DADOS_R53'!$J$3),LET(distdano,'DADOS_R53'!$EQ$3,distapoio,'DADOS_R53'!$ER$3,IF(AND('DADOS_R53'!$H$3,distdano<>distapoio),\"Dano \"&distdano&\" · \"&IF('DADOS_R53'!$I$3,IF('DADOS_R53'!$J$3,\"Cura/PV temp.\",\"Cura\"),\"PV temp.\")&\" \"&distapoio,distapoio)),'DADOS_R53'!$EQ$3),'DADOS_R53'!$ES$3))",
+    "cartao": "feitico.2",
+    "a1": "J81"
+  },
+  {
+    "aba": "FICHA AMALDIÇOADA",
+    "r": 81,
+    "c": 16,
+    "antes": "=IF('DADOS_R53'!$B$4=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$4,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$4),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$4+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),'DADOS_R53'!$EQ$4,'DADOS_R53'!$ES$4))",
+    "depois": "=IF('DADOS_R53'!$B$4=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$4,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$4),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$4+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),IF(OR('DADOS_R53'!$I$4,'DADOS_R53'!$J$4),LET(distdano,'DADOS_R53'!$EQ$4,distapoio,'DADOS_R53'!$ER$4,IF(AND('DADOS_R53'!$H$4,distdano<>distapoio),\"Dano \"&distdano&\" · \"&IF('DADOS_R53'!$I$4,IF('DADOS_R53'!$J$4,\"Cura/PV temp.\",\"Cura\"),\"PV temp.\")&\" \"&distapoio,distapoio)),'DADOS_R53'!$EQ$4),'DADOS_R53'!$ES$4))",
+    "cartao": "feitico.3",
+    "a1": "P81"
+  },
+  {
+    "aba": "FICHA AMALDIÇOADA",
+    "r": 102,
+    "c": 4,
+    "antes": "=IF('DADOS_R53'!$B$5=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$5,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$5),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$5+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),'DADOS_R53'!$EQ$5,'DADOS_R53'!$ES$5))",
+    "depois": "=IF('DADOS_R53'!$B$5=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$5,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$5),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$5+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),IF(OR('DADOS_R53'!$I$5,'DADOS_R53'!$J$5),LET(distdano,'DADOS_R53'!$EQ$5,distapoio,'DADOS_R53'!$ER$5,IF(AND('DADOS_R53'!$H$5,distdano<>distapoio),\"Dano \"&distdano&\" · \"&IF('DADOS_R53'!$I$5,IF('DADOS_R53'!$J$5,\"Cura/PV temp.\",\"Cura\"),\"PV temp.\")&\" \"&distapoio,distapoio)),'DADOS_R53'!$EQ$5),'DADOS_R53'!$ES$5))",
+    "cartao": "feitico.4",
+    "a1": "D102"
+  },
+  {
+    "aba": "FICHA AMALDIÇOADA",
+    "r": 102,
+    "c": 10,
+    "antes": "=IF('DADOS_R53'!$B$6=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$6,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$6),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$6+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),'DADOS_R53'!$EQ$6,'DADOS_R53'!$ES$6))",
+    "depois": "=IF('DADOS_R53'!$B$6=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$6,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$6),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$6+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),IF(OR('DADOS_R53'!$I$6,'DADOS_R53'!$J$6),LET(distdano,'DADOS_R53'!$EQ$6,distapoio,'DADOS_R53'!$ER$6,IF(AND('DADOS_R53'!$H$6,distdano<>distapoio),\"Dano \"&distdano&\" · \"&IF('DADOS_R53'!$I$6,IF('DADOS_R53'!$J$6,\"Cura/PV temp.\",\"Cura\"),\"PV temp.\")&\" \"&distapoio,distapoio)),'DADOS_R53'!$EQ$6),'DADOS_R53'!$ES$6))",
+    "cartao": "feitico.5",
+    "a1": "J102"
+  },
+  {
+    "aba": "FICHA AMALDIÇOADA",
+    "r": 102,
+    "c": 16,
+    "antes": "=IF('DADOS_R53'!$B$7=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$7,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$7),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$7+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),'DADOS_R53'!$EQ$7,'DADOS_R53'!$ES$7))",
+    "depois": "=IF('DADOS_R53'!$B$7=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$7,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$7),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$7+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),IF(OR('DADOS_R53'!$I$7,'DADOS_R53'!$J$7),LET(distdano,'DADOS_R53'!$EQ$7,distapoio,'DADOS_R53'!$ER$7,IF(AND('DADOS_R53'!$H$7,distdano<>distapoio),\"Dano \"&distdano&\" · \"&IF('DADOS_R53'!$I$7,IF('DADOS_R53'!$J$7,\"Cura/PV temp.\",\"Cura\"),\"PV temp.\")&\" \"&distapoio,distapoio)),'DADOS_R53'!$EQ$7),'DADOS_R53'!$ES$7))",
+    "cartao": "feitico.6",
+    "a1": "P102"
+  },
+  {
+    "aba": "FICHA AMALDIÇOADA",
+    "r": 123,
+    "c": 4,
+    "antes": "=IF('DADOS_R53'!$B$8=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$8,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$8),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$8+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),'DADOS_R53'!$EQ$8,'DADOS_R53'!$ES$8))",
+    "depois": "=IF('DADOS_R53'!$B$8=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$8,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$8),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$8+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),IF(OR('DADOS_R53'!$I$8,'DADOS_R53'!$J$8),LET(distdano,'DADOS_R53'!$EQ$8,distapoio,'DADOS_R53'!$ER$8,IF(AND('DADOS_R53'!$H$8,distdano<>distapoio),\"Dano \"&distdano&\" · \"&IF('DADOS_R53'!$I$8,IF('DADOS_R53'!$J$8,\"Cura/PV temp.\",\"Cura\"),\"PV temp.\")&\" \"&distapoio,distapoio)),'DADOS_R53'!$EQ$8),'DADOS_R53'!$ES$8))",
+    "cartao": "feitico.7",
+    "a1": "D123"
+  },
+  {
+    "aba": "FICHA AMALDIÇOADA",
+    "r": 123,
+    "c": 10,
+    "antes": "=IF('DADOS_R53'!$B$9=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$9,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$9),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$9+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),'DADOS_R53'!$EQ$9,'DADOS_R53'!$ES$9))",
+    "depois": "=IF('DADOS_R53'!$B$9=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$9,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$9),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$9+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),IF(OR('DADOS_R53'!$I$9,'DADOS_R53'!$J$9),LET(distdano,'DADOS_R53'!$EQ$9,distapoio,'DADOS_R53'!$ER$9,IF(AND('DADOS_R53'!$H$9,distdano<>distapoio),\"Dano \"&distdano&\" · \"&IF('DADOS_R53'!$I$9,IF('DADOS_R53'!$J$9,\"Cura/PV temp.\",\"Cura\"),\"PV temp.\")&\" \"&distapoio,distapoio)),'DADOS_R53'!$EQ$9),'DADOS_R53'!$ES$9))",
+    "cartao": "feitico.8",
+    "a1": "J123"
+  },
+  {
+    "aba": "FICHA AMALDIÇOADA",
+    "r": 123,
+    "c": 16,
+    "antes": "=IF('DADOS_R53'!$B$10=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$10,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$10),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$10+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),'DADOS_R53'!$EQ$10,'DADOS_R53'!$ES$10))",
+    "depois": "=IF('DADOS_R53'!$B$10=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$10,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$10),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$10+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),IF(OR('DADOS_R53'!$I$10,'DADOS_R53'!$J$10),LET(distdano,'DADOS_R53'!$EQ$10,distapoio,'DADOS_R53'!$ER$10,IF(AND('DADOS_R53'!$H$10,distdano<>distapoio),\"Dano \"&distdano&\" · \"&IF('DADOS_R53'!$I$10,IF('DADOS_R53'!$J$10,\"Cura/PV temp.\",\"Cura\"),\"PV temp.\")&\" \"&distapoio,distapoio)),'DADOS_R53'!$EQ$10),'DADOS_R53'!$ES$10))",
+    "cartao": "feitico.9",
+    "a1": "P123"
+  },
+  {
+    "aba": "FICHA AMALDIÇOADA",
+    "r": 144,
+    "c": 4,
+    "antes": "=IF('DADOS_R53'!$B$11=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$11,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$11),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$11+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),'DADOS_R53'!$EQ$11,'DADOS_R53'!$ES$11))",
+    "depois": "=IF('DADOS_R53'!$B$11=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$11,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$11),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$11+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),IF(OR('DADOS_R53'!$I$11,'DADOS_R53'!$J$11),LET(distdano,'DADOS_R53'!$EQ$11,distapoio,'DADOS_R53'!$ER$11,IF(AND('DADOS_R53'!$H$11,distdano<>distapoio),\"Dano \"&distdano&\" · \"&IF('DADOS_R53'!$I$11,IF('DADOS_R53'!$J$11,\"Cura/PV temp.\",\"Cura\"),\"PV temp.\")&\" \"&distapoio,distapoio)),'DADOS_R53'!$EQ$11),'DADOS_R53'!$ES$11))",
+    "cartao": "feitico.10",
+    "a1": "D144"
+  },
+  {
+    "aba": "FICHA AMALDIÇOADA",
+    "r": 144,
+    "c": 10,
+    "antes": "=IF('DADOS_R53'!$B$12=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$12,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$12),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$12+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),'DADOS_R53'!$EQ$12,'DADOS_R53'!$ES$12))",
+    "depois": "=IF('DADOS_R53'!$B$12=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$12,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$12),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$12+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),IF(OR('DADOS_R53'!$I$12,'DADOS_R53'!$J$12),LET(distdano,'DADOS_R53'!$EQ$12,distapoio,'DADOS_R53'!$ER$12,IF(AND('DADOS_R53'!$H$12,distdano<>distapoio),\"Dano \"&distdano&\" · \"&IF('DADOS_R53'!$I$12,IF('DADOS_R53'!$J$12,\"Cura/PV temp.\",\"Cura\"),\"PV temp.\")&\" \"&distapoio,distapoio)),'DADOS_R53'!$EQ$12),'DADOS_R53'!$ES$12))",
+    "cartao": "feitico.11",
+    "a1": "J144"
+  },
+  {
+    "aba": "FICHA AMALDIÇOADA",
+    "r": 144,
+    "c": 16,
+    "antes": "=IF('DADOS_R53'!$B$13=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$13,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$13),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$13+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),'DADOS_R53'!$EQ$13,'DADOS_R53'!$ES$13))",
+    "depois": "=IF('DADOS_R53'!$B$13=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$13,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$13),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$13+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),IF(OR('DADOS_R53'!$I$13,'DADOS_R53'!$J$13),LET(distdano,'DADOS_R53'!$EQ$13,distapoio,'DADOS_R53'!$ER$13,IF(AND('DADOS_R53'!$H$13,distdano<>distapoio),\"Dano \"&distdano&\" · \"&IF('DADOS_R53'!$I$13,IF('DADOS_R53'!$J$13,\"Cura/PV temp.\",\"Cura\"),\"PV temp.\")&\" \"&distapoio,distapoio)),'DADOS_R53'!$EQ$13),'DADOS_R53'!$ES$13))",
+    "cartao": "feitico.12",
+    "a1": "P144"
+  },
+  {
+    "aba": "FICHA AMALDIÇOADA",
+    "r": 167,
+    "c": 4,
+    "antes": "=IF('DADOS_R53'!$B$14=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$14,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$14),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$14+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),'DADOS_R53'!$EQ$14,'DADOS_R53'!$ES$14))",
+    "depois": "=IF('DADOS_R53'!$B$14=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$14,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$14),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$14+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),IF(OR('DADOS_R53'!$I$14,'DADOS_R53'!$J$14),LET(distdano,'DADOS_R53'!$EQ$14,distapoio,'DADOS_R53'!$ER$14,IF(AND('DADOS_R53'!$H$14,distdano<>distapoio),\"Dano \"&distdano&\" · \"&IF('DADOS_R53'!$I$14,IF('DADOS_R53'!$J$14,\"Cura/PV temp.\",\"Cura\"),\"PV temp.\")&\" \"&distapoio,distapoio)),'DADOS_R53'!$EQ$14),'DADOS_R53'!$ES$14))",
+    "cartao": "feitico.13",
+    "a1": "D167"
+  },
+  {
+    "aba": "FICHA AMALDIÇOADA",
+    "r": 167,
+    "c": 10,
+    "antes": "=IF('DADOS_R53'!$B$15=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$15,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$15),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$15+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),'DADOS_R53'!$EQ$15,'DADOS_R53'!$ES$15))",
+    "depois": "=IF('DADOS_R53'!$B$15=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$15,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$15),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$15+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),IF(OR('DADOS_R53'!$I$15,'DADOS_R53'!$J$15),LET(distdano,'DADOS_R53'!$EQ$15,distapoio,'DADOS_R53'!$ER$15,IF(AND('DADOS_R53'!$H$15,distdano<>distapoio),\"Dano \"&distdano&\" · \"&IF('DADOS_R53'!$I$15,IF('DADOS_R53'!$J$15,\"Cura/PV temp.\",\"Cura\"),\"PV temp.\")&\" \"&distapoio,distapoio)),'DADOS_R53'!$EQ$15),'DADOS_R53'!$ES$15))",
+    "cartao": "feitico.14",
+    "a1": "J167"
+  },
+  {
+    "aba": "FICHA AMALDIÇOADA",
+    "r": 167,
+    "c": 16,
+    "antes": "=IF('DADOS_R53'!$B$16=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$16,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$16),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$16+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),'DADOS_R53'!$EQ$16,'DADOS_R53'!$ES$16))",
+    "depois": "=IF('DADOS_R53'!$B$16=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$16,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$16),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$16+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),IF(OR('DADOS_R53'!$I$16,'DADOS_R53'!$J$16),LET(distdano,'DADOS_R53'!$EQ$16,distapoio,'DADOS_R53'!$ER$16,IF(AND('DADOS_R53'!$H$16,distdano<>distapoio),\"Dano \"&distdano&\" · \"&IF('DADOS_R53'!$I$16,IF('DADOS_R53'!$J$16,\"Cura/PV temp.\",\"Cura\"),\"PV temp.\")&\" \"&distapoio,distapoio)),'DADOS_R53'!$EQ$16),'DADOS_R53'!$ES$16))",
+    "cartao": "feitico.15",
+    "a1": "P167"
+  },
+  {
+    "aba": "FICHA AMALDIÇOADA",
+    "r": 188,
+    "c": 4,
+    "antes": "=IF('DADOS_R53'!$B$17=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$17,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$17),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$17+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),'DADOS_R53'!$EQ$17,'DADOS_R53'!$ES$17))",
+    "depois": "=IF('DADOS_R53'!$B$17=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$17,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$17),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$17+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),IF(OR('DADOS_R53'!$I$17,'DADOS_R53'!$J$17),LET(distdano,'DADOS_R53'!$EQ$17,distapoio,'DADOS_R53'!$ER$17,IF(AND('DADOS_R53'!$H$17,distdano<>distapoio),\"Dano \"&distdano&\" · \"&IF('DADOS_R53'!$I$17,IF('DADOS_R53'!$J$17,\"Cura/PV temp.\",\"Cura\"),\"PV temp.\")&\" \"&distapoio,distapoio)),'DADOS_R53'!$EQ$17),'DADOS_R53'!$ES$17))",
+    "cartao": "feitico.16",
+    "a1": "D188"
+  },
+  {
+    "aba": "FICHA AMALDIÇOADA",
+    "r": 188,
+    "c": 10,
+    "antes": "=IF('DADOS_R53'!$B$18=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$18,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$18),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$18+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),'DADOS_R53'!$EQ$18,'DADOS_R53'!$ES$18))",
+    "depois": "=IF('DADOS_R53'!$B$18=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$18,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$18),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$18+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),IF(OR('DADOS_R53'!$I$18,'DADOS_R53'!$J$18),LET(distdano,'DADOS_R53'!$EQ$18,distapoio,'DADOS_R53'!$ER$18,IF(AND('DADOS_R53'!$H$18,distdano<>distapoio),\"Dano \"&distdano&\" · \"&IF('DADOS_R53'!$I$18,IF('DADOS_R53'!$J$18,\"Cura/PV temp.\",\"Cura\"),\"PV temp.\")&\" \"&distapoio,distapoio)),'DADOS_R53'!$EQ$18),'DADOS_R53'!$ES$18))",
+    "cartao": "feitico.17",
+    "a1": "J188"
+  },
+  {
+    "aba": "FICHA AMALDIÇOADA",
+    "r": 188,
+    "c": 16,
+    "antes": "=IF('DADOS_R53'!$B$19=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$19,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$19),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$19+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),'DADOS_R53'!$EQ$19,'DADOS_R53'!$ES$19))",
+    "depois": "=IF('DADOS_R53'!$B$19=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$19,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$19),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$19+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),IF(OR('DADOS_R53'!$I$19,'DADOS_R53'!$J$19),LET(distdano,'DADOS_R53'!$EQ$19,distapoio,'DADOS_R53'!$ER$19,IF(AND('DADOS_R53'!$H$19,distdano<>distapoio),\"Dano \"&distdano&\" · \"&IF('DADOS_R53'!$I$19,IF('DADOS_R53'!$J$19,\"Cura/PV temp.\",\"Cura\"),\"PV temp.\")&\" \"&distapoio,distapoio)),'DADOS_R53'!$EQ$19),'DADOS_R53'!$ES$19))",
+    "cartao": "feitico.18",
+    "a1": "P188"
+  },
+  {
+    "aba": "FICHA AMALDIÇOADA",
+    "r": 209,
+    "c": 4,
+    "antes": "=IF('DADOS_R53'!$B$20=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$20,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$20),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$20+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),'DADOS_R53'!$EQ$20,'DADOS_R53'!$ES$20))",
+    "depois": "=IF('DADOS_R53'!$B$20=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$20,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$20),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$20+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),IF(OR('DADOS_R53'!$I$20,'DADOS_R53'!$J$20),LET(distdano,'DADOS_R53'!$EQ$20,distapoio,'DADOS_R53'!$ER$20,IF(AND('DADOS_R53'!$H$20,distdano<>distapoio),\"Dano \"&distdano&\" · \"&IF('DADOS_R53'!$I$20,IF('DADOS_R53'!$J$20,\"Cura/PV temp.\",\"Cura\"),\"PV temp.\")&\" \"&distapoio,distapoio)),'DADOS_R53'!$EQ$20),'DADOS_R53'!$ES$20))",
+    "cartao": "feitico.19",
+    "a1": "D209"
+  },
+  {
+    "aba": "FICHA AMALDIÇOADA",
+    "r": 209,
+    "c": 10,
+    "antes": "=IF('DADOS_R53'!$B$21=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$21,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$21),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$21+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),'DADOS_R53'!$EQ$21,'DADOS_R53'!$ES$21))",
+    "depois": "=IF('DADOS_R53'!$B$21=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$21,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$21),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$21+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),IF(OR('DADOS_R53'!$I$21,'DADOS_R53'!$J$21),LET(distdano,'DADOS_R53'!$EQ$21,distapoio,'DADOS_R53'!$ER$21,IF(AND('DADOS_R53'!$H$21,distdano<>distapoio),\"Dano \"&distdano&\" · \"&IF('DADOS_R53'!$I$21,IF('DADOS_R53'!$J$21,\"Cura/PV temp.\",\"Cura\"),\"PV temp.\")&\" \"&distapoio,distapoio)),'DADOS_R53'!$EQ$21),'DADOS_R53'!$ES$21))",
+    "cartao": "feitico.20",
+    "a1": "J209"
+  },
+  {
+    "aba": "FICHA AMALDIÇOADA",
+    "r": 209,
+    "c": 16,
+    "antes": "=IF('DADOS_R53'!$B$22=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$22,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$22),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$22+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),'DADOS_R53'!$EQ$22,'DADOS_R53'!$ES$22))",
+    "depois": "=IF('DADOS_R53'!$B$22=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$22,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$22),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$22+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),IF(OR('DADOS_R53'!$I$22,'DADOS_R53'!$J$22),LET(distdano,'DADOS_R53'!$EQ$22,distapoio,'DADOS_R53'!$ER$22,IF(AND('DADOS_R53'!$H$22,distdano<>distapoio),\"Dano \"&distdano&\" · \"&IF('DADOS_R53'!$I$22,IF('DADOS_R53'!$J$22,\"Cura/PV temp.\",\"Cura\"),\"PV temp.\")&\" \"&distapoio,distapoio)),'DADOS_R53'!$EQ$22),'DADOS_R53'!$ES$22))",
+    "cartao": "feitico.21",
+    "a1": "P209"
+  },
+  {
+    "aba": "FICHA AMALDIÇOADA",
+    "r": 230,
+    "c": 4,
+    "antes": "=IF('DADOS_R53'!$B$23=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$23,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$23),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$23+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),'DADOS_R53'!$EQ$23,'DADOS_R53'!$ES$23))",
+    "depois": "=IF('DADOS_R53'!$B$23=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$23,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$23),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$23+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),IF(OR('DADOS_R53'!$I$23,'DADOS_R53'!$J$23),LET(distdano,'DADOS_R53'!$EQ$23,distapoio,'DADOS_R53'!$ER$23,IF(AND('DADOS_R53'!$H$23,distdano<>distapoio),\"Dano \"&distdano&\" · \"&IF('DADOS_R53'!$I$23,IF('DADOS_R53'!$J$23,\"Cura/PV temp.\",\"Cura\"),\"PV temp.\")&\" \"&distapoio,distapoio)),'DADOS_R53'!$EQ$23),'DADOS_R53'!$ES$23))",
+    "cartao": "feitico.22",
+    "a1": "D230"
+  },
+  {
+    "aba": "FICHA AMALDIÇOADA",
+    "r": 230,
+    "c": 10,
+    "antes": "=IF('DADOS_R53'!$B$24=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$24,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$24),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$24+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),'DADOS_R53'!$EQ$24,'DADOS_R53'!$ES$24))",
+    "depois": "=IF('DADOS_R53'!$B$24=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$24,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$24),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$24+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),IF(OR('DADOS_R53'!$I$24,'DADOS_R53'!$J$24),LET(distdano,'DADOS_R53'!$EQ$24,distapoio,'DADOS_R53'!$ER$24,IF(AND('DADOS_R53'!$H$24,distdano<>distapoio),\"Dano \"&distdano&\" · \"&IF('DADOS_R53'!$I$24,IF('DADOS_R53'!$J$24,\"Cura/PV temp.\",\"Cura\"),\"PV temp.\")&\" \"&distapoio,distapoio)),'DADOS_R53'!$EQ$24),'DADOS_R53'!$ES$24))",
+    "cartao": "feitico.23",
+    "a1": "J230"
+  },
+  {
+    "aba": "FICHA AMALDIÇOADA",
+    "r": 230,
+    "c": 16,
+    "antes": "=IF('DADOS_R53'!$B$25=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$25,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$25),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$25+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),'DADOS_R53'!$EQ$25,'DADOS_R53'!$ES$25))",
+    "depois": "=IF('DADOS_R53'!$B$25=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$25,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$25),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$25+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),IF(OR('DADOS_R53'!$I$25,'DADOS_R53'!$J$25),LET(distdano,'DADOS_R53'!$EQ$25,distapoio,'DADOS_R53'!$ER$25,IF(AND('DADOS_R53'!$H$25,distdano<>distapoio),\"Dano \"&distdano&\" · \"&IF('DADOS_R53'!$I$25,IF('DADOS_R53'!$J$25,\"Cura/PV temp.\",\"Cura\"),\"PV temp.\")&\" \"&distapoio,distapoio)),'DADOS_R53'!$EQ$25),'DADOS_R53'!$ES$25))",
+    "cartao": "feitico.24",
+    "a1": "P230"
+  },
+  {
+    "aba": "FICHA AMALDIÇOADA",
+    "r": 253,
+    "c": 4,
+    "antes": "=IF('DADOS_R53'!$B$26=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$26,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$26),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$26+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),'DADOS_R53'!$EQ$26,'DADOS_R53'!$ES$26))",
+    "depois": "=IF('DADOS_R53'!$B$26=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$26,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$26),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$26+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),IF(OR('DADOS_R53'!$I$26,'DADOS_R53'!$J$26),LET(distdano,'DADOS_R53'!$EQ$26,distapoio,'DADOS_R53'!$ER$26,IF(AND('DADOS_R53'!$H$26,distdano<>distapoio),\"Dano \"&distdano&\" · \"&IF('DADOS_R53'!$I$26,IF('DADOS_R53'!$J$26,\"Cura/PV temp.\",\"Cura\"),\"PV temp.\")&\" \"&distapoio,distapoio)),'DADOS_R53'!$EQ$26),'DADOS_R53'!$ES$26))",
+    "cartao": "feitico.25",
+    "a1": "D253"
+  },
+  {
+    "aba": "FICHA AMALDIÇOADA",
+    "r": 253,
+    "c": 10,
+    "antes": "=IF('DADOS_R53'!$B$27=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$27,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$27),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$27+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),'DADOS_R53'!$EQ$27,'DADOS_R53'!$ES$27))",
+    "depois": "=IF('DADOS_R53'!$B$27=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$27,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$27),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$27+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),IF(OR('DADOS_R53'!$I$27,'DADOS_R53'!$J$27),LET(distdano,'DADOS_R53'!$EQ$27,distapoio,'DADOS_R53'!$ER$27,IF(AND('DADOS_R53'!$H$27,distdano<>distapoio),\"Dano \"&distdano&\" · \"&IF('DADOS_R53'!$I$27,IF('DADOS_R53'!$J$27,\"Cura/PV temp.\",\"Cura\"),\"PV temp.\")&\" \"&distapoio,distapoio)),'DADOS_R53'!$EQ$27),'DADOS_R53'!$ES$27))",
+    "cartao": "feitico.26",
+    "a1": "J253"
+  },
+  {
+    "aba": "FICHA AMALDIÇOADA",
+    "r": 253,
+    "c": 16,
+    "antes": "=IF('DADOS_R53'!$B$28=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$28,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$28),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$28+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),'DADOS_R53'!$EQ$28,'DADOS_R53'!$ES$28))",
+    "depois": "=IF('DADOS_R53'!$B$28=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$28,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$28),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$28+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),IF(OR('DADOS_R53'!$I$28,'DADOS_R53'!$J$28),LET(distdano,'DADOS_R53'!$EQ$28,distapoio,'DADOS_R53'!$ER$28,IF(AND('DADOS_R53'!$H$28,distdano<>distapoio),\"Dano \"&distdano&\" · \"&IF('DADOS_R53'!$I$28,IF('DADOS_R53'!$J$28,\"Cura/PV temp.\",\"Cura\"),\"PV temp.\")&\" \"&distapoio,distapoio)),'DADOS_R53'!$EQ$28),'DADOS_R53'!$ES$28))",
+    "cartao": "feitico.27",
+    "a1": "P253"
+  },
+  {
+    "aba": "FICHA AMALDIÇOADA",
+    "r": 274,
+    "c": 4,
+    "antes": "=IF('DADOS_R53'!$B$29=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$29,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$29),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$29+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),'DADOS_R53'!$EQ$29,'DADOS_R53'!$ES$29))",
+    "depois": "=IF('DADOS_R53'!$B$29=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$29,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$29),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$29+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),IF(OR('DADOS_R53'!$I$29,'DADOS_R53'!$J$29),LET(distdano,'DADOS_R53'!$EQ$29,distapoio,'DADOS_R53'!$ER$29,IF(AND('DADOS_R53'!$H$29,distdano<>distapoio),\"Dano \"&distdano&\" · \"&IF('DADOS_R53'!$I$29,IF('DADOS_R53'!$J$29,\"Cura/PV temp.\",\"Cura\"),\"PV temp.\")&\" \"&distapoio,distapoio)),'DADOS_R53'!$EQ$29),'DADOS_R53'!$ES$29))",
+    "cartao": "feitico.28",
+    "a1": "D274"
+  },
+  {
+    "aba": "FICHA AMALDIÇOADA",
+    "r": 274,
+    "c": 10,
+    "antes": "=IF('DADOS_R53'!$B$30=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$30,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$30),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$30+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),'DADOS_R53'!$EQ$30,'DADOS_R53'!$ES$30))",
+    "depois": "=IF('DADOS_R53'!$B$30=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$30,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$30),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$30+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),IF(OR('DADOS_R53'!$I$30,'DADOS_R53'!$J$30),LET(distdano,'DADOS_R53'!$EQ$30,distapoio,'DADOS_R53'!$ER$30,IF(AND('DADOS_R53'!$H$30,distdano<>distapoio),\"Dano \"&distdano&\" · \"&IF('DADOS_R53'!$I$30,IF('DADOS_R53'!$J$30,\"Cura/PV temp.\",\"Cura\"),\"PV temp.\")&\" \"&distapoio,distapoio)),'DADOS_R53'!$EQ$30),'DADOS_R53'!$ES$30))",
+    "cartao": "feitico.29",
+    "a1": "J274"
+  },
+  {
+    "aba": "FICHA AMALDIÇOADA",
+    "r": 274,
+    "c": 16,
+    "antes": "=IF('DADOS_R53'!$B$31=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$31,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$31),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$31+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),'DADOS_R53'!$EQ$31,'DADOS_R53'!$ES$31))",
+    "depois": "=IF('DADOS_R53'!$B$31=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$31,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$31),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$31+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),IF(OR('DADOS_R53'!$I$31,'DADOS_R53'!$J$31),LET(distdano,'DADOS_R53'!$EQ$31,distapoio,'DADOS_R53'!$ER$31,IF(AND('DADOS_R53'!$H$31,distdano<>distapoio),\"Dano \"&distdano&\" · \"&IF('DADOS_R53'!$I$31,IF('DADOS_R53'!$J$31,\"Cura/PV temp.\",\"Cura\"),\"PV temp.\")&\" \"&distapoio,distapoio)),'DADOS_R53'!$EQ$31),'DADOS_R53'!$ES$31))",
+    "cartao": "feitico.30",
+    "a1": "P274"
+  },
+  {
+    "aba": "FICHA AMALDIÇOADA",
+    "r": 295,
+    "c": 4,
+    "antes": "=IF('DADOS_R53'!$B$32=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$32,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$32),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$32+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),'DADOS_R53'!$EQ$32,'DADOS_R53'!$ES$32))",
+    "depois": "=IF('DADOS_R53'!$B$32=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$32,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$32),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$32+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),IF(OR('DADOS_R53'!$I$32,'DADOS_R53'!$J$32),LET(distdano,'DADOS_R53'!$EQ$32,distapoio,'DADOS_R53'!$ER$32,IF(AND('DADOS_R53'!$H$32,distdano<>distapoio),\"Dano \"&distdano&\" · \"&IF('DADOS_R53'!$I$32,IF('DADOS_R53'!$J$32,\"Cura/PV temp.\",\"Cura\"),\"PV temp.\")&\" \"&distapoio,distapoio)),'DADOS_R53'!$EQ$32),'DADOS_R53'!$ES$32))",
+    "cartao": "feitico.31",
+    "a1": "D295"
+  },
+  {
+    "aba": "FICHA AMALDIÇOADA",
+    "r": 295,
+    "c": 10,
+    "antes": "=IF('DADOS_R53'!$B$33=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$33,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$33),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$33+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),'DADOS_R53'!$EQ$33,'DADOS_R53'!$ES$33))",
+    "depois": "=IF('DADOS_R53'!$B$33=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$33,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$33),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$33+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),IF(OR('DADOS_R53'!$I$33,'DADOS_R53'!$J$33),LET(distdano,'DADOS_R53'!$EQ$33,distapoio,'DADOS_R53'!$ER$33,IF(AND('DADOS_R53'!$H$33,distdano<>distapoio),\"Dano \"&distdano&\" · \"&IF('DADOS_R53'!$I$33,IF('DADOS_R53'!$J$33,\"Cura/PV temp.\",\"Cura\"),\"PV temp.\")&\" \"&distapoio,distapoio)),'DADOS_R53'!$EQ$33),'DADOS_R53'!$ES$33))",
+    "cartao": "feitico.32",
+    "a1": "J295"
+  },
+  {
+    "aba": "FICHA AMALDIÇOADA",
+    "r": 295,
+    "c": 16,
+    "antes": "=IF('DADOS_R53'!$B$34=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$34,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$34),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$34+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),'DADOS_R53'!$EQ$34,'DADOS_R53'!$ES$34))",
+    "depois": "=IF('DADOS_R53'!$B$34=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$34,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$34),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$34+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),IF(OR('DADOS_R53'!$I$34,'DADOS_R53'!$J$34),LET(distdano,'DADOS_R53'!$EQ$34,distapoio,'DADOS_R53'!$ER$34,IF(AND('DADOS_R53'!$H$34,distdano<>distapoio),\"Dano \"&distdano&\" · \"&IF('DADOS_R53'!$I$34,IF('DADOS_R53'!$J$34,\"Cura/PV temp.\",\"Cura\"),\"PV temp.\")&\" \"&distapoio,distapoio)),'DADOS_R53'!$EQ$34),'DADOS_R53'!$ES$34))",
+    "cartao": "feitico.33",
+    "a1": "P295"
+  },
+  {
+    "aba": "FICHA AMALDIÇOADA",
+    "r": 316,
+    "c": 4,
+    "antes": "=IF('DADOS_R53'!$B$35=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$35,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$35),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$35+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),'DADOS_R53'!$EQ$35,'DADOS_R53'!$ES$35))",
+    "depois": "=IF('DADOS_R53'!$B$35=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$35,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$35),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$35+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),IF(OR('DADOS_R53'!$I$35,'DADOS_R53'!$J$35),LET(distdano,'DADOS_R53'!$EQ$35,distapoio,'DADOS_R53'!$ER$35,IF(AND('DADOS_R53'!$H$35,distdano<>distapoio),\"Dano \"&distdano&\" · \"&IF('DADOS_R53'!$I$35,IF('DADOS_R53'!$J$35,\"Cura/PV temp.\",\"Cura\"),\"PV temp.\")&\" \"&distapoio,distapoio)),'DADOS_R53'!$EQ$35),'DADOS_R53'!$ES$35))",
+    "cartao": "feitico.34",
+    "a1": "D316"
+  },
+  {
+    "aba": "FICHA AMALDIÇOADA",
+    "r": 316,
+    "c": 10,
+    "antes": "=IF('DADOS_R53'!$B$36=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$36,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$36),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$36+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),'DADOS_R53'!$EQ$36,'DADOS_R53'!$ES$36))",
+    "depois": "=IF('DADOS_R53'!$B$36=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$36,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$36),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$36+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),IF(OR('DADOS_R53'!$I$36,'DADOS_R53'!$J$36),LET(distdano,'DADOS_R53'!$EQ$36,distapoio,'DADOS_R53'!$ER$36,IF(AND('DADOS_R53'!$H$36,distdano<>distapoio),\"Dano \"&distdano&\" · \"&IF('DADOS_R53'!$I$36,IF('DADOS_R53'!$J$36,\"Cura/PV temp.\",\"Cura\"),\"PV temp.\")&\" \"&distapoio,distapoio)),'DADOS_R53'!$EQ$36),'DADOS_R53'!$ES$36))",
+    "cartao": "feitico.35",
+    "a1": "J316"
+  },
+  {
+    "aba": "FICHA AMALDIÇOADA",
+    "r": 316,
+    "c": 16,
+    "antes": "=IF('DADOS_R53'!$B$37=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$37,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$37),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$37+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),'DADOS_R53'!$EQ$37,'DADOS_R53'!$ES$37))",
+    "depois": "=IF('DADOS_R53'!$B$37=\"\",\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$FG$37,LET(estagio,IF(AND(ISNUMBER(FICHA!$D$34),ISNUMBER(FICHA!$J$34),FICHA!$J$34>0),IF(FICHA!$D$34<=0,4,IF(FICHA!$D$34<=FICHA!$J$34/4,3,IF(FICHA!$D$34<=FICHA!$J$34/2,2,IF(FICHA!$D$34<=FICHA!$J$34*3/4,1,0)))),0),classeuso,N(DADOS_R53!$C$37),tetouso,IF(N(FICHA!$Z$73)>=1,MAX(1,INT(N(FICHA!$Z$73)/2)),0),IF(estagio=4,\"Sem conjuração\",IF(AND(estagio=3,classeuso>tetouso),\"Acima do teto \"&tetouso,('DADOS_R53'!$DX$37+IF(estagio>=2,classeuso,0))&\" PE\"&IF(estagio=3,\" · Teto \"&tetouso,\"\")))),IF(OR('DADOS_R53'!$I$37,'DADOS_R53'!$J$37),LET(distdano,'DADOS_R53'!$EQ$37,distapoio,'DADOS_R53'!$ER$37,IF(AND('DADOS_R53'!$H$37,distdano<>distapoio),\"Dano \"&distdano&\" · \"&IF('DADOS_R53'!$I$37,IF('DADOS_R53'!$J$37,\"Cura/PV temp.\",\"Cura\"),\"PV temp.\")&\" \"&distapoio,distapoio)),'DADOS_R53'!$EQ$37),'DADOS_R53'!$ES$37))",
+    "cartao": "feitico.36",
+    "a1": "P316"
+  }
+]

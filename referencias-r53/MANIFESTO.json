@@ -26,9 +26,17 @@
       "bytes": 554671,
       "sha256": "42067cd6d5126500fc37293611c307d85b1f91a3c32b337eea982eecd62908c1"
     },
+    "ALTERACOES-R66-para-R67.json": {
+      "bytes": 33817,
+      "sha256": "4b5460d2bf5e4d1a779ea453edaa3e5f56da56f1aad0304275fb661f27f722cc"
+    },
+    "ALTERACOES-R67-para-R68.json": {
+      "bytes": 1707,
+      "sha256": "16681a1313b1f3fd04dd871464197bed7715fef7e19899481b04d8794b63155a"
+    },
     "BLOCOS-R53.json": {
-      "bytes": 1129262,
-      "sha256": "0bad21b6ca1eab1e9c233945d5dfab964619ad36e6ffd93f9e69423b8b16a94b"
+      "bytes": 1131402,
+      "sha256": "0d475c62cfe3d220a01f7a85f2c73027bf40af1cdaa935344d4033b008723eb9"
     },
     "CATALOGO-E-INTERFACES-R53.json": {
       "bytes": 378299,
@@ -54,5 +62,6 @@
       "bytes": 28196,
       "sha256": "7b38b37a4821a4776ee4f0f4667c51b6c170a207e59845acbe34ff7b4c757540"
     }
-  }
+  },
+  "atualizacao_parcial": "14/11/2026: os 4 blocos da Técnica Máxima (fundamento--maxima, fundamento--passagem, fundamento--retirada, campo--inv-maxima) estão no texto da v0.378 (R67); o resto continua R53. Registro em ALTERACOES-R66-para-R67.json. 14/11/2026 (R68, v0.379): nos blocos fundamento--controle e construcao--entidades-controle, só a frase do reforço de Controle da Técnica Máxima sem dano; registro em ALTERACOES-R67-para-R68.json."
 }

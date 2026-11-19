@@ -10,10 +10,10 @@ let bundle=context();for(const name of Object.keys(m.arquivos))vm.runInContext(f
 // Prova de autonomia antes de carregar qualquer arquivo legado.
 let standalone=vm.runInContext('r53Modulo_().__estado()',bundle);
 assert.strictEqual(hash(standalone.abas),expected);assert.strictEqual(standalone.geracao,gen);
-assert.deepStrictEqual(Array.from(standalone.sobras),[]);assert.strictEqual(standalone.editor.contextos.length,249);
+assert.deepStrictEqual(Array.from(standalone.sobras),[]);assert.strictEqual(standalone.editor.contextos.length,251);
 for(const name of m.geracao_arquivos.filter(n=>!m.arquivos[n]))vm.runInContext(fs.readFileSync(path.join(root,'apps-script',name),'utf8'),bundle);
 let state=vm.runInContext('r53Modulo_().__estado()',bundle);
-assert.strictEqual(hash(state.abas),expected);assert.strictEqual(state.geracao,gen);assert.deepStrictEqual(Array.from(state.sobras),[]);assert.strictEqual(state.editor.contextos.length,249);
+assert.strictEqual(hash(state.abas),expected);assert.strictEqual(state.geracao,gen);assert.deepStrictEqual(Array.from(state.sobras),[]);assert.strictEqual(state.editor.contextos.length,251);
 for(const name of m.entradas_publicas)assert.strictEqual(vm.runInContext('typeof '+name,bundle),'function');
 assert.strictEqual(vm.runInContext('r53Modulo_()===r53Modulo_()',bundle),true);
 // Um clique comum não carrega as tabelas; os dois comportamentos originais
@@ -35,12 +35,15 @@ let edits=0,loaded=0;fast.r53Editar_=()=>{edits++;return true;};fast.R53_MODULO_
 fast.salarioEditar_=()=>true;fast.onEdit({});assert.strictEqual(edits,1);assert.strictEqual(loaded,0);
 // Abrir a ficha sem uma troca de paleta pendente só registra os menus.
 // O módulo completo de regras não deve ser carregado nesse caminho.
-let menus=0,appearance=0;
+let menus=0,appearance=0,curas=0;
+fast.r53CuraMenu_=()=>{curas++;};
+assert.strictEqual(typeof bundle.aplicarCuraRecebida,'function');
+for(const name of ['registrarQueda','consumirRodadaSocorro','encerrarRegistroSocorro'])assert.strictEqual(typeof bundle[name],'function');
 fast.salarioAbrir_=()=>{menus++;};fast.r53Menu_=()=>{menus++;};
 fast.r53PaletaLeve_=()=>({continuar(){appearance++;}});
 fast.R53_MODULO_.onOpen=()=>{throw new Error('Abertura carregou regras pesadas');};
-pending=false;fast.onOpen({});assert.strictEqual(menus,2);assert.strictEqual(appearance,0);
-pending=true;fast.onOpen({});assert.strictEqual(menus,4);assert.strictEqual(appearance,1);
+pending=false;fast.onOpen({});assert.strictEqual(menus,2);assert.strictEqual(curas,1);assert.strictEqual(appearance,0);
+pending=true;fast.onOpen({});assert.strictEqual(menus,4);assert.strictEqual(curas,2);assert.strictEqual(appearance,1);
 for(const name of ['instalarSalarios','conferirSalarios','salarioDiario','ativarSalarioDiario','definirDataMissaoSalario'])assert.strictEqual(vm.runInContext('typeof '+name,bundle),'function');
 // Misturar/omitir uma parte deve falhar antes de executar a geração.
 let broken=context();for(const name of Object.keys(m.arquivos))vm.runInContext(fs.readFileSync(path.join(out,name),'utf8'),broken);

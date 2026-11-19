@@ -1,0 +1,1250 @@
+[
+  {
+    "aba": "INVOCAÇÕES",
+    "a1": "K47",
+    "antes": null,
+    "depois": {
+      "condition": {
+        "type": "ONE_OF_LIST",
+        "values": [
+          {
+            "userEnteredValue": "1"
+          },
+          {
+            "userEnteredValue": "2"
+          },
+          {
+            "userEnteredValue": "3"
+          },
+          {
+            "userEnteredValue": "4"
+          },
+          {
+            "userEnteredValue": "5"
+          },
+          {
+            "userEnteredValue": "6"
+          },
+          {
+            "userEnteredValue": "7"
+          },
+          {
+            "userEnteredValue": "8"
+          },
+          {
+            "userEnteredValue": "9"
+          },
+          {
+            "userEnteredValue": "10"
+          },
+          {
+            "userEnteredValue": "11"
+          },
+          {
+            "userEnteredValue": "12"
+          },
+          {
+            "userEnteredValue": "13"
+          },
+          {
+            "userEnteredValue": "14"
+          },
+          {
+            "userEnteredValue": "15"
+          },
+          {
+            "userEnteredValue": "16"
+          },
+          {
+            "userEnteredValue": "17"
+          },
+          {
+            "userEnteredValue": "18"
+          },
+          {
+            "userEnteredValue": "19"
+          },
+          {
+            "userEnteredValue": "20"
+          },
+          {
+            "userEnteredValue": "21"
+          },
+          {
+            "userEnteredValue": "22"
+          },
+          {
+            "userEnteredValue": "23"
+          },
+          {
+            "userEnteredValue": "24"
+          },
+          {
+            "userEnteredValue": "25"
+          },
+          {
+            "userEnteredValue": "26"
+          },
+          {
+            "userEnteredValue": "27"
+          },
+          {
+            "userEnteredValue": "28"
+          },
+          {
+            "userEnteredValue": "29"
+          },
+          {
+            "userEnteredValue": "30"
+          }
+        ]
+      },
+      "strict": true,
+      "showCustomUi": true
+    }
+  },
+  {
+    "aba": "INVOCAÇÕES",
+    "a1": "K278",
+    "antes": null,
+    "depois": {
+      "condition": {
+        "type": "ONE_OF_LIST",
+        "values": [
+          {
+            "userEnteredValue": "1"
+          },
+          {
+            "userEnteredValue": "2"
+          },
+          {
+            "userEnteredValue": "3"
+          },
+          {
+            "userEnteredValue": "4"
+          },
+          {
+            "userEnteredValue": "5"
+          },
+          {
+            "userEnteredValue": "6"
+          },
+          {
+            "userEnteredValue": "7"
+          },
+          {
+            "userEnteredValue": "8"
+          },
+          {
+            "userEnteredValue": "9"
+          },
+          {
+            "userEnteredValue": "10"
+          },
+          {
+            "userEnteredValue": "11"
+          },
+          {
+            "userEnteredValue": "12"
+          },
+          {
+            "userEnteredValue": "13"
+          },
+          {
+            "userEnteredValue": "14"
+          },
+          {
+            "userEnteredValue": "15"
+          },
+          {
+            "userEnteredValue": "16"
+          },
+          {
+            "userEnteredValue": "17"
+          },
+          {
+            "userEnteredValue": "18"
+          },
+          {
+            "userEnteredValue": "19"
+          },
+          {
+            "userEnteredValue": "20"
+          },
+          {
+            "userEnteredValue": "21"
+          },
+          {
+            "userEnteredValue": "22"
+          },
+          {
+            "userEnteredValue": "23"
+          },
+          {
+            "userEnteredValue": "24"
+          },
+          {
+            "userEnteredValue": "25"
+          },
+          {
+            "userEnteredValue": "26"
+          },
+          {
+            "userEnteredValue": "27"
+          },
+          {
+            "userEnteredValue": "28"
+          },
+          {
+            "userEnteredValue": "29"
+          },
+          {
+            "userEnteredValue": "30"
+          }
+        ]
+      },
+      "strict": true,
+      "showCustomUi": true
+    }
+  },
+  {
+    "aba": "INVOCAÇÕES",
+    "a1": "K509",
+    "antes": null,
+    "depois": {
+      "condition": {
+        "type": "ONE_OF_LIST",
+        "values": [
+          {
+            "userEnteredValue": "1"
+          },
+          {
+            "userEnteredValue": "2"
+          },
+          {
+            "userEnteredValue": "3"
+          },
+          {
+            "userEnteredValue": "4"
+          },
+          {
+            "userEnteredValue": "5"
+          },
+          {
+            "userEnteredValue": "6"
+          },
+          {
+            "userEnteredValue": "7"
+          },
+          {
+            "userEnteredValue": "8"
+          },
+          {
+            "userEnteredValue": "9"
+          },
+          {
+            "userEnteredValue": "10"
+          },
+          {
+            "userEnteredValue": "11"
+          },
+          {
+            "userEnteredValue": "12"
+          },
+          {
+            "userEnteredValue": "13"
+          },
+          {
+            "userEnteredValue": "14"
+          },
+          {
+            "userEnteredValue": "15"
+          },
+          {
+            "userEnteredValue": "16"
+          },
+          {
+            "userEnteredValue": "17"
+          },
+          {
+            "userEnteredValue": "18"
+          },
+          {
+            "userEnteredValue": "19"
+          },
+          {
+            "userEnteredValue": "20"
+          },
+          {
+            "userEnteredValue": "21"
+          },
+          {
+            "userEnteredValue": "22"
+          },
+          {
+            "userEnteredValue": "23"
+          },
+          {
+            "userEnteredValue": "24"
+          },
+          {
+            "userEnteredValue": "25"
+          },
+          {
+            "userEnteredValue": "26"
+          },
+          {
+            "userEnteredValue": "27"
+          },
+          {
+            "userEnteredValue": "28"
+          },
+          {
+            "userEnteredValue": "29"
+          },
+          {
+            "userEnteredValue": "30"
+          }
+        ]
+      },
+      "strict": true,
+      "showCustomUi": true
+    }
+  },
+  {
+    "aba": "INVOCAÇÕES",
+    "a1": "K740",
+    "antes": null,
+    "depois": {
+      "condition": {
+        "type": "ONE_OF_LIST",
+        "values": [
+          {
+            "userEnteredValue": "1"
+          },
+          {
+            "userEnteredValue": "2"
+          },
+          {
+            "userEnteredValue": "3"
+          },
+          {
+            "userEnteredValue": "4"
+          },
+          {
+            "userEnteredValue": "5"
+          },
+          {
+            "userEnteredValue": "6"
+          },
+          {
+            "userEnteredValue": "7"
+          },
+          {
+            "userEnteredValue": "8"
+          },
+          {
+            "userEnteredValue": "9"
+          },
+          {
+            "userEnteredValue": "10"
+          },
+          {
+            "userEnteredValue": "11"
+          },
+          {
+            "userEnteredValue": "12"
+          },
+          {
+            "userEnteredValue": "13"
+          },
+          {
+            "userEnteredValue": "14"
+          },
+          {
+            "userEnteredValue": "15"
+          },
+          {
+            "userEnteredValue": "16"
+          },
+          {
+            "userEnteredValue": "17"
+          },
+          {
+            "userEnteredValue": "18"
+          },
+          {
+            "userEnteredValue": "19"
+          },
+          {
+            "userEnteredValue": "20"
+          },
+          {
+            "userEnteredValue": "21"
+          },
+          {
+            "userEnteredValue": "22"
+          },
+          {
+            "userEnteredValue": "23"
+          },
+          {
+            "userEnteredValue": "24"
+          },
+          {
+            "userEnteredValue": "25"
+          },
+          {
+            "userEnteredValue": "26"
+          },
+          {
+            "userEnteredValue": "27"
+          },
+          {
+            "userEnteredValue": "28"
+          },
+          {
+            "userEnteredValue": "29"
+          },
+          {
+            "userEnteredValue": "30"
+          }
+        ]
+      },
+      "strict": true,
+      "showCustomUi": true
+    }
+  },
+  {
+    "aba": "INVOCAÇÕES",
+    "a1": "K971",
+    "antes": null,
+    "depois": {
+      "condition": {
+        "type": "ONE_OF_LIST",
+        "values": [
+          {
+            "userEnteredValue": "1"
+          },
+          {
+            "userEnteredValue": "2"
+          },
+          {
+            "userEnteredValue": "3"
+          },
+          {
+            "userEnteredValue": "4"
+          },
+          {
+            "userEnteredValue": "5"
+          },
+          {
+            "userEnteredValue": "6"
+          },
+          {
+            "userEnteredValue": "7"
+          },
+          {
+            "userEnteredValue": "8"
+          },
+          {
+            "userEnteredValue": "9"
+          },
+          {
+            "userEnteredValue": "10"
+          },
+          {
+            "userEnteredValue": "11"
+          },
+          {
+            "userEnteredValue": "12"
+          },
+          {
+            "userEnteredValue": "13"
+          },
+          {
+            "userEnteredValue": "14"
+          },
+          {
+            "userEnteredValue": "15"
+          },
+          {
+            "userEnteredValue": "16"
+          },
+          {
+            "userEnteredValue": "17"
+          },
+          {
+            "userEnteredValue": "18"
+          },
+          {
+            "userEnteredValue": "19"
+          },
+          {
+            "userEnteredValue": "20"
+          },
+          {
+            "userEnteredValue": "21"
+          },
+          {
+            "userEnteredValue": "22"
+          },
+          {
+            "userEnteredValue": "23"
+          },
+          {
+            "userEnteredValue": "24"
+          },
+          {
+            "userEnteredValue": "25"
+          },
+          {
+            "userEnteredValue": "26"
+          },
+          {
+            "userEnteredValue": "27"
+          },
+          {
+            "userEnteredValue": "28"
+          },
+          {
+            "userEnteredValue": "29"
+          },
+          {
+            "userEnteredValue": "30"
+          }
+        ]
+      },
+      "strict": true,
+      "showCustomUi": true
+    }
+  },
+  {
+    "aba": "INVOCAÇÕES",
+    "a1": "K1202",
+    "antes": null,
+    "depois": {
+      "condition": {
+        "type": "ONE_OF_LIST",
+        "values": [
+          {
+            "userEnteredValue": "1"
+          },
+          {
+            "userEnteredValue": "2"
+          },
+          {
+            "userEnteredValue": "3"
+          },
+          {
+            "userEnteredValue": "4"
+          },
+          {
+            "userEnteredValue": "5"
+          },
+          {
+            "userEnteredValue": "6"
+          },
+          {
+            "userEnteredValue": "7"
+          },
+          {
+            "userEnteredValue": "8"
+          },
+          {
+            "userEnteredValue": "9"
+          },
+          {
+            "userEnteredValue": "10"
+          },
+          {
+            "userEnteredValue": "11"
+          },
+          {
+            "userEnteredValue": "12"
+          },
+          {
+            "userEnteredValue": "13"
+          },
+          {
+            "userEnteredValue": "14"
+          },
+          {
+            "userEnteredValue": "15"
+          },
+          {
+            "userEnteredValue": "16"
+          },
+          {
+            "userEnteredValue": "17"
+          },
+          {
+            "userEnteredValue": "18"
+          },
+          {
+            "userEnteredValue": "19"
+          },
+          {
+            "userEnteredValue": "20"
+          },
+          {
+            "userEnteredValue": "21"
+          },
+          {
+            "userEnteredValue": "22"
+          },
+          {
+            "userEnteredValue": "23"
+          },
+          {
+            "userEnteredValue": "24"
+          },
+          {
+            "userEnteredValue": "25"
+          },
+          {
+            "userEnteredValue": "26"
+          },
+          {
+            "userEnteredValue": "27"
+          },
+          {
+            "userEnteredValue": "28"
+          },
+          {
+            "userEnteredValue": "29"
+          },
+          {
+            "userEnteredValue": "30"
+          }
+        ]
+      },
+      "strict": true,
+      "showCustomUi": true
+    }
+  },
+  {
+    "aba": "INVOCAÇÕES",
+    "a1": "AD47",
+    "antes": null,
+    "depois": {
+      "condition": {
+        "type": "ONE_OF_LIST",
+        "values": [
+          {
+            "userEnteredValue": "1"
+          },
+          {
+            "userEnteredValue": "2"
+          },
+          {
+            "userEnteredValue": "3"
+          },
+          {
+            "userEnteredValue": "4"
+          },
+          {
+            "userEnteredValue": "5"
+          },
+          {
+            "userEnteredValue": "6"
+          },
+          {
+            "userEnteredValue": "7"
+          },
+          {
+            "userEnteredValue": "8"
+          },
+          {
+            "userEnteredValue": "9"
+          },
+          {
+            "userEnteredValue": "10"
+          },
+          {
+            "userEnteredValue": "11"
+          },
+          {
+            "userEnteredValue": "12"
+          },
+          {
+            "userEnteredValue": "13"
+          },
+          {
+            "userEnteredValue": "14"
+          },
+          {
+            "userEnteredValue": "15"
+          },
+          {
+            "userEnteredValue": "16"
+          },
+          {
+            "userEnteredValue": "17"
+          },
+          {
+            "userEnteredValue": "18"
+          },
+          {
+            "userEnteredValue": "19"
+          },
+          {
+            "userEnteredValue": "20"
+          },
+          {
+            "userEnteredValue": "21"
+          },
+          {
+            "userEnteredValue": "22"
+          },
+          {
+            "userEnteredValue": "23"
+          },
+          {
+            "userEnteredValue": "24"
+          },
+          {
+            "userEnteredValue": "25"
+          },
+          {
+            "userEnteredValue": "26"
+          },
+          {
+            "userEnteredValue": "27"
+          },
+          {
+            "userEnteredValue": "28"
+          },
+          {
+            "userEnteredValue": "29"
+          },
+          {
+            "userEnteredValue": "30"
+          }
+        ]
+      },
+      "strict": true,
+      "showCustomUi": true
+    }
+  },
+  {
+    "aba": "INVOCAÇÕES",
+    "a1": "AD278",
+    "antes": null,
+    "depois": {
+      "condition": {
+        "type": "ONE_OF_LIST",
+        "values": [
+          {
+            "userEnteredValue": "1"
+          },
+          {
+            "userEnteredValue": "2"
+          },
+          {
+            "userEnteredValue": "3"
+          },
+          {
+            "userEnteredValue": "4"
+          },
+          {
+            "userEnteredValue": "5"
+          },
+          {
+            "userEnteredValue": "6"
+          },
+          {
+            "userEnteredValue": "7"
+          },
+          {
+            "userEnteredValue": "8"
+          },
+          {
+            "userEnteredValue": "9"
+          },
+          {
+            "userEnteredValue": "10"
+          },
+          {
+            "userEnteredValue": "11"
+          },
+          {
+            "userEnteredValue": "12"
+          },
+          {
+            "userEnteredValue": "13"
+          },
+          {
+            "userEnteredValue": "14"
+          },
+          {
+            "userEnteredValue": "15"
+          },
+          {
+            "userEnteredValue": "16"
+          },
+          {
+            "userEnteredValue": "17"
+          },
+          {
+            "userEnteredValue": "18"
+          },
+          {
+            "userEnteredValue": "19"
+          },
+          {
+            "userEnteredValue": "20"
+          },
+          {
+            "userEnteredValue": "21"
+          },
+          {
+            "userEnteredValue": "22"
+          },
+          {
+            "userEnteredValue": "23"
+          },
+          {
+            "userEnteredValue": "24"
+          },
+          {
+            "userEnteredValue": "25"
+          },
+          {
+            "userEnteredValue": "26"
+          },
+          {
+            "userEnteredValue": "27"
+          },
+          {
+            "userEnteredValue": "28"
+          },
+          {
+            "userEnteredValue": "29"
+          },
+          {
+            "userEnteredValue": "30"
+          }
+        ]
+      },
+      "strict": true,
+      "showCustomUi": true
+    }
+  },
+  {
+    "aba": "INVOCAÇÕES",
+    "a1": "AD509",
+    "antes": null,
+    "depois": {
+      "condition": {
+        "type": "ONE_OF_LIST",
+        "values": [
+          {
+            "userEnteredValue": "1"
+          },
+          {
+            "userEnteredValue": "2"
+          },
+          {
+            "userEnteredValue": "3"
+          },
+          {
+            "userEnteredValue": "4"
+          },
+          {
+            "userEnteredValue": "5"
+          },
+          {
+            "userEnteredValue": "6"
+          },
+          {
+            "userEnteredValue": "7"
+          },
+          {
+            "userEnteredValue": "8"
+          },
+          {
+            "userEnteredValue": "9"
+          },
+          {
+            "userEnteredValue": "10"
+          },
+          {
+            "userEnteredValue": "11"
+          },
+          {
+            "userEnteredValue": "12"
+          },
+          {
+            "userEnteredValue": "13"
+          },
+          {
+            "userEnteredValue": "14"
+          },
+          {
+            "userEnteredValue": "15"
+          },
+          {
+            "userEnteredValue": "16"
+          },
+          {
+            "userEnteredValue": "17"
+          },
+          {
+            "userEnteredValue": "18"
+          },
+          {
+            "userEnteredValue": "19"
+          },
+          {
+            "userEnteredValue": "20"
+          },
+          {
+            "userEnteredValue": "21"
+          },
+          {
+            "userEnteredValue": "22"
+          },
+          {
+            "userEnteredValue": "23"
+          },
+          {
+            "userEnteredValue": "24"
+          },
+          {
+            "userEnteredValue": "25"
+          },
+          {
+            "userEnteredValue": "26"
+          },
+          {
+            "userEnteredValue": "27"
+          },
+          {
+            "userEnteredValue": "28"
+          },
+          {
+            "userEnteredValue": "29"
+          },
+          {
+            "userEnteredValue": "30"
+          }
+        ]
+      },
+      "strict": true,
+      "showCustomUi": true
+    }
+  },
+  {
+    "aba": "INVOCAÇÕES",
+    "a1": "AD740",
+    "antes": null,
+    "depois": {
+      "condition": {
+        "type": "ONE_OF_LIST",
+        "values": [
+          {
+            "userEnteredValue": "1"
+          },
+          {
+            "userEnteredValue": "2"
+          },
+          {
+            "userEnteredValue": "3"
+          },
+          {
+            "userEnteredValue": "4"
+          },
+          {
+            "userEnteredValue": "5"
+          },
+          {
+            "userEnteredValue": "6"
+          },
+          {
+            "userEnteredValue": "7"
+          },
+          {
+            "userEnteredValue": "8"
+          },
+          {
+            "userEnteredValue": "9"
+          },
+          {
+            "userEnteredValue": "10"
+          },
+          {
+            "userEnteredValue": "11"
+          },
+          {
+            "userEnteredValue": "12"
+          },
+          {
+            "userEnteredValue": "13"
+          },
+          {
+            "userEnteredValue": "14"
+          },
+          {
+            "userEnteredValue": "15"
+          },
+          {
+            "userEnteredValue": "16"
+          },
+          {
+            "userEnteredValue": "17"
+          },
+          {
+            "userEnteredValue": "18"
+          },
+          {
+            "userEnteredValue": "19"
+          },
+          {
+            "userEnteredValue": "20"
+          },
+          {
+            "userEnteredValue": "21"
+          },
+          {
+            "userEnteredValue": "22"
+          },
+          {
+            "userEnteredValue": "23"
+          },
+          {
+            "userEnteredValue": "24"
+          },
+          {
+            "userEnteredValue": "25"
+          },
+          {
+            "userEnteredValue": "26"
+          },
+          {
+            "userEnteredValue": "27"
+          },
+          {
+            "userEnteredValue": "28"
+          },
+          {
+            "userEnteredValue": "29"
+          },
+          {
+            "userEnteredValue": "30"
+          }
+        ]
+      },
+      "strict": true,
+      "showCustomUi": true
+    }
+  },
+  {
+    "aba": "INVOCAÇÕES",
+    "a1": "AD971",
+    "antes": null,
+    "depois": {
+      "condition": {
+        "type": "ONE_OF_LIST",
+        "values": [
+          {
+            "userEnteredValue": "1"
+          },
+          {
+            "userEnteredValue": "2"
+          },
+          {
+            "userEnteredValue": "3"
+          },
+          {
+            "userEnteredValue": "4"
+          },
+          {
+            "userEnteredValue": "5"
+          },
+          {
+            "userEnteredValue": "6"
+          },
+          {
+            "userEnteredValue": "7"
+          },
+          {
+            "userEnteredValue": "8"
+          },
+          {
+            "userEnteredValue": "9"
+          },
+          {
+            "userEnteredValue": "10"
+          },
+          {
+            "userEnteredValue": "11"
+          },
+          {
+            "userEnteredValue": "12"
+          },
+          {
+            "userEnteredValue": "13"
+          },
+          {
+            "userEnteredValue": "14"
+          },
+          {
+            "userEnteredValue": "15"
+          },
+          {
+            "userEnteredValue": "16"
+          },
+          {
+            "userEnteredValue": "17"
+          },
+          {
+            "userEnteredValue": "18"
+          },
+          {
+            "userEnteredValue": "19"
+          },
+          {
+            "userEnteredValue": "20"
+          },
+          {
+            "userEnteredValue": "21"
+          },
+          {
+            "userEnteredValue": "22"
+          },
+          {
+            "userEnteredValue": "23"
+          },
+          {
+            "userEnteredValue": "24"
+          },
+          {
+            "userEnteredValue": "25"
+          },
+          {
+            "userEnteredValue": "26"
+          },
+          {
+            "userEnteredValue": "27"
+          },
+          {
+            "userEnteredValue": "28"
+          },
+          {
+            "userEnteredValue": "29"
+          },
+          {
+            "userEnteredValue": "30"
+          }
+        ]
+      },
+      "strict": true,
+      "showCustomUi": true
+    }
+  },
+  {
+    "aba": "INVOCAÇÕES",
+    "a1": "AD1202",
+    "antes": null,
+    "depois": {
+      "condition": {
+        "type": "ONE_OF_LIST",
+        "values": [
+          {
+            "userEnteredValue": "1"
+          },
+          {
+            "userEnteredValue": "2"
+          },
+          {
+            "userEnteredValue": "3"
+          },
+          {
+            "userEnteredValue": "4"
+          },
+          {
+            "userEnteredValue": "5"
+          },
+          {
+            "userEnteredValue": "6"
+          },
+          {
+            "userEnteredValue": "7"
+          },
+          {
+            "userEnteredValue": "8"
+          },
+          {
+            "userEnteredValue": "9"
+          },
+          {
+            "userEnteredValue": "10"
+          },
+          {
+            "userEnteredValue": "11"
+          },
+          {
+            "userEnteredValue": "12"
+          },
+          {
+            "userEnteredValue": "13"
+          },
+          {
+            "userEnteredValue": "14"
+          },
+          {
+            "userEnteredValue": "15"
+          },
+          {
+            "userEnteredValue": "16"
+          },
+          {
+            "userEnteredValue": "17"
+          },
+          {
+            "userEnteredValue": "18"
+          },
+          {
+            "userEnteredValue": "19"
+          },
+          {
+            "userEnteredValue": "20"
+          },
+          {
+            "userEnteredValue": "21"
+          },
+          {
+            "userEnteredValue": "22"
+          },
+          {
+            "userEnteredValue": "23"
+          },
+          {
+            "userEnteredValue": "24"
+          },
+          {
+            "userEnteredValue": "25"
+          },
+          {
+            "userEnteredValue": "26"
+          },
+          {
+            "userEnteredValue": "27"
+          },
+          {
+            "userEnteredValue": "28"
+          },
+          {
+            "userEnteredValue": "29"
+          },
+          {
+            "userEnteredValue": "30"
+          }
+        ]
+      },
+      "strict": true,
+      "showCustomUi": true
+    }
+  }
+]

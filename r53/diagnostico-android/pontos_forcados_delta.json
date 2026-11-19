@@ -1,0 +1,86 @@
+[
+  {
+    "aba": "DADOS_INVOC",
+    "r": 2,
+    "c": 220,
+    "antes": "=IF(OR($FW2>$FX2,$FZ2>$FY2),\"⚠ \",IF(AND($FM2=1,$FW2<$FX2),\"! \",\"\"))&\"ATRIBUTOS · \"&$FW2&\" DE \"&$FX2&\" PONTOS\"&IF($FZ2>$FY2,\" · ACIMA DE 3 SÓ COM MARCO\",\"\")",
+    "depois": "=IF(OR($FW2>$FX2,$FZ2>$FY2,OR($DJ2<0,$DJ2>6,$DJ2<>INT($DJ2),$DK2<0,$DK2>6,$DK2<>INT($DK2),$DL2<0,$DL2>6,$DL2<>INT($DL2),$DM2<0,$DM2>6,$DM2<>INT($DM2),$DN2<0,$DN2>6,$DN2<>INT($DN2))),\"⚠ \",IF(AND($FM2=1,$FW2<$FX2),\"! \",\"\"))&\"ATRIBUTOS · \"&$FW2&\" DE \"&$FX2&\" PONTOS\"&IF($FZ2>$FY2,\" · ACIMA DE 3 SÓ COM MARCO\",\"\")&IF(OR($DJ2<0,$DJ2>6,$DJ2<>INT($DJ2),$DK2<0,$DK2>6,$DK2<>INT($DK2),$DL2<0,$DL2>6,$DL2<>INT($DL2),$DM2<0,$DM2>6,$DM2<>INT($DM2),$DN2<0,$DN2>6,$DN2<>INT($DN2)),\" · PONTO FORA DE 0 A 6\",\"\")"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 3,
+    "c": 220,
+    "antes": "=IF(OR($FW3>$FX3,$FZ3>$FY3),\"⚠ \",IF(AND($FM3=1,$FW3<$FX3),\"! \",\"\"))&\"ATRIBUTOS · \"&$FW3&\" DE \"&$FX3&\" PONTOS\"&IF($FZ3>$FY3,\" · ACIMA DE 3 SÓ COM MARCO\",\"\")",
+    "depois": "=IF(OR($FW3>$FX3,$FZ3>$FY3,OR($DJ3<0,$DJ3>6,$DJ3<>INT($DJ3),$DK3<0,$DK3>6,$DK3<>INT($DK3),$DL3<0,$DL3>6,$DL3<>INT($DL3),$DM3<0,$DM3>6,$DM3<>INT($DM3),$DN3<0,$DN3>6,$DN3<>INT($DN3))),\"⚠ \",IF(AND($FM3=1,$FW3<$FX3),\"! \",\"\"))&\"ATRIBUTOS · \"&$FW3&\" DE \"&$FX3&\" PONTOS\"&IF($FZ3>$FY3,\" · ACIMA DE 3 SÓ COM MARCO\",\"\")&IF(OR($DJ3<0,$DJ3>6,$DJ3<>INT($DJ3),$DK3<0,$DK3>6,$DK3<>INT($DK3),$DL3<0,$DL3>6,$DL3<>INT($DL3),$DM3<0,$DM3>6,$DM3<>INT($DM3),$DN3<0,$DN3>6,$DN3<>INT($DN3)),\" · PONTO FORA DE 0 A 6\",\"\")"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 4,
+    "c": 220,
+    "antes": "=IF(OR($FW4>$FX4,$FZ4>$FY4),\"⚠ \",IF(AND($FM4=1,$FW4<$FX4),\"! \",\"\"))&\"ATRIBUTOS · \"&$FW4&\" DE \"&$FX4&\" PONTOS\"&IF($FZ4>$FY4,\" · ACIMA DE 3 SÓ COM MARCO\",\"\")",
+    "depois": "=IF(OR($FW4>$FX4,$FZ4>$FY4,OR($DJ4<0,$DJ4>6,$DJ4<>INT($DJ4),$DK4<0,$DK4>6,$DK4<>INT($DK4),$DL4<0,$DL4>6,$DL4<>INT($DL4),$DM4<0,$DM4>6,$DM4<>INT($DM4),$DN4<0,$DN4>6,$DN4<>INT($DN4))),\"⚠ \",IF(AND($FM4=1,$FW4<$FX4),\"! \",\"\"))&\"ATRIBUTOS · \"&$FW4&\" DE \"&$FX4&\" PONTOS\"&IF($FZ4>$FY4,\" · ACIMA DE 3 SÓ COM MARCO\",\"\")&IF(OR($DJ4<0,$DJ4>6,$DJ4<>INT($DJ4),$DK4<0,$DK4>6,$DK4<>INT($DK4),$DL4<0,$DL4>6,$DL4<>INT($DL4),$DM4<0,$DM4>6,$DM4<>INT($DM4),$DN4<0,$DN4>6,$DN4<>INT($DN4)),\" · PONTO FORA DE 0 A 6\",\"\")"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 5,
+    "c": 220,
+    "antes": "=IF(OR($FW5>$FX5,$FZ5>$FY5),\"⚠ \",IF(AND($FM5=1,$FW5<$FX5),\"! \",\"\"))&\"ATRIBUTOS · \"&$FW5&\" DE \"&$FX5&\" PONTOS\"&IF($FZ5>$FY5,\" · ACIMA DE 3 SÓ COM MARCO\",\"\")",
+    "depois": "=IF(OR($FW5>$FX5,$FZ5>$FY5,OR($DJ5<0,$DJ5>6,$DJ5<>INT($DJ5),$DK5<0,$DK5>6,$DK5<>INT($DK5),$DL5<0,$DL5>6,$DL5<>INT($DL5),$DM5<0,$DM5>6,$DM5<>INT($DM5),$DN5<0,$DN5>6,$DN5<>INT($DN5))),\"⚠ \",IF(AND($FM5=1,$FW5<$FX5),\"! \",\"\"))&\"ATRIBUTOS · \"&$FW5&\" DE \"&$FX5&\" PONTOS\"&IF($FZ5>$FY5,\" · ACIMA DE 3 SÓ COM MARCO\",\"\")&IF(OR($DJ5<0,$DJ5>6,$DJ5<>INT($DJ5),$DK5<0,$DK5>6,$DK5<>INT($DK5),$DL5<0,$DL5>6,$DL5<>INT($DL5),$DM5<0,$DM5>6,$DM5<>INT($DM5),$DN5<0,$DN5>6,$DN5<>INT($DN5)),\" · PONTO FORA DE 0 A 6\",\"\")"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 6,
+    "c": 220,
+    "antes": "=IF(OR($FW6>$FX6,$FZ6>$FY6),\"⚠ \",IF(AND($FM6=1,$FW6<$FX6),\"! \",\"\"))&\"ATRIBUTOS · \"&$FW6&\" DE \"&$FX6&\" PONTOS\"&IF($FZ6>$FY6,\" · ACIMA DE 3 SÓ COM MARCO\",\"\")",
+    "depois": "=IF(OR($FW6>$FX6,$FZ6>$FY6,OR($DJ6<0,$DJ6>6,$DJ6<>INT($DJ6),$DK6<0,$DK6>6,$DK6<>INT($DK6),$DL6<0,$DL6>6,$DL6<>INT($DL6),$DM6<0,$DM6>6,$DM6<>INT($DM6),$DN6<0,$DN6>6,$DN6<>INT($DN6))),\"⚠ \",IF(AND($FM6=1,$FW6<$FX6),\"! \",\"\"))&\"ATRIBUTOS · \"&$FW6&\" DE \"&$FX6&\" PONTOS\"&IF($FZ6>$FY6,\" · ACIMA DE 3 SÓ COM MARCO\",\"\")&IF(OR($DJ6<0,$DJ6>6,$DJ6<>INT($DJ6),$DK6<0,$DK6>6,$DK6<>INT($DK6),$DL6<0,$DL6>6,$DL6<>INT($DL6),$DM6<0,$DM6>6,$DM6<>INT($DM6),$DN6<0,$DN6>6,$DN6<>INT($DN6)),\" · PONTO FORA DE 0 A 6\",\"\")"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 7,
+    "c": 220,
+    "antes": "=IF(OR($FW7>$FX7,$FZ7>$FY7),\"⚠ \",IF(AND($FM7=1,$FW7<$FX7),\"! \",\"\"))&\"ATRIBUTOS · \"&$FW7&\" DE \"&$FX7&\" PONTOS\"&IF($FZ7>$FY7,\" · ACIMA DE 3 SÓ COM MARCO\",\"\")",
+    "depois": "=IF(OR($FW7>$FX7,$FZ7>$FY7,OR($DJ7<0,$DJ7>6,$DJ7<>INT($DJ7),$DK7<0,$DK7>6,$DK7<>INT($DK7),$DL7<0,$DL7>6,$DL7<>INT($DL7),$DM7<0,$DM7>6,$DM7<>INT($DM7),$DN7<0,$DN7>6,$DN7<>INT($DN7))),\"⚠ \",IF(AND($FM7=1,$FW7<$FX7),\"! \",\"\"))&\"ATRIBUTOS · \"&$FW7&\" DE \"&$FX7&\" PONTOS\"&IF($FZ7>$FY7,\" · ACIMA DE 3 SÓ COM MARCO\",\"\")&IF(OR($DJ7<0,$DJ7>6,$DJ7<>INT($DJ7),$DK7<0,$DK7>6,$DK7<>INT($DK7),$DL7<0,$DL7>6,$DL7<>INT($DL7),$DM7<0,$DM7>6,$DM7<>INT($DM7),$DN7<0,$DN7>6,$DN7<>INT($DN7)),\" · PONTO FORA DE 0 A 6\",\"\")"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 8,
+    "c": 220,
+    "antes": "=IF(OR($FW8>$FX8,$FZ8>$FY8),\"⚠ \",IF(AND($FM8=1,$FW8<$FX8),\"! \",\"\"))&\"ATRIBUTOS · \"&$FW8&\" DE \"&$FX8&\" PONTOS\"&IF($FZ8>$FY8,\" · ACIMA DE 3 SÓ COM MARCO\",\"\")",
+    "depois": "=IF(OR($FW8>$FX8,$FZ8>$FY8,OR($DJ8<0,$DJ8>6,$DJ8<>INT($DJ8),$DK8<0,$DK8>6,$DK8<>INT($DK8),$DL8<0,$DL8>6,$DL8<>INT($DL8),$DM8<0,$DM8>6,$DM8<>INT($DM8),$DN8<0,$DN8>6,$DN8<>INT($DN8))),\"⚠ \",IF(AND($FM8=1,$FW8<$FX8),\"! \",\"\"))&\"ATRIBUTOS · \"&$FW8&\" DE \"&$FX8&\" PONTOS\"&IF($FZ8>$FY8,\" · ACIMA DE 3 SÓ COM MARCO\",\"\")&IF(OR($DJ8<0,$DJ8>6,$DJ8<>INT($DJ8),$DK8<0,$DK8>6,$DK8<>INT($DK8),$DL8<0,$DL8>6,$DL8<>INT($DL8),$DM8<0,$DM8>6,$DM8<>INT($DM8),$DN8<0,$DN8>6,$DN8<>INT($DN8)),\" · PONTO FORA DE 0 A 6\",\"\")"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 9,
+    "c": 220,
+    "antes": "=IF(OR($FW9>$FX9,$FZ9>$FY9),\"⚠ \",IF(AND($FM9=1,$FW9<$FX9),\"! \",\"\"))&\"ATRIBUTOS · \"&$FW9&\" DE \"&$FX9&\" PONTOS\"&IF($FZ9>$FY9,\" · ACIMA DE 3 SÓ COM MARCO\",\"\")",
+    "depois": "=IF(OR($FW9>$FX9,$FZ9>$FY9,OR($DJ9<0,$DJ9>6,$DJ9<>INT($DJ9),$DK9<0,$DK9>6,$DK9<>INT($DK9),$DL9<0,$DL9>6,$DL9<>INT($DL9),$DM9<0,$DM9>6,$DM9<>INT($DM9),$DN9<0,$DN9>6,$DN9<>INT($DN9))),\"⚠ \",IF(AND($FM9=1,$FW9<$FX9),\"! \",\"\"))&\"ATRIBUTOS · \"&$FW9&\" DE \"&$FX9&\" PONTOS\"&IF($FZ9>$FY9,\" · ACIMA DE 3 SÓ COM MARCO\",\"\")&IF(OR($DJ9<0,$DJ9>6,$DJ9<>INT($DJ9),$DK9<0,$DK9>6,$DK9<>INT($DK9),$DL9<0,$DL9>6,$DL9<>INT($DL9),$DM9<0,$DM9>6,$DM9<>INT($DM9),$DN9<0,$DN9>6,$DN9<>INT($DN9)),\" · PONTO FORA DE 0 A 6\",\"\")"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 10,
+    "c": 220,
+    "antes": "=IF(OR($FW10>$FX10,$FZ10>$FY10),\"⚠ \",IF(AND($FM10=1,$FW10<$FX10),\"! \",\"\"))&\"ATRIBUTOS · \"&$FW10&\" DE \"&$FX10&\" PONTOS\"&IF($FZ10>$FY10,\" · ACIMA DE 3 SÓ COM MARCO\",\"\")",
+    "depois": "=IF(OR($FW10>$FX10,$FZ10>$FY10,OR($DJ10<0,$DJ10>6,$DJ10<>INT($DJ10),$DK10<0,$DK10>6,$DK10<>INT($DK10),$DL10<0,$DL10>6,$DL10<>INT($DL10),$DM10<0,$DM10>6,$DM10<>INT($DM10),$DN10<0,$DN10>6,$DN10<>INT($DN10))),\"⚠ \",IF(AND($FM10=1,$FW10<$FX10),\"! \",\"\"))&\"ATRIBUTOS · \"&$FW10&\" DE \"&$FX10&\" PONTOS\"&IF($FZ10>$FY10,\" · ACIMA DE 3 SÓ COM MARCO\",\"\")&IF(OR($DJ10<0,$DJ10>6,$DJ10<>INT($DJ10),$DK10<0,$DK10>6,$DK10<>INT($DK10),$DL10<0,$DL10>6,$DL10<>INT($DL10),$DM10<0,$DM10>6,$DM10<>INT($DM10),$DN10<0,$DN10>6,$DN10<>INT($DN10)),\" · PONTO FORA DE 0 A 6\",\"\")"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 11,
+    "c": 220,
+    "antes": "=IF(OR($FW11>$FX11,$FZ11>$FY11),\"⚠ \",IF(AND($FM11=1,$FW11<$FX11),\"! \",\"\"))&\"ATRIBUTOS · \"&$FW11&\" DE \"&$FX11&\" PONTOS\"&IF($FZ11>$FY11,\" · ACIMA DE 3 SÓ COM MARCO\",\"\")",
+    "depois": "=IF(OR($FW11>$FX11,$FZ11>$FY11,OR($DJ11<0,$DJ11>6,$DJ11<>INT($DJ11),$DK11<0,$DK11>6,$DK11<>INT($DK11),$DL11<0,$DL11>6,$DL11<>INT($DL11),$DM11<0,$DM11>6,$DM11<>INT($DM11),$DN11<0,$DN11>6,$DN11<>INT($DN11))),\"⚠ \",IF(AND($FM11=1,$FW11<$FX11),\"! \",\"\"))&\"ATRIBUTOS · \"&$FW11&\" DE \"&$FX11&\" PONTOS\"&IF($FZ11>$FY11,\" · ACIMA DE 3 SÓ COM MARCO\",\"\")&IF(OR($DJ11<0,$DJ11>6,$DJ11<>INT($DJ11),$DK11<0,$DK11>6,$DK11<>INT($DK11),$DL11<0,$DL11>6,$DL11<>INT($DL11),$DM11<0,$DM11>6,$DM11<>INT($DM11),$DN11<0,$DN11>6,$DN11<>INT($DN11)),\" · PONTO FORA DE 0 A 6\",\"\")"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 12,
+    "c": 220,
+    "antes": "=IF(OR($FW12>$FX12,$FZ12>$FY12),\"⚠ \",IF(AND($FM12=1,$FW12<$FX12),\"! \",\"\"))&\"ATRIBUTOS · \"&$FW12&\" DE \"&$FX12&\" PONTOS\"&IF($FZ12>$FY12,\" · ACIMA DE 3 SÓ COM MARCO\",\"\")",
+    "depois": "=IF(OR($FW12>$FX12,$FZ12>$FY12,OR($DJ12<0,$DJ12>6,$DJ12<>INT($DJ12),$DK12<0,$DK12>6,$DK12<>INT($DK12),$DL12<0,$DL12>6,$DL12<>INT($DL12),$DM12<0,$DM12>6,$DM12<>INT($DM12),$DN12<0,$DN12>6,$DN12<>INT($DN12))),\"⚠ \",IF(AND($FM12=1,$FW12<$FX12),\"! \",\"\"))&\"ATRIBUTOS · \"&$FW12&\" DE \"&$FX12&\" PONTOS\"&IF($FZ12>$FY12,\" · ACIMA DE 3 SÓ COM MARCO\",\"\")&IF(OR($DJ12<0,$DJ12>6,$DJ12<>INT($DJ12),$DK12<0,$DK12>6,$DK12<>INT($DK12),$DL12<0,$DL12>6,$DL12<>INT($DL12),$DM12<0,$DM12>6,$DM12<>INT($DM12),$DN12<0,$DN12>6,$DN12<>INT($DN12)),\" · PONTO FORA DE 0 A 6\",\"\")"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 13,
+    "c": 220,
+    "antes": "=IF(OR($FW13>$FX13,$FZ13>$FY13),\"⚠ \",IF(AND($FM13=1,$FW13<$FX13),\"! \",\"\"))&\"ATRIBUTOS · \"&$FW13&\" DE \"&$FX13&\" PONTOS\"&IF($FZ13>$FY13,\" · ACIMA DE 3 SÓ COM MARCO\",\"\")",
+    "depois": "=IF(OR($FW13>$FX13,$FZ13>$FY13,OR($DJ13<0,$DJ13>6,$DJ13<>INT($DJ13),$DK13<0,$DK13>6,$DK13<>INT($DK13),$DL13<0,$DL13>6,$DL13<>INT($DL13),$DM13<0,$DM13>6,$DM13<>INT($DM13),$DN13<0,$DN13>6,$DN13<>INT($DN13))),\"⚠ \",IF(AND($FM13=1,$FW13<$FX13),\"! \",\"\"))&\"ATRIBUTOS · \"&$FW13&\" DE \"&$FX13&\" PONTOS\"&IF($FZ13>$FY13,\" · ACIMA DE 3 SÓ COM MARCO\",\"\")&IF(OR($DJ13<0,$DJ13>6,$DJ13<>INT($DJ13),$DK13<0,$DK13>6,$DK13<>INT($DK13),$DL13<0,$DL13>6,$DL13<>INT($DL13),$DM13<0,$DM13>6,$DM13<>INT($DM13),$DN13<0,$DN13>6,$DN13<>INT($DN13)),\" · PONTO FORA DE 0 A 6\",\"\")"
+  }
+]

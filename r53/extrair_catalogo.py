@@ -8,6 +8,11 @@ import hashlib
 import json
 import re
 
+if __package__:
+    from .textos_revisados import REACAO
+else:
+    from textos_revisados import REACAO
+
 RAIZ = Path(__file__).resolve().parents[1]
 FONTE = RAIZ / 'referencias-r53' / 'BLOCOS-R53.json'
 PESOS = {'Leve': 1, 'Média': 2, 'Pesada': 3}
@@ -24,6 +29,8 @@ def extrair():
         for id_, texto in blocos.items():
             if not id_.startswith(prefixo):
                 continue
+            if id_ == 'catalogo--melhoria-reacao':
+                texto += '\n\n' + REACAO
             titulo = re.match(r'^## (.+)', texto)
             if not titulo:
                 erros.append(id_ + ': título'); continue

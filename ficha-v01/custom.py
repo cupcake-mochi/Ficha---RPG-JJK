@@ -11,6 +11,7 @@ from copy import deepcopy
 from pathlib import Path
 import indice_ficha as ix
 import livro
+from leitura_buff import buff as leitura_buff  # 10/11/2026: Buff/Debuff decimal contra o dono
 
 RAIZ = Path(__file__).resolve().parent.parent
 NOME = 'DADOS_CUSTOM'
@@ -55,6 +56,18 @@ def faixa(col, fim, inicio=2, largura=1):
 
 def escolha(tipo, opcoes, padrao='""'):
  return 'SWITCH('+tipo+','+','.join(texto(k)+','+v for k,v in opcoes.items())+','+padrao+')'
+
+
+def escolha_faixa(tipo, opcoes, padrao):
+ """A faixa escolhida pelo tipo, como referência direta.
+
+ Antes era INDIRECT(SWITCH(tipo,"Origem","'ABA'!$A$2:$A$9",...)): INDIRECT é volátil e as 525 cópias
+ recalculavam a cada edição em qualquer aba (pente fino de 15/11/2026). SWITCH não devolve faixa no
+ Sheets (a lista do menu some); CHOOSE devolve. Tipo fora da lista cai no padrão, como no SWITCH.
+ """
+ chaves = list(opcoes)
+ return ('CHOOSE(IFERROR(MATCH('+tipo+',{'+';'.join(texto(k) for k in chaves)+'},0),'+str(len(chaves)+1)+'),'
+         + ','.join(opcoes[k] for k in chaves)+','+padrao+')')
 
 
 def itens_livro():
@@ -175,9 +188,9 @@ def desenha(layout, tr=None):
    put(c,None,'entrada',f'O{r+5+i}',note)
    if i<7:
     col=110+(n-1)*7+i
-    opts=escolha(t,{k:texto(pr['origens_marcante' if k=='Marcante' and i==0 else lista_campo(v[i])]) for k,v in CAMPOS.items()},texto(pr['vazio']))
+    opts=escolha_faixa(t,{k:pr['origens_marcante' if k=='Marcante' and i==0 else lista_campo(v[i])] for k,v in CAMPOS.items()},pr['vazio'])
     helper(f'{ix._letras(col)}1',f'cartão {n} · opção {i+1}')
-    helper(f'{ix._letras(col)}2',f'=IFERROR(UNIQUE(FILTER(INDIRECT({opts}),INDIRECT({opts})<>"")),"")')
+    helper(f'{ix._letras(col)}2',f'=IFERROR(UNIQUE(FILTER({opts},{opts}<>"")),"")')
     menu(c,faixa(col,160))
   put(f'J{r+18}','EFEITO · DESCRIÇÃO','rotulo',f'O{r+18}', 'Texto integral. Descreve regras; não interpreta a prosa como cálculo.')
   put(g['efeito'],None,'efeito',f'O{r+23}')
@@ -236,8 +249,8 @@ def valida(tr, fp):
    v=f'${ix._letras(5+i)}{row}'
    used=escolha(t,{k:texto(labels[i]) for k,labels in CAMPOS.items()})
    if i<7:
-    ps=escolha(t,{k:texto(pools['origens_marcante' if k=='Marcante' and i==0 else lista_campo(labels[i])]) for k,labels in CAMPOS.items()},texto(pools['vazio']))
-    checks.append(f'IF(AND({v}<>"",{used}=""),"Apague campo que este tipo não usa",IF(AND({v}<>"",COUNTIF(INDIRECT({ps}),{v})=0),"Opção inválida: "&{used},""))')
+    ps=escolha_faixa(t,{k:pools['origens_marcante' if k=='Marcante' and i==0 else lista_campo(labels[i])] for k,labels in CAMPOS.items()},pools['vazio'])
+    checks.append(f'IF(AND({v}<>"",{used}=""),"Apague campo que este tipo não usa",IF(AND({v}<>"",COUNTIF({ps},{v})=0),"Opção inválida: "&{used},""))')
    else:
     numeric={typ:label for typ,labels in CAMPOS.items() if (label:=labels[i]) in ['FORÇA','VOLUME','PREÇO','PROTEÇÃO','TETO DE DESTREZA','DESGASTE','RECARGA']}
     pred='OR('+','.join(t+'='+texto(k) for k in numeric)+')'
@@ -388,7 +401,7 @@ def prepara(layout):
 
 def integra(layout,tr,fp):
  """Trocas explícitas das fontes e contas. Não modifica nem desloca índices."""
- from ficha_pessoal import COLS_EQUIP, COLS_ITENS, EQUIP_MENU
+ from ficha_pessoal import COLS_EQUIP, COLS_ITENS, EQUIP_MENU, quantidade_equipavel
  cells={a['nome']:{x[0]:x for x in a['celulas']} for a in layout['abas']}
  antes={};depois={}
  def put(aba,c,v):
@@ -429,7 +442,7 @@ def integra(layout,tr,fp):
   for label,c,_ in COLS_EQUIP:
    if label in source:
     v=f'=IF($D{row}="","",IFERROR(VLOOKUP($D{row},{tab("equip")},{source[label]},FALSE),""))'
-   elif label=='Vol.':v=f'=IF($D{row}="","",IFERROR(IF($K{row}="",1,$K{row})*VLOOKUP($D{row},{tab("equip")},7,FALSE),""))'
+   elif label=='Vol.':v=f'=IF($D{row}="","",IFERROR({quantidade_equipavel(f"$K{row}")}*VLOOKUP($D{row},{tab("equip")},7,FALSE),""))'
    else:continue
    if row>=G['equip_ini']+EQUIP_MENU:manual(c+str(row),v)
   for c,col in [('AI',7),('AK',8),('AQ',9)]:
@@ -458,7 +471,9 @@ def integra(layout,tr,fp):
  customorigin=f'COUNTIFS({faixa(3,QUANTIDADE+1)},{selected},{faixa(2,QUANTIDADE+1)},"Origem",{faixa(20,QUANTIDADE+1)},TRUE)=1'
  can_create=f'OR({selected}={texto(RESTRICAO)},AND({customorigin},OR({base}="",{base}={texto(SEM_BASE)},{base}={texto(RESTRICAO)})))'
  cmenu=faixa(94,160)
- inherited=f'(({tab("origem_cap",1)}={selected})+(({base}<>"")*({base}<>{texto(SEM_BASE)})*({tab("origem_cap",1)}={base})))'
+ # A base preenchida em cartão inválido não pode alimentar capacidades herdadas.
+ base_menu=f'IF({customorigin},{base},"")'
+ inherited=f'(({tab("origem_cap",1)}={selected})+(({base_menu}<>"")*({base_menu}<>{texto(SEM_BASE)})*({tab("origem_cap",1)}={base_menu})))'
  corrections={
   'CP2':f'=IF({can_create},{texto(fp["R"]["origens_do_livro"]["criada"])},"")',
   'CP3':f'=IFERROR(FILTER({tab("origem_cap",0)},{inherited},{tab("origem_cap",2)}="marcante"),"")',
@@ -494,7 +509,14 @@ def integra(layout,tr,fp):
   'B122':f'=IF($B$121,INDEX({faixa(9,QUANTIDADE+1)},$B$120),"")',
   'B123':f'=IF($B$121,INDEX({faixa(10,QUANTIDADE+1)},$B$120),"")',
   'B124':f'=IF($B$121,INDEX({faixa(11,QUANTIDADE+1)},$B$120),"")',
-  'B125':f'=IF($B$121,INDEX({faixa(12,QUANTIDADE+1)},$B$120),"")'}
+  'B125':f'=IF($B$121,INDEX({faixa(12,QUANTIDADE+1)},$B$120),"")',
+  # A Defesa e o descanso herdam a Restrição corporal só pela Origem publicada ou por um cartão válido com essa base.
+  'B126':f'=OR({ori}={texto(RESTRICAO)},$B$123={texto(RESTRICAO)})',
+  'B127':f'=AND({mn}<>"",COUNTIF({cmenu},{mn})>0)'}
+ import origens_recursos
+ helpers.update(origens_recursos.helpers(ix.indice(layout)))
+ import passivas_origem
+ helpers.update(passivas_origem.helpers(ix.indice(layout)))
  for c,v in helpers.items():tr['aba']['celulas'].append([c,v,None])
  # Preserve the old branch verbatim for every book Origin.
  for aba in ['DADOS']:
@@ -543,7 +565,7 @@ def integra(layout,tr,fp):
  des=ref(idx['atr_Destreza'],'FICHA');buff=ref(idx['buff de defesa'],'FICHA')
  teto=f'MIN(IFERROR(VALUE({uteto}&""),9999),{shieldteto})'
  old=cells['FICHA'][idx['defesa']][1]
- put('FICHA',idx['defesa'],f'=IF({customgear},10+MIN({des},{teto})+{ref(protcell,"FICHA")}+IFERROR(VALUE({buff}&""),0),{old[1:]})')
+ put('FICHA',idx['defesa'],f'=IF({customgear},10+MIN({des},{teto})+{ref(protcell,"FICHA")}+{leitura_buff(buff)},{old[1:]})')
  # Invalid selected custom records must not silently fall back to an avulso value.
  # The visible per-card warning and ANALISE publish the cause.
  tr['antes']=antes;tr['depois']=depois

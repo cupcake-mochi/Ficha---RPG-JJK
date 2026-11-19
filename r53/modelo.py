@@ -5,13 +5,14 @@ IDs da publicação; permissões da Regra/definição são escolhas explícitas.
 """
 import json
 from pathlib import Path
-from formulas import X,x,ref,f,IF,AND,OR,SUM,MIN,MAX,UP,INT,JOIN,LOOK,FAMILY,FORM,evaluate,native
+from formulas import X,x,ref,f,IF,LET,AND,OR,SUM,MIN,MAX,UP,INT,JOIN,LOOK,FAMILY,FORM,evaluate,native
 
 RAIZ=Path(__file__).resolve().parents[1]
 CAT=json.loads((RAIZ/'r53/catalogo.json').read_text())
 OPCOES={v['rotulo']:v for v in CAT['opcoes']}
 FAMILIAS=['Alcance','Controle','Auxiliares','Marca','Castigo','Amparo','Área','Mira','Tempo']
 TRS=['Físico','Vigor','Intelecto','Espírito']
+DECLARACAO_SEM_VOLTA='Sem Volta: pode falhar por completo'
 FORMAS=['Projétil','Toque','Explosão','Aura','Cone','Linha']
 LOOKUP_FIELDS=['rotulo','nome','tipo','familia','peso','degraus','repeticoes','classe_minima','tr','frequencia','id','proprio','cadastro_valido','controle_compat','rotulo_base']
 INPUTS=['id','nome','classe','modalidade','nivel','preparada','forma','dano','cura','vt','p_dano','p_cura','p_vt',
@@ -37,6 +38,16 @@ def arvore(registro_livre=False):
     tm=add('tm',OR(modo.eq('Técnica Máxima'),modo.eq('Máxima de entidade')));lib=add('lib',OR(modo.eq('Liberação Máxima'),modo.eq('Liberação de entidade')))
     dados_maxima=IF(entidade,IF(nivel.ge(26),26,IF(nivel.ge(21),22,19)),IF(nivel.ge(26),32,IF(nivel.ge(21),28,24)))
     comum=add('comum',AND(zero.eq(False),tm.eq(False),lib.eq(False)))
+    # R67 (12/11/2026): a Máxima sem dano usa o mesmo valor do campo controle, marcado pela caixa SEM DANO do cartão,
+    # e ganha o reforço de Controle dos feitiços comuns. O preço do Efeito Próprio principal (até Pesada) sai dos
+    # dados e o resto é descartado: não muda número, então a ficha não pede o preço; o mestre confere em COMO É.
+    semdano_comum=AND(comum,ref('controle').eq('Sem dano'))
+    semdano=AND(OR(comum,tm),ref('controle').eq('Sem dano'))
+    funcoes_tm=IF(ref('dano'),1,0)+IF(ref('cura'),1,0)+IF(ref('vt'),1,0)
+    # Nos cartões com distribuição, verifique o dano antes de calcular a devolução.
+    toca_alma=OR(*[ref('nome_m'+str(i)).eq('Toca a Alma') for i in range(1,5)])
+    minimo_dano=IF(toca_alma,2,1)
+    sem_dano_aplicado=OR(ref('dano').eq(False),semdano_comum,AND(comum,ref('p_dano').lt(minimo_dano)))
     area=add('coletiva',OR(*[forma.eq(n) for n in FORMAS[2:]],FORM(rawforma,'coletiva')))
     l=add('leve',UP(c/2));m=add('media',c);p=add('pesada',UP(c*1.5))
     desc=add('desconto_livre',IF(entidade,MAX(1,INT(c/2)),UP(c/2)))
@@ -55,6 +66,30 @@ def arvore(registro_livre=False):
     def peso(v): return IF(v.eq(1),l,IF(v.eq(2),m,IF(v.eq(3),p,0)))
     def estado(fam): return IF(FAMILY(fam).eq('Fechada'),1,0)
     def livre(fam): return IF(FAMILY(fam).eq('Livre'),1,0)
+    instantaneas=('Precisão|Passo|Empurrão|Longe|Mais Um|Rajada|Remate|Salto|Estilhaço|'
+                  'Quebra Coisa|Rasga Escudo|Rápido|Reação|Silencioso|Sem Ver|Fura|Sem Cobertura|Perseguir')
+    nomes_fragil=[ref('nome_m'+str(i)) for i in range(1,5)]
+    area_persistente=AND(area,f('REGEXMATCH',JOIN(*nomes_fragil),
+                               r'(?:^|; )(?:Fica|Terreno|Efeito Próprio)(?:; |$)'))
+    exclusao=x(f'^(?:{instantaneas}').cat(IF(area_persistente,'','|Maior|Escolher|Contorno')).cat(')$')
+    teto_fragil=LET('fragilbase',exclusao,SUM([
+        IF(f('REGEXMATCH',nome,ref('fragilbase')),0,ref('pago_m'+str(i)))
+        for i,nome in enumerate(nomes_fragil,1)]))
+    fragil_pago=ref('fragil_pago')
+    def tem_melhoria(*nomes):
+        return OR(*[ref('nome_m'+str(i)).eq(nome) for i in range(1,5) for nome in nomes])
+    qr_forma_incompativel=OR(forma.eq('Toque'),forma.eq('Aura'),ref('pessoal'))
+    # A validação antecede o saldo. PV e dano efetivos podem depender da própria devolução.
+    beneficio=OR(tem_melhoria('Guarda','Impulso','Firmeza'),AND(zero.eq(False),semdano_comum.eq(False),
+                 OR(AND(ref('cura'),OR(tm,ref('p_cura').gt(0))),
+                    AND(ref('vt'),tm.eq(False),ref('p_vt').gt(0)))))
+    declarada=ref('sem_volta_declarada') if registro_livre else ref('dependencias').eq(DECLARACAO_SEM_VOLTA)
+    dependencia=AND(declarada,OR(sem_dano_aplicado.eq(False),tem_melhoria('Condição','Prende','Cerca')))
+    tudo_ou_nada=OR(*[AND(LOOK(ref('r'+str(i)),'nome').eq('Tudo ou Nada'),ref('r'+str(i)+'_valida'))
+                     for i in (1,2)])
+    resolucao_garantida=False if registro_livre else AND(sem_dano_aplicado.eq(False),
+        OR(ref('res_dano').eq('Automático'),AND(ref('res_dano').eq('TR'),tudo_ou_nada.eq(False))))
+    sem_volta_sem_risco=OR(tem_melhoria('Inescapável'),resolucao_garantida,AND(beneficio,dependencia.eq(False)))
     for tipo,n in [('m',4),('r',2)]:
         for i in range(1,n+1):
             entrada=ref(tipo+str(i));fam=add('familia_'+tipo+str(i),LOOK(entrada,'familia'))
@@ -64,31 +99,53 @@ def arvore(registro_livre=False):
             if tipo=='m':
                 add('pago_'+tipo+str(i),IF(entrada.eq(''),0,IF(zero,1,MAX(1,peso(w)-IF(livre(fam).gt(0),desc,0)))))
             else:
-                qr=ref('nome_'+tipo+str(i)).eq('Queima-Roupa')
+                nome=ref('nome_'+tipo+str(i))
+                qr=nome.eq('Queima-Roupa')
                 valido=ref(tipo+str(i)+'_valida')
                 valor=IF(qr,IF(forma.eq('Projétil'),m,l),peso(w))
-                # Exigências já obrigatórias não financiam a própria montagem.
-                bloqueada=OR(tm,AND(lib,OR(ref('nome_'+tipo+str(i)).eq('Atrasar'),ref('nome_'+tipo+str(i)).eq('Parado'))))
-                valor=IF(ref('nome_'+tipo+str(i)).eq('Frágil'),MIN(l,MAX(0,ref('fragil_pago'))),valor)
-                add('retorno_'+tipo+str(i),IF(OR(entrada.eq(''),valido.eq(False),bloqueada),0,IF(zero,1,valor)))
+                # Uma Restrição incompatível não financia a montagem, mesmo em cartões livres.
+                incompativel=OR(AND(qr,OR(qr_forma_incompativel,tem_melhoria('Longe'))),
+                                AND(nome.eq('Atrasar'),tem_melhoria('Rápido','Reação')),
+                                AND(nome.eq('Parado'),tem_melhoria('Reação')),
+                                AND(nome.eq('Carregar'),tem_melhoria('Armado')),
+                                AND(nome.eq('Aquecer'),tem_melhoria('Remate')))
+                bloqueada=OR(incompativel,tm,AND(lib,OR(nome.eq('Atrasar'),nome.eq('Parado'))),
+                             AND(nome.eq('Tudo ou Nada'),sem_dano_aplicado),
+                             AND(nome.eq('Sem Volta'),sem_volta_sem_risco),
+                             AND(zero,OR(w.ne(1),nome.eq('Sobrecusto'),AND(qr,forma.eq('Projétil')))))
+                valor=IF(nome.eq('Frágil'),MIN(IF(zero,1,l),MAX(0,fragil_pago),teto_fragil),
+                         IF(zero,1,valor))
+                add('retorno_'+tipo+str(i),IF(OR(entrada.eq(''),valido.eq(False),bloqueada),0,valor))
     qtdm=add('quantidade_melhorias',SUM([IF(ref('m'+str(i)).ne(''),1,0) for i in range(1,5)]))
     qtdr=add('quantidade_restricoes',SUM([IF(ref('r'+str(i)).ne(''),1,0) for i in range(1,3)]))
     aux=OR(npeca('Guarda').gt(0),npeca('Impulso').gt(0),npeca('Firmeza').gt(0))
-    base=add('base_funcoes',IF(zero,0,IF(OR(ref('cura'),AND(area,OR(ref('vt'),aux))),m,IF(ref('vt'),l,0))))
+    base=add('base_funcoes',IF(zero,0,IF(tm,IF(OR(ref('cura'),AND(area,ref('vt'))),m,IF(ref('vt'),l,0)),
+             IF(OR(ref('cura'),AND(area,OR(ref('vt'),aux))),m,IF(ref('vt'),l,0)))))
     cf=add('custo_forma',IF(zero,0,IF(propria,peso(FORM(rawforma,'peso')),IF(forma.eq('Explosão'),m,IF(OR(forma.eq('Aura'),forma.eq('Cone'),forma.eq('Linha')),l,0)))))
     pago=add('melhorias_pagas',SUM([ref('pago_m'+str(i)) for i in range(1,5)]))
     toque=add('retorno_toque',IF(AND(forma.eq('Toque'),zero.eq(False),tm.eq(False),ref('pessoal').eq(False)),l,0))
-    devolucao=add('devolucao',MIN(SUM([ref('retorno_r1'),ref('retorno_r2'),toque]),pago,IF(zero,1,2*c)))
-    saldo=add('saldo',orc-base-cf-pago+devolucao)
-    semdano=add('controle_sem_dano',AND(comum,ref('controle').eq('Sem dano')))
+    nomes_r=[ref('nome_r1'),ref('nome_r2')]
+    repetida=AND(ref('r1').ne(''),nomes_r[0].eq(nomes_r[1]))
+    frequencia_repetida=SUM([LOOK(ref('r'+str(i)),'frequencia') for i in [1,2]]).gt(1)
+    def mesmo_grupo(*nomes):
+        return AND(*[OR(*[escolhida.eq(nome) for nome in nomes]) for escolhida in nomes_r])
+    conflito_restricoes=OR(repetida,frequencia_repetida,mesmo_grupo('Atrasar','Parado'),
+                           mesmo_grupo('Barulho','Assinatura'),mesmo_grupo('Recuo','Fraqueza','Peso Morto'))
+    retornos=[ref('retorno_r1'),ref('retorno_r2')]
+    # O aviso permanece. O saldo provisório conta só o maior crédito elegível do par.
+    credito_restricoes=IF(conflito_restricoes,MAX(*retornos),SUM(retornos))
+    devolucao=add('devolucao',MIN(credito_restricoes+toque,pago,IF(zero,1,2*c)))
+    saldo=add('saldo',IF(tm,orc-pago,orc-base-cf-pago+devolucao))
+    restantes=dados_maxima-cf-base
+    semdano=add('controle_sem_dano',semdano)
     limdano=add('controle_limitado',AND(comum,ref('controle').eq('Dano limitado à Classe')))
     efeitosctrl=OR(npeca('Condição').gt(0),npeca('Prende').gt(0),npeca('Cerca').gt(0),*[AND(LOOK(ref('m'+str(i)),'controle_compat').gt(0),LOOK(ref('m'+str(i)),'tr').gt(0)) for i in range(1,5)])
     ctrl=OR(*[ref('familia_m'+str(i)).eq('Controle') for i in range(1,5)])
     pc=add('cura_efetiva_pontos',IF(OR(semdano,zero,ref('cura').eq(False)),0,
-            IF(tm,dados_maxima,MAX(0,MIN(ref('p_cura'),IF(area,MAX(0,orc-p),IF(entidade,MAX(0,orc-m),2*c)))))))
-    pv=add('vt_efetiva_pontos',IF(OR(semdano,zero,tm,ref('vt').eq(False)),0,MAX(0,MIN(ref('p_vt'),IF(area,MAX(0,orc-p),IF(entidade,MAX(0,orc-l),MAX(0,saldo)))))))
+            IF(tm,MAX(0,restantes),MAX(0,MIN(ref('p_cura'),IF(area,MAX(0,orc-p),IF(entidade,MAX(0,orc-m),2*c)))))))
+    pv=add('vt_efetiva_pontos',IF(OR(semdano,zero,ref('vt').eq(False)),0,IF(tm,MAX(0,restantes),MAX(0,MIN(ref('p_vt'),IF(area,MAX(0,orc-p),IF(entidade,MAX(0,orc-l),MAX(0,saldo))))))))
     dp=add('dano_inicial',IF(OR(semdano,ref('dano').eq(False)),0,IF(zero,MAX(0,saldo),IF(tm,
-            dados_maxima,MAX(0,MIN(ref('p_dano'),IF(limdano,c,4*c)))+IF(lib,c,0)))))
+            MAX(0,restantes),MAX(0,MIN(ref('p_dano'),IF(limdano,c,4*c)))+IF(lib,c,0)))))
     # Teto global inclui cada secundário uma vez, nunca multiplicado por criaturas na área.
     # O fator de Remate só aumenta o dano inicial. A busca é limitada a no máximo 28d8 comuns.
     candidates=[]
@@ -109,7 +166,7 @@ def arvore(registro_livre=False):
     add('cd_controle',cdnormal+bonus)
     reduzida=add('classe_efeito',IF(AND(entidade,zero.eq(False)),MAX(1,c-1),c))
     add('beneficiarios_fixos',IF(area,c+1,1+npeca('Mais Um')))
-    add('tiros',IF(npeca('Rajada').gt(0),MIN(dano,IF(entidade,reduzida,c)+1),1))
+    add('tiros',IF(npeca('Rajada').gt(0),IF(area,0,MIN(dano,IF(entidade,reduzida,c)+1)),1))
     add('fura_rd',IF(npeca('Fura').gt(0),2*IF(entidade,reduzida,c),0))
     add('anteparo_pv',IF(npeca('Anteparo').gt(0),10*IF(entidade,reduzida,c),0))
     longe=add('degraus_alcance',SUM([IF(ref('nome_m'+str(i)).eq('Longe'),LOOK(ref('m'+str(i)),'degraus'),0) for i in range(1,5)]))
@@ -183,7 +240,7 @@ def arvore(registro_livre=False):
         IF(AND(ref('dano').eq(False),ref('cura').eq(False),ref('vt').eq(False),qtdm.eq(0)),'Utilidade definida na Regra; sem resultado variável',''),
         IF(npeca('Guarda').gt(0),'Guarda (+2 Defesa)',''),IF(npeca('Impulso').gt(0),'Impulso (vantagem no próximo ataque)',''),
         *[IF(ref('nome_m'+str(i)).eq('Firmeza'),ref('m'+str(i)),'') for i in range(1,5)],
-        IF(semdano,'Controle sem dano; saldo descartado',''),
+        IF(semdano,IF(tm,'Sem dano: Efeito Próprio principal (até Pesada) em COMO É; dados descartados','Controle sem dano; saldo descartado'),''),
         IF(npeca('Prende').gt(0),'Prende: TR próprio',''),IF(npeca('Anteparo').gt(0),x('Anteparo ').cat(ref('anteparo_pv')).cat(' PV'),''),
         *[IF(OR(*[ref('nome_m'+str(i)).eq(n) for n in ['Guarda','Impulso','Firmeza','Prende','Anteparo','Longe','Maior','Precisão','Fura','Rápido','Reação','Concentrada / Duradoura','Mais Um','Rajada']]),'',ref('m'+str(i))) for i in range(1,5)],
         IF(AND(sobra.gt(0),semdano.eq(False)),x('Saldo sem uso ').cat(sobra).cat(IF(sobra.eq(1),' ponto',' pontos')),'')))
@@ -191,7 +248,7 @@ def arvore(registro_livre=False):
     def err(c,t):
         # A interface direta guarda a adjudicação na descrição. Só os avisos
         # que exigiam campos textuais separados são dispensados nessa rota.
-        if registro_livre and (t.startswith(('A Regra/definição','Registre destinatários','Registre a permissão','Registre independência','Escolha o tipo do TR','TR da aplicação','Sem Volta exige','Rajada exige','Tudo ou Nada exige'))):return
+        if registro_livre and (t.startswith(('A Regra/definição','Registre destinatários','Registre a permissão','Registre independência','Escolha o tipo do TR','TR da aplicação'))):return
         erros.append(IF(c,t,''))
     err(OR(publicada,propria).eq(False),'Forma não publicada: cadastrar ou revisar antes do uso')
     err(AND(propria,FAMILY(FORM(rawforma,'familia')).eq('Fechada')),'Família Fechada: Forma própria indisponível')
@@ -217,20 +274,34 @@ def arvore(registro_livre=False):
     err(ref('origem_permissao').eq(''),'Registre a permissão da Regra/definição')
     err(AND(zero,OR(ref('cura'),ref('vt'),AND(area,ref('dano').eq(False)))),'Classe 0: sem cura, vida temporária ou benefícios coletivos')
     err(AND(lib,ref('cura')),'Liberação Máxima não serve para cura')
-    err(AND(tm,OR(ref('vt'),AND(ref('dano'),ref('cura')))),'Máxima escolhe dano, cura ou aplicação sem dano')
+    err(AND(tm,funcoes_tm.gt(1)),'Máxima escolhe uma função: dano, cura, vida temporária ou sem dano')
+    err(AND(tm,funcoes_tm.eq(0),semdano.eq(False)),'Máxima: marque a função (dano, cura, PV temp. ou sem dano)')
+    err(AND(tm,funcoes_tm.gt(0),restantes.lt(1)),'Máxima: a Forma e a base da função passam dos dados-base')
     err(AND(area,tm.eq(False),(pc+pv).gt(MAX(0,orc-p))),'Cura e vida temporária excedem juntas o teto coletivo')
-    err(AND(OR(semdano,limdano),ctrl.eq(False)),'Reforço exige Melhoria de Controle')
-    err(AND(ref('controle').ne('Sem reforço'),comum.eq(False)),'Esta modalidade não recebe reforço de Controle')
+    err(AND(OR(semdano_comum,limdano),ctrl.eq(False)),'Reforço exige Melhoria de Controle')
+    err(AND(ref('controle').ne('Sem reforço'),comum.eq(False),AND(tm,ref('controle').eq('Sem dano')).eq(False)),'Esta modalidade não recebe reforço de Controle')
     err(AND(semdano,OR(ref('dano'),ref('cura'),ref('vt'),SUM([ref('p_dano'),ref('p_cura'),ref('p_vt')]).gt(0))),'Sem dano descarta todo o saldo, incluindo cura e vida temporária')
     err(AND(OR(forma.eq('Toque'),forma.eq('Aura')),npeca('Longe').gt(0)),'Toque/Aura não aceita Longe')
-    err(AND(nres('Queima-Roupa').gt(0),OR(forma.eq('Toque'),forma.eq('Aura'),ref('pessoal'))),'Queima-Roupa incompatível com Forma/pessoal')
+    err(AND(nres('Queima-Roupa').gt(0),qr_forma_incompativel),'Queima-Roupa incompatível com Forma/pessoal')
     err(AND(nres('Queima-Roupa').gt(0),npeca('Longe').gt(0)),'Queima-Roupa conserva proximidade: não aceita Longe')
     err(AND(npeca('Maior').gt(0),area.eq(False)),'Maior exige Forma de área')
+    pecas_forma=ref('pecasforma')
+    def tem_requisito(nomes):
+        return f('REGEXMATCH',pecas_forma,rf'(?:^|; )(?:{nomes})(?:; |$)')
+    erros.append(LET('pecasforma',JOIN(*[ref('nome_m'+str(i)) for i in range(1,5)]),JOIN(
+        IF(area,IF(tem_requisito('Perseguir'),'Perseguir exige alvo individual',''),
+           IF(tem_requisito('Escolher|Contorno'),'Escolher e Contorno exigem Forma de área','')),
+        IF(AND(cura.le(0),tem_requisito('Reserva')),'Reserva exige dados de cura',''),
+        IF(AND(dano.le(0),tem_requisito('Sugar')),'Sugar exige dano inicial efetivo',''),
+        IF(AND(ref('fam_Mira').ne('Livre'),tem_requisito('Corrói')),'Corrói exige Mira Livre',''))))
     err(AND(nres('Barulho').gt(0),nres('Assinatura').gt(0)),'Barulho e Assinatura: escolha uma exposição')
     err((nres('Recuo')+nres('Fraqueza')+nres('Peso Morto')).gt(1),'Recuo, Fraqueza e Peso Morto não se combinam')
     err(AND(npeca('Terreno').gt(0),area.eq(False)),'Terreno exige Forma de área')
     err(AND(npeca('Mais Um').gt(0),area),'Mais Um acrescenta destinatários individuais, não áreas')
-    err(AND(nres('Sem Volta').gt(0),ref('res_dano').eq('Automático')),'Sem Volta exige possibilidade de falha completa')
+    err(AND(nres('Sem Volta').gt(0),sem_volta_sem_risco),
+        'Sem Volta exige possibilidade de falha completa' +
+        ('. Se todos os efeitos dependerem da resolução, registre em linha própria em COMO É: ' +
+         DECLARACAO_SEM_VOLTA if registro_livre else ''))
     err(AND(ref('dano'),ref('res_dano').eq('TR'),OR(*[ref('tr_dano').eq(n) for n in TRS]).eq(False)),'Escolha o tipo do TR de dano')
     err(AND(efeitosctrl,OR(*[ref('tr_controle').eq(n) for n in TRS]).eq(False)),'Escolha o tipo do TR de Controle')
     err(AND(efeitosctrl,ref('dano'),ref('res_dano').eq('TR'),ref('tr_dano').ne(ref('tr_controle'))),'TR da aplicação: mesmo tipo para dano e Controle; CDs podem diferir')
@@ -240,12 +311,15 @@ def arvore(registro_livre=False):
     err(AND(npeca('Armado').gt(0),nres('Carregar').gt(0)),'Armado e Carregar incompatíveis')
     err(AND(OR(*[ref('m'+str(i)).eq('Concentrada') for i in range(1,5)]),OR(*[ref('m'+str(i)).eq('Duradoura') for i in range(1,5)])),'Escolha Concentrada ou Duradoura')
     err(AND(ref('dano'),OR(ref('cura'),ref('vt')),ref('dependencias').eq('')),'Registre independência ou dependência das parcelas da mescla')
-    err(AND(npeca('Fica').gt(0),OR(area.eq(False),ref('dano').eq(False))),'Fica exige área de dano')
-    err(AND(npeca('Rajada').gt(0),OR(area,ref('res_dano').ne('Ataque'),ref('dano').eq(False))),'Rajada exige alvo individual com ataque e dados')
-    err(AND(nres('Tudo ou Nada').gt(0),OR(ref('dano').eq(False),ref('res_dano').ne('TR'))),'Tudo ou Nada exige dano por TR')
-    err(AND(nres('Frágil').gt(0),ref('fragil_pago').le(0)),'Frágil exige Melhorias interrompíveis pagas')
-    err(ref('fragil_pago').gt(pago),'Frágil: gasto interrompível não pode exceder o gasto real')
-    err(SUM([LOOK(ref('r'+str(i)),'frequencia') for i in [1,2]]).gt(1),'Uma Vez/Condicional/Aquecer: um grupo de frequência')
+    err(AND(npeca('Fica').gt(0),OR(area.eq(False),dano.le(0))),'Fica exige área de dano')
+    err(AND(npeca('Rajada').gt(0),OR(area,dano.le(0),False if registro_livre else ref('res_dano').ne('Ataque'))),'Rajada exige alvo individual com ataque e dados')
+    err(AND(nres('Tudo ou Nada').gt(0),OR(sem_dano_aplicado,False if registro_livre else ref('res_dano').ne('TR'))),'Tudo ou Nada exige dano por TR')
+    fragil=nres('Frágil').gt(0)
+    gasto_fragil=ref('gastofragil')
+    erros.append(LET('gastofragil',IF(fragil,teto_fragil,pago),JOIN(
+        IF(AND(fragil,OR(fragil_pago.le(0),gasto_fragil.le(0))),'Frágil exige Melhorias interrompíveis pagas',''),
+        IF(fragil_pago.gt(gasto_fragil),'Frágil: gasto interrompível não pode exceder o gasto real',''))))
+    err(frequencia_repetida,'Uma Vez/Condicional/Aquecer: um grupo de frequência')
     err(AND(npeca('Toca a Alma').gt(0),OR(c.lt(3),False if registro_livre else ref('permite_alma').eq(False),lib)),'Toca a Alma exige Classe 3, Regra de alma e não aceita Liberação')
     err(AND(npeca('Inescapável').gt(0),OR(forma.ne('Projétil'),ref('dano').eq(False),qtdm.gt(1),qtdr.gt(0),tm,lib)),'Inescapável: só Projétil de dano, única Melhoria, sem Restrições ou máximas')
     err(AND(tm,OR(*[npeca(n).gt(0) for n in ['Salto','Queima','Estilhaço','Acúmulo','Remate','Fica','Inescapável','Armado','Segura']])),'Peça não permitida na Técnica Máxima')
@@ -271,7 +345,7 @@ def arvore(registro_livre=False):
         err(AND(v.ne(''),LOOK(v,'tipo').ne('restricoes')),'Restrição não reconhecida: posição '+str(i))
         err(AND(v.ne(''),ref('r'+str(i)+'_valida').eq(False)),'Confirme exigência válida: Restrição '+str(i))
         err(AND(zero,v.ne(''),OR(ref('peso_r'+str(i)).ne(1),AND(nome.eq('Queima-Roupa'),forma.eq('Projétil')))),'Classe 0 aceita somente Restrição Leve válida')
-    err(AND(ref('r1').ne(''),ref('nome_r1').eq(ref('nome_r2'))),'Não repetir o mesmo impedimento')
+    err(repetida,'Não repetir o mesmo impedimento')
     err(ref('migracao').eq('Revisão necessária'),'Registro antigo exige revisão antes do uso')
     avisos=add('avisos',JOIN(*erros))
     add('valida',avisos.eq(''))
@@ -287,9 +361,11 @@ def calcular(entradas,catalogo_extra=None,familias_custom=None,formas_custom=Non
     return env
 
 
-def formulas(linha, colunas, lookup_range, separator=',',familias_range=None,familias_coluna=2,formas_range=None,registro_livre=False,saidas=None):
+def formulas(linha, colunas, lookup_range, separator=',',familias_range=None,familias_coluna=2,formas_range=None,registro_livre=False,saidas=None,descricao='""'):
     from compactar import native_compact
     refs={k:colunas[k]+str(linha) for k in INPUTS+list(ARVORE)}
+    if registro_livre:
+        refs['sem_volta_declarada']=f'REGEXMATCH(TO_TEXT({descricao}),"(?im)^[ \t]*{DECLARACAO_SEM_VOLTA}[ \t]*$")'
     if formas_range:
         from formas_custom import CAMPOS as FC
         refs.update(__formas_range__=formas_range,__formas_campos__=FC)

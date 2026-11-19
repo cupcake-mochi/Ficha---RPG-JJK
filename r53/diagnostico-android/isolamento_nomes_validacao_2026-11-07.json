@@ -1,0 +1,304 @@
+{
+  "data": "2026-11-07",
+  "base_pr": 88,
+  "base_head": "4d22fb71f222da220712aec668b90ee1b52a94e4",
+  "checkpoint": "0358517f90b95d5da8e24a2bc21c487392a59b1f",
+  "codigo_base_sha256": "8935211c6e87cd4515b0df860bd0d71524f316d08e42013f86cc9fa6b1d53bea",
+  "codigo_instalado_sha256": "36ca73efd1eca6809fd8ddfa1be324eebaad2f5aef0830d4c25c6aaeaaaff3bc",
+  "geracao": "e4537f58af975d8c",
+  "pacote": {
+    "partes": 5,
+    "bytes_base64": 3858920,
+    "fonte_sha256": "381569d51d1405e9729e90e899e79028b606d0a422d8782b957d9ec152b5757e",
+    "instalado_integralmente": false
+  },
+  "modelo": {
+    "abas": 26,
+    "posicoes": 280056,
+    "alteracoes": 24,
+    "metadados_preservados": true
+  },
+  "contagem": {
+    "casos": 288,
+    "configuracoes": [
+      "texto",
+      "numeros",
+      "zero",
+      "booleanos",
+      "numeros_em_texto",
+      "formulas_numericas",
+      "misto_texto_numero",
+      "vazios",
+      "formulas_textuais",
+      "equacao_literal",
+      "numero_no_limite",
+      "numeros_sem_dominio"
+    ],
+    "entidades": 12,
+    "copias": 2,
+    "tipos_preservados": true
+  },
+  "isolamento": [
+    {
+      "copy": 0,
+      "case": "basica=1/0",
+      "source": "INVOCAÇÕES!J71",
+      "entityWithError": 0,
+      "error": "DIVIDE_BY_ZERO",
+      "sourcePreserved": true,
+      "otherEntitiesUnaffected": true,
+      "ok": true
+    },
+    {
+      "copy": 0,
+      "case": "basica=NA()",
+      "source": "INVOCAÇÕES!J71",
+      "entityWithError": 0,
+      "error": "N_A",
+      "sourcePreserved": true,
+      "otherEntitiesUnaffected": true,
+      "ok": true
+    },
+    {
+      "copy": 0,
+      "case": "extra=1/0",
+      "source": "INVOCAÇÕES!J173",
+      "entityWithError": 0,
+      "error": "DIVIDE_BY_ZERO",
+      "sourcePreserved": true,
+      "otherEntitiesUnaffected": true,
+      "ok": true
+    },
+    {
+      "copy": 0,
+      "case": "extra=NA()",
+      "source": "INVOCAÇÕES!J173",
+      "entityWithError": 0,
+      "error": "N_A",
+      "sourcePreserved": true,
+      "otherEntitiesUnaffected": true,
+      "ok": true
+    },
+    {
+      "copy": 0,
+      "case": "propria_primeira=1/0",
+      "source": "INVOCAÇÕES!P71",
+      "entityWithError": 1,
+      "error": "DIVIDE_BY_ZERO",
+      "sourcePreserved": true,
+      "otherEntitiesUnaffected": true,
+      "ok": true
+    },
+    {
+      "copy": 0,
+      "case": "propria_primeira=NA()",
+      "source": "INVOCAÇÕES!P71",
+      "entityWithError": 1,
+      "error": "N_A",
+      "sourcePreserved": true,
+      "otherEntitiesUnaffected": true,
+      "ok": true
+    },
+    {
+      "copy": 0,
+      "case": "propria_ultima=1/0",
+      "source": "INVOCAÇÕES!AI1226",
+      "entityWithError": 12,
+      "error": "DIVIDE_BY_ZERO",
+      "sourcePreserved": true,
+      "otherEntitiesUnaffected": true,
+      "ok": true
+    },
+    {
+      "copy": 0,
+      "case": "propria_ultima=NA()",
+      "source": "INVOCAÇÕES!AI1226",
+      "entityWithError": 12,
+      "error": "N_A",
+      "sourcePreserved": true,
+      "otherEntitiesUnaffected": true,
+      "ok": true
+    },
+    {
+      "copy": 1,
+      "case": "basica=1/0",
+      "source": "INVOCAÇÕES!J71",
+      "entityWithError": 0,
+      "error": "DIVIDE_BY_ZERO",
+      "sourcePreserved": true,
+      "otherEntitiesUnaffected": true,
+      "ok": true
+    },
+    {
+      "copy": 1,
+      "case": "basica=NA()",
+      "source": "INVOCAÇÕES!J71",
+      "entityWithError": 0,
+      "error": "N_A",
+      "sourcePreserved": true,
+      "otherEntitiesUnaffected": true,
+      "ok": true
+    },
+    {
+      "copy": 1,
+      "case": "extra=1/0",
+      "source": "INVOCAÇÕES!J173",
+      "entityWithError": 0,
+      "error": "DIVIDE_BY_ZERO",
+      "sourcePreserved": true,
+      "otherEntitiesUnaffected": true,
+      "ok": true
+    },
+    {
+      "copy": 1,
+      "case": "extra=NA()",
+      "source": "INVOCAÇÕES!J173",
+      "entityWithError": 0,
+      "error": "N_A",
+      "sourcePreserved": true,
+      "otherEntitiesUnaffected": true,
+      "ok": true
+    },
+    {
+      "copy": 1,
+      "case": "propria_primeira=1/0",
+      "source": "INVOCAÇÕES!P71",
+      "entityWithError": 1,
+      "error": "DIVIDE_BY_ZERO",
+      "sourcePreserved": true,
+      "otherEntitiesUnaffected": true,
+      "ok": true
+    },
+    {
+      "copy": 1,
+      "case": "propria_primeira=NA()",
+      "source": "INVOCAÇÕES!P71",
+      "entityWithError": 1,
+      "error": "N_A",
+      "sourcePreserved": true,
+      "otherEntitiesUnaffected": true,
+      "ok": true
+    },
+    {
+      "copy": 1,
+      "case": "propria_ultima=1/0",
+      "source": "INVOCAÇÕES!AI1226",
+      "entityWithError": 12,
+      "error": "DIVIDE_BY_ZERO",
+      "sourcePreserved": true,
+      "otherEntitiesUnaffected": true,
+      "ok": true
+    },
+    {
+      "copy": 1,
+      "case": "propria_ultima=NA()",
+      "source": "INVOCAÇÕES!AI1226",
+      "entityWithError": 12,
+      "error": "N_A",
+      "sourcePreserved": true,
+      "otherEntitiesUnaffected": true,
+      "ok": true
+    }
+  ],
+  "recuperacao": [
+    {
+      "case": "era-evento-contagens",
+      "cells": 12,
+      "ownErrorPreserved": false,
+      "ok": true
+    },
+    {
+      "case": "era-evento-requisitos",
+      "cells": 36,
+      "ownErrorPreserved": false,
+      "ok": true
+    },
+    {
+      "case": "era-evento-misto-inicial",
+      "cells": 4,
+      "ownErrorPreserved": false,
+      "ok": true
+    },
+    {
+      "case": "era-evento-misto-final",
+      "cells": 4,
+      "ownErrorPreserved": false,
+      "ok": true
+    },
+    {
+      "case": "era-evento-erro-proprio",
+      "cells": 4,
+      "ownErrorPreserved": true,
+      "ok": true
+    },
+    {
+      "case": "ciclo-evento-contagens",
+      "cells": 12,
+      "ownErrorPreserved": false,
+      "ok": true
+    },
+    {
+      "case": "ciclo-evento-requisitos",
+      "cells": 36,
+      "ownErrorPreserved": false,
+      "ok": true
+    },
+    {
+      "case": "ciclo-evento-misto-inicial",
+      "cells": 4,
+      "ownErrorPreserved": false,
+      "ok": true
+    },
+    {
+      "case": "ciclo-evento-misto-final",
+      "cells": 4,
+      "ownErrorPreserved": false,
+      "ok": true
+    },
+    {
+      "case": "ciclo-evento-erro-proprio",
+      "cells": 4,
+      "ownErrorPreserved": true,
+      "ok": true
+    }
+  ],
+  "preservacao": [
+    {
+      "copy": 0,
+      "mountPositions": 53334,
+      "mountExplicitCells": 24459,
+      "mountDifferences": 0,
+      "inputPositions": 160,
+      "inputDifferences": 0,
+      "targetPositions": 60,
+      "expectedFormulaChanges": 24,
+      "unexpectedDifferences": 0,
+      "metadataEqual": true
+    },
+    {
+      "copy": 1,
+      "mountPositions": 53334,
+      "mountExplicitCells": 24459,
+      "mountDifferences": 0,
+      "inputPositions": 160,
+      "inputDifferences": 0,
+      "targetPositions": 60,
+      "expectedFormulaChanges": 24,
+      "unexpectedDifferences": 0,
+      "metadataEqual": true
+    }
+  ],
+  "smoke": {
+    "resultado": "OK",
+    "verificacoes": 122,
+    "nota": "Testes opcionais sem fixture seguem delimitados pelo smoke; o transporte focal foi ensaiado também com as cinco partes Android privadas anteriores."
+  },
+  "limites": {
+    "oficiais_alteradas": false,
+    "jogador_alterado": false,
+    "pr31_alterada": false,
+    "merge": false,
+    "calculo_local_calc_executado": false,
+    "latencia_android_medida": false
+  }
+}

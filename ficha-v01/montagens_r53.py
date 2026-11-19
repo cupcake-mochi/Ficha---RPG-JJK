@@ -64,6 +64,12 @@ def avisos_funcoes(campos,index,ncol):
 
 def ref(aba,a1): return "'"+aba.replace("'","''")+"'!"+a1
 
+def aviso_requisito(g):
+    if not g.get('requisito'):
+        return '""'
+    texto=g.get('aviso_requisito','Trunfo exige maldição domada com técnica própria e nível de aquisição')
+    return 'IF('+g['requisito']+',"",'+json.dumps(texto,ensure_ascii=False)+')'
+
 def folha(nome,linhas,colunas,oculta=False):
     return dict(nome=nome,estado='hidden' if oculta else 'visible',linhas=linhas,colunas=colunas,
         padrao=['Roboto',10,'#EEDFEA'],fundo_base='#1B131F' if not oculta else '#FFFFFF',grade=False,
@@ -79,7 +85,9 @@ def contextos(fam,inv):
                         cd=ref('FICHA AMALDIÇOADA',G['cd']),entidade=None,**extra))
     for rot,lib,n,cel in fam['lugares']:
         r,c=coordinate_to_tuple(cel['classe'])
-        pessoal(('liberacao.' if lib else 'feitico.')+str(n),cel,'Liberação Máxima' if lib else 'Comum',linha_funcao=r+6,coluna=c)
+        requisitos={} if not lib else dict(requisito=f'{H["nível"]}>={10*n}',
+                    aviso_requisito=f'Liberação Máxima {n}: nível mínimo {10*n}')
+        pessoal(('liberacao.' if lib else 'feitico.')+str(n),cel,'Liberação Máxima' if lib else 'Comum',linha_funcao=r+6,coluna=c,**requisitos)
     for i,cel in enumerate(fam['zero_c'],1):
         cel=copy.deepcopy(cel);cel['mel']=[cel['mel']];cel['res']=[cel['res']]
         pessoal('classe0.'+str(i),cel,'Classe 0')
@@ -269,7 +277,7 @@ def aplica(layout,fam,inv,personagem):
         identidade='=IFERROR(TEXTJOIN(" · ",TRUE,'+','.join(mensagens)+'),"")' if ncol>1 else '=""'
         put(DADOS,col['identidade_ampliacao']+str(row),identidade)
         aviso=avisos_funcoes(g['campos'],index,ncol)
-        if g.get('requisito'):aviso='TEXTJOIN(" · ",TRUE,'+aviso+',IF('+g['requisito']+',"","Trunfo exige maldição domada com técnica própria e nível de aquisição"))'
+        if g.get('requisito'):aviso='TEXTJOIN(" · ",TRUE,'+aviso+','+aviso_requisito(g)+')'
         put(DADOS,col['avisos_funcoes']+str(row),'='+aviso)
         for k,v in ff.items():
             if k=='avisos':

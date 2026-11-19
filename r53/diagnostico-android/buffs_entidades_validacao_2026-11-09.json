@@ -1,0 +1,180 @@
+{
+ "schema": 1,
+ "date": "2026-11-09",
+ "basePR": 92,
+ "generation": "6701a3e4b549d436",
+ "previousGeneration": "ec14f1ff36db9816",
+ "scope": {
+  "formulas": 168,
+  "ranges": [
+   "DADOS_INVOC!DO2:DS13",
+   "DADOS_INVOC!DW2:EE13"
+  ],
+  "families": {
+   "u": "Buff/Debuff de atributo (5)",
+   "us": "Buff/Debuff de status (5)",
+   "ut": "Buff/Debuff de TR (4)"
+  },
+  "entities": 12,
+  "modelPositions": 280056,
+  "tabs": 26,
+  "untouched": [
+   "DADOS_INVOC!DT2:DV13",
+   "DADOS_INVOC!DJ2:DN13 (PR92)"
+  ],
+  "qa": [
+   "Era",
+   "Ciclo"
+  ],
+  "locale": "pt_BR"
+ },
+ "rule": {
+  "text": "inteiro ASCII com sinal opcional, sem espaços: ^[+-]?[0-9]+$ vale o número",
+  "number": "N() como antes",
+  "zero": [
+   "vazio",
+   "' 2'",
+   "'2 '",
+   "'−2' (sinal tipográfico)",
+   "'--2'",
+   "'+-2'",
+   "'1,5'",
+   "'1.5'",
+   "'abc'",
+   "'+'"
+  ],
+  "outOfScope": "decimal textual, pendente de checagem regional (pt_BR usa vírgula)"
+ },
+ "install": {
+  "method": "updateCells em dois blocos por cópia após snapshot fresco",
+  "targetsCheckedBefore": 168,
+  "readBackEqualsDelta": [
+   true,
+   true
+  ]
+ },
+ "uiPaste": {
+  "path": "INVOCAÇÕES!O21 com apóstrofo, Editar > Copiar, Editar > Colar especial > Só os valores",
+  "targets": [
+   "INVOCAÇÕES!Q21 (u Constituição)",
+   "INVOCAÇÕES!R26 (us Vida máxima)",
+   "INVOCAÇÕES!P31 (ut Vigor)"
+  ],
+  "copies": [
+   {
+    "copy": "Era",
+    "level": 10,
+    "baseline": {
+     "FT2_CON": 0,
+     "GF2_PV": 32,
+     "GQ2_Vigor": 0
+    },
+    "textPasted": "-2",
+    "storedAs": "stringValue",
+    "text": {
+     "DQ2_DZ2_EC2": [
+      -2,
+      -2,
+      -2
+     ],
+     "FT2_CON": -2,
+     "FW2_pontos": 0,
+     "GF2_PV": 10,
+     "GQ2_Vigor": -4
+    },
+    "numberControl": {
+     "DQ2_DZ2_EC2": [
+      -2,
+      -2,
+      -2
+     ],
+     "FT2_CON": -2,
+     "FW2_pontos": 0,
+     "GF2_PV": 10,
+     "GQ2_Vigor": -4
+    },
+    "extra": {
+     "O21 texto '-2 em Força": "resistência Físico -2"
+    }
+   },
+   {
+    "copy": "Ciclo",
+    "level": 2,
+    "baseline": {
+     "FT2_CON": 0,
+     "GF2_PV": 8,
+     "GQ2_Vigor": 0
+    },
+    "textPasted": "+2",
+    "storedAs": "stringValue",
+    "text": {
+     "DQ2_DZ2_EC2": [
+      2,
+      2,
+      2
+     ],
+     "FT2_CON": 2,
+     "FW2_pontos": 0,
+     "GF2_PV": 14,
+     "GQ2_Vigor": 4
+    },
+    "numberControl": {
+     "DQ2_DZ2_EC2": [
+      2,
+      2,
+      2
+     ],
+     "FT2_CON": 2,
+     "FW2_pontos": 0,
+     "GF2_PV": 14,
+     "GQ2_Vigor": 4
+    }
+   }
+  ],
+  "textEqualsNumber": [
+   true,
+   true
+  ]
+ },
+ "invalidTextInSheets": {
+  "copy": "Era",
+  "inputs": {
+   "Q21": "1,5",
+   "R26": "abc",
+   "P31": "−2"
+  },
+  "DQ2_DZ2_EC2": [
+   0,
+   0,
+   0
+  ]
+ },
+ "restore": {
+  "cells": [
+   "O21",
+   "Q21",
+   "R26",
+   "P31"
+  ],
+  "value": 0,
+  "format": "userEnteredFormat inteiro do baseline, incluindo \"B/D \"+0;\"B/D \"-0;\"B/D \"0",
+  "noteO21Kept": true,
+  "matchesFreshSnapshot": true
+ },
+ "preservation": {
+  "montagensGrid": "9543 x 9 nas duas cópias",
+  "sheetsAndConditionalFormats": "relidos, sem diferença visível de abas, grades ou locale",
+  "fullMontagensContentCompared": false,
+  "reason": "sem leitor local autenticado; todas as escritas da rodada foram enumeradas e nenhuma tocou MONTAGENS"
+ },
+ "local": {
+  "focalTest": "r53/testes/buffs_entidades.js",
+  "applyRevert": [
+   "pt_BR",
+   "en_US"
+  ],
+  "refusesDivergentTarget": true,
+  "smoke": "nuvem-b47/conferir.py --smoke OK"
+ },
+ "clipboardNote": "a cópia pelo menu deixou o texto da O21 na área de transferência do sistema"
+}

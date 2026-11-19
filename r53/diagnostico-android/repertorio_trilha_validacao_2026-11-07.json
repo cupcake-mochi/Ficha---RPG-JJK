@@ -1,0 +1,5480 @@
+{
+  "data": "2026-11-07",
+  "referencia": {
+    "livro": "R66",
+    "commit": "e3058ad29180fdec2efec75b512446c49bf87b3d",
+    "base_pr": 86,
+    "base_sha": "6568838badd1a92b130dd46058527fa089da655f"
+  },
+  "configuracoes": [
+    {
+      "sel": "Essência",
+      "id": "parceria_sem_ganho",
+      "trilha": "Parceria",
+      "master": 30,
+      "own": 30,
+      "permanente": 6,
+      "spec": 3,
+      "tal": 0,
+      "allow": 0
+    },
+    {
+      "sel": "Essência",
+      "id": "principal_antes8",
+      "trilha": "Invocação Principal",
+      "master": 30,
+      "own": 7,
+      "permanente": 6,
+      "spec": 1,
+      "tal": 0,
+      "allow": 0
+    },
+    {
+      "sel": "Essência",
+      "id": "principal_8_limite",
+      "trilha": "Invocação Principal",
+      "master": 30,
+      "own": 8,
+      "permanente": 6,
+      "spec": 1,
+      "tal": 0,
+      "allow": 1
+    },
+    {
+      "sel": "Essência",
+      "id": "principal_antes16",
+      "trilha": "Invocação Principal",
+      "master": 30,
+      "own": 15,
+      "permanente": 6,
+      "spec": 2,
+      "tal": 0,
+      "allow": 1
+    },
+    {
+      "sel": "Essência",
+      "id": "principal_16_limite",
+      "trilha": "Invocação Principal",
+      "master": 30,
+      "own": 16,
+      "permanente": 6,
+      "spec": 2,
+      "tal": 0,
+      "allow": 2
+    },
+    {
+      "sel": "Essência",
+      "id": "principal_antes24",
+      "trilha": "Invocação Principal",
+      "master": 30,
+      "own": 23,
+      "permanente": 6,
+      "spec": 3,
+      "tal": 0,
+      "allow": 2
+    },
+    {
+      "sel": "Essência",
+      "id": "principal_24_limite",
+      "trilha": "Invocação Principal",
+      "master": 30,
+      "own": 24,
+      "permanente": 6,
+      "spec": 3,
+      "tal": 0,
+      "allow": 3
+    },
+    {
+      "sel": "Essência",
+      "id": "principal_pool6",
+      "trilha": "Invocação Principal",
+      "master": 30,
+      "own": 24,
+      "permanente": 6,
+      "spec": 3,
+      "tal": 3,
+      "allow": 3
+    },
+    {
+      "sel": "Essência",
+      "id": "principal_mix3",
+      "trilha": "Invocação Principal",
+      "master": 30,
+      "own": 24,
+      "permanente": 6,
+      "spec": 1,
+      "tal": 2,
+      "allow": 3
+    },
+    {
+      "sel": "Essência",
+      "id": "conjunto_antes27",
+      "trilha": "Múltiplas Invocações",
+      "master": 26,
+      "own": 26,
+      "permanente": 6,
+      "spec": 3,
+      "tal": 0,
+      "allow": 0
+    },
+    {
+      "sel": "Essência",
+      "id": "conjunto_atributo0",
+      "trilha": "Múltiplas Invocações",
+      "master": 27,
+      "own": 27,
+      "permanente": 0,
+      "spec": 1,
+      "tal": 0,
+      "allow": 0
+    },
+    {
+      "sel": "Essência",
+      "id": "conjunto_atributo2_excesso",
+      "trilha": "Múltiplas Invocações",
+      "master": 27,
+      "own": 27,
+      "permanente": 2,
+      "spec": 2,
+      "tal": 0,
+      "allow": 1
+    },
+    {
+      "sel": "Essência",
+      "id": "conjunto_atributo2_limite",
+      "trilha": "Múltiplas Invocações",
+      "master": 27,
+      "own": 27,
+      "permanente": 2,
+      "spec": 1,
+      "tal": 0,
+      "allow": 1
+    },
+    {
+      "sel": "Essência",
+      "id": "conjunto_atributo4_excesso",
+      "trilha": "Múltiplas Invocações",
+      "master": 27,
+      "own": 27,
+      "permanente": 4,
+      "spec": 3,
+      "tal": 0,
+      "allow": 2
+    },
+    {
+      "sel": "Essência",
+      "id": "conjunto_atributo4_limite",
+      "trilha": "Múltiplas Invocações",
+      "master": 27,
+      "own": 27,
+      "permanente": 4,
+      "spec": 2,
+      "tal": 0,
+      "allow": 2
+    },
+    {
+      "sel": "Essência",
+      "id": "conjunto_atributo6_limite",
+      "trilha": "Múltiplas Invocações",
+      "master": 27,
+      "own": 27,
+      "permanente": 6,
+      "spec": 3,
+      "tal": 0,
+      "allow": 3
+    },
+    {
+      "sel": "Essência",
+      "id": "conjunto_buff_temporario",
+      "trilha": "Múltiplas Invocações",
+      "master": 27,
+      "own": 27,
+      "permanente": 2,
+      "buff": 4,
+      "spec": 3,
+      "tal": 0,
+      "allow": 1
+    },
+    {
+      "sel": "Essência",
+      "id": "conjunto_entidade7",
+      "trilha": "Múltiplas Invocações",
+      "master": 27,
+      "own": 7,
+      "permanente": 6,
+      "spec": 3,
+      "tal": 0,
+      "allow": 3
+    },
+    {
+      "sel": "Essência",
+      "id": "conjunto_pool6",
+      "trilha": "Múltiplas Invocações",
+      "master": 27,
+      "own": 27,
+      "permanente": 6,
+      "spec": 3,
+      "tal": 3,
+      "allow": 3
+    },
+    {
+      "sel": "Essência",
+      "id": "conjunto_mix3",
+      "trilha": "Múltiplas Invocações",
+      "master": 27,
+      "own": 27,
+      "permanente": 6,
+      "spec": 1,
+      "tal": 2,
+      "allow": 3
+    },
+    {
+      "sel": "Essência",
+      "id": "talento_antes8",
+      "trilha": "Invocação Principal",
+      "master": 30,
+      "own": 7,
+      "permanente": 6,
+      "spec": 0,
+      "tal": 1,
+      "allow": 0
+    },
+    {
+      "sel": "Essência",
+      "id": "talento_so_limite",
+      "trilha": "Invocação Principal",
+      "master": 30,
+      "own": 8,
+      "permanente": 6,
+      "spec": 0,
+      "tal": 1,
+      "allow": 1
+    },
+    {
+      "sel": "Essência",
+      "id": "talentos_so_excesso",
+      "trilha": "Invocação Principal",
+      "master": 30,
+      "own": 8,
+      "permanente": 6,
+      "spec": 0,
+      "tal": 2,
+      "allow": 1
+    },
+    {
+      "sel": "",
+      "id": "vazio_sem_escolha",
+      "trilha": "Múltiplas Invocações",
+      "master": 27,
+      "own": 27,
+      "permanente": 6,
+      "spec": 0,
+      "tal": 0,
+      "allow": 0
+    },
+    {
+      "sel": "",
+      "id": "conjunto_falta_atributo",
+      "trilha": "Múltiplas Invocações",
+      "master": 27,
+      "own": 27,
+      "permanente": 6,
+      "spec": 1,
+      "tal": 0,
+      "allow": 0,
+      "warning": "Escolha Essência"
+    },
+    {
+      "sel": "Força",
+      "id": "conjunto_atributo_invalido",
+      "trilha": "Múltiplas Invocações",
+      "master": 27,
+      "own": 27,
+      "permanente": 6,
+      "spec": 1,
+      "tal": 0,
+      "allow": 0,
+      "warning": "Escolha Essência"
+    },
+    {
+      "sel": "Inteligência",
+      "id": "conjunto_inteligencia",
+      "trilha": "Múltiplas Invocações",
+      "master": 27,
+      "own": 27,
+      "permanente": 6,
+      "int": 2,
+      "ess": 6,
+      "spec": 2,
+      "tal": 0,
+      "allow": 1,
+      "defesa": "Essência"
+    },
+    {
+      "sel": "Essência",
+      "id": "conjunto_essencia",
+      "trilha": "Múltiplas Invocações",
+      "master": 27,
+      "own": 27,
+      "permanente": 6,
+      "int": 2,
+      "ess": 6,
+      "spec": 2,
+      "tal": 0,
+      "allow": 3,
+      "defesa": "Inteligência"
+    },
+    {
+      "sel": "Essência",
+      "id": "conjunto_impar_1",
+      "trilha": "Múltiplas Invocações",
+      "master": 27,
+      "own": 27,
+      "permanente": 1,
+      "spec": 1,
+      "tal": 0,
+      "allow": 0
+    },
+    {
+      "sel": "Essência",
+      "id": "conjunto_impar_3",
+      "trilha": "Múltiplas Invocações",
+      "master": 27,
+      "own": 27,
+      "permanente": 3,
+      "spec": 1,
+      "tal": 0,
+      "allow": 1
+    },
+    {
+      "sel": "Essência",
+      "id": "conjunto_impar_5",
+      "trilha": "Múltiplas Invocações",
+      "master": 27,
+      "own": 27,
+      "permanente": 5,
+      "spec": 1,
+      "tal": 0,
+      "allow": 2
+    },
+    {
+      "sel": "Essência",
+      "id": "nao_evocador",
+      "trilha": "Invocação Principal",
+      "caminho": "Bastião",
+      "master": 30,
+      "own": 30,
+      "permanente": 6,
+      "spec": 1,
+      "tal": 0,
+      "allow": 0,
+      "warning": "exige Evocador"
+    },
+    {
+      "sel": "Essência",
+      "id": "trilha_propria",
+      "trilha": "Trilha Própria",
+      "master": 30,
+      "own": 30,
+      "permanente": 6,
+      "spec": 1,
+      "tal": 0,
+      "allow": 0,
+      "warning": "sem escolhas extras"
+    },
+    {
+      "sel": "Essência",
+      "id": "trilha_vazia",
+      "trilha": "",
+      "master": 30,
+      "own": 30,
+      "permanente": 6,
+      "spec": 1,
+      "tal": 0,
+      "allow": 0,
+      "warning": "sem escolhas extras"
+    },
+    {
+      "sel": "Essência",
+      "id": "slot3_so_nivel8",
+      "trilha": "Invocação Principal",
+      "master": 30,
+      "own": 8,
+      "permanente": 6,
+      "spec": 1,
+      "tal": 0,
+      "allow": 1,
+      "slot3": true
+    },
+    {
+      "sel": "Essência",
+      "id": "basica_e_dois_talentos",
+      "trilha": "Invocação Principal",
+      "master": 30,
+      "own": 24,
+      "permanente": 6,
+      "spec": 1,
+      "tal": 2,
+      "allow": 3,
+      "classe0": true
+    },
+    {
+      "sel": "Essência",
+      "id": "basica_excedente",
+      "trilha": "Parceria",
+      "master": 30,
+      "own": 30,
+      "permanente": 6,
+      "spec": 1,
+      "tal": 0,
+      "allow": 0,
+      "classe0": true
+    },
+    {
+      "sel": "Essência",
+      "id": "oito_versoes_uma_escolha",
+      "trilha": "Invocação Principal",
+      "master": 30,
+      "own": 8,
+      "permanente": 6,
+      "spec": 1,
+      "tal": 0,
+      "allow": 1,
+      "allPrep": true
+    }
+  ],
+  "copias": [
+    {
+      "ambiente": "Era descartável",
+      "matriz_focal": [
+        {
+          "caso": "parceria_sem_ganho",
+          "entidade": 1,
+          "limite": 0,
+          "usadas": 3,
+          "aviso": "Trilha sem escolhas extras · Escolhas extras excedidas: 3/0",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Trilha sem escolhas extras · Escolhas extras excedidas: 3/0"
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Trilha sem escolhas extras · Escolhas extras excedidas: 3/0"
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Trilha sem escolhas extras · Escolhas extras excedidas: 3/0"
+            }
+          ]
+        },
+        {
+          "caso": "parceria_sem_ganho",
+          "entidade": 12,
+          "limite": 0,
+          "usadas": 3,
+          "aviso": "Trilha sem escolhas extras · Escolhas extras excedidas: 3/0",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Trilha sem escolhas extras · Escolhas extras excedidas: 3/0"
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Trilha sem escolhas extras · Escolhas extras excedidas: 3/0"
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Trilha sem escolhas extras · Escolhas extras excedidas: 3/0"
+            }
+          ]
+        },
+        {
+          "caso": "principal_antes8",
+          "entidade": 1,
+          "limite": 0,
+          "usadas": 1,
+          "aviso": "Escolhas extras excedidas: 1/0",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 1/0"
+            }
+          ]
+        },
+        {
+          "caso": "principal_antes8",
+          "entidade": 12,
+          "limite": 0,
+          "usadas": 1,
+          "aviso": "Escolhas extras excedidas: 1/0",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 1/0"
+            }
+          ]
+        },
+        {
+          "caso": "principal_8_limite",
+          "entidade": 1,
+          "limite": 1,
+          "usadas": 1,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "principal_8_limite",
+          "entidade": 12,
+          "limite": 1,
+          "usadas": 1,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "principal_antes16",
+          "entidade": 1,
+          "limite": 1,
+          "usadas": 2,
+          "aviso": "Escolhas extras excedidas: 2/1",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 2/1"
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 2/1"
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 2/1"
+            }
+          ]
+        },
+        {
+          "caso": "principal_antes16",
+          "entidade": 12,
+          "limite": 1,
+          "usadas": 2,
+          "aviso": "Escolhas extras excedidas: 2/1",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 2/1"
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 2/1"
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 2/1"
+            }
+          ]
+        },
+        {
+          "caso": "principal_16_limite",
+          "entidade": 1,
+          "limite": 2,
+          "usadas": 2,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "principal_16_limite",
+          "entidade": 12,
+          "limite": 2,
+          "usadas": 2,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "principal_antes24",
+          "entidade": 1,
+          "limite": 2,
+          "usadas": 3,
+          "aviso": "Escolhas extras excedidas: 3/2",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 3/2"
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 3/2"
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 3/2"
+            }
+          ]
+        },
+        {
+          "caso": "principal_antes24",
+          "entidade": 12,
+          "limite": 2,
+          "usadas": 3,
+          "aviso": "Escolhas extras excedidas: 3/2",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 3/2"
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 3/2"
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 3/2"
+            }
+          ]
+        },
+        {
+          "caso": "principal_24_limite",
+          "entidade": 1,
+          "limite": 3,
+          "usadas": 3,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "principal_24_limite",
+          "entidade": 12,
+          "limite": 3,
+          "usadas": 3,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "principal_pool6",
+          "entidade": 1,
+          "limite": 3,
+          "usadas": 6,
+          "aviso": "Escolhas extras excedidas: 6/3",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 6/3"
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 6/3"
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 6/3"
+            }
+          ]
+        },
+        {
+          "caso": "principal_pool6",
+          "entidade": 12,
+          "limite": 3,
+          "usadas": 6,
+          "aviso": "Escolhas extras excedidas: 6/3",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 6/3"
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 6/3"
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 6/3"
+            }
+          ]
+        },
+        {
+          "caso": "principal_mix3",
+          "entidade": 1,
+          "limite": 3,
+          "usadas": 3,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "principal_mix3",
+          "entidade": 12,
+          "limite": 3,
+          "usadas": 3,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_antes27",
+          "entidade": 1,
+          "limite": 0,
+          "usadas": 3,
+          "aviso": "Repertório do Conjunto: nível mínimo 27 do invocador · Escolhas extras excedidas: 3/0",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Repertório do Conjunto: nível mínimo 27 do invocador · Escolhas extras excedidas: 3/0"
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Repertório do Conjunto: nível mínimo 27 do invocador · Escolhas extras excedidas: 3/0"
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Repertório do Conjunto: nível mínimo 27 do invocador · Escolhas extras excedidas: 3/0"
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_antes27",
+          "entidade": 12,
+          "limite": 0,
+          "usadas": 3,
+          "aviso": "Repertório do Conjunto: nível mínimo 27 do invocador · Escolhas extras excedidas: 3/0",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Repertório do Conjunto: nível mínimo 27 do invocador · Escolhas extras excedidas: 3/0"
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Repertório do Conjunto: nível mínimo 27 do invocador · Escolhas extras excedidas: 3/0"
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Repertório do Conjunto: nível mínimo 27 do invocador · Escolhas extras excedidas: 3/0"
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_atributo0",
+          "entidade": 1,
+          "limite": 0,
+          "usadas": 1,
+          "aviso": "Escolhas extras excedidas: 1/0",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 1/0"
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_atributo0",
+          "entidade": 12,
+          "limite": 0,
+          "usadas": 1,
+          "aviso": "Escolhas extras excedidas: 1/0",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 1/0"
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_atributo2_excesso",
+          "entidade": 1,
+          "limite": 1,
+          "usadas": 2,
+          "aviso": "Escolhas extras excedidas: 2/1",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 2/1"
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 2/1"
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 2/1"
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_atributo2_excesso",
+          "entidade": 12,
+          "limite": 1,
+          "usadas": 2,
+          "aviso": "Escolhas extras excedidas: 2/1",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 2/1"
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 2/1"
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 2/1"
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_atributo2_limite",
+          "entidade": 1,
+          "limite": 1,
+          "usadas": 1,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_atributo2_limite",
+          "entidade": 12,
+          "limite": 1,
+          "usadas": 1,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_atributo4_excesso",
+          "entidade": 1,
+          "limite": 2,
+          "usadas": 3,
+          "aviso": "Escolhas extras excedidas: 3/2",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 3/2"
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 3/2"
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 3/2"
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_atributo4_excesso",
+          "entidade": 12,
+          "limite": 2,
+          "usadas": 3,
+          "aviso": "Escolhas extras excedidas: 3/2",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 3/2"
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 3/2"
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 3/2"
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_atributo4_limite",
+          "entidade": 1,
+          "limite": 2,
+          "usadas": 2,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_atributo4_limite",
+          "entidade": 12,
+          "limite": 2,
+          "usadas": 2,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_atributo6_limite",
+          "entidade": 1,
+          "limite": 3,
+          "usadas": 3,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_atributo6_limite",
+          "entidade": 12,
+          "limite": 3,
+          "usadas": 3,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_buff_temporario",
+          "entidade": 1,
+          "limite": 1,
+          "usadas": 3,
+          "aviso": "Escolhas extras excedidas: 3/1",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 3/1"
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 3/1"
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 3/1"
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_buff_temporario",
+          "entidade": 12,
+          "limite": 1,
+          "usadas": 3,
+          "aviso": "Escolhas extras excedidas: 3/1",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 3/1"
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 3/1"
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 3/1"
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_entidade7",
+          "entidade": 1,
+          "limite": 3,
+          "usadas": 3,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_entidade7",
+          "entidade": 12,
+          "limite": 3,
+          "usadas": 3,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_pool6",
+          "entidade": 1,
+          "limite": 3,
+          "usadas": 6,
+          "aviso": "Escolhas extras excedidas: 6/3",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 6/3"
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 6/3"
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 6/3"
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_pool6",
+          "entidade": 12,
+          "limite": 3,
+          "usadas": 6,
+          "aviso": "Escolhas extras excedidas: 6/3",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 6/3"
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 6/3"
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 6/3"
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_mix3",
+          "entidade": 1,
+          "limite": 3,
+          "usadas": 3,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_mix3",
+          "entidade": 12,
+          "limite": 3,
+          "usadas": 3,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "talento_antes8",
+          "entidade": 1,
+          "limite": 0,
+          "usadas": 1,
+          "aviso": "Escolhas extras excedidas: 1/0",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 1/0"
+            }
+          ]
+        },
+        {
+          "caso": "talento_antes8",
+          "entidade": 12,
+          "limite": 0,
+          "usadas": 1,
+          "aviso": "Escolhas extras excedidas: 1/0",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 1/0"
+            }
+          ]
+        },
+        {
+          "caso": "talento_so_limite",
+          "entidade": 1,
+          "limite": 1,
+          "usadas": 1,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "talento_so_limite",
+          "entidade": 12,
+          "limite": 1,
+          "usadas": 1,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "talentos_so_excesso",
+          "entidade": 1,
+          "limite": 1,
+          "usadas": 2,
+          "aviso": "Escolhas extras excedidas: 2/1",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 2/1"
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 2/1"
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 2/1"
+            }
+          ]
+        },
+        {
+          "caso": "talentos_so_excesso",
+          "entidade": 12,
+          "limite": 1,
+          "usadas": 2,
+          "aviso": "Escolhas extras excedidas: 2/1",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 2/1"
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 2/1"
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 2/1"
+            }
+          ]
+        },
+        {
+          "caso": "vazio_sem_escolha",
+          "entidade": 1,
+          "limite": 0,
+          "usadas": 0,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "vazio_sem_escolha",
+          "entidade": 12,
+          "limite": 0,
+          "usadas": 0,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_falta_atributo",
+          "entidade": 1,
+          "limite": 0,
+          "usadas": 1,
+          "aviso": "Escolha Essência ou Inteligência em O CONJUNTO · Escolhas extras excedidas: 1/0",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolha Essência ou Inteligência em O CONJUNTO · Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolha Essência ou Inteligência em O CONJUNTO · Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolha Essência ou Inteligência em O CONJUNTO · Escolhas extras excedidas: 1/0"
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_falta_atributo",
+          "entidade": 12,
+          "limite": 0,
+          "usadas": 1,
+          "aviso": "Escolha Essência ou Inteligência em O CONJUNTO · Escolhas extras excedidas: 1/0",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolha Essência ou Inteligência em O CONJUNTO · Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolha Essência ou Inteligência em O CONJUNTO · Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolha Essência ou Inteligência em O CONJUNTO · Escolhas extras excedidas: 1/0"
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_atributo_invalido",
+          "entidade": 1,
+          "limite": 0,
+          "usadas": 1,
+          "aviso": "Escolha Essência ou Inteligência em O CONJUNTO · Escolhas extras excedidas: 1/0",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolha Essência ou Inteligência em O CONJUNTO · Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolha Essência ou Inteligência em O CONJUNTO · Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolha Essência ou Inteligência em O CONJUNTO · Escolhas extras excedidas: 1/0"
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_atributo_invalido",
+          "entidade": 12,
+          "limite": 0,
+          "usadas": 1,
+          "aviso": "Escolha Essência ou Inteligência em O CONJUNTO · Escolhas extras excedidas: 1/0",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolha Essência ou Inteligência em O CONJUNTO · Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolha Essência ou Inteligência em O CONJUNTO · Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolha Essência ou Inteligência em O CONJUNTO · Escolhas extras excedidas: 1/0"
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_inteligencia",
+          "entidade": 1,
+          "limite": 1,
+          "usadas": 2,
+          "aviso": "Escolhas extras excedidas: 2/1",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 2/1"
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 2/1"
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 2/1"
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_inteligencia",
+          "entidade": 12,
+          "limite": 1,
+          "usadas": 2,
+          "aviso": "Escolhas extras excedidas: 2/1",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 2/1"
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 2/1"
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 2/1"
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_essencia",
+          "entidade": 1,
+          "limite": 3,
+          "usadas": 2,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_essencia",
+          "entidade": 12,
+          "limite": 3,
+          "usadas": 2,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_impar_1",
+          "entidade": 1,
+          "limite": 0,
+          "usadas": 1,
+          "aviso": "Escolhas extras excedidas: 1/0",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 1/0"
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_impar_1",
+          "entidade": 12,
+          "limite": 0,
+          "usadas": 1,
+          "aviso": "Escolhas extras excedidas: 1/0",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 1/0"
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_impar_3",
+          "entidade": 1,
+          "limite": 1,
+          "usadas": 1,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_impar_3",
+          "entidade": 12,
+          "limite": 1,
+          "usadas": 1,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_impar_5",
+          "entidade": 1,
+          "limite": 2,
+          "usadas": 1,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_impar_5",
+          "entidade": 12,
+          "limite": 2,
+          "usadas": 1,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "nao_evocador",
+          "entidade": 1,
+          "limite": 0,
+          "usadas": 1,
+          "aviso": "Repertório extra exige Evocador · Escolhas extras excedidas: 1/0",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Repertório extra exige Evocador · Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Repertório extra exige Evocador · Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Repertório extra exige Evocador · Escolhas extras excedidas: 1/0"
+            }
+          ]
+        },
+        {
+          "caso": "nao_evocador",
+          "entidade": 12,
+          "limite": 0,
+          "usadas": 1,
+          "aviso": "Repertório extra exige Evocador · Escolhas extras excedidas: 1/0",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Repertório extra exige Evocador · Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Repertório extra exige Evocador · Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Repertório extra exige Evocador · Escolhas extras excedidas: 1/0"
+            }
+          ]
+        },
+        {
+          "caso": "trilha_propria",
+          "entidade": 1,
+          "limite": 0,
+          "usadas": 1,
+          "aviso": "Trilha sem escolhas extras · Escolhas extras excedidas: 1/0",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Trilha sem escolhas extras · Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Trilha sem escolhas extras · Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Trilha sem escolhas extras · Escolhas extras excedidas: 1/0"
+            }
+          ]
+        },
+        {
+          "caso": "trilha_propria",
+          "entidade": 12,
+          "limite": 0,
+          "usadas": 1,
+          "aviso": "Trilha sem escolhas extras · Escolhas extras excedidas: 1/0",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Trilha sem escolhas extras · Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Trilha sem escolhas extras · Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Trilha sem escolhas extras · Escolhas extras excedidas: 1/0"
+            }
+          ]
+        },
+        {
+          "caso": "trilha_vazia",
+          "entidade": 1,
+          "limite": 0,
+          "usadas": 1,
+          "aviso": "Trilha sem escolhas extras · Escolhas extras excedidas: 1/0",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Trilha sem escolhas extras · Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Trilha sem escolhas extras · Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Trilha sem escolhas extras · Escolhas extras excedidas: 1/0"
+            }
+          ]
+        },
+        {
+          "caso": "trilha_vazia",
+          "entidade": 12,
+          "limite": 0,
+          "usadas": 1,
+          "aviso": "Trilha sem escolhas extras · Escolhas extras excedidas: 1/0",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Trilha sem escolhas extras · Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Trilha sem escolhas extras · Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Trilha sem escolhas extras · Escolhas extras excedidas: 1/0"
+            }
+          ]
+        },
+        {
+          "caso": "slot3_so_nivel8",
+          "entidade": 1,
+          "limite": 1,
+          "usadas": 1,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "slot3_so_nivel8",
+          "entidade": 12,
+          "limite": 1,
+          "usadas": 1,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "basica_e_dois_talentos",
+          "entidade": 1,
+          "limite": 3,
+          "usadas": 3,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "basica_e_dois_talentos",
+          "entidade": 12,
+          "limite": 3,
+          "usadas": 3,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "basica_excedente",
+          "entidade": 1,
+          "limite": 0,
+          "usadas": 1,
+          "aviso": "Trilha sem escolhas extras · Escolhas extras excedidas: 1/0",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Trilha sem escolhas extras · Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Trilha sem escolhas extras · Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Trilha sem escolhas extras · Escolhas extras excedidas: 1/0"
+            }
+          ]
+        },
+        {
+          "caso": "basica_excedente",
+          "entidade": 12,
+          "limite": 0,
+          "usadas": 1,
+          "aviso": "Trilha sem escolhas extras · Escolhas extras excedidas: 1/0",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Trilha sem escolhas extras · Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Trilha sem escolhas extras · Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Trilha sem escolhas extras · Escolhas extras excedidas: 1/0"
+            }
+          ]
+        },
+        {
+          "caso": "oito_versoes_uma_escolha",
+          "entidade": 1,
+          "limite": 1,
+          "usadas": 1,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "oito_versoes_uma_escolha",
+          "entidade": 12,
+          "limite": 1,
+          "usadas": 1,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            }
+          ]
+        }
+      ],
+      "todas_as_entidades": [
+        {
+          "id": "talento_antes8_12",
+          "entity": 1,
+          "quota": 0,
+          "used": 1,
+          "warning": "Escolhas extras excedidas: 1/0",
+          "own": 7
+        },
+        {
+          "id": "talento_antes8_12",
+          "entity": 2,
+          "quota": 0,
+          "used": 1,
+          "warning": "Escolhas extras excedidas: 1/0",
+          "own": 7
+        },
+        {
+          "id": "talento_antes8_12",
+          "entity": 3,
+          "quota": 0,
+          "used": 1,
+          "warning": "Escolhas extras excedidas: 1/0",
+          "own": 7
+        },
+        {
+          "id": "talento_antes8_12",
+          "entity": 4,
+          "quota": 0,
+          "used": 1,
+          "warning": "Escolhas extras excedidas: 1/0",
+          "own": 7
+        },
+        {
+          "id": "talento_antes8_12",
+          "entity": 5,
+          "quota": 0,
+          "used": 1,
+          "warning": "Escolhas extras excedidas: 1/0",
+          "own": 7
+        },
+        {
+          "id": "talento_antes8_12",
+          "entity": 6,
+          "quota": 0,
+          "used": 1,
+          "warning": "Escolhas extras excedidas: 1/0",
+          "own": 7
+        },
+        {
+          "id": "talento_antes8_12",
+          "entity": 7,
+          "quota": 0,
+          "used": 1,
+          "warning": "Escolhas extras excedidas: 1/0",
+          "own": 7
+        },
+        {
+          "id": "talento_antes8_12",
+          "entity": 8,
+          "quota": 0,
+          "used": 1,
+          "warning": "Escolhas extras excedidas: 1/0",
+          "own": 7
+        },
+        {
+          "id": "talento_antes8_12",
+          "entity": 9,
+          "quota": 0,
+          "used": 1,
+          "warning": "Escolhas extras excedidas: 1/0",
+          "own": 7
+        },
+        {
+          "id": "talento_antes8_12",
+          "entity": 10,
+          "quota": 0,
+          "used": 1,
+          "warning": "Escolhas extras excedidas: 1/0",
+          "own": 7
+        },
+        {
+          "id": "talento_antes8_12",
+          "entity": 11,
+          "quota": 0,
+          "used": 1,
+          "warning": "Escolhas extras excedidas: 1/0",
+          "own": 7
+        },
+        {
+          "id": "talento_antes8_12",
+          "entity": 12,
+          "quota": 0,
+          "used": 1,
+          "warning": "Escolhas extras excedidas: 1/0",
+          "own": 7
+        },
+        {
+          "id": "talento_nivel8_12",
+          "entity": 1,
+          "quota": 1,
+          "used": 1,
+          "warning": "",
+          "own": 8
+        },
+        {
+          "id": "talento_nivel8_12",
+          "entity": 2,
+          "quota": 1,
+          "used": 1,
+          "warning": "",
+          "own": 8
+        },
+        {
+          "id": "talento_nivel8_12",
+          "entity": 3,
+          "quota": 1,
+          "used": 1,
+          "warning": "",
+          "own": 8
+        },
+        {
+          "id": "talento_nivel8_12",
+          "entity": 4,
+          "quota": 1,
+          "used": 1,
+          "warning": "",
+          "own": 8
+        },
+        {
+          "id": "talento_nivel8_12",
+          "entity": 5,
+          "quota": 1,
+          "used": 1,
+          "warning": "",
+          "own": 8
+        },
+        {
+          "id": "talento_nivel8_12",
+          "entity": 6,
+          "quota": 1,
+          "used": 1,
+          "warning": "",
+          "own": 8
+        },
+        {
+          "id": "talento_nivel8_12",
+          "entity": 7,
+          "quota": 1,
+          "used": 1,
+          "warning": "",
+          "own": 8
+        },
+        {
+          "id": "talento_nivel8_12",
+          "entity": 8,
+          "quota": 1,
+          "used": 1,
+          "warning": "",
+          "own": 8
+        },
+        {
+          "id": "talento_nivel8_12",
+          "entity": 9,
+          "quota": 1,
+          "used": 1,
+          "warning": "",
+          "own": 8
+        },
+        {
+          "id": "talento_nivel8_12",
+          "entity": 10,
+          "quota": 1,
+          "used": 1,
+          "warning": "",
+          "own": 8
+        },
+        {
+          "id": "talento_nivel8_12",
+          "entity": 11,
+          "quota": 1,
+          "used": 1,
+          "warning": "",
+          "own": 8
+        },
+        {
+          "id": "talento_nivel8_12",
+          "entity": 12,
+          "quota": 1,
+          "used": 1,
+          "warning": "",
+          "own": 8
+        },
+        {
+          "id": "talento_e_capacidade_12",
+          "entity": 1,
+          "quota": 1,
+          "used": 2,
+          "warning": "Escolhas extras excedidas: 2/1",
+          "own": 8
+        },
+        {
+          "id": "talento_e_capacidade_12",
+          "entity": 2,
+          "quota": 1,
+          "used": 2,
+          "warning": "Escolhas extras excedidas: 2/1",
+          "own": 8
+        },
+        {
+          "id": "talento_e_capacidade_12",
+          "entity": 3,
+          "quota": 1,
+          "used": 2,
+          "warning": "Escolhas extras excedidas: 2/1",
+          "own": 8
+        },
+        {
+          "id": "talento_e_capacidade_12",
+          "entity": 4,
+          "quota": 1,
+          "used": 2,
+          "warning": "Escolhas extras excedidas: 2/1",
+          "own": 8
+        },
+        {
+          "id": "talento_e_capacidade_12",
+          "entity": 5,
+          "quota": 1,
+          "used": 2,
+          "warning": "Escolhas extras excedidas: 2/1",
+          "own": 8
+        },
+        {
+          "id": "talento_e_capacidade_12",
+          "entity": 6,
+          "quota": 1,
+          "used": 2,
+          "warning": "Escolhas extras excedidas: 2/1",
+          "own": 8
+        },
+        {
+          "id": "talento_e_capacidade_12",
+          "entity": 7,
+          "quota": 1,
+          "used": 2,
+          "warning": "Escolhas extras excedidas: 2/1",
+          "own": 8
+        },
+        {
+          "id": "talento_e_capacidade_12",
+          "entity": 8,
+          "quota": 1,
+          "used": 2,
+          "warning": "Escolhas extras excedidas: 2/1",
+          "own": 8
+        },
+        {
+          "id": "talento_e_capacidade_12",
+          "entity": 9,
+          "quota": 1,
+          "used": 2,
+          "warning": "Escolhas extras excedidas: 2/1",
+          "own": 8
+        },
+        {
+          "id": "talento_e_capacidade_12",
+          "entity": 10,
+          "quota": 1,
+          "used": 2,
+          "warning": "Escolhas extras excedidas: 2/1",
+          "own": 8
+        },
+        {
+          "id": "talento_e_capacidade_12",
+          "entity": 11,
+          "quota": 1,
+          "used": 2,
+          "warning": "Escolhas extras excedidas: 2/1",
+          "own": 8
+        },
+        {
+          "id": "talento_e_capacidade_12",
+          "entity": 12,
+          "quota": 1,
+          "used": 2,
+          "warning": "Escolhas extras excedidas: 2/1",
+          "own": 8
+        }
+      ],
+      "tipos_de_nome": [
+        {
+          "caso": "vazio",
+          "esperado": 0,
+          "obtido": 0
+        },
+        {
+          "caso": "número 7",
+          "esperado": 1,
+          "obtido": 1
+        },
+        {
+          "caso": "número zero",
+          "esperado": 1,
+          "obtido": 1
+        },
+        {
+          "caso": "booleano falso",
+          "esperado": 1,
+          "obtido": 1
+        },
+        {
+          "caso": "texto zero",
+          "esperado": 1,
+          "obtido": 1
+        }
+      ],
+      "recuperacoes": [
+        {
+          "id": "limites",
+          "celulas": 52,
+          "ok": true
+        },
+        {
+          "id": "cartoes1",
+          "celulas": 9,
+          "ok": true
+        },
+        {
+          "id": "cartoes12",
+          "celulas": 9,
+          "ok": true
+        },
+        {
+          "id": "cabecalho1",
+          "celulas": 1,
+          "ok": true
+        },
+        {
+          "id": "seletor_rotulos_final",
+          "celulas": 2,
+          "ok": true
+        },
+        {
+          "id": "contagem_com_numeros",
+          "celulas": 12,
+          "ok": true
+        }
+      ],
+      "selecao_real": [
+        {
+          "i": 0,
+          "selector": "Inteligência",
+          "defesa": "Inteligência",
+          "first": 1,
+          "last": 1,
+          "warn": "Escolhas extras excedidas: 2/1"
+        },
+        {
+          "i": 0,
+          "selector": "Essência",
+          "defesa": "Inteligência",
+          "first": 3,
+          "last": 3,
+          "warn": ""
+        }
+      ],
+      "entradas_restauradas_por_etapa": {
+        "matriz_focal": 185,
+        "todas_entidades": 124,
+        "interface": 185
+      },
+      "preservacao": {
+        "i": 0,
+        "positions": 13644,
+        "montagens": 11988,
+        "changed": 118,
+        "unexpected": [],
+        "invalid": [],
+        "errors": []
+      }
+    },
+    {
+      "ambiente": "Ciclo descartável",
+      "matriz_focal": [
+        {
+          "caso": "parceria_sem_ganho",
+          "entidade": 1,
+          "limite": 0,
+          "usadas": 3,
+          "aviso": "Trilha sem escolhas extras · Escolhas extras excedidas: 3/0",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Trilha sem escolhas extras · Escolhas extras excedidas: 3/0"
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Trilha sem escolhas extras · Escolhas extras excedidas: 3/0"
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Trilha sem escolhas extras · Escolhas extras excedidas: 3/0"
+            }
+          ]
+        },
+        {
+          "caso": "parceria_sem_ganho",
+          "entidade": 12,
+          "limite": 0,
+          "usadas": 3,
+          "aviso": "Trilha sem escolhas extras · Escolhas extras excedidas: 3/0",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Trilha sem escolhas extras · Escolhas extras excedidas: 3/0"
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Trilha sem escolhas extras · Escolhas extras excedidas: 3/0"
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Trilha sem escolhas extras · Escolhas extras excedidas: 3/0"
+            }
+          ]
+        },
+        {
+          "caso": "principal_antes8",
+          "entidade": 1,
+          "limite": 0,
+          "usadas": 1,
+          "aviso": "Escolhas extras excedidas: 1/0",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 1/0"
+            }
+          ]
+        },
+        {
+          "caso": "principal_antes8",
+          "entidade": 12,
+          "limite": 0,
+          "usadas": 1,
+          "aviso": "Escolhas extras excedidas: 1/0",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 1/0"
+            }
+          ]
+        },
+        {
+          "caso": "principal_8_limite",
+          "entidade": 1,
+          "limite": 1,
+          "usadas": 1,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "principal_8_limite",
+          "entidade": 12,
+          "limite": 1,
+          "usadas": 1,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "principal_antes16",
+          "entidade": 1,
+          "limite": 1,
+          "usadas": 2,
+          "aviso": "Escolhas extras excedidas: 2/1",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 2/1"
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 2/1"
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 2/1"
+            }
+          ]
+        },
+        {
+          "caso": "principal_antes16",
+          "entidade": 12,
+          "limite": 1,
+          "usadas": 2,
+          "aviso": "Escolhas extras excedidas: 2/1",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 2/1"
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 2/1"
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 2/1"
+            }
+          ]
+        },
+        {
+          "caso": "principal_16_limite",
+          "entidade": 1,
+          "limite": 2,
+          "usadas": 2,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "principal_16_limite",
+          "entidade": 12,
+          "limite": 2,
+          "usadas": 2,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "principal_antes24",
+          "entidade": 1,
+          "limite": 2,
+          "usadas": 3,
+          "aviso": "Escolhas extras excedidas: 3/2",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 3/2"
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 3/2"
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 3/2"
+            }
+          ]
+        },
+        {
+          "caso": "principal_antes24",
+          "entidade": 12,
+          "limite": 2,
+          "usadas": 3,
+          "aviso": "Escolhas extras excedidas: 3/2",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 3/2"
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 3/2"
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 3/2"
+            }
+          ]
+        },
+        {
+          "caso": "principal_24_limite",
+          "entidade": 1,
+          "limite": 3,
+          "usadas": 3,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "principal_24_limite",
+          "entidade": 12,
+          "limite": 3,
+          "usadas": 3,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "principal_pool6",
+          "entidade": 1,
+          "limite": 3,
+          "usadas": 6,
+          "aviso": "Escolhas extras excedidas: 6/3",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 6/3"
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 6/3"
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 6/3"
+            }
+          ]
+        },
+        {
+          "caso": "principal_pool6",
+          "entidade": 12,
+          "limite": 3,
+          "usadas": 6,
+          "aviso": "Escolhas extras excedidas: 6/3",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 6/3"
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 6/3"
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 6/3"
+            }
+          ]
+        },
+        {
+          "caso": "principal_mix3",
+          "entidade": 1,
+          "limite": 3,
+          "usadas": 3,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "principal_mix3",
+          "entidade": 12,
+          "limite": 3,
+          "usadas": 3,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_antes27",
+          "entidade": 1,
+          "limite": 0,
+          "usadas": 3,
+          "aviso": "Repertório do Conjunto: nível mínimo 27 do invocador · Escolhas extras excedidas: 3/0",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Repertório do Conjunto: nível mínimo 27 do invocador · Escolhas extras excedidas: 3/0"
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Repertório do Conjunto: nível mínimo 27 do invocador · Escolhas extras excedidas: 3/0"
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Repertório do Conjunto: nível mínimo 27 do invocador · Escolhas extras excedidas: 3/0"
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_antes27",
+          "entidade": 12,
+          "limite": 0,
+          "usadas": 3,
+          "aviso": "Repertório do Conjunto: nível mínimo 27 do invocador · Escolhas extras excedidas: 3/0",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Repertório do Conjunto: nível mínimo 27 do invocador · Escolhas extras excedidas: 3/0"
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Repertório do Conjunto: nível mínimo 27 do invocador · Escolhas extras excedidas: 3/0"
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Repertório do Conjunto: nível mínimo 27 do invocador · Escolhas extras excedidas: 3/0"
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_atributo0",
+          "entidade": 1,
+          "limite": 0,
+          "usadas": 1,
+          "aviso": "Escolhas extras excedidas: 1/0",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 1/0"
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_atributo0",
+          "entidade": 12,
+          "limite": 0,
+          "usadas": 1,
+          "aviso": "Escolhas extras excedidas: 1/0",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 1/0"
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_atributo2_excesso",
+          "entidade": 1,
+          "limite": 1,
+          "usadas": 2,
+          "aviso": "Escolhas extras excedidas: 2/1",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 2/1"
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 2/1"
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 2/1"
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_atributo2_excesso",
+          "entidade": 12,
+          "limite": 1,
+          "usadas": 2,
+          "aviso": "Escolhas extras excedidas: 2/1",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 2/1"
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 2/1"
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 2/1"
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_atributo2_limite",
+          "entidade": 1,
+          "limite": 1,
+          "usadas": 1,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_atributo2_limite",
+          "entidade": 12,
+          "limite": 1,
+          "usadas": 1,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_atributo4_excesso",
+          "entidade": 1,
+          "limite": 2,
+          "usadas": 3,
+          "aviso": "Escolhas extras excedidas: 3/2",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 3/2"
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 3/2"
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 3/2"
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_atributo4_excesso",
+          "entidade": 12,
+          "limite": 2,
+          "usadas": 3,
+          "aviso": "Escolhas extras excedidas: 3/2",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 3/2"
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 3/2"
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 3/2"
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_atributo4_limite",
+          "entidade": 1,
+          "limite": 2,
+          "usadas": 2,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_atributo4_limite",
+          "entidade": 12,
+          "limite": 2,
+          "usadas": 2,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_atributo6_limite",
+          "entidade": 1,
+          "limite": 3,
+          "usadas": 3,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_atributo6_limite",
+          "entidade": 12,
+          "limite": 3,
+          "usadas": 3,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_buff_temporario",
+          "entidade": 1,
+          "limite": 1,
+          "usadas": 3,
+          "aviso": "Escolhas extras excedidas: 3/1",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 3/1"
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 3/1"
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 3/1"
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_buff_temporario",
+          "entidade": 12,
+          "limite": 1,
+          "usadas": 3,
+          "aviso": "Escolhas extras excedidas: 3/1",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 3/1"
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 3/1"
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 3/1"
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_entidade7",
+          "entidade": 1,
+          "limite": 3,
+          "usadas": 3,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_entidade7",
+          "entidade": 12,
+          "limite": 3,
+          "usadas": 3,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_pool6",
+          "entidade": 1,
+          "limite": 3,
+          "usadas": 6,
+          "aviso": "Escolhas extras excedidas: 6/3",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 6/3"
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 6/3"
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 6/3"
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_pool6",
+          "entidade": 12,
+          "limite": 3,
+          "usadas": 6,
+          "aviso": "Escolhas extras excedidas: 6/3",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 6/3"
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 6/3"
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 6/3"
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_mix3",
+          "entidade": 1,
+          "limite": 3,
+          "usadas": 3,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_mix3",
+          "entidade": 12,
+          "limite": 3,
+          "usadas": 3,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "talento_antes8",
+          "entidade": 1,
+          "limite": 0,
+          "usadas": 1,
+          "aviso": "Escolhas extras excedidas: 1/0",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 1/0"
+            }
+          ]
+        },
+        {
+          "caso": "talento_antes8",
+          "entidade": 12,
+          "limite": 0,
+          "usadas": 1,
+          "aviso": "Escolhas extras excedidas: 1/0",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 1/0"
+            }
+          ]
+        },
+        {
+          "caso": "talento_so_limite",
+          "entidade": 1,
+          "limite": 1,
+          "usadas": 1,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "talento_so_limite",
+          "entidade": 12,
+          "limite": 1,
+          "usadas": 1,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "talentos_so_excesso",
+          "entidade": 1,
+          "limite": 1,
+          "usadas": 2,
+          "aviso": "Escolhas extras excedidas: 2/1",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 2/1"
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 2/1"
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 2/1"
+            }
+          ]
+        },
+        {
+          "caso": "talentos_so_excesso",
+          "entidade": 12,
+          "limite": 1,
+          "usadas": 2,
+          "aviso": "Escolhas extras excedidas: 2/1",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 2/1"
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 2/1"
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 2/1"
+            }
+          ]
+        },
+        {
+          "caso": "vazio_sem_escolha",
+          "entidade": 1,
+          "limite": 0,
+          "usadas": 0,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "vazio_sem_escolha",
+          "entidade": 12,
+          "limite": 0,
+          "usadas": 0,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_falta_atributo",
+          "entidade": 1,
+          "limite": 0,
+          "usadas": 1,
+          "aviso": "Escolha Essência ou Inteligência em O CONJUNTO · Escolhas extras excedidas: 1/0",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolha Essência ou Inteligência em O CONJUNTO · Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolha Essência ou Inteligência em O CONJUNTO · Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolha Essência ou Inteligência em O CONJUNTO · Escolhas extras excedidas: 1/0"
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_falta_atributo",
+          "entidade": 12,
+          "limite": 0,
+          "usadas": 1,
+          "aviso": "Escolha Essência ou Inteligência em O CONJUNTO · Escolhas extras excedidas: 1/0",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolha Essência ou Inteligência em O CONJUNTO · Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolha Essência ou Inteligência em O CONJUNTO · Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolha Essência ou Inteligência em O CONJUNTO · Escolhas extras excedidas: 1/0"
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_atributo_invalido",
+          "entidade": 1,
+          "limite": 0,
+          "usadas": 1,
+          "aviso": "Escolha Essência ou Inteligência em O CONJUNTO · Escolhas extras excedidas: 1/0",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolha Essência ou Inteligência em O CONJUNTO · Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolha Essência ou Inteligência em O CONJUNTO · Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolha Essência ou Inteligência em O CONJUNTO · Escolhas extras excedidas: 1/0"
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_atributo_invalido",
+          "entidade": 12,
+          "limite": 0,
+          "usadas": 1,
+          "aviso": "Escolha Essência ou Inteligência em O CONJUNTO · Escolhas extras excedidas: 1/0",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolha Essência ou Inteligência em O CONJUNTO · Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolha Essência ou Inteligência em O CONJUNTO · Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolha Essência ou Inteligência em O CONJUNTO · Escolhas extras excedidas: 1/0"
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_inteligencia",
+          "entidade": 1,
+          "limite": 1,
+          "usadas": 2,
+          "aviso": "Escolhas extras excedidas: 2/1",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 2/1"
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 2/1"
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 2/1"
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_inteligencia",
+          "entidade": 12,
+          "limite": 1,
+          "usadas": 2,
+          "aviso": "Escolhas extras excedidas: 2/1",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 2/1"
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 2/1"
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 2/1"
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_essencia",
+          "entidade": 1,
+          "limite": 3,
+          "usadas": 2,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_essencia",
+          "entidade": 12,
+          "limite": 3,
+          "usadas": 2,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_impar_1",
+          "entidade": 1,
+          "limite": 0,
+          "usadas": 1,
+          "aviso": "Escolhas extras excedidas: 1/0",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 1/0"
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_impar_1",
+          "entidade": 12,
+          "limite": 0,
+          "usadas": 1,
+          "aviso": "Escolhas extras excedidas: 1/0",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Escolhas extras excedidas: 1/0"
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_impar_3",
+          "entidade": 1,
+          "limite": 1,
+          "usadas": 1,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_impar_3",
+          "entidade": 12,
+          "limite": 1,
+          "usadas": 1,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_impar_5",
+          "entidade": 1,
+          "limite": 2,
+          "usadas": 1,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "conjunto_impar_5",
+          "entidade": 12,
+          "limite": 2,
+          "usadas": 1,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "nao_evocador",
+          "entidade": 1,
+          "limite": 0,
+          "usadas": 1,
+          "aviso": "Repertório extra exige Evocador · Escolhas extras excedidas: 1/0",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Repertório extra exige Evocador · Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Repertório extra exige Evocador · Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Repertório extra exige Evocador · Escolhas extras excedidas: 1/0"
+            }
+          ]
+        },
+        {
+          "caso": "nao_evocador",
+          "entidade": 12,
+          "limite": 0,
+          "usadas": 1,
+          "aviso": "Repertório extra exige Evocador · Escolhas extras excedidas: 1/0",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Repertório extra exige Evocador · Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Repertório extra exige Evocador · Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Repertório extra exige Evocador · Escolhas extras excedidas: 1/0"
+            }
+          ]
+        },
+        {
+          "caso": "trilha_propria",
+          "entidade": 1,
+          "limite": 0,
+          "usadas": 1,
+          "aviso": "Trilha sem escolhas extras · Escolhas extras excedidas: 1/0",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Trilha sem escolhas extras · Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Trilha sem escolhas extras · Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Trilha sem escolhas extras · Escolhas extras excedidas: 1/0"
+            }
+          ]
+        },
+        {
+          "caso": "trilha_propria",
+          "entidade": 12,
+          "limite": 0,
+          "usadas": 1,
+          "aviso": "Trilha sem escolhas extras · Escolhas extras excedidas: 1/0",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Trilha sem escolhas extras · Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Trilha sem escolhas extras · Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Trilha sem escolhas extras · Escolhas extras excedidas: 1/0"
+            }
+          ]
+        },
+        {
+          "caso": "trilha_vazia",
+          "entidade": 1,
+          "limite": 0,
+          "usadas": 1,
+          "aviso": "Trilha sem escolhas extras · Escolhas extras excedidas: 1/0",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Trilha sem escolhas extras · Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Trilha sem escolhas extras · Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Trilha sem escolhas extras · Escolhas extras excedidas: 1/0"
+            }
+          ]
+        },
+        {
+          "caso": "trilha_vazia",
+          "entidade": 12,
+          "limite": 0,
+          "usadas": 1,
+          "aviso": "Trilha sem escolhas extras · Escolhas extras excedidas: 1/0",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Trilha sem escolhas extras · Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Trilha sem escolhas extras · Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Trilha sem escolhas extras · Escolhas extras excedidas: 1/0"
+            }
+          ]
+        },
+        {
+          "caso": "slot3_so_nivel8",
+          "entidade": 1,
+          "limite": 1,
+          "usadas": 1,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "slot3_so_nivel8",
+          "entidade": 12,
+          "limite": 1,
+          "usadas": 1,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "basica_e_dois_talentos",
+          "entidade": 1,
+          "limite": 3,
+          "usadas": 3,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "basica_e_dois_talentos",
+          "entidade": 12,
+          "limite": 3,
+          "usadas": 3,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "basica_excedente",
+          "entidade": 1,
+          "limite": 0,
+          "usadas": 1,
+          "aviso": "Trilha sem escolhas extras · Escolhas extras excedidas: 1/0",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Trilha sem escolhas extras · Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Trilha sem escolhas extras · Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Trilha sem escolhas extras · Escolhas extras excedidas: 1/0"
+            }
+          ]
+        },
+        {
+          "caso": "basica_excedente",
+          "entidade": 12,
+          "limite": 0,
+          "usadas": 1,
+          "aviso": "Trilha sem escolhas extras · Escolhas extras excedidas: 1/0",
+          "revisar_esperado": true,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": false,
+              "requisito": "Trilha sem escolhas extras · Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Trilha sem escolhas extras · Escolhas extras excedidas: 1/0"
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": "Trilha sem escolhas extras · Escolhas extras excedidas: 1/0"
+            }
+          ]
+        },
+        {
+          "caso": "oito_versoes_uma_escolha",
+          "entidade": 1,
+          "limite": 1,
+          "usadas": 1,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            }
+          ]
+        },
+        {
+          "caso": "oito_versoes_uma_escolha",
+          "entidade": 12,
+          "limite": 1,
+          "usadas": 1,
+          "aviso": "",
+          "revisar_esperado": false,
+          "cartoes": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchido": true,
+              "valido": true,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchido": false,
+              "valido": false,
+              "requisito": ""
+            }
+          ]
+        }
+      ],
+      "todas_as_entidades": [
+        {
+          "id": "talento_antes8_12",
+          "entity": 1,
+          "quota": 0,
+          "used": 1,
+          "warning": "Escolhas extras excedidas: 1/0",
+          "own": 7
+        },
+        {
+          "id": "talento_antes8_12",
+          "entity": 2,
+          "quota": 0,
+          "used": 1,
+          "warning": "Escolhas extras excedidas: 1/0",
+          "own": 7
+        },
+        {
+          "id": "talento_antes8_12",
+          "entity": 3,
+          "quota": 0,
+          "used": 1,
+          "warning": "Escolhas extras excedidas: 1/0",
+          "own": 7
+        },
+        {
+          "id": "talento_antes8_12",
+          "entity": 4,
+          "quota": 0,
+          "used": 1,
+          "warning": "Escolhas extras excedidas: 1/0",
+          "own": 7
+        },
+        {
+          "id": "talento_antes8_12",
+          "entity": 5,
+          "quota": 0,
+          "used": 1,
+          "warning": "Escolhas extras excedidas: 1/0",
+          "own": 7
+        },
+        {
+          "id": "talento_antes8_12",
+          "entity": 6,
+          "quota": 0,
+          "used": 1,
+          "warning": "Escolhas extras excedidas: 1/0",
+          "own": 7
+        },
+        {
+          "id": "talento_antes8_12",
+          "entity": 7,
+          "quota": 0,
+          "used": 1,
+          "warning": "Escolhas extras excedidas: 1/0",
+          "own": 7
+        },
+        {
+          "id": "talento_antes8_12",
+          "entity": 8,
+          "quota": 0,
+          "used": 1,
+          "warning": "Escolhas extras excedidas: 1/0",
+          "own": 7
+        },
+        {
+          "id": "talento_antes8_12",
+          "entity": 9,
+          "quota": 0,
+          "used": 1,
+          "warning": "Escolhas extras excedidas: 1/0",
+          "own": 7
+        },
+        {
+          "id": "talento_antes8_12",
+          "entity": 10,
+          "quota": 0,
+          "used": 1,
+          "warning": "Escolhas extras excedidas: 1/0",
+          "own": 7
+        },
+        {
+          "id": "talento_antes8_12",
+          "entity": 11,
+          "quota": 0,
+          "used": 1,
+          "warning": "Escolhas extras excedidas: 1/0",
+          "own": 7
+        },
+        {
+          "id": "talento_antes8_12",
+          "entity": 12,
+          "quota": 0,
+          "used": 1,
+          "warning": "Escolhas extras excedidas: 1/0",
+          "own": 7
+        },
+        {
+          "id": "talento_nivel8_12",
+          "entity": 1,
+          "quota": 1,
+          "used": 1,
+          "warning": "",
+          "own": 8
+        },
+        {
+          "id": "talento_nivel8_12",
+          "entity": 2,
+          "quota": 1,
+          "used": 1,
+          "warning": "",
+          "own": 8
+        },
+        {
+          "id": "talento_nivel8_12",
+          "entity": 3,
+          "quota": 1,
+          "used": 1,
+          "warning": "",
+          "own": 8
+        },
+        {
+          "id": "talento_nivel8_12",
+          "entity": 4,
+          "quota": 1,
+          "used": 1,
+          "warning": "",
+          "own": 8
+        },
+        {
+          "id": "talento_nivel8_12",
+          "entity": 5,
+          "quota": 1,
+          "used": 1,
+          "warning": "",
+          "own": 8
+        },
+        {
+          "id": "talento_nivel8_12",
+          "entity": 6,
+          "quota": 1,
+          "used": 1,
+          "warning": "",
+          "own": 8
+        },
+        {
+          "id": "talento_nivel8_12",
+          "entity": 7,
+          "quota": 1,
+          "used": 1,
+          "warning": "",
+          "own": 8
+        },
+        {
+          "id": "talento_nivel8_12",
+          "entity": 8,
+          "quota": 1,
+          "used": 1,
+          "warning": "",
+          "own": 8
+        },
+        {
+          "id": "talento_nivel8_12",
+          "entity": 9,
+          "quota": 1,
+          "used": 1,
+          "warning": "",
+          "own": 8
+        },
+        {
+          "id": "talento_nivel8_12",
+          "entity": 10,
+          "quota": 1,
+          "used": 1,
+          "warning": "",
+          "own": 8
+        },
+        {
+          "id": "talento_nivel8_12",
+          "entity": 11,
+          "quota": 1,
+          "used": 1,
+          "warning": "",
+          "own": 8
+        },
+        {
+          "id": "talento_nivel8_12",
+          "entity": 12,
+          "quota": 1,
+          "used": 1,
+          "warning": "",
+          "own": 8
+        },
+        {
+          "id": "talento_e_capacidade_12",
+          "entity": 1,
+          "quota": 1,
+          "used": 2,
+          "warning": "Escolhas extras excedidas: 2/1",
+          "own": 8
+        },
+        {
+          "id": "talento_e_capacidade_12",
+          "entity": 2,
+          "quota": 1,
+          "used": 2,
+          "warning": "Escolhas extras excedidas: 2/1",
+          "own": 8
+        },
+        {
+          "id": "talento_e_capacidade_12",
+          "entity": 3,
+          "quota": 1,
+          "used": 2,
+          "warning": "Escolhas extras excedidas: 2/1",
+          "own": 8
+        },
+        {
+          "id": "talento_e_capacidade_12",
+          "entity": 4,
+          "quota": 1,
+          "used": 2,
+          "warning": "Escolhas extras excedidas: 2/1",
+          "own": 8
+        },
+        {
+          "id": "talento_e_capacidade_12",
+          "entity": 5,
+          "quota": 1,
+          "used": 2,
+          "warning": "Escolhas extras excedidas: 2/1",
+          "own": 8
+        },
+        {
+          "id": "talento_e_capacidade_12",
+          "entity": 6,
+          "quota": 1,
+          "used": 2,
+          "warning": "Escolhas extras excedidas: 2/1",
+          "own": 8
+        },
+        {
+          "id": "talento_e_capacidade_12",
+          "entity": 7,
+          "quota": 1,
+          "used": 2,
+          "warning": "Escolhas extras excedidas: 2/1",
+          "own": 8
+        },
+        {
+          "id": "talento_e_capacidade_12",
+          "entity": 8,
+          "quota": 1,
+          "used": 2,
+          "warning": "Escolhas extras excedidas: 2/1",
+          "own": 8
+        },
+        {
+          "id": "talento_e_capacidade_12",
+          "entity": 9,
+          "quota": 1,
+          "used": 2,
+          "warning": "Escolhas extras excedidas: 2/1",
+          "own": 8
+        },
+        {
+          "id": "talento_e_capacidade_12",
+          "entity": 10,
+          "quota": 1,
+          "used": 2,
+          "warning": "Escolhas extras excedidas: 2/1",
+          "own": 8
+        },
+        {
+          "id": "talento_e_capacidade_12",
+          "entity": 11,
+          "quota": 1,
+          "used": 2,
+          "warning": "Escolhas extras excedidas: 2/1",
+          "own": 8
+        },
+        {
+          "id": "talento_e_capacidade_12",
+          "entity": 12,
+          "quota": 1,
+          "used": 2,
+          "warning": "Escolhas extras excedidas: 2/1",
+          "own": 8
+        }
+      ],
+      "tipos_de_nome": [
+        {
+          "caso": "vazio",
+          "esperado": 0,
+          "obtido": 0
+        },
+        {
+          "caso": "número 7",
+          "esperado": 1,
+          "obtido": 1
+        },
+        {
+          "caso": "número zero",
+          "esperado": 1,
+          "obtido": 1
+        },
+        {
+          "caso": "booleano falso",
+          "esperado": 1,
+          "obtido": 1
+        },
+        {
+          "caso": "texto zero",
+          "esperado": 1,
+          "obtido": 1
+        }
+      ],
+      "recuperacoes": [
+        {
+          "id": "limites",
+          "celulas": 52,
+          "ok": true
+        },
+        {
+          "id": "cartoes1",
+          "celulas": 9,
+          "ok": true
+        },
+        {
+          "id": "cartoes12",
+          "celulas": 9,
+          "ok": true
+        },
+        {
+          "id": "cabecalho1",
+          "celulas": 1,
+          "ok": true
+        },
+        {
+          "id": "seletor_rotulos_final",
+          "celulas": 2,
+          "ok": true
+        },
+        {
+          "id": "contagem_com_numeros",
+          "celulas": 12,
+          "ok": true
+        }
+      ],
+      "selecao_real": [
+        {
+          "i": 1,
+          "selector": "Inteligência",
+          "defesa": "Inteligência",
+          "first": 1,
+          "last": 1,
+          "warn": "Escolhas extras excedidas: 2/1"
+        },
+        {
+          "i": 1,
+          "selector": "Essência",
+          "defesa": "Inteligência",
+          "first": 3,
+          "last": 3,
+          "warn": ""
+        }
+      ],
+      "entradas_restauradas_por_etapa": {
+        "matriz_focal": 185,
+        "todas_entidades": 124,
+        "interface": 185
+      },
+      "preservacao": {
+        "i": 1,
+        "positions": 13644,
+        "montagens": 11988,
+        "changed": 118,
+        "unexpected": [],
+        "invalid": [],
+        "errors": []
+      }
+    }
+  ],
+  "codigo_incremental_sha256": "26b78470c8eda2443ee74f650b5a925cde1fdbeea7a79c8387c3304e9767968c",
+  "geracao_fontes": "d09f5a8d7aa821e6",
+  "total_casos": 234,
+  "total_edicoes_reais": 16
+}

@@ -1,0 +1,4458 @@
+{
+  "schema": 1,
+  "date": "2026-11-08",
+  "basePr": 90,
+  "baseCommit": "6fbde00954fd942702f5d5b1273277a3bd1c83c4",
+  "generation": "8c985bea26747123",
+  "packageSha256": "16a290ea799752a6de0625dfe9f7caf020e7b165008e5e442b65992771743bcb",
+  "scope": {
+    "formulas": 24,
+    "notes": 1,
+    "modelSheets": 26,
+    "modelPositions": 280056,
+    "qa": [
+      "Era",
+      "Ciclo"
+    ],
+    "locale": "pt_BR",
+    "entities": [
+      1,
+      12
+    ],
+    "googleScriptDeployment": false
+  },
+  "plan": {
+    "attrs": [
+      "Força",
+      "Destreza",
+      "Constituição",
+      "Inteligência",
+      "Essência"
+    ],
+    "custom": "QA Perícia ~*?",
+    "phases": [
+      {
+        "id": "inicio",
+        "master": 1,
+        "cs": [
+          {
+            "id": "sem_treino_ou_pericia",
+            "points": [
+              3,
+              2,
+              2,
+              0,
+              2
+            ],
+            "buff": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "skills": [],
+            "trained": null,
+            "phys": "Força",
+            "trBuff": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "fixed": null,
+            "mode": null,
+            "attack": null,
+            "office": null
+          },
+          {
+            "id": "quatro_no_limite_fisico_destreza",
+            "points": [
+              3,
+              2,
+              2,
+              0,
+              2
+            ],
+            "buff": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "skills": [
+              "Atletismo",
+              "Acrobacia",
+              "Investigação",
+              "Sentir Energia"
+            ],
+            "trained": "Físico",
+            "phys": "Destreza",
+            "trBuff": [
+              2,
+              -1,
+              -3,
+              0
+            ],
+            "fixed": null,
+            "mode": null,
+            "attack": "Força",
+            "office": null
+          }
+        ]
+      },
+      {
+        "id": "limite_repeticao",
+        "master": 9,
+        "cs": [
+          {
+            "id": "repetida_conta_quatro",
+            "points": [
+              3,
+              2,
+              2,
+              0,
+              2
+            ],
+            "buff": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "skills": [
+              "Atletismo",
+              "Atletismo",
+              "Investigação",
+              "Sentir Energia"
+            ],
+            "trained": "Vigor",
+            "phys": "Força",
+            "trBuff": [
+              0,
+              1,
+              0,
+              0
+            ],
+            "fixed": null,
+            "mode": null,
+            "attack": null,
+            "office": null,
+            "issue": "PT01"
+          },
+          {
+            "id": "cinco_acima_limite_int_impar",
+            "points": [
+              3,
+              2,
+              2,
+              1,
+              1
+            ],
+            "buff": [
+              0,
+              -1,
+              0,
+              0,
+              0
+            ],
+            "skills": [
+              "Furtividade",
+              "Pontaria",
+              "Prestidigitação",
+              "Intuição",
+              "Ocultismo"
+            ],
+            "trained": null,
+            "phys": "Força",
+            "trBuff": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "fixed": null,
+            "mode": null,
+            "attack": null,
+            "office": null
+          }
+        ]
+      },
+      {
+        "id": "primeira_maestria",
+        "master": 10,
+        "cs": [
+          {
+            "id": "int2_domada_n2",
+            "points": [
+              3,
+              2,
+              1,
+              2,
+              1
+            ],
+            "buff": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "skills": [
+              "Religião",
+              "História",
+              "Hierarquia",
+              "Medicina",
+              "Sobrevivência"
+            ],
+            "trained": "Intelecto",
+            "phys": "Força",
+            "trBuff": [
+              -1,
+              0,
+              2,
+              0
+            ],
+            "fixed": 2,
+            "mode": "Maldição domada",
+            "attack": null,
+            "office": null
+          },
+          {
+            "id": "int3_criada_n3",
+            "points": [
+              2,
+              2,
+              1,
+              3,
+              1
+            ],
+            "buff": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "skills": [
+              "Natureza",
+              "Lidar com Animais",
+              "Tecnologia",
+              "Percepção",
+              "Persuasão"
+            ],
+            "trained": "Espírito",
+            "phys": "Força",
+            "trBuff": [
+              0,
+              0,
+              0,
+              -2
+            ],
+            "fixed": 3,
+            "mode": "Criação",
+            "attack": null,
+            "office": "Forja"
+          }
+        ]
+      },
+      {
+        "id": "pre_segundo_degrau",
+        "master": 17,
+        "cs": [
+          {
+            "id": "int1_quatro",
+            "points": [
+              3,
+              2,
+              2,
+              1,
+              1
+            ],
+            "buff": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "skills": [
+              "Enganação",
+              "Intimidação",
+              "Atuação",
+              "Provocar"
+            ],
+            "trained": "Espírito",
+            "phys": "Força",
+            "trBuff": [
+              0,
+              0,
+              0,
+              1
+            ],
+            "fixed": null,
+            "mode": null,
+            "attack": null,
+            "office": null
+          },
+          {
+            "id": "vagas_livres",
+            "points": [
+              3,
+              2,
+              2,
+              0,
+              2
+            ],
+            "buff": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "skills": [
+              "Acrobacia"
+            ],
+            "trained": null,
+            "phys": "Destreza",
+            "trBuff": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "fixed": null,
+            "mode": null,
+            "attack": null,
+            "office": null
+          }
+        ]
+      },
+      {
+        "id": "segundo_degrau",
+        "master": 18,
+        "cs": [
+          {
+            "id": "int4_seis",
+            "points": [
+              3,
+              1,
+              1,
+              4,
+              1
+            ],
+            "buff": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "skills": [
+              "Atletismo",
+              "Acrobacia",
+              "Furtividade",
+              "Investigação",
+              "Sentir Energia",
+              "Provocar"
+            ],
+            "trained": "Físico",
+            "phys": "Força",
+            "trBuff": [
+              -1,
+              1,
+              0,
+              0
+            ],
+            "fixed": 6,
+            "mode": "Criação",
+            "attack": null,
+            "office": "Forja"
+          },
+          {
+            "id": "int5_seis",
+            "points": [
+              3,
+              1,
+              1,
+              5,
+              1
+            ],
+            "buff": [
+              0,
+              1,
+              0,
+              0,
+              0
+            ],
+            "skills": [
+              "Pontaria",
+              "Intuição",
+              "Hierarquia",
+              "Lidar com Animais",
+              "Persuasão",
+              "Enganação"
+            ],
+            "trained": "Vigor",
+            "phys": "Força",
+            "trBuff": [
+              0,
+              2,
+              0,
+              -1
+            ],
+            "fixed": 10,
+            "mode": "Maldição domada",
+            "attack": null,
+            "office": null
+          }
+        ]
+      },
+      {
+        "id": "buff_inteligencia",
+        "master": 25,
+        "cs": [
+          {
+            "id": "base3_buff3",
+            "points": [
+              2,
+              2,
+              1,
+              3,
+              1
+            ],
+            "buff": [
+              0,
+              0,
+              0,
+              3,
+              0
+            ],
+            "skills": [
+              "Atletismo",
+              "Acrobacia",
+              "Investigação",
+              "Sobrevivência",
+              "Persuasão"
+            ],
+            "trained": "Intelecto",
+            "phys": "Força",
+            "trBuff": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "fixed": 2,
+            "mode": "Criação",
+            "attack": null,
+            "office": null
+          },
+          {
+            "id": "base4_debuff3",
+            "points": [
+              3,
+              1,
+              1,
+              4,
+              1
+            ],
+            "buff": [
+              0,
+              0,
+              0,
+              -3,
+              0
+            ],
+            "skills": [
+              "Furtividade",
+              "Intuição",
+              "Ocultismo",
+              "Lidar com Animais",
+              "Sentir Energia",
+              "Intimidação"
+            ],
+            "trained": "Intelecto",
+            "phys": "Força",
+            "trBuff": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "fixed": 6,
+            "mode": "Maldição domada",
+            "attack": null,
+            "office": null
+          }
+        ]
+      },
+      {
+        "id": "ultimo_degrau",
+        "master": 26,
+        "cs": [
+          {
+            "id": "int6_sete_bonus_zero_e_negativo",
+            "points": [
+              3,
+              1,
+              1,
+              6,
+              1
+            ],
+            "buff": [
+              -7,
+              -6,
+              0,
+              0,
+              0
+            ],
+            "skills": [
+              "Atletismo",
+              "Acrobacia",
+              "Furtividade",
+              "Investigação",
+              "Intuição",
+              "Sentir Energia",
+              "Provocar"
+            ],
+            "trained": "Físico",
+            "phys": "Força",
+            "trBuff": [
+              0,
+              -1,
+              0,
+              1
+            ],
+            "fixed": 14,
+            "mode": "Criação",
+            "attack": null,
+            "office": null
+          },
+          {
+            "id": "int6_sete_fisico_destreza",
+            "points": [
+              3,
+              1,
+              1,
+              6,
+              1
+            ],
+            "buff": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "skills": [
+              "Atletismo",
+              "Pontaria",
+              "Ocultismo",
+              "Sobrevivência",
+              "Tecnologia",
+              "Persuasão",
+              "Atuação"
+            ],
+            "trained": "Físico",
+            "phys": "Destreza",
+            "trBuff": [
+              -3,
+              0,
+              0,
+              0
+            ],
+            "fixed": 14,
+            "mode": "Maldição domada",
+            "attack": null,
+            "office": null
+          }
+        ]
+      },
+      {
+        "id": "custom_ativa",
+        "master": 30,
+        "custom": "active",
+        "cs": [
+          {
+            "id": "custom_primeira_posicao",
+            "points": [
+              3,
+              2,
+              2,
+              0,
+              2
+            ],
+            "buff": [
+              0,
+              0,
+              1,
+              0,
+              0
+            ],
+            "skills": [
+              "QA Perícia ~*?",
+              "Atletismo",
+              "Acrobacia",
+              "Sentir Energia"
+            ],
+            "trained": "Vigor",
+            "phys": "Força",
+            "trBuff": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "fixed": 2,
+            "mode": "Criação",
+            "attack": null,
+            "office": null
+          },
+          {
+            "id": "custom_ultima_posicao",
+            "points": [
+              3,
+              1,
+              1,
+              6,
+              1
+            ],
+            "buff": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "skills": [
+              "Atletismo",
+              "Acrobacia",
+              "Furtividade",
+              "Investigação",
+              "Sentir Energia",
+              "Provocar",
+              "QA Perícia ~*?"
+            ],
+            "trained": "Espírito",
+            "phys": "Força",
+            "trBuff": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "fixed": 14,
+            "mode": "Maldição domada",
+            "attack": null,
+            "office": null
+          }
+        ]
+      },
+      {
+        "id": "custom_removida",
+        "master": 30,
+        "custom": "removed",
+        "keepSelections": true
+      },
+      {
+        "id": "custom_reposta",
+        "master": 30,
+        "custom": "active",
+        "keepSelections": true
+      },
+      {
+        "id": "custom_repetida_e_limite",
+        "master": 30,
+        "custom": "active",
+        "cs": [
+          {
+            "id": "combina_tres_avisos",
+            "points": [
+              3,
+              2,
+              2,
+              0,
+              2
+            ],
+            "buff": [
+              0,
+              0,
+              1,
+              0,
+              0
+            ],
+            "skills": [
+              "QA Perícia ~*?",
+              "Atletismo",
+              "Atletismo",
+              "Acrobacia",
+              "Investigação",
+              "Intuição",
+              "Sentir Energia"
+            ],
+            "trained": "Vigor",
+            "phys": "Força",
+            "trBuff": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "fixed": 2,
+            "mode": "Criação",
+            "attack": null,
+            "office": null
+          },
+          {
+            "id": "repeticao_literal_com_lacunas",
+            "points": [
+              3,
+              1,
+              1,
+              6,
+              1
+            ],
+            "buff": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "skills": [
+              null,
+              "QA Perícia ~*?",
+              null,
+              "qa perícia ~*?",
+              "Atletismo",
+              "Acrobacia",
+              null
+            ],
+            "trained": "Espírito",
+            "phys": "Força",
+            "trBuff": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "fixed": 14,
+            "mode": "Maldição domada",
+            "attack": null,
+            "office": null
+          }
+        ]
+      },
+      {
+        "id": "custom_repetida_retirada",
+        "master": 30,
+        "custom": "removed",
+        "keepSelections": true
+      },
+      {
+        "id": "custom_repetida_reposta",
+        "master": 30,
+        "custom": "active",
+        "keepSelections": true
+      }
+    ]
+  },
+  "observations": [
+    {
+      "copy": 0,
+      "entity": 1,
+      "phase": "inicio",
+      "case": "sem_treino_ou_pericia",
+      "master": 1,
+      "level": 1,
+      "mae": 1,
+      "baseInt": 0,
+      "totalInt": 0,
+      "skills": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "used": 0,
+      "uniqueValid": 0,
+      "limit": 4,
+      "label": "PERÍCIAS · 0 DE 4",
+      "expectedValidLabel": "PERÍCIAS · 0 DE 4",
+      "trained": null,
+      "physical": "Força",
+      "trBuff": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "tests": [
+        3,
+        2,
+        0,
+        2
+      ],
+      "expectedTests": [
+        3,
+        2,
+        0,
+        2
+      ],
+      "bonuses": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "expectedBonuses": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "office": null,
+      "issue": null,
+      "expectedLabel": "PERÍCIAS · 0 DE 4",
+      "warnings": [],
+      "passed": true
+    },
+    {
+      "copy": 0,
+      "entity": 12,
+      "phase": "inicio",
+      "case": "quatro_no_limite_fisico_destreza",
+      "master": 1,
+      "level": 1,
+      "mae": 1,
+      "baseInt": 0,
+      "totalInt": 0,
+      "skills": [
+        "Atletismo",
+        "Acrobacia",
+        "Investigação",
+        "Sentir Energia",
+        null,
+        null,
+        null
+      ],
+      "used": 4,
+      "uniqueValid": 4,
+      "limit": 4,
+      "label": "PERÍCIAS · 4 DE 4",
+      "expectedValidLabel": "PERÍCIAS · 4 DE 4",
+      "trained": "Físico",
+      "physical": "Destreza",
+      "trBuff": [
+        2,
+        -1,
+        -3,
+        0
+      ],
+      "tests": [
+        5,
+        1,
+        -3,
+        2
+      ],
+      "expectedTests": [
+        5,
+        1,
+        -3,
+        2
+      ],
+      "bonuses": [
+        "+4",
+        "+3",
+        "+1",
+        "+3",
+        "",
+        "",
+        ""
+      ],
+      "expectedBonuses": [
+        "+4",
+        "+3",
+        "+1",
+        "+3",
+        "",
+        "",
+        ""
+      ],
+      "office": null,
+      "issue": null,
+      "expectedLabel": "PERÍCIAS · 4 DE 4",
+      "warnings": [],
+      "passed": true
+    },
+    {
+      "copy": 0,
+      "entity": 1,
+      "phase": "limite_repeticao",
+      "case": "repetida_conta_quatro",
+      "master": 9,
+      "level": 9,
+      "mae": 1,
+      "baseInt": 0,
+      "totalInt": 0,
+      "skills": [
+        "Atletismo",
+        "Atletismo",
+        "Investigação",
+        "Sentir Energia",
+        null,
+        null,
+        null
+      ],
+      "used": 3,
+      "uniqueValid": 3,
+      "limit": 4,
+      "label": "⚠ PERÍCIAS · 3 DE 4 · REPETIDA",
+      "expectedValidLabel": "PERÍCIAS · 3 DE 4",
+      "trained": "Vigor",
+      "physical": "Força",
+      "trBuff": [
+        0,
+        1,
+        0,
+        0
+      ],
+      "tests": [
+        3,
+        4,
+        0,
+        2
+      ],
+      "expectedTests": [
+        3,
+        4,
+        0,
+        2
+      ],
+      "bonuses": [
+        "+4",
+        "+4",
+        "+1",
+        "+3",
+        "",
+        "",
+        ""
+      ],
+      "expectedBonuses": [
+        "+4",
+        "+4",
+        "+1",
+        "+3",
+        "",
+        "",
+        ""
+      ],
+      "office": null,
+      "issue": "PT01",
+      "expectedLabel": "⚠ PERÍCIAS · 3 DE 4 · REPETIDA",
+      "warnings": [
+        "REPETIDA"
+      ],
+      "passed": true
+    },
+    {
+      "copy": 0,
+      "entity": 12,
+      "phase": "limite_repeticao",
+      "case": "cinco_acima_limite_int_impar",
+      "master": 9,
+      "level": 9,
+      "mae": 1,
+      "baseInt": 1,
+      "totalInt": 1,
+      "skills": [
+        "Furtividade",
+        "Pontaria",
+        "Prestidigitação",
+        "Intuição",
+        "Ocultismo",
+        null,
+        null
+      ],
+      "used": 5,
+      "uniqueValid": 5,
+      "limit": 4,
+      "label": "⚠ PERÍCIAS · 5 DE 4 · ACIMA DO LIMITE",
+      "expectedValidLabel": "PERÍCIAS · 5 DE 4",
+      "trained": null,
+      "physical": "Força",
+      "trBuff": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "tests": [
+        3,
+        2,
+        1,
+        1
+      ],
+      "expectedTests": [
+        3,
+        2,
+        1,
+        1
+      ],
+      "bonuses": [
+        "+2",
+        "+2",
+        "+2",
+        "+2",
+        "+2",
+        "",
+        ""
+      ],
+      "expectedBonuses": [
+        "+2",
+        "+2",
+        "+2",
+        "+2",
+        "+2",
+        "",
+        ""
+      ],
+      "office": null,
+      "issue": null,
+      "expectedLabel": "⚠ PERÍCIAS · 5 DE 4 · ACIMA DO LIMITE",
+      "warnings": [
+        "ACIMA DO LIMITE"
+      ],
+      "passed": true
+    },
+    {
+      "copy": 0,
+      "entity": 1,
+      "phase": "primeira_maestria",
+      "case": "int2_domada_n2",
+      "master": 10,
+      "level": 2,
+      "mae": 2,
+      "baseInt": 2,
+      "totalInt": 2,
+      "skills": [
+        "Religião",
+        "História",
+        "Hierarquia",
+        "Medicina",
+        "Sobrevivência",
+        null,
+        null
+      ],
+      "used": 5,
+      "uniqueValid": 5,
+      "limit": 5,
+      "label": "PERÍCIAS · 5 DE 5",
+      "expectedValidLabel": "PERÍCIAS · 5 DE 5",
+      "trained": "Intelecto",
+      "physical": "Força",
+      "trBuff": [
+        -1,
+        0,
+        2,
+        0
+      ],
+      "tests": [
+        2,
+        1,
+        6,
+        1
+      ],
+      "expectedTests": [
+        2,
+        1,
+        6,
+        1
+      ],
+      "bonuses": [
+        "+4",
+        "+4",
+        "+4",
+        "+4",
+        "+4",
+        "",
+        ""
+      ],
+      "expectedBonuses": [
+        "+4",
+        "+4",
+        "+4",
+        "+4",
+        "+4",
+        "",
+        ""
+      ],
+      "office": null,
+      "issue": null,
+      "expectedLabel": "PERÍCIAS · 5 DE 5",
+      "warnings": [],
+      "passed": true
+    },
+    {
+      "copy": 0,
+      "entity": 12,
+      "phase": "primeira_maestria",
+      "case": "int3_criada_n3",
+      "master": 10,
+      "level": 3,
+      "mae": 2,
+      "baseInt": 3,
+      "totalInt": 3,
+      "skills": [
+        "Natureza",
+        "Lidar com Animais",
+        "Tecnologia",
+        "Percepção",
+        "Persuasão",
+        null,
+        null
+      ],
+      "used": 5,
+      "uniqueValid": 5,
+      "limit": 5,
+      "label": "PERÍCIAS · 5 DE 5",
+      "expectedValidLabel": "PERÍCIAS · 5 DE 5",
+      "trained": "Espírito",
+      "physical": "Força",
+      "trBuff": [
+        0,
+        0,
+        0,
+        -2
+      ],
+      "tests": [
+        2,
+        1,
+        3,
+        1
+      ],
+      "expectedTests": [
+        2,
+        1,
+        3,
+        1
+      ],
+      "bonuses": [
+        "+5",
+        "+5",
+        "+5",
+        "+3",
+        "+3",
+        "",
+        ""
+      ],
+      "expectedBonuses": [
+        "+5",
+        "+5",
+        "+5",
+        "+3",
+        "+3",
+        "",
+        ""
+      ],
+      "office": "Forja",
+      "issue": null,
+      "expectedLabel": "PERÍCIAS · 5 DE 5",
+      "warnings": [],
+      "passed": true
+    },
+    {
+      "copy": 0,
+      "entity": 1,
+      "phase": "pre_segundo_degrau",
+      "case": "int1_quatro",
+      "master": 17,
+      "level": 17,
+      "mae": 2,
+      "baseInt": 1,
+      "totalInt": 1,
+      "skills": [
+        "Enganação",
+        "Intimidação",
+        "Atuação",
+        "Provocar",
+        null,
+        null,
+        null
+      ],
+      "used": 4,
+      "uniqueValid": 4,
+      "limit": 4,
+      "label": "PERÍCIAS · 4 DE 4",
+      "expectedValidLabel": "PERÍCIAS · 4 DE 4",
+      "trained": "Espírito",
+      "physical": "Força",
+      "trBuff": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "tests": [
+        3,
+        2,
+        1,
+        4
+      ],
+      "expectedTests": [
+        3,
+        2,
+        1,
+        4
+      ],
+      "bonuses": [
+        "+3",
+        "+3",
+        "+3",
+        "+3",
+        "",
+        "",
+        ""
+      ],
+      "expectedBonuses": [
+        "+3",
+        "+3",
+        "+3",
+        "+3",
+        "",
+        "",
+        ""
+      ],
+      "office": null,
+      "issue": null,
+      "expectedLabel": "PERÍCIAS · 4 DE 4",
+      "warnings": [],
+      "passed": true
+    },
+    {
+      "copy": 0,
+      "entity": 12,
+      "phase": "pre_segundo_degrau",
+      "case": "vagas_livres",
+      "master": 17,
+      "level": 17,
+      "mae": 2,
+      "baseInt": 0,
+      "totalInt": 0,
+      "skills": [
+        "Acrobacia",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "used": 1,
+      "uniqueValid": 1,
+      "limit": 4,
+      "label": "PERÍCIAS · 1 DE 4",
+      "expectedValidLabel": "PERÍCIAS · 1 DE 4",
+      "trained": null,
+      "physical": "Destreza",
+      "trBuff": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "tests": [
+        2,
+        2,
+        0,
+        2
+      ],
+      "expectedTests": [
+        2,
+        2,
+        0,
+        2
+      ],
+      "bonuses": [
+        "+4",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "expectedBonuses": [
+        "+4",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "office": null,
+      "issue": null,
+      "expectedLabel": "PERÍCIAS · 1 DE 4",
+      "warnings": [],
+      "passed": true
+    },
+    {
+      "copy": 0,
+      "entity": 1,
+      "phase": "segundo_degrau",
+      "case": "int4_seis",
+      "master": 18,
+      "level": 6,
+      "mae": 3,
+      "baseInt": 4,
+      "totalInt": 4,
+      "skills": [
+        "Atletismo",
+        "Acrobacia",
+        "Furtividade",
+        "Investigação",
+        "Sentir Energia",
+        "Provocar",
+        null
+      ],
+      "used": 6,
+      "uniqueValid": 6,
+      "limit": 6,
+      "label": "PERÍCIAS · 6 DE 6",
+      "expectedValidLabel": "PERÍCIAS · 6 DE 6",
+      "trained": "Físico",
+      "physical": "Força",
+      "trBuff": [
+        -1,
+        1,
+        0,
+        0
+      ],
+      "tests": [
+        5,
+        2,
+        4,
+        1
+      ],
+      "expectedTests": [
+        5,
+        2,
+        4,
+        1
+      ],
+      "bonuses": [
+        "+6",
+        "+4",
+        "+4",
+        "+7",
+        "+4",
+        "+4",
+        ""
+      ],
+      "expectedBonuses": [
+        "+6",
+        "+4",
+        "+4",
+        "+7",
+        "+4",
+        "+4",
+        ""
+      ],
+      "office": "Forja",
+      "issue": null,
+      "expectedLabel": "PERÍCIAS · 6 DE 6",
+      "warnings": [],
+      "passed": true
+    },
+    {
+      "copy": 0,
+      "entity": 12,
+      "phase": "segundo_degrau",
+      "case": "int5_seis",
+      "master": 18,
+      "level": 10,
+      "mae": 3,
+      "baseInt": 5,
+      "totalInt": 5,
+      "skills": [
+        "Pontaria",
+        "Intuição",
+        "Hierarquia",
+        "Lidar com Animais",
+        "Persuasão",
+        "Enganação",
+        null
+      ],
+      "used": 6,
+      "uniqueValid": 6,
+      "limit": 6,
+      "label": "PERÍCIAS · 6 DE 6",
+      "expectedValidLabel": "PERÍCIAS · 6 DE 6",
+      "trained": "Vigor",
+      "physical": "Força",
+      "trBuff": [
+        0,
+        2,
+        0,
+        -1
+      ],
+      "tests": [
+        3,
+        6,
+        5,
+        0
+      ],
+      "expectedTests": [
+        3,
+        6,
+        5,
+        0
+      ],
+      "bonuses": [
+        "+5",
+        "+8",
+        "+8",
+        "+8",
+        "+4",
+        "+4",
+        ""
+      ],
+      "expectedBonuses": [
+        "+5",
+        "+8",
+        "+8",
+        "+8",
+        "+4",
+        "+4",
+        ""
+      ],
+      "office": null,
+      "issue": null,
+      "expectedLabel": "PERÍCIAS · 6 DE 6",
+      "warnings": [],
+      "passed": true
+    },
+    {
+      "copy": 0,
+      "entity": 1,
+      "phase": "buff_inteligencia",
+      "case": "base3_buff3",
+      "master": 25,
+      "level": 2,
+      "mae": 3,
+      "baseInt": 3,
+      "totalInt": 6,
+      "skills": [
+        "Atletismo",
+        "Acrobacia",
+        "Investigação",
+        "Sobrevivência",
+        "Persuasão",
+        null,
+        null
+      ],
+      "used": 5,
+      "uniqueValid": 5,
+      "limit": 5,
+      "label": "PERÍCIAS · 5 DE 5",
+      "expectedValidLabel": "PERÍCIAS · 5 DE 5",
+      "trained": "Intelecto",
+      "physical": "Força",
+      "trBuff": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "tests": [
+        2,
+        1,
+        9,
+        1
+      ],
+      "expectedTests": [
+        2,
+        1,
+        9,
+        1
+      ],
+      "bonuses": [
+        "+5",
+        "+5",
+        "+9",
+        "+9",
+        "+4",
+        "",
+        ""
+      ],
+      "expectedBonuses": [
+        "+5",
+        "+5",
+        "+9",
+        "+9",
+        "+4",
+        "",
+        ""
+      ],
+      "office": null,
+      "issue": null,
+      "expectedLabel": "PERÍCIAS · 5 DE 5",
+      "warnings": [],
+      "passed": true
+    },
+    {
+      "copy": 0,
+      "entity": 12,
+      "phase": "buff_inteligencia",
+      "case": "base4_debuff3",
+      "master": 25,
+      "level": 6,
+      "mae": 3,
+      "baseInt": 4,
+      "totalInt": 1,
+      "skills": [
+        "Furtividade",
+        "Intuição",
+        "Ocultismo",
+        "Lidar com Animais",
+        "Sentir Energia",
+        "Intimidação",
+        null
+      ],
+      "used": 6,
+      "uniqueValid": 6,
+      "limit": 6,
+      "label": "PERÍCIAS · 6 DE 6",
+      "expectedValidLabel": "PERÍCIAS · 6 DE 6",
+      "trained": "Intelecto",
+      "physical": "Força",
+      "trBuff": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "tests": [
+        3,
+        1,
+        4,
+        1
+      ],
+      "expectedTests": [
+        3,
+        1,
+        4,
+        1
+      ],
+      "bonuses": [
+        "+4",
+        "+4",
+        "+4",
+        "+4",
+        "+4",
+        "+4",
+        ""
+      ],
+      "expectedBonuses": [
+        "+4",
+        "+4",
+        "+4",
+        "+4",
+        "+4",
+        "+4",
+        ""
+      ],
+      "office": null,
+      "issue": null,
+      "expectedLabel": "PERÍCIAS · 6 DE 6",
+      "warnings": [],
+      "passed": true
+    },
+    {
+      "copy": 0,
+      "entity": 1,
+      "phase": "ultimo_degrau",
+      "case": "int6_sete_bonus_zero_e_negativo",
+      "master": 26,
+      "level": 14,
+      "mae": 4,
+      "baseInt": 6,
+      "totalInt": 6,
+      "skills": [
+        "Atletismo",
+        "Acrobacia",
+        "Furtividade",
+        "Investigação",
+        "Intuição",
+        "Sentir Energia",
+        "Provocar"
+      ],
+      "used": 7,
+      "uniqueValid": 7,
+      "limit": 7,
+      "label": "PERÍCIAS · 7 DE 7",
+      "expectedValidLabel": "PERÍCIAS · 7 DE 7",
+      "trained": "Físico",
+      "physical": "Força",
+      "trBuff": [
+        0,
+        -1,
+        0,
+        1
+      ],
+      "tests": [
+        0,
+        0,
+        6,
+        2
+      ],
+      "expectedTests": [
+        0,
+        0,
+        6,
+        2
+      ],
+      "bonuses": [
+        "+0",
+        "−1",
+        "−1",
+        "+10",
+        "+10",
+        "+5",
+        "+5"
+      ],
+      "expectedBonuses": [
+        "+0",
+        "−1",
+        "−1",
+        "+10",
+        "+10",
+        "+5",
+        "+5"
+      ],
+      "office": null,
+      "issue": null,
+      "expectedLabel": "PERÍCIAS · 7 DE 7",
+      "warnings": [],
+      "passed": true
+    },
+    {
+      "copy": 0,
+      "entity": 12,
+      "phase": "ultimo_degrau",
+      "case": "int6_sete_fisico_destreza",
+      "master": 26,
+      "level": 14,
+      "mae": 4,
+      "baseInt": 6,
+      "totalInt": 6,
+      "skills": [
+        "Atletismo",
+        "Pontaria",
+        "Ocultismo",
+        "Sobrevivência",
+        "Tecnologia",
+        "Persuasão",
+        "Atuação"
+      ],
+      "used": 7,
+      "uniqueValid": 7,
+      "limit": 7,
+      "label": "PERÍCIAS · 7 DE 7",
+      "expectedValidLabel": "PERÍCIAS · 7 DE 7",
+      "trained": "Físico",
+      "physical": "Destreza",
+      "trBuff": [
+        -3,
+        0,
+        0,
+        0
+      ],
+      "tests": [
+        2,
+        1,
+        6,
+        1
+      ],
+      "expectedTests": [
+        2,
+        1,
+        6,
+        1
+      ],
+      "bonuses": [
+        "+7",
+        "+5",
+        "+10",
+        "+10",
+        "+10",
+        "+5",
+        "+5"
+      ],
+      "expectedBonuses": [
+        "+7",
+        "+5",
+        "+10",
+        "+10",
+        "+10",
+        "+5",
+        "+5"
+      ],
+      "office": null,
+      "issue": null,
+      "expectedLabel": "PERÍCIAS · 7 DE 7",
+      "warnings": [],
+      "passed": true
+    },
+    {
+      "copy": 0,
+      "entity": 1,
+      "phase": "custom_ativa",
+      "case": "custom_primeira_posicao",
+      "master": 30,
+      "level": 2,
+      "mae": 4,
+      "baseInt": 0,
+      "totalInt": 0,
+      "skills": [
+        "QA Perícia ~*?",
+        "Atletismo",
+        "Acrobacia",
+        "Sentir Energia",
+        null,
+        null,
+        null
+      ],
+      "used": 4,
+      "uniqueValid": 4,
+      "limit": 4,
+      "label": "PERÍCIAS · 4 DE 4",
+      "expectedValidLabel": "PERÍCIAS · 4 DE 4",
+      "trained": "Vigor",
+      "physical": "Força",
+      "trBuff": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "tests": [
+        3,
+        7,
+        0,
+        2
+      ],
+      "expectedTests": [
+        3,
+        7,
+        0,
+        2
+      ],
+      "bonuses": [
+        "+7",
+        "+7",
+        "+6",
+        "+6",
+        "",
+        "",
+        ""
+      ],
+      "expectedBonuses": [
+        "+7",
+        "+7",
+        "+6",
+        "+6",
+        "",
+        "",
+        ""
+      ],
+      "office": null,
+      "issue": null,
+      "expectedLabel": "PERÍCIAS · 4 DE 4",
+      "warnings": [],
+      "passed": true
+    },
+    {
+      "copy": 0,
+      "entity": 12,
+      "phase": "custom_ativa",
+      "case": "custom_ultima_posicao",
+      "master": 30,
+      "level": 14,
+      "mae": 4,
+      "baseInt": 6,
+      "totalInt": 6,
+      "skills": [
+        "Atletismo",
+        "Acrobacia",
+        "Furtividade",
+        "Investigação",
+        "Sentir Energia",
+        "Provocar",
+        "QA Perícia ~*?"
+      ],
+      "used": 7,
+      "uniqueValid": 7,
+      "limit": 7,
+      "label": "PERÍCIAS · 7 DE 7",
+      "expectedValidLabel": "PERÍCIAS · 7 DE 7",
+      "trained": "Espírito",
+      "physical": "Força",
+      "trBuff": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "tests": [
+        3,
+        1,
+        6,
+        5
+      ],
+      "expectedTests": [
+        3,
+        1,
+        6,
+        5
+      ],
+      "bonuses": [
+        "+7",
+        "+5",
+        "+5",
+        "+10",
+        "+5",
+        "+5",
+        "+5"
+      ],
+      "expectedBonuses": [
+        "+7",
+        "+5",
+        "+5",
+        "+10",
+        "+5",
+        "+5",
+        "+5"
+      ],
+      "office": null,
+      "issue": null,
+      "expectedLabel": "PERÍCIAS · 7 DE 7",
+      "warnings": [],
+      "passed": true
+    },
+    {
+      "copy": 0,
+      "entity": 1,
+      "phase": "custom_removida",
+      "case": "custom_primeira_posicao",
+      "master": 30,
+      "level": 2,
+      "mae": 4,
+      "baseInt": 0,
+      "totalInt": 0,
+      "skills": [
+        "QA Perícia ~*?",
+        "Atletismo",
+        "Acrobacia",
+        "Sentir Energia",
+        null,
+        null,
+        null
+      ],
+      "used": 3,
+      "uniqueValid": 3,
+      "limit": 4,
+      "label": "⚠ PERÍCIAS · 3 DE 4 · FORA DO CATÁLOGO",
+      "expectedValidLabel": "PERÍCIAS · 3 DE 4",
+      "trained": "Vigor",
+      "physical": "Força",
+      "trBuff": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "tests": [
+        3,
+        7,
+        0,
+        2
+      ],
+      "expectedTests": [
+        3,
+        7,
+        0,
+        2
+      ],
+      "bonuses": [
+        "",
+        "+7",
+        "+6",
+        "+6",
+        "",
+        "",
+        ""
+      ],
+      "expectedBonuses": [
+        "",
+        "+7",
+        "+6",
+        "+6",
+        "",
+        "",
+        ""
+      ],
+      "office": null,
+      "issue": "PT02",
+      "expectedLabel": "⚠ PERÍCIAS · 3 DE 4 · FORA DO CATÁLOGO",
+      "warnings": [
+        "FORA DO CATÁLOGO"
+      ],
+      "passed": true
+    },
+    {
+      "copy": 0,
+      "entity": 12,
+      "phase": "custom_removida",
+      "case": "custom_ultima_posicao",
+      "master": 30,
+      "level": 14,
+      "mae": 4,
+      "baseInt": 6,
+      "totalInt": 6,
+      "skills": [
+        "Atletismo",
+        "Acrobacia",
+        "Furtividade",
+        "Investigação",
+        "Sentir Energia",
+        "Provocar",
+        "QA Perícia ~*?"
+      ],
+      "used": 6,
+      "uniqueValid": 6,
+      "limit": 7,
+      "label": "⚠ PERÍCIAS · 6 DE 7 · FORA DO CATÁLOGO",
+      "expectedValidLabel": "PERÍCIAS · 6 DE 7",
+      "trained": "Espírito",
+      "physical": "Força",
+      "trBuff": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "tests": [
+        3,
+        1,
+        6,
+        5
+      ],
+      "expectedTests": [
+        3,
+        1,
+        6,
+        5
+      ],
+      "bonuses": [
+        "+7",
+        "+5",
+        "+5",
+        "+10",
+        "+5",
+        "+5",
+        ""
+      ],
+      "expectedBonuses": [
+        "+7",
+        "+5",
+        "+5",
+        "+10",
+        "+5",
+        "+5",
+        ""
+      ],
+      "office": null,
+      "issue": "PT02",
+      "expectedLabel": "⚠ PERÍCIAS · 6 DE 7 · FORA DO CATÁLOGO",
+      "warnings": [
+        "FORA DO CATÁLOGO"
+      ],
+      "passed": true
+    },
+    {
+      "copy": 0,
+      "entity": 1,
+      "phase": "custom_reposta",
+      "case": "custom_primeira_posicao",
+      "master": 30,
+      "level": 2,
+      "mae": 4,
+      "baseInt": 0,
+      "totalInt": 0,
+      "skills": [
+        "QA Perícia ~*?",
+        "Atletismo",
+        "Acrobacia",
+        "Sentir Energia",
+        null,
+        null,
+        null
+      ],
+      "used": 4,
+      "uniqueValid": 4,
+      "limit": 4,
+      "label": "PERÍCIAS · 4 DE 4",
+      "expectedValidLabel": "PERÍCIAS · 4 DE 4",
+      "trained": "Vigor",
+      "physical": "Força",
+      "trBuff": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "tests": [
+        3,
+        7,
+        0,
+        2
+      ],
+      "expectedTests": [
+        3,
+        7,
+        0,
+        2
+      ],
+      "bonuses": [
+        "+7",
+        "+7",
+        "+6",
+        "+6",
+        "",
+        "",
+        ""
+      ],
+      "expectedBonuses": [
+        "+7",
+        "+7",
+        "+6",
+        "+6",
+        "",
+        "",
+        ""
+      ],
+      "office": null,
+      "issue": null,
+      "expectedLabel": "PERÍCIAS · 4 DE 4",
+      "warnings": [],
+      "passed": true
+    },
+    {
+      "copy": 0,
+      "entity": 12,
+      "phase": "custom_reposta",
+      "case": "custom_ultima_posicao",
+      "master": 30,
+      "level": 14,
+      "mae": 4,
+      "baseInt": 6,
+      "totalInt": 6,
+      "skills": [
+        "Atletismo",
+        "Acrobacia",
+        "Furtividade",
+        "Investigação",
+        "Sentir Energia",
+        "Provocar",
+        "QA Perícia ~*?"
+      ],
+      "used": 7,
+      "uniqueValid": 7,
+      "limit": 7,
+      "label": "PERÍCIAS · 7 DE 7",
+      "expectedValidLabel": "PERÍCIAS · 7 DE 7",
+      "trained": "Espírito",
+      "physical": "Força",
+      "trBuff": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "tests": [
+        3,
+        1,
+        6,
+        5
+      ],
+      "expectedTests": [
+        3,
+        1,
+        6,
+        5
+      ],
+      "bonuses": [
+        "+7",
+        "+5",
+        "+5",
+        "+10",
+        "+5",
+        "+5",
+        "+5"
+      ],
+      "expectedBonuses": [
+        "+7",
+        "+5",
+        "+5",
+        "+10",
+        "+5",
+        "+5",
+        "+5"
+      ],
+      "office": null,
+      "issue": null,
+      "expectedLabel": "PERÍCIAS · 7 DE 7",
+      "warnings": [],
+      "passed": true
+    },
+    {
+      "copy": 0,
+      "entity": 1,
+      "phase": "custom_repetida_e_limite",
+      "case": "combina_tres_avisos",
+      "master": 30,
+      "level": 2,
+      "mae": 4,
+      "baseInt": 0,
+      "totalInt": 0,
+      "skills": [
+        "QA Perícia ~*?",
+        "Atletismo",
+        "Atletismo",
+        "Acrobacia",
+        "Investigação",
+        "Intuição",
+        "Sentir Energia"
+      ],
+      "used": 6,
+      "uniqueValid": 6,
+      "limit": 4,
+      "label": "⚠ PERÍCIAS · 6 DE 4 · REPETIDA · ACIMA DO LIMITE",
+      "expectedValidLabel": "PERÍCIAS · 6 DE 4",
+      "trained": "Vigor",
+      "physical": "Força",
+      "trBuff": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "tests": [
+        3,
+        7,
+        0,
+        2
+      ],
+      "expectedTests": [
+        3,
+        7,
+        0,
+        2
+      ],
+      "bonuses": [
+        "+7",
+        "+7",
+        "+7",
+        "+6",
+        "+4",
+        "+4",
+        "+6"
+      ],
+      "expectedBonuses": [
+        "+7",
+        "+7",
+        "+7",
+        "+6",
+        "+4",
+        "+4",
+        "+6"
+      ],
+      "office": null,
+      "issue": null,
+      "expectedLabel": "⚠ PERÍCIAS · 6 DE 4 · REPETIDA · ACIMA DO LIMITE",
+      "warnings": [
+        "REPETIDA",
+        "ACIMA DO LIMITE"
+      ],
+      "passed": true
+    },
+    {
+      "copy": 0,
+      "entity": 12,
+      "phase": "custom_repetida_e_limite",
+      "case": "repeticao_literal_com_lacunas",
+      "master": 30,
+      "level": 14,
+      "mae": 4,
+      "baseInt": 6,
+      "totalInt": 6,
+      "skills": [
+        null,
+        "QA Perícia ~*?",
+        null,
+        "qa perícia ~*?",
+        "Atletismo",
+        "Acrobacia",
+        null
+      ],
+      "used": 3,
+      "uniqueValid": 3,
+      "limit": 7,
+      "label": "⚠ PERÍCIAS · 3 DE 7 · REPETIDA",
+      "expectedValidLabel": "PERÍCIAS · 3 DE 7",
+      "trained": "Espírito",
+      "physical": "Força",
+      "trBuff": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "tests": [
+        3,
+        1,
+        6,
+        5
+      ],
+      "expectedTests": [
+        3,
+        1,
+        6,
+        5
+      ],
+      "bonuses": [
+        "",
+        "+5",
+        "",
+        "+5",
+        "+7",
+        "+5",
+        ""
+      ],
+      "expectedBonuses": [
+        "",
+        "+5",
+        "",
+        "+5",
+        "+7",
+        "+5",
+        ""
+      ],
+      "office": null,
+      "issue": null,
+      "expectedLabel": "⚠ PERÍCIAS · 3 DE 7 · REPETIDA",
+      "warnings": [
+        "REPETIDA"
+      ],
+      "passed": true
+    },
+    {
+      "copy": 0,
+      "entity": 1,
+      "phase": "custom_repetida_retirada",
+      "case": "combina_tres_avisos",
+      "master": 30,
+      "level": 2,
+      "mae": 4,
+      "baseInt": 0,
+      "totalInt": 0,
+      "skills": [
+        "QA Perícia ~*?",
+        "Atletismo",
+        "Atletismo",
+        "Acrobacia",
+        "Investigação",
+        "Intuição",
+        "Sentir Energia"
+      ],
+      "used": 5,
+      "uniqueValid": 5,
+      "limit": 4,
+      "label": "⚠ PERÍCIAS · 5 DE 4 · REPETIDA · FORA DO CATÁLOGO · ACIMA DO LIMITE",
+      "expectedValidLabel": "PERÍCIAS · 5 DE 4",
+      "trained": "Vigor",
+      "physical": "Força",
+      "trBuff": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "tests": [
+        3,
+        7,
+        0,
+        2
+      ],
+      "expectedTests": [
+        3,
+        7,
+        0,
+        2
+      ],
+      "bonuses": [
+        "",
+        "+7",
+        "+7",
+        "+6",
+        "+4",
+        "+4",
+        "+6"
+      ],
+      "expectedBonuses": [
+        "",
+        "+7",
+        "+7",
+        "+6",
+        "+4",
+        "+4",
+        "+6"
+      ],
+      "office": null,
+      "issue": "PT02",
+      "expectedLabel": "⚠ PERÍCIAS · 5 DE 4 · REPETIDA · FORA DO CATÁLOGO · ACIMA DO LIMITE",
+      "warnings": [
+        "REPETIDA",
+        "FORA DO CATÁLOGO",
+        "ACIMA DO LIMITE"
+      ],
+      "passed": true
+    },
+    {
+      "copy": 0,
+      "entity": 12,
+      "phase": "custom_repetida_retirada",
+      "case": "repeticao_literal_com_lacunas",
+      "master": 30,
+      "level": 14,
+      "mae": 4,
+      "baseInt": 6,
+      "totalInt": 6,
+      "skills": [
+        null,
+        "QA Perícia ~*?",
+        null,
+        "qa perícia ~*?",
+        "Atletismo",
+        "Acrobacia",
+        null
+      ],
+      "used": 2,
+      "uniqueValid": 2,
+      "limit": 7,
+      "label": "⚠ PERÍCIAS · 2 DE 7 · FORA DO CATÁLOGO",
+      "expectedValidLabel": "PERÍCIAS · 2 DE 7",
+      "trained": "Espírito",
+      "physical": "Força",
+      "trBuff": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "tests": [
+        3,
+        1,
+        6,
+        5
+      ],
+      "expectedTests": [
+        3,
+        1,
+        6,
+        5
+      ],
+      "bonuses": [
+        "",
+        "",
+        "",
+        "",
+        "+7",
+        "+5",
+        ""
+      ],
+      "expectedBonuses": [
+        "",
+        "",
+        "",
+        "",
+        "+7",
+        "+5",
+        ""
+      ],
+      "office": null,
+      "issue": "PT02",
+      "expectedLabel": "⚠ PERÍCIAS · 2 DE 7 · FORA DO CATÁLOGO",
+      "warnings": [
+        "FORA DO CATÁLOGO"
+      ],
+      "passed": true
+    },
+    {
+      "copy": 0,
+      "entity": 1,
+      "phase": "custom_repetida_reposta",
+      "case": "combina_tres_avisos",
+      "master": 30,
+      "level": 2,
+      "mae": 4,
+      "baseInt": 0,
+      "totalInt": 0,
+      "skills": [
+        "QA Perícia ~*?",
+        "Atletismo",
+        "Atletismo",
+        "Acrobacia",
+        "Investigação",
+        "Intuição",
+        "Sentir Energia"
+      ],
+      "used": 6,
+      "uniqueValid": 6,
+      "limit": 4,
+      "label": "⚠ PERÍCIAS · 6 DE 4 · REPETIDA · ACIMA DO LIMITE",
+      "expectedValidLabel": "PERÍCIAS · 6 DE 4",
+      "trained": "Vigor",
+      "physical": "Força",
+      "trBuff": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "tests": [
+        3,
+        7,
+        0,
+        2
+      ],
+      "expectedTests": [
+        3,
+        7,
+        0,
+        2
+      ],
+      "bonuses": [
+        "+7",
+        "+7",
+        "+7",
+        "+6",
+        "+4",
+        "+4",
+        "+6"
+      ],
+      "expectedBonuses": [
+        "+7",
+        "+7",
+        "+7",
+        "+6",
+        "+4",
+        "+4",
+        "+6"
+      ],
+      "office": null,
+      "issue": null,
+      "expectedLabel": "⚠ PERÍCIAS · 6 DE 4 · REPETIDA · ACIMA DO LIMITE",
+      "warnings": [
+        "REPETIDA",
+        "ACIMA DO LIMITE"
+      ],
+      "passed": true
+    },
+    {
+      "copy": 0,
+      "entity": 12,
+      "phase": "custom_repetida_reposta",
+      "case": "repeticao_literal_com_lacunas",
+      "master": 30,
+      "level": 14,
+      "mae": 4,
+      "baseInt": 6,
+      "totalInt": 6,
+      "skills": [
+        null,
+        "QA Perícia ~*?",
+        null,
+        "qa perícia ~*?",
+        "Atletismo",
+        "Acrobacia",
+        null
+      ],
+      "used": 3,
+      "uniqueValid": 3,
+      "limit": 7,
+      "label": "⚠ PERÍCIAS · 3 DE 7 · REPETIDA",
+      "expectedValidLabel": "PERÍCIAS · 3 DE 7",
+      "trained": "Espírito",
+      "physical": "Força",
+      "trBuff": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "tests": [
+        3,
+        1,
+        6,
+        5
+      ],
+      "expectedTests": [
+        3,
+        1,
+        6,
+        5
+      ],
+      "bonuses": [
+        "",
+        "+5",
+        "",
+        "+5",
+        "+7",
+        "+5",
+        ""
+      ],
+      "expectedBonuses": [
+        "",
+        "+5",
+        "",
+        "+5",
+        "+7",
+        "+5",
+        ""
+      ],
+      "office": null,
+      "issue": null,
+      "expectedLabel": "⚠ PERÍCIAS · 3 DE 7 · REPETIDA",
+      "warnings": [
+        "REPETIDA"
+      ],
+      "passed": true
+    },
+    {
+      "copy": 1,
+      "entity": 1,
+      "phase": "inicio",
+      "case": "quatro_no_limite_fisico_destreza",
+      "master": 1,
+      "level": 1,
+      "mae": 1,
+      "baseInt": 0,
+      "totalInt": 0,
+      "skills": [
+        "Atletismo",
+        "Acrobacia",
+        "Investigação",
+        "Sentir Energia",
+        null,
+        null,
+        null
+      ],
+      "used": 4,
+      "uniqueValid": 4,
+      "limit": 4,
+      "label": "PERÍCIAS · 4 DE 4",
+      "expectedValidLabel": "PERÍCIAS · 4 DE 4",
+      "trained": "Físico",
+      "physical": "Destreza",
+      "trBuff": [
+        2,
+        -1,
+        -3,
+        0
+      ],
+      "tests": [
+        5,
+        1,
+        -3,
+        2
+      ],
+      "expectedTests": [
+        5,
+        1,
+        -3,
+        2
+      ],
+      "bonuses": [
+        "+4",
+        "+3",
+        "+1",
+        "+3",
+        "",
+        "",
+        ""
+      ],
+      "expectedBonuses": [
+        "+4",
+        "+3",
+        "+1",
+        "+3",
+        "",
+        "",
+        ""
+      ],
+      "office": null,
+      "issue": null,
+      "expectedLabel": "PERÍCIAS · 4 DE 4",
+      "warnings": [],
+      "passed": true
+    },
+    {
+      "copy": 1,
+      "entity": 12,
+      "phase": "inicio",
+      "case": "sem_treino_ou_pericia",
+      "master": 1,
+      "level": 1,
+      "mae": 1,
+      "baseInt": 0,
+      "totalInt": 0,
+      "skills": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "used": 0,
+      "uniqueValid": 0,
+      "limit": 4,
+      "label": "PERÍCIAS · 0 DE 4",
+      "expectedValidLabel": "PERÍCIAS · 0 DE 4",
+      "trained": null,
+      "physical": "Força",
+      "trBuff": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "tests": [
+        3,
+        2,
+        0,
+        2
+      ],
+      "expectedTests": [
+        3,
+        2,
+        0,
+        2
+      ],
+      "bonuses": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "expectedBonuses": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "office": null,
+      "issue": null,
+      "expectedLabel": "PERÍCIAS · 0 DE 4",
+      "warnings": [],
+      "passed": true
+    },
+    {
+      "copy": 1,
+      "entity": 1,
+      "phase": "limite_repeticao",
+      "case": "cinco_acima_limite_int_impar",
+      "master": 9,
+      "level": 9,
+      "mae": 1,
+      "baseInt": 1,
+      "totalInt": 1,
+      "skills": [
+        "Furtividade",
+        "Pontaria",
+        "Prestidigitação",
+        "Intuição",
+        "Ocultismo",
+        null,
+        null
+      ],
+      "used": 5,
+      "uniqueValid": 5,
+      "limit": 4,
+      "label": "⚠ PERÍCIAS · 5 DE 4 · ACIMA DO LIMITE",
+      "expectedValidLabel": "PERÍCIAS · 5 DE 4",
+      "trained": null,
+      "physical": "Força",
+      "trBuff": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "tests": [
+        3,
+        2,
+        1,
+        1
+      ],
+      "expectedTests": [
+        3,
+        2,
+        1,
+        1
+      ],
+      "bonuses": [
+        "+2",
+        "+2",
+        "+2",
+        "+2",
+        "+2",
+        "",
+        ""
+      ],
+      "expectedBonuses": [
+        "+2",
+        "+2",
+        "+2",
+        "+2",
+        "+2",
+        "",
+        ""
+      ],
+      "office": null,
+      "issue": null,
+      "expectedLabel": "⚠ PERÍCIAS · 5 DE 4 · ACIMA DO LIMITE",
+      "warnings": [
+        "ACIMA DO LIMITE"
+      ],
+      "passed": true
+    },
+    {
+      "copy": 1,
+      "entity": 12,
+      "phase": "limite_repeticao",
+      "case": "repetida_conta_quatro",
+      "master": 9,
+      "level": 9,
+      "mae": 1,
+      "baseInt": 0,
+      "totalInt": 0,
+      "skills": [
+        "Atletismo",
+        "Atletismo",
+        "Investigação",
+        "Sentir Energia",
+        null,
+        null,
+        null
+      ],
+      "used": 3,
+      "uniqueValid": 3,
+      "limit": 4,
+      "label": "⚠ PERÍCIAS · 3 DE 4 · REPETIDA",
+      "expectedValidLabel": "PERÍCIAS · 3 DE 4",
+      "trained": "Vigor",
+      "physical": "Força",
+      "trBuff": [
+        0,
+        1,
+        0,
+        0
+      ],
+      "tests": [
+        3,
+        4,
+        0,
+        2
+      ],
+      "expectedTests": [
+        3,
+        4,
+        0,
+        2
+      ],
+      "bonuses": [
+        "+4",
+        "+4",
+        "+1",
+        "+3",
+        "",
+        "",
+        ""
+      ],
+      "expectedBonuses": [
+        "+4",
+        "+4",
+        "+1",
+        "+3",
+        "",
+        "",
+        ""
+      ],
+      "office": null,
+      "issue": "PT01",
+      "expectedLabel": "⚠ PERÍCIAS · 3 DE 4 · REPETIDA",
+      "warnings": [
+        "REPETIDA"
+      ],
+      "passed": true
+    },
+    {
+      "copy": 1,
+      "entity": 1,
+      "phase": "primeira_maestria",
+      "case": "int3_criada_n3",
+      "master": 10,
+      "level": 3,
+      "mae": 2,
+      "baseInt": 3,
+      "totalInt": 3,
+      "skills": [
+        "Natureza",
+        "Lidar com Animais",
+        "Tecnologia",
+        "Percepção",
+        "Persuasão",
+        null,
+        null
+      ],
+      "used": 5,
+      "uniqueValid": 5,
+      "limit": 5,
+      "label": "PERÍCIAS · 5 DE 5",
+      "expectedValidLabel": "PERÍCIAS · 5 DE 5",
+      "trained": "Espírito",
+      "physical": "Força",
+      "trBuff": [
+        0,
+        0,
+        0,
+        -2
+      ],
+      "tests": [
+        2,
+        1,
+        3,
+        1
+      ],
+      "expectedTests": [
+        2,
+        1,
+        3,
+        1
+      ],
+      "bonuses": [
+        "+5",
+        "+5",
+        "+5",
+        "+3",
+        "+3",
+        "",
+        ""
+      ],
+      "expectedBonuses": [
+        "+5",
+        "+5",
+        "+5",
+        "+3",
+        "+3",
+        "",
+        ""
+      ],
+      "office": "Forja",
+      "issue": null,
+      "expectedLabel": "PERÍCIAS · 5 DE 5",
+      "warnings": [],
+      "passed": true
+    },
+    {
+      "copy": 1,
+      "entity": 12,
+      "phase": "primeira_maestria",
+      "case": "int2_domada_n2",
+      "master": 10,
+      "level": 2,
+      "mae": 2,
+      "baseInt": 2,
+      "totalInt": 2,
+      "skills": [
+        "Religião",
+        "História",
+        "Hierarquia",
+        "Medicina",
+        "Sobrevivência",
+        null,
+        null
+      ],
+      "used": 5,
+      "uniqueValid": 5,
+      "limit": 5,
+      "label": "PERÍCIAS · 5 DE 5",
+      "expectedValidLabel": "PERÍCIAS · 5 DE 5",
+      "trained": "Intelecto",
+      "physical": "Força",
+      "trBuff": [
+        -1,
+        0,
+        2,
+        0
+      ],
+      "tests": [
+        2,
+        1,
+        6,
+        1
+      ],
+      "expectedTests": [
+        2,
+        1,
+        6,
+        1
+      ],
+      "bonuses": [
+        "+4",
+        "+4",
+        "+4",
+        "+4",
+        "+4",
+        "",
+        ""
+      ],
+      "expectedBonuses": [
+        "+4",
+        "+4",
+        "+4",
+        "+4",
+        "+4",
+        "",
+        ""
+      ],
+      "office": null,
+      "issue": null,
+      "expectedLabel": "PERÍCIAS · 5 DE 5",
+      "warnings": [],
+      "passed": true
+    },
+    {
+      "copy": 1,
+      "entity": 1,
+      "phase": "pre_segundo_degrau",
+      "case": "vagas_livres",
+      "master": 17,
+      "level": 17,
+      "mae": 2,
+      "baseInt": 0,
+      "totalInt": 0,
+      "skills": [
+        "Acrobacia",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "used": 1,
+      "uniqueValid": 1,
+      "limit": 4,
+      "label": "PERÍCIAS · 1 DE 4",
+      "expectedValidLabel": "PERÍCIAS · 1 DE 4",
+      "trained": null,
+      "physical": "Destreza",
+      "trBuff": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "tests": [
+        2,
+        2,
+        0,
+        2
+      ],
+      "expectedTests": [
+        2,
+        2,
+        0,
+        2
+      ],
+      "bonuses": [
+        "+4",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "expectedBonuses": [
+        "+4",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "office": null,
+      "issue": null,
+      "expectedLabel": "PERÍCIAS · 1 DE 4",
+      "warnings": [],
+      "passed": true
+    },
+    {
+      "copy": 1,
+      "entity": 12,
+      "phase": "pre_segundo_degrau",
+      "case": "int1_quatro",
+      "master": 17,
+      "level": 17,
+      "mae": 2,
+      "baseInt": 1,
+      "totalInt": 1,
+      "skills": [
+        "Enganação",
+        "Intimidação",
+        "Atuação",
+        "Provocar",
+        null,
+        null,
+        null
+      ],
+      "used": 4,
+      "uniqueValid": 4,
+      "limit": 4,
+      "label": "PERÍCIAS · 4 DE 4",
+      "expectedValidLabel": "PERÍCIAS · 4 DE 4",
+      "trained": "Espírito",
+      "physical": "Força",
+      "trBuff": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "tests": [
+        3,
+        2,
+        1,
+        4
+      ],
+      "expectedTests": [
+        3,
+        2,
+        1,
+        4
+      ],
+      "bonuses": [
+        "+3",
+        "+3",
+        "+3",
+        "+3",
+        "",
+        "",
+        ""
+      ],
+      "expectedBonuses": [
+        "+3",
+        "+3",
+        "+3",
+        "+3",
+        "",
+        "",
+        ""
+      ],
+      "office": null,
+      "issue": null,
+      "expectedLabel": "PERÍCIAS · 4 DE 4",
+      "warnings": [],
+      "passed": true
+    },
+    {
+      "copy": 1,
+      "entity": 1,
+      "phase": "segundo_degrau",
+      "case": "int5_seis",
+      "master": 18,
+      "level": 10,
+      "mae": 3,
+      "baseInt": 5,
+      "totalInt": 5,
+      "skills": [
+        "Pontaria",
+        "Intuição",
+        "Hierarquia",
+        "Lidar com Animais",
+        "Persuasão",
+        "Enganação",
+        null
+      ],
+      "used": 6,
+      "uniqueValid": 6,
+      "limit": 6,
+      "label": "PERÍCIAS · 6 DE 6",
+      "expectedValidLabel": "PERÍCIAS · 6 DE 6",
+      "trained": "Vigor",
+      "physical": "Força",
+      "trBuff": [
+        0,
+        2,
+        0,
+        -1
+      ],
+      "tests": [
+        3,
+        6,
+        5,
+        0
+      ],
+      "expectedTests": [
+        3,
+        6,
+        5,
+        0
+      ],
+      "bonuses": [
+        "+5",
+        "+8",
+        "+8",
+        "+8",
+        "+4",
+        "+4",
+        ""
+      ],
+      "expectedBonuses": [
+        "+5",
+        "+8",
+        "+8",
+        "+8",
+        "+4",
+        "+4",
+        ""
+      ],
+      "office": null,
+      "issue": null,
+      "expectedLabel": "PERÍCIAS · 6 DE 6",
+      "warnings": [],
+      "passed": true
+    },
+    {
+      "copy": 1,
+      "entity": 12,
+      "phase": "segundo_degrau",
+      "case": "int4_seis",
+      "master": 18,
+      "level": 6,
+      "mae": 3,
+      "baseInt": 4,
+      "totalInt": 4,
+      "skills": [
+        "Atletismo",
+        "Acrobacia",
+        "Furtividade",
+        "Investigação",
+        "Sentir Energia",
+        "Provocar",
+        null
+      ],
+      "used": 6,
+      "uniqueValid": 6,
+      "limit": 6,
+      "label": "PERÍCIAS · 6 DE 6",
+      "expectedValidLabel": "PERÍCIAS · 6 DE 6",
+      "trained": "Físico",
+      "physical": "Força",
+      "trBuff": [
+        -1,
+        1,
+        0,
+        0
+      ],
+      "tests": [
+        5,
+        2,
+        4,
+        1
+      ],
+      "expectedTests": [
+        5,
+        2,
+        4,
+        1
+      ],
+      "bonuses": [
+        "+6",
+        "+4",
+        "+4",
+        "+7",
+        "+4",
+        "+4",
+        ""
+      ],
+      "expectedBonuses": [
+        "+6",
+        "+4",
+        "+4",
+        "+7",
+        "+4",
+        "+4",
+        ""
+      ],
+      "office": "Forja",
+      "issue": null,
+      "expectedLabel": "PERÍCIAS · 6 DE 6",
+      "warnings": [],
+      "passed": true
+    },
+    {
+      "copy": 1,
+      "entity": 1,
+      "phase": "buff_inteligencia",
+      "case": "base4_debuff3",
+      "master": 25,
+      "level": 6,
+      "mae": 3,
+      "baseInt": 4,
+      "totalInt": 1,
+      "skills": [
+        "Furtividade",
+        "Intuição",
+        "Ocultismo",
+        "Lidar com Animais",
+        "Sentir Energia",
+        "Intimidação",
+        null
+      ],
+      "used": 6,
+      "uniqueValid": 6,
+      "limit": 6,
+      "label": "PERÍCIAS · 6 DE 6",
+      "expectedValidLabel": "PERÍCIAS · 6 DE 6",
+      "trained": "Intelecto",
+      "physical": "Força",
+      "trBuff": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "tests": [
+        3,
+        1,
+        4,
+        1
+      ],
+      "expectedTests": [
+        3,
+        1,
+        4,
+        1
+      ],
+      "bonuses": [
+        "+4",
+        "+4",
+        "+4",
+        "+4",
+        "+4",
+        "+4",
+        ""
+      ],
+      "expectedBonuses": [
+        "+4",
+        "+4",
+        "+4",
+        "+4",
+        "+4",
+        "+4",
+        ""
+      ],
+      "office": null,
+      "issue": null,
+      "expectedLabel": "PERÍCIAS · 6 DE 6",
+      "warnings": [],
+      "passed": true
+    },
+    {
+      "copy": 1,
+      "entity": 12,
+      "phase": "buff_inteligencia",
+      "case": "base3_buff3",
+      "master": 25,
+      "level": 2,
+      "mae": 3,
+      "baseInt": 3,
+      "totalInt": 6,
+      "skills": [
+        "Atletismo",
+        "Acrobacia",
+        "Investigação",
+        "Sobrevivência",
+        "Persuasão",
+        null,
+        null
+      ],
+      "used": 5,
+      "uniqueValid": 5,
+      "limit": 5,
+      "label": "PERÍCIAS · 5 DE 5",
+      "expectedValidLabel": "PERÍCIAS · 5 DE 5",
+      "trained": "Intelecto",
+      "physical": "Força",
+      "trBuff": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "tests": [
+        2,
+        1,
+        9,
+        1
+      ],
+      "expectedTests": [
+        2,
+        1,
+        9,
+        1
+      ],
+      "bonuses": [
+        "+5",
+        "+5",
+        "+9",
+        "+9",
+        "+4",
+        "",
+        ""
+      ],
+      "expectedBonuses": [
+        "+5",
+        "+5",
+        "+9",
+        "+9",
+        "+4",
+        "",
+        ""
+      ],
+      "office": null,
+      "issue": null,
+      "expectedLabel": "PERÍCIAS · 5 DE 5",
+      "warnings": [],
+      "passed": true
+    },
+    {
+      "copy": 1,
+      "entity": 1,
+      "phase": "ultimo_degrau",
+      "case": "int6_sete_fisico_destreza",
+      "master": 26,
+      "level": 14,
+      "mae": 4,
+      "baseInt": 6,
+      "totalInt": 6,
+      "skills": [
+        "Atletismo",
+        "Pontaria",
+        "Ocultismo",
+        "Sobrevivência",
+        "Tecnologia",
+        "Persuasão",
+        "Atuação"
+      ],
+      "used": 7,
+      "uniqueValid": 7,
+      "limit": 7,
+      "label": "PERÍCIAS · 7 DE 7",
+      "expectedValidLabel": "PERÍCIAS · 7 DE 7",
+      "trained": "Físico",
+      "physical": "Destreza",
+      "trBuff": [
+        -3,
+        0,
+        0,
+        0
+      ],
+      "tests": [
+        2,
+        1,
+        6,
+        1
+      ],
+      "expectedTests": [
+        2,
+        1,
+        6,
+        1
+      ],
+      "bonuses": [
+        "+7",
+        "+5",
+        "+10",
+        "+10",
+        "+10",
+        "+5",
+        "+5"
+      ],
+      "expectedBonuses": [
+        "+7",
+        "+5",
+        "+10",
+        "+10",
+        "+10",
+        "+5",
+        "+5"
+      ],
+      "office": null,
+      "issue": null,
+      "expectedLabel": "PERÍCIAS · 7 DE 7",
+      "warnings": [],
+      "passed": true
+    },
+    {
+      "copy": 1,
+      "entity": 12,
+      "phase": "ultimo_degrau",
+      "case": "int6_sete_bonus_zero_e_negativo",
+      "master": 26,
+      "level": 14,
+      "mae": 4,
+      "baseInt": 6,
+      "totalInt": 6,
+      "skills": [
+        "Atletismo",
+        "Acrobacia",
+        "Furtividade",
+        "Investigação",
+        "Intuição",
+        "Sentir Energia",
+        "Provocar"
+      ],
+      "used": 7,
+      "uniqueValid": 7,
+      "limit": 7,
+      "label": "PERÍCIAS · 7 DE 7",
+      "expectedValidLabel": "PERÍCIAS · 7 DE 7",
+      "trained": "Físico",
+      "physical": "Força",
+      "trBuff": [
+        0,
+        -1,
+        0,
+        1
+      ],
+      "tests": [
+        0,
+        0,
+        6,
+        2
+      ],
+      "expectedTests": [
+        0,
+        0,
+        6,
+        2
+      ],
+      "bonuses": [
+        "+0",
+        "−1",
+        "−1",
+        "+10",
+        "+10",
+        "+5",
+        "+5"
+      ],
+      "expectedBonuses": [
+        "+0",
+        "−1",
+        "−1",
+        "+10",
+        "+10",
+        "+5",
+        "+5"
+      ],
+      "office": null,
+      "issue": null,
+      "expectedLabel": "PERÍCIAS · 7 DE 7",
+      "warnings": [],
+      "passed": true
+    },
+    {
+      "copy": 1,
+      "entity": 1,
+      "phase": "custom_ativa",
+      "case": "custom_ultima_posicao",
+      "master": 30,
+      "level": 14,
+      "mae": 4,
+      "baseInt": 6,
+      "totalInt": 6,
+      "skills": [
+        "Atletismo",
+        "Acrobacia",
+        "Furtividade",
+        "Investigação",
+        "Sentir Energia",
+        "Provocar",
+        "QA Perícia ~*?"
+      ],
+      "used": 7,
+      "uniqueValid": 7,
+      "limit": 7,
+      "label": "PERÍCIAS · 7 DE 7",
+      "expectedValidLabel": "PERÍCIAS · 7 DE 7",
+      "trained": "Espírito",
+      "physical": "Força",
+      "trBuff": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "tests": [
+        3,
+        1,
+        6,
+        5
+      ],
+      "expectedTests": [
+        3,
+        1,
+        6,
+        5
+      ],
+      "bonuses": [
+        "+7",
+        "+5",
+        "+5",
+        "+10",
+        "+5",
+        "+5",
+        "+5"
+      ],
+      "expectedBonuses": [
+        "+7",
+        "+5",
+        "+5",
+        "+10",
+        "+5",
+        "+5",
+        "+5"
+      ],
+      "office": null,
+      "issue": null,
+      "expectedLabel": "PERÍCIAS · 7 DE 7",
+      "warnings": [],
+      "passed": true
+    },
+    {
+      "copy": 1,
+      "entity": 12,
+      "phase": "custom_ativa",
+      "case": "custom_primeira_posicao",
+      "master": 30,
+      "level": 2,
+      "mae": 4,
+      "baseInt": 0,
+      "totalInt": 0,
+      "skills": [
+        "QA Perícia ~*?",
+        "Atletismo",
+        "Acrobacia",
+        "Sentir Energia",
+        null,
+        null,
+        null
+      ],
+      "used": 4,
+      "uniqueValid": 4,
+      "limit": 4,
+      "label": "PERÍCIAS · 4 DE 4",
+      "expectedValidLabel": "PERÍCIAS · 4 DE 4",
+      "trained": "Vigor",
+      "physical": "Força",
+      "trBuff": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "tests": [
+        3,
+        7,
+        0,
+        2
+      ],
+      "expectedTests": [
+        3,
+        7,
+        0,
+        2
+      ],
+      "bonuses": [
+        "+7",
+        "+7",
+        "+6",
+        "+6",
+        "",
+        "",
+        ""
+      ],
+      "expectedBonuses": [
+        "+7",
+        "+7",
+        "+6",
+        "+6",
+        "",
+        "",
+        ""
+      ],
+      "office": null,
+      "issue": null,
+      "expectedLabel": "PERÍCIAS · 4 DE 4",
+      "warnings": [],
+      "passed": true
+    },
+    {
+      "copy": 1,
+      "entity": 1,
+      "phase": "custom_removida",
+      "case": "custom_ultima_posicao",
+      "master": 30,
+      "level": 14,
+      "mae": 4,
+      "baseInt": 6,
+      "totalInt": 6,
+      "skills": [
+        "Atletismo",
+        "Acrobacia",
+        "Furtividade",
+        "Investigação",
+        "Sentir Energia",
+        "Provocar",
+        "QA Perícia ~*?"
+      ],
+      "used": 6,
+      "uniqueValid": 6,
+      "limit": 7,
+      "label": "⚠ PERÍCIAS · 6 DE 7 · FORA DO CATÁLOGO",
+      "expectedValidLabel": "PERÍCIAS · 6 DE 7",
+      "trained": "Espírito",
+      "physical": "Força",
+      "trBuff": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "tests": [
+        3,
+        1,
+        6,
+        5
+      ],
+      "expectedTests": [
+        3,
+        1,
+        6,
+        5
+      ],
+      "bonuses": [
+        "+7",
+        "+5",
+        "+5",
+        "+10",
+        "+5",
+        "+5",
+        ""
+      ],
+      "expectedBonuses": [
+        "+7",
+        "+5",
+        "+5",
+        "+10",
+        "+5",
+        "+5",
+        ""
+      ],
+      "office": null,
+      "issue": "PT02",
+      "expectedLabel": "⚠ PERÍCIAS · 6 DE 7 · FORA DO CATÁLOGO",
+      "warnings": [
+        "FORA DO CATÁLOGO"
+      ],
+      "passed": true
+    },
+    {
+      "copy": 1,
+      "entity": 12,
+      "phase": "custom_removida",
+      "case": "custom_primeira_posicao",
+      "master": 30,
+      "level": 2,
+      "mae": 4,
+      "baseInt": 0,
+      "totalInt": 0,
+      "skills": [
+        "QA Perícia ~*?",
+        "Atletismo",
+        "Acrobacia",
+        "Sentir Energia",
+        null,
+        null,
+        null
+      ],
+      "used": 3,
+      "uniqueValid": 3,
+      "limit": 4,
+      "label": "⚠ PERÍCIAS · 3 DE 4 · FORA DO CATÁLOGO",
+      "expectedValidLabel": "PERÍCIAS · 3 DE 4",
+      "trained": "Vigor",
+      "physical": "Força",
+      "trBuff": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "tests": [
+        3,
+        7,
+        0,
+        2
+      ],
+      "expectedTests": [
+        3,
+        7,
+        0,
+        2
+      ],
+      "bonuses": [
+        "",
+        "+7",
+        "+6",
+        "+6",
+        "",
+        "",
+        ""
+      ],
+      "expectedBonuses": [
+        "",
+        "+7",
+        "+6",
+        "+6",
+        "",
+        "",
+        ""
+      ],
+      "office": null,
+      "issue": "PT02",
+      "expectedLabel": "⚠ PERÍCIAS · 3 DE 4 · FORA DO CATÁLOGO",
+      "warnings": [
+        "FORA DO CATÁLOGO"
+      ],
+      "passed": true
+    },
+    {
+      "copy": 1,
+      "entity": 1,
+      "phase": "custom_reposta",
+      "case": "custom_ultima_posicao",
+      "master": 30,
+      "level": 14,
+      "mae": 4,
+      "baseInt": 6,
+      "totalInt": 6,
+      "skills": [
+        "Atletismo",
+        "Acrobacia",
+        "Furtividade",
+        "Investigação",
+        "Sentir Energia",
+        "Provocar",
+        "QA Perícia ~*?"
+      ],
+      "used": 7,
+      "uniqueValid": 7,
+      "limit": 7,
+      "label": "PERÍCIAS · 7 DE 7",
+      "expectedValidLabel": "PERÍCIAS · 7 DE 7",
+      "trained": "Espírito",
+      "physical": "Força",
+      "trBuff": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "tests": [
+        3,
+        1,
+        6,
+        5
+      ],
+      "expectedTests": [
+        3,
+        1,
+        6,
+        5
+      ],
+      "bonuses": [
+        "+7",
+        "+5",
+        "+5",
+        "+10",
+        "+5",
+        "+5",
+        "+5"
+      ],
+      "expectedBonuses": [
+        "+7",
+        "+5",
+        "+5",
+        "+10",
+        "+5",
+        "+5",
+        "+5"
+      ],
+      "office": null,
+      "issue": null,
+      "expectedLabel": "PERÍCIAS · 7 DE 7",
+      "warnings": [],
+      "passed": true
+    },
+    {
+      "copy": 1,
+      "entity": 12,
+      "phase": "custom_reposta",
+      "case": "custom_primeira_posicao",
+      "master": 30,
+      "level": 2,
+      "mae": 4,
+      "baseInt": 0,
+      "totalInt": 0,
+      "skills": [
+        "QA Perícia ~*?",
+        "Atletismo",
+        "Acrobacia",
+        "Sentir Energia",
+        null,
+        null,
+        null
+      ],
+      "used": 4,
+      "uniqueValid": 4,
+      "limit": 4,
+      "label": "PERÍCIAS · 4 DE 4",
+      "expectedValidLabel": "PERÍCIAS · 4 DE 4",
+      "trained": "Vigor",
+      "physical": "Força",
+      "trBuff": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "tests": [
+        3,
+        7,
+        0,
+        2
+      ],
+      "expectedTests": [
+        3,
+        7,
+        0,
+        2
+      ],
+      "bonuses": [
+        "+7",
+        "+7",
+        "+6",
+        "+6",
+        "",
+        "",
+        ""
+      ],
+      "expectedBonuses": [
+        "+7",
+        "+7",
+        "+6",
+        "+6",
+        "",
+        "",
+        ""
+      ],
+      "office": null,
+      "issue": null,
+      "expectedLabel": "PERÍCIAS · 4 DE 4",
+      "warnings": [],
+      "passed": true
+    },
+    {
+      "copy": 1,
+      "entity": 1,
+      "phase": "custom_repetida_e_limite",
+      "case": "repeticao_literal_com_lacunas",
+      "master": 30,
+      "level": 14,
+      "mae": 4,
+      "baseInt": 6,
+      "totalInt": 6,
+      "skills": [
+        null,
+        "QA Perícia ~*?",
+        null,
+        "qa perícia ~*?",
+        "Atletismo",
+        "Acrobacia",
+        null
+      ],
+      "used": 3,
+      "uniqueValid": 3,
+      "limit": 7,
+      "label": "⚠ PERÍCIAS · 3 DE 7 · REPETIDA",
+      "expectedValidLabel": "PERÍCIAS · 3 DE 7",
+      "trained": "Espírito",
+      "physical": "Força",
+      "trBuff": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "tests": [
+        3,
+        1,
+        6,
+        5
+      ],
+      "expectedTests": [
+        3,
+        1,
+        6,
+        5
+      ],
+      "bonuses": [
+        "",
+        "+5",
+        "",
+        "+5",
+        "+7",
+        "+5",
+        ""
+      ],
+      "expectedBonuses": [
+        "",
+        "+5",
+        "",
+        "+5",
+        "+7",
+        "+5",
+        ""
+      ],
+      "office": null,
+      "issue": null,
+      "expectedLabel": "⚠ PERÍCIAS · 3 DE 7 · REPETIDA",
+      "warnings": [
+        "REPETIDA"
+      ],
+      "passed": true
+    },
+    {
+      "copy": 1,
+      "entity": 12,
+      "phase": "custom_repetida_e_limite",
+      "case": "combina_tres_avisos",
+      "master": 30,
+      "level": 2,
+      "mae": 4,
+      "baseInt": 0,
+      "totalInt": 0,
+      "skills": [
+        "QA Perícia ~*?",
+        "Atletismo",
+        "Atletismo",
+        "Acrobacia",
+        "Investigação",
+        "Intuição",
+        "Sentir Energia"
+      ],
+      "used": 6,
+      "uniqueValid": 6,
+      "limit": 4,
+      "label": "⚠ PERÍCIAS · 6 DE 4 · REPETIDA · ACIMA DO LIMITE",
+      "expectedValidLabel": "PERÍCIAS · 6 DE 4",
+      "trained": "Vigor",
+      "physical": "Força",
+      "trBuff": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "tests": [
+        3,
+        7,
+        0,
+        2
+      ],
+      "expectedTests": [
+        3,
+        7,
+        0,
+        2
+      ],
+      "bonuses": [
+        "+7",
+        "+7",
+        "+7",
+        "+6",
+        "+4",
+        "+4",
+        "+6"
+      ],
+      "expectedBonuses": [
+        "+7",
+        "+7",
+        "+7",
+        "+6",
+        "+4",
+        "+4",
+        "+6"
+      ],
+      "office": null,
+      "issue": null,
+      "expectedLabel": "⚠ PERÍCIAS · 6 DE 4 · REPETIDA · ACIMA DO LIMITE",
+      "warnings": [
+        "REPETIDA",
+        "ACIMA DO LIMITE"
+      ],
+      "passed": true
+    },
+    {
+      "copy": 1,
+      "entity": 1,
+      "phase": "custom_repetida_retirada",
+      "case": "repeticao_literal_com_lacunas",
+      "master": 30,
+      "level": 14,
+      "mae": 4,
+      "baseInt": 6,
+      "totalInt": 6,
+      "skills": [
+        null,
+        "QA Perícia ~*?",
+        null,
+        "qa perícia ~*?",
+        "Atletismo",
+        "Acrobacia",
+        null
+      ],
+      "used": 2,
+      "uniqueValid": 2,
+      "limit": 7,
+      "label": "⚠ PERÍCIAS · 2 DE 7 · FORA DO CATÁLOGO",
+      "expectedValidLabel": "PERÍCIAS · 2 DE 7",
+      "trained": "Espírito",
+      "physical": "Força",
+      "trBuff": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "tests": [
+        3,
+        1,
+        6,
+        5
+      ],
+      "expectedTests": [
+        3,
+        1,
+        6,
+        5
+      ],
+      "bonuses": [
+        "",
+        "",
+        "",
+        "",
+        "+7",
+        "+5",
+        ""
+      ],
+      "expectedBonuses": [
+        "",
+        "",
+        "",
+        "",
+        "+7",
+        "+5",
+        ""
+      ],
+      "office": null,
+      "issue": "PT02",
+      "expectedLabel": "⚠ PERÍCIAS · 2 DE 7 · FORA DO CATÁLOGO",
+      "warnings": [
+        "FORA DO CATÁLOGO"
+      ],
+      "passed": true
+    },
+    {
+      "copy": 1,
+      "entity": 12,
+      "phase": "custom_repetida_retirada",
+      "case": "combina_tres_avisos",
+      "master": 30,
+      "level": 2,
+      "mae": 4,
+      "baseInt": 0,
+      "totalInt": 0,
+      "skills": [
+        "QA Perícia ~*?",
+        "Atletismo",
+        "Atletismo",
+        "Acrobacia",
+        "Investigação",
+        "Intuição",
+        "Sentir Energia"
+      ],
+      "used": 5,
+      "uniqueValid": 5,
+      "limit": 4,
+      "label": "⚠ PERÍCIAS · 5 DE 4 · REPETIDA · FORA DO CATÁLOGO · ACIMA DO LIMITE",
+      "expectedValidLabel": "PERÍCIAS · 5 DE 4",
+      "trained": "Vigor",
+      "physical": "Força",
+      "trBuff": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "tests": [
+        3,
+        7,
+        0,
+        2
+      ],
+      "expectedTests": [
+        3,
+        7,
+        0,
+        2
+      ],
+      "bonuses": [
+        "",
+        "+7",
+        "+7",
+        "+6",
+        "+4",
+        "+4",
+        "+6"
+      ],
+      "expectedBonuses": [
+        "",
+        "+7",
+        "+7",
+        "+6",
+        "+4",
+        "+4",
+        "+6"
+      ],
+      "office": null,
+      "issue": "PT02",
+      "expectedLabel": "⚠ PERÍCIAS · 5 DE 4 · REPETIDA · FORA DO CATÁLOGO · ACIMA DO LIMITE",
+      "warnings": [
+        "REPETIDA",
+        "FORA DO CATÁLOGO",
+        "ACIMA DO LIMITE"
+      ],
+      "passed": true
+    },
+    {
+      "copy": 1,
+      "entity": 1,
+      "phase": "custom_repetida_reposta",
+      "case": "repeticao_literal_com_lacunas",
+      "master": 30,
+      "level": 14,
+      "mae": 4,
+      "baseInt": 6,
+      "totalInt": 6,
+      "skills": [
+        null,
+        "QA Perícia ~*?",
+        null,
+        "qa perícia ~*?",
+        "Atletismo",
+        "Acrobacia",
+        null
+      ],
+      "used": 3,
+      "uniqueValid": 3,
+      "limit": 7,
+      "label": "⚠ PERÍCIAS · 3 DE 7 · REPETIDA",
+      "expectedValidLabel": "PERÍCIAS · 3 DE 7",
+      "trained": "Espírito",
+      "physical": "Força",
+      "trBuff": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "tests": [
+        3,
+        1,
+        6,
+        5
+      ],
+      "expectedTests": [
+        3,
+        1,
+        6,
+        5
+      ],
+      "bonuses": [
+        "",
+        "+5",
+        "",
+        "+5",
+        "+7",
+        "+5",
+        ""
+      ],
+      "expectedBonuses": [
+        "",
+        "+5",
+        "",
+        "+5",
+        "+7",
+        "+5",
+        ""
+      ],
+      "office": null,
+      "issue": null,
+      "expectedLabel": "⚠ PERÍCIAS · 3 DE 7 · REPETIDA",
+      "warnings": [
+        "REPETIDA"
+      ],
+      "passed": true
+    },
+    {
+      "copy": 1,
+      "entity": 12,
+      "phase": "custom_repetida_reposta",
+      "case": "combina_tres_avisos",
+      "master": 30,
+      "level": 2,
+      "mae": 4,
+      "baseInt": 0,
+      "totalInt": 0,
+      "skills": [
+        "QA Perícia ~*?",
+        "Atletismo",
+        "Atletismo",
+        "Acrobacia",
+        "Investigação",
+        "Intuição",
+        "Sentir Energia"
+      ],
+      "used": 6,
+      "uniqueValid": 6,
+      "limit": 4,
+      "label": "⚠ PERÍCIAS · 6 DE 4 · REPETIDA · ACIMA DO LIMITE",
+      "expectedValidLabel": "PERÍCIAS · 6 DE 4",
+      "trained": "Vigor",
+      "physical": "Força",
+      "trBuff": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "tests": [
+        3,
+        7,
+        0,
+        2
+      ],
+      "expectedTests": [
+        3,
+        7,
+        0,
+        2
+      ],
+      "bonuses": [
+        "+7",
+        "+7",
+        "+7",
+        "+6",
+        "+4",
+        "+4",
+        "+6"
+      ],
+      "expectedBonuses": [
+        "+7",
+        "+7",
+        "+7",
+        "+6",
+        "+4",
+        "+4",
+        "+6"
+      ],
+      "office": null,
+      "issue": null,
+      "expectedLabel": "⚠ PERÍCIAS · 6 DE 4 · REPETIDA · ACIMA DO LIMITE",
+      "warnings": [
+        "REPETIDA",
+        "ACIMA DO LIMITE"
+      ],
+      "passed": true
+    }
+  ],
+  "interface": [
+    {
+      "copy": 0,
+      "label": "⚠ PERÍCIAS · 3 DE 4 · REPETIDA",
+      "duplicata": "Atletismo",
+      "office": "Qa",
+      "officeStrict": true,
+      "via": "teclas e Enter na validação nativa",
+      "officeSetup": "cadastro feito em CONFIGURAÇÃO",
+      "restoredInputs": 63
+    },
+    {
+      "copy": 1,
+      "label": "⚠ PERÍCIAS · 3 DE 4 · REPETIDA",
+      "duplicata": "Atletismo",
+      "office": "Qa",
+      "officeStrict": true,
+      "via": "seleção no menu nativo após recusa da digitação",
+      "officeSetup": "cadastro feito em CONFIGURAÇÃO",
+      "restoredInputs": 63
+    }
+  ],
+  "preservation": [
+    {
+      "copy": 0,
+      "inputsRestored": true,
+      "scopeDifferences": [
+        "INVOCAÇÕES!L42",
+        "DADOS_INVOC!GU2",
+        "DADOS_INVOC!HT2",
+        "DADOS_INVOC!GU13",
+        "DADOS_INVOC!HT13",
+        "DADOS_INVOC!GU3",
+        "DADOS_INVOC!GU4",
+        "DADOS_INVOC!GU5",
+        "DADOS_INVOC!GU6",
+        "DADOS_INVOC!GU7",
+        "DADOS_INVOC!GU8",
+        "DADOS_INVOC!GU9",
+        "DADOS_INVOC!GU10",
+        "DADOS_INVOC!GU11",
+        "DADOS_INVOC!GU12",
+        "DADOS_INVOC!HT3",
+        "DADOS_INVOC!HT4",
+        "DADOS_INVOC!HT5",
+        "DADOS_INVOC!HT6",
+        "DADOS_INVOC!HT7",
+        "DADOS_INVOC!HT8",
+        "DADOS_INVOC!HT9",
+        "DADOS_INVOC!HT10",
+        "DADOS_INVOC!HT11",
+        "DADOS_INVOC!HT12"
+      ],
+      "montagensDifferences": [],
+      "metadataEqual": true,
+      "mountPositions": 85887,
+      "additionalOfficeRestored": true,
+      "restoredInputs": 63,
+      "positionCount": 86494,
+      "onlyExpectedFieldsChanged": true
+    },
+    {
+      "copy": 1,
+      "inputsRestored": true,
+      "scopeDifferences": [
+        "INVOCAÇÕES!L42",
+        "DADOS_INVOC!GU2",
+        "DADOS_INVOC!HT2",
+        "DADOS_INVOC!GU13",
+        "DADOS_INVOC!HT13",
+        "DADOS_INVOC!GU3",
+        "DADOS_INVOC!GU4",
+        "DADOS_INVOC!GU5",
+        "DADOS_INVOC!GU6",
+        "DADOS_INVOC!GU7",
+        "DADOS_INVOC!GU8",
+        "DADOS_INVOC!GU9",
+        "DADOS_INVOC!GU10",
+        "DADOS_INVOC!GU11",
+        "DADOS_INVOC!GU12",
+        "DADOS_INVOC!HT3",
+        "DADOS_INVOC!HT4",
+        "DADOS_INVOC!HT5",
+        "DADOS_INVOC!HT6",
+        "DADOS_INVOC!HT7",
+        "DADOS_INVOC!HT8",
+        "DADOS_INVOC!HT9",
+        "DADOS_INVOC!HT10",
+        "DADOS_INVOC!HT11",
+        "DADOS_INVOC!HT12"
+      ],
+      "montagensDifferences": [],
+      "metadataEqual": true,
+      "mountPositions": 85887,
+      "additionalOfficeRestored": true,
+      "restoredInputs": 63,
+      "positionCount": 86494,
+      "onlyExpectedFieldsChanged": true
+    }
+  ],
+  "local": {
+    "smoke": true,
+    "plannedLocales": [
+      "pt_BR",
+      "en_US"
+    ],
+    "exactModelDelta": true
+  }
+}

@@ -1,0 +1,18 @@
+[
+  {
+    "id": "R68-01",
+    "bloco": "fundamento--controle",
+    "antes": "Classe 0, Liberação Máxima e Técnica Máxima não recebem este reforço de feitiço comum.",
+    "depois": "Classe 0 e Liberação Máxima não recebem este reforço de feitiço comum. A Técnica Máxima o recebe só na aplicação sem dano, descrita em [Técnica Máxima](#fundamento--maxima).",
+    "motivo": "Livro v0.379 (JJK---Project d475b94), R68 de 14/11/2026: reforço de Controle da Máxima sem dano nas seções de Controle (consequência da R67). Só a frase foi trocada; o resto do bloco continua na redação R53, porque o bloco publicado traz ajustes de redação de outras revisões que a ficha não segue.",
+    "item": "Controle: a Técnica Máxima sem dano recebe o reforço de Controle, na pessoal e na domada; Classe 0, Liberação Máxima e a básica continuam sem ele."
+  },
+  {
+    "id": "R68-02",
+    "bloco": "construcao--entidades-controle",
+    "antes": "A básica e as aplicações máximas não recebem esse reforço comum.",
+    "depois": "A básica e a Liberação Máxima não recebem esse reforço comum. A Técnica Máxima da domada o recebe só na aplicação sem dano, como a pessoal.",
+    "motivo": "Livro v0.379 (JJK---Project d475b94), R68 de 14/11/2026: reforço de Controle da Máxima sem dano nas seções de Controle (consequência da R67). Só a frase foi trocada; o resto do bloco continua na redação R53, porque o bloco publicado traz ajustes de redação de outras revisões que a ficha não segue.",
+    "item": "Controle: a Técnica Máxima sem dano recebe o reforço de Controle, na pessoal e na domada; Classe 0, Liberação Máxima e a básica continuam sem ele."
+  }
+]

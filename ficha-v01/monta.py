@@ -418,6 +418,58 @@ _EXTENSOES_CUSTOM = extensoes_custom.aplica(LAYOUT, _PROG, _CRIACAO, _FIV)
 montagens_r53.finaliza(_R53)
 import editor_r53
 editor_r53.aplica(LAYOUT, _R53)
+import pratica_cotidiana
+_PRATICA = pratica_cotidiana.aplica(LAYOUT, _R53, _AN)
+import conjuracao_integridade
+_CONJURACAO = conjuracao_integridade.aplica(LAYOUT, _R53)
+if '--plano-conjuracao' in sys.argv:
+    _destino = sys.argv[sys.argv.index('--plano-conjuracao')+1]
+    with open(_destino, 'w', encoding='utf-8') as _f:
+        json.dump(_CONJURACAO, _f, ensure_ascii=False, indent=2)
+        _f.write('\n')
+import classe_zero
+_CLASSE_ZERO = classe_zero.aplica(LAYOUT, _R53)
+if '--plano-classe-zero' in sys.argv:
+    _destino = sys.argv[sys.argv.index('--plano-classe-zero')+1]
+    with open(_destino, 'w', encoding='utf-8') as _f:
+        json.dump(_CLASSE_ZERO, _f, ensure_ascii=False, indent=2)
+        _f.write('\n')
+import alcance_cura
+_ALCANCE_CURA, _ALCANCE_BENEFICIOS = alcance_cura.aplica(LAYOUT, _R53)
+for _opcao, _plano in (('--plano-alcance-cura', _ALCANCE_CURA),
+                       ('--plano-alcance-beneficios', _ALCANCE_BENEFICIOS)):
+    if _opcao in sys.argv:
+        _destino = sys.argv[sys.argv.index(_opcao)+1]
+        with open(_destino, 'w', encoding='utf-8') as _f:
+            json.dump(_plano, _f, ensure_ascii=False, indent=2)
+            _f.write('\n')
+import tempo_feiticos
+_TEMPO_FEITICOS = tempo_feiticos.aplica(LAYOUT, _R53)
+import expansao_domada
+_EXPANSAO_DOMADA, _EXPANSAO_NOTAS = expansao_domada.aplica(LAYOUT, _R53)
+with open(os.path.join(AQUI, '..', 'r53', 'diagnostico-android', 'repertorio_normal_plano.json'), 'w', encoding='utf-8') as _f:
+    json.dump(expansao_domada.plano_contagem(_EXPANSAO_DOMADA), _f, ensure_ascii=False, indent=2)
+    _f.write('\n')
+with open(os.path.join(AQUI, '..', 'r53', 'diagnostico-android', 'isolamento_nomes_plano.json'), 'w', encoding='utf-8') as _f:
+    json.dump(expansao_domada.plano_contagem(_EXPANSAO_DOMADA, 'global'), _f, ensure_ascii=False, indent=2)
+    _f.write('\n')
+for _sufixo, _dados in (('plano', _EXPANSAO_DOMADA), ('notas', _EXPANSAO_NOTAS),
+                        ('suporte', expansao_domada.suporte(LAYOUT, _EXPANSAO_DOMADA))):
+    with open(os.path.join(AQUI, '..', 'r53', 'diagnostico-android', 'expansao_domada_'+_sufixo+'.json'), 'w', encoding='utf-8') as _f:
+        json.dump(_dados, _f, ensure_ascii=False, indent=2)
+        _f.write('\n')
+import repertorio_trilha
+_REPERTORIO_PLANO, _REPERTORIO_NOTAS, _REPERTORIO_UI = repertorio_trilha.aplica(LAYOUT, _R53)
+for _sufixo, _dados in (('plano', _REPERTORIO_PLANO), ('notas', _REPERTORIO_NOTAS), ('ui', _REPERTORIO_UI),
+                        ('suporte', repertorio_trilha.suporte(LAYOUT, _R53))):
+    with open(os.path.join(AQUI, '..', 'r53', 'diagnostico-android', 'repertorio_trilha_'+_sufixo+'.json'), 'w', encoding='utf-8') as _f:
+        json.dump(_dados, _f, ensure_ascii=False, indent=2)
+        _f.write('\n')
+if '--plano-tempo-feiticos' in sys.argv:
+    _destino = sys.argv[sys.argv.index('--plano-tempo-feiticos')+1]
+    with open(_destino, 'w', encoding='utf-8') as _f:
+        json.dump(_TEMPO_FEITICOS, _f, ensure_ascii=False, indent=2)
+        _f.write('\n')
 if '--exportar-r53' in sys.argv:
     editor_r53.escrever(_R53, os.path.join(AQUI, '..', 'r53', 'saidas', 'EditorR53.gs'))
     _r53_destino=sys.argv[sys.argv.index('--exportar-r53')+1]
@@ -577,6 +629,7 @@ def _extras(a):
            # 01/10/2026, a FICHA AMALDICOADA: as fileiras de cartas que sao copia da primeira, a validacao numa matriz so,
            # e, na DADOS_AM, as colunas que o script preenche para baixo a partir da primeira linha
            "menus_estritos": a.get("menus_estritos", []),
+           "validacoes_formula": a.get("validacoes_formula", []),
            "copias": a.get("copias", []), "validacao_em_matriz": a.get("validacao_em_matriz", False),
            "abaixo": a.get("abaixo", []),
            # 02/10/2026, o menu rapido da FICHA: as linhas que a trava de formula do script deixa de fora

@@ -1,0 +1,43 @@
+{
+  "data": "2026-11-07",
+  "pr": 88,
+  "head_revisado": "ab05bcf9cc5f831dfe460544f935546e40296ea8",
+  "base": "0554071051697790d9c807f2478f6c5816018aa1",
+  "resultado": "sem novos achados acionaveis no escopo revisado",
+  "r88_01": "resolvido",
+  "github_checks_success": 2,
+  "comparacao_modelo": {
+    "abas": 26,
+    "posicoes": 280056,
+    "alteracoes": 24,
+    "metadados_preservados": true
+  },
+  "testes_focais_repetidos": [
+    "isolamento_nomes com modulo Android antigo e equivalencia das duas bases",
+    "contagem_especiais com base PR87 e modulo Android antigo",
+    "isolamento_nomes_modelo",
+    "editor_lazy LF e CRLF",
+    "test_expansao_domada: tres testes Python"
+  ],
+  "auditoria_evidencias": {
+    "copias": 2,
+    "codigo_reproduzido_exatamente": true,
+    "montagens_e_entradas_antes_depois_iguais": true,
+    "formulas_finais_alteradas_por_copia": 24,
+    "evidencias_recuperacao_completas": 10,
+    "registros_contagem_unicos": 288,
+    "registros_isolamento_unicos": 16,
+    "eventos_concluidos_guardados": 10,
+    "nota": "Releitura de evidencias guardadas; matrizes e eventos nativos nao repetidos."
+  },
+  "escritas_google": 0,
+  "mudancas_codigo_pr88": 0,
+  "merge": false,
+  "novas_execucoes_smoke_integral": 0,
+  "limites": [
+    "nao certifica toda colagem arbitraria",
+    "nao certifica latencia Android",
+    "nao certifica estado vivo das QAs apos a entrega",
+    "formatacao fora da comparacao CellData guardada"
+  ]
+}

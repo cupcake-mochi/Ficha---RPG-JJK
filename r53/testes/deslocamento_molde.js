@@ -1,0 +1,30 @@
+'use strict';
+const assert=require('node:assert/strict'),fs=require('fs'),path=require('path'),vm=require('vm'),crypto=require('crypto');
+const root=path.resolve(__dirname,'../..');
+const {preparar,ancora,chamada}=require('../diagnostico-android/preparar_deslocamento_loader');
+const helper=fs.readFileSync(path.join(root,'r53/diagnostico-android/deslocamento_corporal_molde.gs'),'utf8');
+const c={};vm.createContext(c);vm.runInContext(helper,c);
+const p=c.R53_DESLOCAMENTO_CORPORAL_, aplica=c.r53AjustarDeslocamentoCorporal_;
+const copia=x=>JSON.parse(JSON.stringify(x));
+const inicial=[{nome:'FICHA',vals:[[67,15,p.antes,35],[67,23,4,20],[59,4,'=10',35]]},{nome:'INVOCAÇÕES',vals:[[67,15,'=99',35]]}];
+let n=0;const ok=(fn)=>{fn();n++;};
+const atual=copia(inicial);
+ok(()=>assert.equal(aplica(atual),true));
+const esperado=copia(inicial);esperado[0].vals[0][2]=p.depois;
+ok(()=>assert.deepEqual(atual,esperado));
+ok(()=>assert.equal(aplica(atual),false));
+ok(()=>assert.deepEqual(atual,esperado));
+for(const v of [[],[inicial[0],inicial[0]],[{nome:'FICHA',vals:[]}],[{nome:'FICHA',vals:[[67,15,p.antes],[67,15,p.antes]]}],[{nome:'FICHA',vals:[[67,15,'=77']]}]]){
+ const antes=copia(v);ok(()=>assert.throws(()=>aplica(v)));ok(()=>assert.deepEqual(v,antes));
+}
+const f={};vm.createContext(f);vm.runInContext(require('../../medidas/carregar-ficha').fontes(),f);
+const gerada=f.ABAS.find(a=>a.nome==='FICHA').vals.find(v=>v[0]===67&&v[1]===15)[2];
+ok(()=>assert.equal(p.depois,gerada));
+const fonte='var R53_MODULO_;\nfunction r53Modulo_(){\n'+ancora+'\n return R53_MODULO_;\n}\n// preservar outros incrementos\n';
+const sha=s=>crypto.createHash('sha256').update(s).digest('hex');
+const novo=preparar(fonte,sha(fonte));
+ok(()=>assert.equal(novo,fonte.replace(ancora,chamada+ancora)+'\n'+helper));
+ok(()=>assert.throws(()=>preparar(fonte,'errado')));
+ok(()=>assert.throws(()=>preparar(novo,sha(novo))));
+for(const x of ['sem ancora',fonte+ancora])ok(()=>assert.throws(()=>preparar(x,sha(x))));
+console.log(JSON.stringify({resultado:'OK',verificacoes:n,escopo:'Delta exato do molde, idempotência, recusa de divergências, paridade com GS e preservação do carregador'}));

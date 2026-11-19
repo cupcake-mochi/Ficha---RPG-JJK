@@ -20,6 +20,7 @@ que a ficha publica na DADOS, e a tabela fica onde ela ja esta ou vai para a pri
 da DADOS depois das tabelas que existem.
 """
 import json, os, re
+from leitura_buff import buff as leitura_buff  # 10/11/2026: Buff/Debuff decimal contra o dono
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CABECALHO = ["equipamento", "proteção", "teto de destreza", "desliga a passiva"]
@@ -136,7 +137,7 @@ def trocas(layout, CAT=None):
     ESC = f'MIN({GRACA}-1,IFERROR(VALUE({abs_(campo)}&""),0))'
     REFINO = f"MIN({teto_de_refino()},{GRACA}+{ESC})"
     PASSIVA = f"FLOOR({REFINO}/3,1)+1"
-    BUFF = f'+IFERROR(VALUE({abs_(idx["buff de defesa"])}&""),0)' if idx.get("buff de defesa") else ""
+    BUFF = '+' + leitura_buff(abs_(idx["buff de defesa"])) if idx.get("buff de defesa") else ""
     cel["FICHA"][idx["proteção"]] = (
         f'=IF({EQ}="",{PASSIVA},IF(VLOOKUP({EQ},{T},4,FALSE)="sim",0,{PASSIVA})'
         f"+VLOOKUP({EQ},{T},2,FALSE))", idx["proteção"])

@@ -1,0 +1,3291 @@
+{
+  "data": "2026-11-07",
+  "base_pr": 86,
+  "base_sha": "6568838badd1a92b130dd46058527fa089da655f",
+  "livro": {
+    "repositorio": "cupcake-mochi/JJK---Project",
+    "sha": "e3058ad29180fdec2efec75b512446c49bf87b3d",
+    "revisao": "R66"
+  },
+  "configuracoes": [
+    {
+      "id": "parceria_sem_ganho",
+      "trilha": "Parceria",
+      "master": 30,
+      "own": 30,
+      "permanente": 6,
+      "spec": 3,
+      "tal": 0,
+      "allow": 0
+    },
+    {
+      "id": "principal_antes8",
+      "trilha": "Invocação Principal",
+      "master": 30,
+      "own": 7,
+      "permanente": 6,
+      "spec": 1,
+      "tal": 0,
+      "allow": 0
+    },
+    {
+      "id": "principal_8_limite",
+      "trilha": "Invocação Principal",
+      "master": 30,
+      "own": 8,
+      "permanente": 6,
+      "spec": 1,
+      "tal": 0,
+      "allow": 1
+    },
+    {
+      "id": "principal_antes16",
+      "trilha": "Invocação Principal",
+      "master": 30,
+      "own": 15,
+      "permanente": 6,
+      "spec": 2,
+      "tal": 0,
+      "allow": 1
+    },
+    {
+      "id": "principal_16_limite",
+      "trilha": "Invocação Principal",
+      "master": 30,
+      "own": 16,
+      "permanente": 6,
+      "spec": 2,
+      "tal": 0,
+      "allow": 2
+    },
+    {
+      "id": "principal_antes24",
+      "trilha": "Invocação Principal",
+      "master": 30,
+      "own": 23,
+      "permanente": 6,
+      "spec": 3,
+      "tal": 0,
+      "allow": 2
+    },
+    {
+      "id": "principal_24_limite",
+      "trilha": "Invocação Principal",
+      "master": 30,
+      "own": 24,
+      "permanente": 6,
+      "spec": 3,
+      "tal": 0,
+      "allow": 3
+    },
+    {
+      "id": "principal_pool6",
+      "trilha": "Invocação Principal",
+      "master": 30,
+      "own": 24,
+      "permanente": 6,
+      "spec": 3,
+      "tal": 3,
+      "allow": 3
+    },
+    {
+      "id": "principal_mix3",
+      "trilha": "Invocação Principal",
+      "master": 30,
+      "own": 24,
+      "permanente": 6,
+      "spec": 1,
+      "tal": 2,
+      "allow": 3
+    },
+    {
+      "id": "conjunto_antes27",
+      "trilha": "Múltiplas Invocações",
+      "master": 26,
+      "own": 26,
+      "permanente": 6,
+      "spec": 3,
+      "tal": 0,
+      "allow": 0
+    },
+    {
+      "id": "conjunto_atributo0",
+      "trilha": "Múltiplas Invocações",
+      "master": 27,
+      "own": 27,
+      "permanente": 0,
+      "spec": 1,
+      "tal": 0,
+      "allow": 0
+    },
+    {
+      "id": "conjunto_atributo2_excesso",
+      "trilha": "Múltiplas Invocações",
+      "master": 27,
+      "own": 27,
+      "permanente": 2,
+      "spec": 2,
+      "tal": 0,
+      "allow": 1
+    },
+    {
+      "id": "conjunto_atributo2_limite",
+      "trilha": "Múltiplas Invocações",
+      "master": 27,
+      "own": 27,
+      "permanente": 2,
+      "spec": 1,
+      "tal": 0,
+      "allow": 1
+    },
+    {
+      "id": "conjunto_atributo4_excesso",
+      "trilha": "Múltiplas Invocações",
+      "master": 27,
+      "own": 27,
+      "permanente": 4,
+      "spec": 3,
+      "tal": 0,
+      "allow": 2
+    },
+    {
+      "id": "conjunto_atributo4_limite",
+      "trilha": "Múltiplas Invocações",
+      "master": 27,
+      "own": 27,
+      "permanente": 4,
+      "spec": 2,
+      "tal": 0,
+      "allow": 2
+    },
+    {
+      "id": "conjunto_atributo6_limite",
+      "trilha": "Múltiplas Invocações",
+      "master": 27,
+      "own": 27,
+      "permanente": 6,
+      "spec": 3,
+      "tal": 0,
+      "allow": 3
+    },
+    {
+      "id": "conjunto_buff_temporario",
+      "trilha": "Múltiplas Invocações",
+      "master": 27,
+      "own": 27,
+      "permanente": 2,
+      "buff": 4,
+      "spec": 3,
+      "tal": 0,
+      "allow": 1
+    },
+    {
+      "id": "conjunto_entidade7",
+      "trilha": "Múltiplas Invocações",
+      "master": 27,
+      "own": 7,
+      "permanente": 6,
+      "spec": 3,
+      "tal": 0,
+      "allow": 3
+    },
+    {
+      "id": "conjunto_pool6",
+      "trilha": "Múltiplas Invocações",
+      "master": 27,
+      "own": 27,
+      "permanente": 6,
+      "spec": 3,
+      "tal": 3,
+      "allow": 3
+    },
+    {
+      "id": "conjunto_mix3",
+      "trilha": "Múltiplas Invocações",
+      "master": 27,
+      "own": 27,
+      "permanente": 6,
+      "spec": 1,
+      "tal": 2,
+      "allow": 3
+    }
+  ],
+  "copias": [
+    {
+      "ambiente": "Era descartavel",
+      "resultados": [
+        {
+          "id": "parceria_sem_ganho",
+          "entidade": 1,
+          "nivel_invocador": 30,
+          "nivel_entidade": 30,
+          "trilha": "Parceria",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 3,
+          "limite_livro": 0,
+          "excedente": true,
+          "montagens": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 8 · Classe 7 · básica 3d6 · 8 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "parceria_sem_ganho",
+          "entidade": 12,
+          "nivel_invocador": 30,
+          "nivel_entidade": 30,
+          "trilha": "Parceria",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 3,
+          "limite_livro": 0,
+          "excedente": true,
+          "montagens": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 8 · Classe 7 · básica 3d6 · 8 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "principal_antes8",
+          "entidade": 1,
+          "nivel_invocador": 30,
+          "nivel_entidade": 7,
+          "trilha": "Invocação Principal",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 1,
+          "limite_livro": 0,
+          "excedente": true,
+          "montagens": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 2 · Classe 2 · básica 2d6 · 2 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "principal_antes8",
+          "entidade": 12,
+          "nivel_invocador": 30,
+          "nivel_entidade": 7,
+          "trilha": "Invocação Principal",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 1,
+          "limite_livro": 0,
+          "excedente": true,
+          "montagens": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 2 · Classe 2 · básica 2d6 · 2 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "principal_8_limite",
+          "entidade": 1,
+          "nivel_invocador": 30,
+          "nivel_entidade": 8,
+          "trilha": "Invocação Principal",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 1,
+          "limite_livro": 1,
+          "excedente": false,
+          "montagens": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 3 · Classe 2 · básica 2d6 · 2 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "principal_8_limite",
+          "entidade": 12,
+          "nivel_invocador": 30,
+          "nivel_entidade": 8,
+          "trilha": "Invocação Principal",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 1,
+          "limite_livro": 1,
+          "excedente": false,
+          "montagens": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 3 · Classe 2 · básica 2d6 · 2 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "principal_antes16",
+          "entidade": 1,
+          "nivel_invocador": 30,
+          "nivel_entidade": 15,
+          "trilha": "Invocação Principal",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 2,
+          "limite_livro": 1,
+          "excedente": true,
+          "montagens": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "principal_antes16",
+          "entidade": 12,
+          "nivel_invocador": 30,
+          "nivel_entidade": 15,
+          "trilha": "Invocação Principal",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 2,
+          "limite_livro": 1,
+          "excedente": true,
+          "montagens": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "principal_16_limite",
+          "entidade": 1,
+          "nivel_invocador": 30,
+          "nivel_entidade": 16,
+          "trilha": "Invocação Principal",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 2,
+          "limite_livro": 2,
+          "excedente": false,
+          "montagens": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 5 · Classe 4 · básica 2d6 · 4 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "principal_16_limite",
+          "entidade": 12,
+          "nivel_invocador": 30,
+          "nivel_entidade": 16,
+          "trilha": "Invocação Principal",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 2,
+          "limite_livro": 2,
+          "excedente": false,
+          "montagens": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 5 · Classe 4 · básica 2d6 · 4 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "principal_antes24",
+          "entidade": 1,
+          "nivel_invocador": 30,
+          "nivel_entidade": 23,
+          "trilha": "Invocação Principal",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 3,
+          "limite_livro": 2,
+          "excedente": true,
+          "montagens": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 6 · Classe 6 · básica 3d6 · 6 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "principal_antes24",
+          "entidade": 12,
+          "nivel_invocador": 30,
+          "nivel_entidade": 23,
+          "trilha": "Invocação Principal",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 3,
+          "limite_livro": 2,
+          "excedente": true,
+          "montagens": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 6 · Classe 6 · básica 3d6 · 6 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "principal_24_limite",
+          "entidade": 1,
+          "nivel_invocador": 30,
+          "nivel_entidade": 24,
+          "trilha": "Invocação Principal",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 3,
+          "limite_livro": 3,
+          "excedente": false,
+          "montagens": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 7 · Classe 6 · básica 3d6 · 6 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "principal_24_limite",
+          "entidade": 12,
+          "nivel_invocador": 30,
+          "nivel_entidade": 24,
+          "trilha": "Invocação Principal",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 3,
+          "limite_livro": 3,
+          "excedente": false,
+          "montagens": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 7 · Classe 6 · básica 3d6 · 6 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "principal_pool6",
+          "entidade": 1,
+          "nivel_invocador": 30,
+          "nivel_entidade": 24,
+          "trilha": "Invocação Principal",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 6,
+          "limite_livro": 3,
+          "excedente": true,
+          "montagens": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 3,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 7 · Classe 6 · básica 3d6 · 6 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "principal_pool6",
+          "entidade": 12,
+          "nivel_invocador": 30,
+          "nivel_entidade": 24,
+          "trilha": "Invocação Principal",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 6,
+          "limite_livro": 3,
+          "excedente": true,
+          "montagens": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 3,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 7 · Classe 6 · básica 3d6 · 6 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "principal_mix3",
+          "entidade": 1,
+          "nivel_invocador": 30,
+          "nivel_entidade": 24,
+          "trilha": "Invocação Principal",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 3,
+          "limite_livro": 3,
+          "excedente": false,
+          "montagens": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 2,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 7 · Classe 6 · básica 3d6 · 6 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "principal_mix3",
+          "entidade": 12,
+          "nivel_invocador": 30,
+          "nivel_entidade": 24,
+          "trilha": "Invocação Principal",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 3,
+          "limite_livro": 3,
+          "excedente": false,
+          "montagens": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 2,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 7 · Classe 6 · básica 3d6 · 6 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "conjunto_antes27",
+          "entidade": 1,
+          "nivel_invocador": 26,
+          "nivel_entidade": 26,
+          "trilha": "Múltiplas Invocações",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 3,
+          "limite_livro": 0,
+          "excedente": true,
+          "montagens": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 7 · Classe 7 · básica 3d6 · 7 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "conjunto_antes27",
+          "entidade": 12,
+          "nivel_invocador": 26,
+          "nivel_entidade": 26,
+          "trilha": "Múltiplas Invocações",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 3,
+          "limite_livro": 0,
+          "excedente": true,
+          "montagens": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 7 · Classe 7 · básica 3d6 · 7 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "conjunto_atributo0",
+          "entidade": 1,
+          "nivel_invocador": 27,
+          "nivel_entidade": 27,
+          "trilha": "Múltiplas Invocações",
+          "atributo_permanente": 0,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 1,
+          "limite_livro": 0,
+          "excedente": true,
+          "montagens": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 7 · Classe 7 · básica 3d6 · 7 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "conjunto_atributo0",
+          "entidade": 12,
+          "nivel_invocador": 27,
+          "nivel_entidade": 27,
+          "trilha": "Múltiplas Invocações",
+          "atributo_permanente": 0,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 1,
+          "limite_livro": 0,
+          "excedente": true,
+          "montagens": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 7 · Classe 7 · básica 3d6 · 7 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "conjunto_atributo2_excesso",
+          "entidade": 1,
+          "nivel_invocador": 27,
+          "nivel_entidade": 27,
+          "trilha": "Múltiplas Invocações",
+          "atributo_permanente": 2,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 2,
+          "limite_livro": 1,
+          "excedente": true,
+          "montagens": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 7 · Classe 7 · básica 3d6 · 7 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "conjunto_atributo2_excesso",
+          "entidade": 12,
+          "nivel_invocador": 27,
+          "nivel_entidade": 27,
+          "trilha": "Múltiplas Invocações",
+          "atributo_permanente": 2,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 2,
+          "limite_livro": 1,
+          "excedente": true,
+          "montagens": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 7 · Classe 7 · básica 3d6 · 7 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "conjunto_atributo2_limite",
+          "entidade": 1,
+          "nivel_invocador": 27,
+          "nivel_entidade": 27,
+          "trilha": "Múltiplas Invocações",
+          "atributo_permanente": 2,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 1,
+          "limite_livro": 1,
+          "excedente": false,
+          "montagens": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 7 · Classe 7 · básica 3d6 · 7 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "conjunto_atributo2_limite",
+          "entidade": 12,
+          "nivel_invocador": 27,
+          "nivel_entidade": 27,
+          "trilha": "Múltiplas Invocações",
+          "atributo_permanente": 2,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 1,
+          "limite_livro": 1,
+          "excedente": false,
+          "montagens": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 7 · Classe 7 · básica 3d6 · 7 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "conjunto_atributo4_excesso",
+          "entidade": 1,
+          "nivel_invocador": 27,
+          "nivel_entidade": 27,
+          "trilha": "Múltiplas Invocações",
+          "atributo_permanente": 4,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 3,
+          "limite_livro": 2,
+          "excedente": true,
+          "montagens": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 7 · Classe 7 · básica 3d6 · 7 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "conjunto_atributo4_excesso",
+          "entidade": 12,
+          "nivel_invocador": 27,
+          "nivel_entidade": 27,
+          "trilha": "Múltiplas Invocações",
+          "atributo_permanente": 4,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 3,
+          "limite_livro": 2,
+          "excedente": true,
+          "montagens": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 7 · Classe 7 · básica 3d6 · 7 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "conjunto_atributo4_limite",
+          "entidade": 1,
+          "nivel_invocador": 27,
+          "nivel_entidade": 27,
+          "trilha": "Múltiplas Invocações",
+          "atributo_permanente": 4,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 2,
+          "limite_livro": 2,
+          "excedente": false,
+          "montagens": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 7 · Classe 7 · básica 3d6 · 7 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "conjunto_atributo4_limite",
+          "entidade": 12,
+          "nivel_invocador": 27,
+          "nivel_entidade": 27,
+          "trilha": "Múltiplas Invocações",
+          "atributo_permanente": 4,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 2,
+          "limite_livro": 2,
+          "excedente": false,
+          "montagens": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 7 · Classe 7 · básica 3d6 · 7 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "conjunto_atributo6_limite",
+          "entidade": 1,
+          "nivel_invocador": 27,
+          "nivel_entidade": 27,
+          "trilha": "Múltiplas Invocações",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 3,
+          "limite_livro": 3,
+          "excedente": false,
+          "montagens": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 7 · Classe 7 · básica 3d6 · 7 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "conjunto_atributo6_limite",
+          "entidade": 12,
+          "nivel_invocador": 27,
+          "nivel_entidade": 27,
+          "trilha": "Múltiplas Invocações",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 3,
+          "limite_livro": 3,
+          "excedente": false,
+          "montagens": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 7 · Classe 7 · básica 3d6 · 7 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "conjunto_buff_temporario",
+          "entidade": 1,
+          "nivel_invocador": 27,
+          "nivel_entidade": 27,
+          "trilha": "Múltiplas Invocações",
+          "atributo_permanente": 2,
+          "buff_temporario": 4,
+          "escolhas_preenchidas": 3,
+          "limite_livro": 1,
+          "excedente": true,
+          "montagens": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 7 · Classe 7 · básica 3d6 · 7 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "conjunto_buff_temporario",
+          "entidade": 12,
+          "nivel_invocador": 27,
+          "nivel_entidade": 27,
+          "trilha": "Múltiplas Invocações",
+          "atributo_permanente": 2,
+          "buff_temporario": 4,
+          "escolhas_preenchidas": 3,
+          "limite_livro": 1,
+          "excedente": true,
+          "montagens": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 7 · Classe 7 · básica 3d6 · 7 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "conjunto_entidade7",
+          "entidade": 1,
+          "nivel_invocador": 27,
+          "nivel_entidade": 7,
+          "trilha": "Múltiplas Invocações",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 3,
+          "limite_livro": 3,
+          "excedente": false,
+          "montagens": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 2 · Classe 2 · básica 2d6 · 2 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "conjunto_entidade7",
+          "entidade": 12,
+          "nivel_invocador": 27,
+          "nivel_entidade": 7,
+          "trilha": "Múltiplas Invocações",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 3,
+          "limite_livro": 3,
+          "excedente": false,
+          "montagens": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 2 · Classe 2 · básica 2d6 · 2 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "conjunto_pool6",
+          "entidade": 1,
+          "nivel_invocador": 27,
+          "nivel_entidade": 27,
+          "trilha": "Múltiplas Invocações",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 6,
+          "limite_livro": 3,
+          "excedente": true,
+          "montagens": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 3,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 7 · Classe 7 · básica 3d6 · 7 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "conjunto_pool6",
+          "entidade": 12,
+          "nivel_invocador": 27,
+          "nivel_entidade": 27,
+          "trilha": "Múltiplas Invocações",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 6,
+          "limite_livro": 3,
+          "excedente": true,
+          "montagens": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 3,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 7 · Classe 7 · básica 3d6 · 7 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "conjunto_mix3",
+          "entidade": 1,
+          "nivel_invocador": 27,
+          "nivel_entidade": 27,
+          "trilha": "Múltiplas Invocações",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 3,
+          "limite_livro": 3,
+          "excedente": false,
+          "montagens": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 2,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 7 · Classe 7 · básica 3d6 · 7 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "conjunto_mix3",
+          "entidade": 12,
+          "nivel_invocador": 27,
+          "nivel_entidade": 27,
+          "trilha": "Múltiplas Invocações",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 3,
+          "limite_livro": 3,
+          "excedente": false,
+          "montagens": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 2,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 7 · Classe 7 · básica 3d6 · 7 talentos",
+          "fixture_ok": true
+        }
+      ],
+      "conferencia": {
+        "positions": 3535,
+        "montagens": 1998,
+        "diff": [],
+        "errors": []
+      },
+      "entradas_restauradas": 183,
+      "recuperacoes_edicao_real": 1,
+      "origens": {
+        "diretas": 84,
+        "multiplas": 12,
+        "divergencias": 0
+      }
+    },
+    {
+      "ambiente": "Ciclo descartavel",
+      "resultados": [
+        {
+          "id": "parceria_sem_ganho",
+          "entidade": 1,
+          "nivel_invocador": 30,
+          "nivel_entidade": 30,
+          "trilha": "Parceria",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 3,
+          "limite_livro": 0,
+          "excedente": true,
+          "montagens": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 8 · Classe 7 · básica 3d6 · 8 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "parceria_sem_ganho",
+          "entidade": 12,
+          "nivel_invocador": 30,
+          "nivel_entidade": 30,
+          "trilha": "Parceria",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 3,
+          "limite_livro": 0,
+          "excedente": true,
+          "montagens": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 8 · Classe 7 · básica 3d6 · 8 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "principal_antes8",
+          "entidade": 1,
+          "nivel_invocador": 30,
+          "nivel_entidade": 7,
+          "trilha": "Invocação Principal",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 1,
+          "limite_livro": 0,
+          "excedente": true,
+          "montagens": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 2 · Classe 2 · básica 2d6 · 2 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "principal_antes8",
+          "entidade": 12,
+          "nivel_invocador": 30,
+          "nivel_entidade": 7,
+          "trilha": "Invocação Principal",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 1,
+          "limite_livro": 0,
+          "excedente": true,
+          "montagens": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 2 · Classe 2 · básica 2d6 · 2 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "principal_8_limite",
+          "entidade": 1,
+          "nivel_invocador": 30,
+          "nivel_entidade": 8,
+          "trilha": "Invocação Principal",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 1,
+          "limite_livro": 1,
+          "excedente": false,
+          "montagens": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 3 · Classe 2 · básica 2d6 · 2 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "principal_8_limite",
+          "entidade": 12,
+          "nivel_invocador": 30,
+          "nivel_entidade": 8,
+          "trilha": "Invocação Principal",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 1,
+          "limite_livro": 1,
+          "excedente": false,
+          "montagens": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 3 · Classe 2 · básica 2d6 · 2 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "principal_antes16",
+          "entidade": 1,
+          "nivel_invocador": 30,
+          "nivel_entidade": 15,
+          "trilha": "Invocação Principal",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 2,
+          "limite_livro": 1,
+          "excedente": true,
+          "montagens": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "principal_antes16",
+          "entidade": 12,
+          "nivel_invocador": 30,
+          "nivel_entidade": 15,
+          "trilha": "Invocação Principal",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 2,
+          "limite_livro": 1,
+          "excedente": true,
+          "montagens": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "principal_16_limite",
+          "entidade": 1,
+          "nivel_invocador": 30,
+          "nivel_entidade": 16,
+          "trilha": "Invocação Principal",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 2,
+          "limite_livro": 2,
+          "excedente": false,
+          "montagens": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 5 · Classe 4 · básica 2d6 · 4 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "principal_16_limite",
+          "entidade": 12,
+          "nivel_invocador": 30,
+          "nivel_entidade": 16,
+          "trilha": "Invocação Principal",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 2,
+          "limite_livro": 2,
+          "excedente": false,
+          "montagens": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 5 · Classe 4 · básica 2d6 · 4 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "principal_antes24",
+          "entidade": 1,
+          "nivel_invocador": 30,
+          "nivel_entidade": 23,
+          "trilha": "Invocação Principal",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 3,
+          "limite_livro": 2,
+          "excedente": true,
+          "montagens": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 6 · Classe 6 · básica 3d6 · 6 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "principal_antes24",
+          "entidade": 12,
+          "nivel_invocador": 30,
+          "nivel_entidade": 23,
+          "trilha": "Invocação Principal",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 3,
+          "limite_livro": 2,
+          "excedente": true,
+          "montagens": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 6 · Classe 6 · básica 3d6 · 6 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "principal_24_limite",
+          "entidade": 1,
+          "nivel_invocador": 30,
+          "nivel_entidade": 24,
+          "trilha": "Invocação Principal",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 3,
+          "limite_livro": 3,
+          "excedente": false,
+          "montagens": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 7 · Classe 6 · básica 3d6 · 6 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "principal_24_limite",
+          "entidade": 12,
+          "nivel_invocador": 30,
+          "nivel_entidade": 24,
+          "trilha": "Invocação Principal",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 3,
+          "limite_livro": 3,
+          "excedente": false,
+          "montagens": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 7 · Classe 6 · básica 3d6 · 6 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "principal_pool6",
+          "entidade": 1,
+          "nivel_invocador": 30,
+          "nivel_entidade": 24,
+          "trilha": "Invocação Principal",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 6,
+          "limite_livro": 3,
+          "excedente": true,
+          "montagens": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 3,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 7 · Classe 6 · básica 3d6 · 6 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "principal_pool6",
+          "entidade": 12,
+          "nivel_invocador": 30,
+          "nivel_entidade": 24,
+          "trilha": "Invocação Principal",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 6,
+          "limite_livro": 3,
+          "excedente": true,
+          "montagens": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 3,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 7 · Classe 6 · básica 3d6 · 6 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "principal_mix3",
+          "entidade": 1,
+          "nivel_invocador": 30,
+          "nivel_entidade": 24,
+          "trilha": "Invocação Principal",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 3,
+          "limite_livro": 3,
+          "excedente": false,
+          "montagens": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 2,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 7 · Classe 6 · básica 3d6 · 6 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "principal_mix3",
+          "entidade": 12,
+          "nivel_invocador": 30,
+          "nivel_entidade": 24,
+          "trilha": "Invocação Principal",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 3,
+          "limite_livro": 3,
+          "excedente": false,
+          "montagens": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 2,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 7 · Classe 6 · básica 3d6 · 6 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "conjunto_antes27",
+          "entidade": 1,
+          "nivel_invocador": 26,
+          "nivel_entidade": 26,
+          "trilha": "Múltiplas Invocações",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 3,
+          "limite_livro": 0,
+          "excedente": true,
+          "montagens": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 7 · Classe 7 · básica 3d6 · 7 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "conjunto_antes27",
+          "entidade": 12,
+          "nivel_invocador": 26,
+          "nivel_entidade": 26,
+          "trilha": "Múltiplas Invocações",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 3,
+          "limite_livro": 0,
+          "excedente": true,
+          "montagens": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 7 · Classe 7 · básica 3d6 · 7 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "conjunto_atributo0",
+          "entidade": 1,
+          "nivel_invocador": 27,
+          "nivel_entidade": 27,
+          "trilha": "Múltiplas Invocações",
+          "atributo_permanente": 0,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 1,
+          "limite_livro": 0,
+          "excedente": true,
+          "montagens": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 7 · Classe 7 · básica 3d6 · 7 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "conjunto_atributo0",
+          "entidade": 12,
+          "nivel_invocador": 27,
+          "nivel_entidade": 27,
+          "trilha": "Múltiplas Invocações",
+          "atributo_permanente": 0,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 1,
+          "limite_livro": 0,
+          "excedente": true,
+          "montagens": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 7 · Classe 7 · básica 3d6 · 7 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "conjunto_atributo2_excesso",
+          "entidade": 1,
+          "nivel_invocador": 27,
+          "nivel_entidade": 27,
+          "trilha": "Múltiplas Invocações",
+          "atributo_permanente": 2,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 2,
+          "limite_livro": 1,
+          "excedente": true,
+          "montagens": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 7 · Classe 7 · básica 3d6 · 7 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "conjunto_atributo2_excesso",
+          "entidade": 12,
+          "nivel_invocador": 27,
+          "nivel_entidade": 27,
+          "trilha": "Múltiplas Invocações",
+          "atributo_permanente": 2,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 2,
+          "limite_livro": 1,
+          "excedente": true,
+          "montagens": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 7 · Classe 7 · básica 3d6 · 7 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "conjunto_atributo2_limite",
+          "entidade": 1,
+          "nivel_invocador": 27,
+          "nivel_entidade": 27,
+          "trilha": "Múltiplas Invocações",
+          "atributo_permanente": 2,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 1,
+          "limite_livro": 1,
+          "excedente": false,
+          "montagens": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 7 · Classe 7 · básica 3d6 · 7 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "conjunto_atributo2_limite",
+          "entidade": 12,
+          "nivel_invocador": 27,
+          "nivel_entidade": 27,
+          "trilha": "Múltiplas Invocações",
+          "atributo_permanente": 2,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 1,
+          "limite_livro": 1,
+          "excedente": false,
+          "montagens": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 7 · Classe 7 · básica 3d6 · 7 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "conjunto_atributo4_excesso",
+          "entidade": 1,
+          "nivel_invocador": 27,
+          "nivel_entidade": 27,
+          "trilha": "Múltiplas Invocações",
+          "atributo_permanente": 4,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 3,
+          "limite_livro": 2,
+          "excedente": true,
+          "montagens": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 7 · Classe 7 · básica 3d6 · 7 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "conjunto_atributo4_excesso",
+          "entidade": 12,
+          "nivel_invocador": 27,
+          "nivel_entidade": 27,
+          "trilha": "Múltiplas Invocações",
+          "atributo_permanente": 4,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 3,
+          "limite_livro": 2,
+          "excedente": true,
+          "montagens": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 7 · Classe 7 · básica 3d6 · 7 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "conjunto_atributo4_limite",
+          "entidade": 1,
+          "nivel_invocador": 27,
+          "nivel_entidade": 27,
+          "trilha": "Múltiplas Invocações",
+          "atributo_permanente": 4,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 2,
+          "limite_livro": 2,
+          "excedente": false,
+          "montagens": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 7 · Classe 7 · básica 3d6 · 7 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "conjunto_atributo4_limite",
+          "entidade": 12,
+          "nivel_invocador": 27,
+          "nivel_entidade": 27,
+          "trilha": "Múltiplas Invocações",
+          "atributo_permanente": 4,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 2,
+          "limite_livro": 2,
+          "excedente": false,
+          "montagens": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 7 · Classe 7 · básica 3d6 · 7 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "conjunto_atributo6_limite",
+          "entidade": 1,
+          "nivel_invocador": 27,
+          "nivel_entidade": 27,
+          "trilha": "Múltiplas Invocações",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 3,
+          "limite_livro": 3,
+          "excedente": false,
+          "montagens": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 7 · Classe 7 · básica 3d6 · 7 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "conjunto_atributo6_limite",
+          "entidade": 12,
+          "nivel_invocador": 27,
+          "nivel_entidade": 27,
+          "trilha": "Múltiplas Invocações",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 3,
+          "limite_livro": 3,
+          "excedente": false,
+          "montagens": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 7 · Classe 7 · básica 3d6 · 7 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "conjunto_buff_temporario",
+          "entidade": 1,
+          "nivel_invocador": 27,
+          "nivel_entidade": 27,
+          "trilha": "Múltiplas Invocações",
+          "atributo_permanente": 2,
+          "buff_temporario": 4,
+          "escolhas_preenchidas": 3,
+          "limite_livro": 1,
+          "excedente": true,
+          "montagens": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 7 · Classe 7 · básica 3d6 · 7 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "conjunto_buff_temporario",
+          "entidade": 12,
+          "nivel_invocador": 27,
+          "nivel_entidade": 27,
+          "trilha": "Múltiplas Invocações",
+          "atributo_permanente": 2,
+          "buff_temporario": 4,
+          "escolhas_preenchidas": 3,
+          "limite_livro": 1,
+          "excedente": true,
+          "montagens": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 7 · Classe 7 · básica 3d6 · 7 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "conjunto_entidade7",
+          "entidade": 1,
+          "nivel_invocador": 27,
+          "nivel_entidade": 7,
+          "trilha": "Múltiplas Invocações",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 3,
+          "limite_livro": 3,
+          "excedente": false,
+          "montagens": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 2 · Classe 2 · básica 2d6 · 2 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "conjunto_entidade7",
+          "entidade": 12,
+          "nivel_invocador": 27,
+          "nivel_entidade": 7,
+          "trilha": "Múltiplas Invocações",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 3,
+          "limite_livro": 3,
+          "excedente": false,
+          "montagens": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 0,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 2 · Classe 2 · básica 2d6 · 2 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "conjunto_pool6",
+          "entidade": 1,
+          "nivel_invocador": 27,
+          "nivel_entidade": 27,
+          "trilha": "Múltiplas Invocações",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 6,
+          "limite_livro": 3,
+          "excedente": true,
+          "montagens": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 3,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 7 · Classe 7 · básica 3d6 · 7 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "conjunto_pool6",
+          "entidade": 12,
+          "nivel_invocador": 27,
+          "nivel_entidade": 27,
+          "trilha": "Múltiplas Invocações",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 6,
+          "limite_livro": 3,
+          "excedente": true,
+          "montagens": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 3,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 7 · Classe 7 · básica 3d6 · 7 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "conjunto_mix3",
+          "entidade": 1,
+          "nivel_invocador": 27,
+          "nivel_entidade": 27,
+          "trilha": "Múltiplas Invocações",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 3,
+          "limite_livro": 3,
+          "excedente": false,
+          "montagens": [
+            {
+              "id": "entidade.1.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.2",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.1.ext.3",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 2,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 7 · Classe 7 · básica 3d6 · 7 talentos",
+          "fixture_ok": true
+        },
+        {
+          "id": "conjunto_mix3",
+          "entidade": 12,
+          "nivel_invocador": 27,
+          "nivel_entidade": 27,
+          "trilha": "Múltiplas Invocações",
+          "atributo_permanente": 6,
+          "buff_temporario": 0,
+          "escolhas_preenchidas": 3,
+          "limite_livro": 3,
+          "excedente": false,
+          "montagens": [
+            {
+              "id": "entidade.12.ext.1",
+              "preenchida": true,
+              "valida": true,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.2",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            },
+            {
+              "id": "entidade.12.ext.3",
+              "preenchida": false,
+              "valida": false,
+              "avisos": "",
+              "requisito": ""
+            }
+          ],
+          "talentos_com_texto": 2,
+          "conta_especiais_base": "HABILIDADES · especiais + domínio 0+0 de 7 · Classe 7 · básica 3d6 · 7 talentos",
+          "fixture_ok": true
+        }
+      ],
+      "conferencia": {
+        "positions": 3535,
+        "montagens": 1998,
+        "diff": [],
+        "errors": []
+      },
+      "entradas_restauradas": 183,
+      "recuperacoes_edicao_real": 1,
+      "origens": {
+        "diretas": 84,
+        "multiplas": 12,
+        "divergencias": 0
+      }
+    }
+  ]
+}

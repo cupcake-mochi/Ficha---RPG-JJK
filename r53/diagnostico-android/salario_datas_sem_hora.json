@@ -1,0 +1,4 @@
+[
+  ["IF(ult>0;MAX(ult;em);em)", "IF(ult>0;MAX(INT(ult);em);em)"],
+  ["salarioData_(l[1]),salarioData_(l[2]),salarioData_(hoje)", "salarioData_(Math.floor(l[1])),salarioData_(Math.floor(l[2])),salarioData_(hoje)"]
+]

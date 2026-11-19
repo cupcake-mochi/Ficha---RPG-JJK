@@ -1,0 +1,16 @@
+[
+  {
+    "aba": "FICHA",
+    "r": 14,
+    "c": 37,
+    "antes": "=\"Pontos de Marco de Corpo Disponíveis - \"&IF(DADOS!$AK$11>DADOS!$AK$10,DADOS!$AK$11-DADOS!$AK$10&\" a mais\",DADOS!$AK$10-DADOS!$AK$11&\" de \"&DADOS!$AK$10)",
+    "depois": "=\"Pontos de Marco de Corpo Disponíveis - \"&IF(OR(IFERROR(VALUE($AK$15&\"\"),0)<0,IFERROR(VALUE($AK$15&\"\"),0)>6,IFERROR(VALUE($AK$15&\"\"),0)<>INT(IFERROR(VALUE($AK$15&\"\"),0)),IFERROR(VALUE($AM$15&\"\"),0)<0,IFERROR(VALUE($AM$15&\"\"),0)>6,IFERROR(VALUE($AM$15&\"\"),0)<>INT(IFERROR(VALUE($AM$15&\"\"),0)),IFERROR(VALUE($AO$15&\"\"),0)<0,IFERROR(VALUE($AO$15&\"\"),0)>6,IFERROR(VALUE($AO$15&\"\"),0)<>INT(IFERROR(VALUE($AO$15&\"\"),0)),IFERROR(VALUE($AQ$15&\"\"),0)<0,IFERROR(VALUE($AQ$15&\"\"),0)>6,IFERROR(VALUE($AQ$15&\"\"),0)<>INT(IFERROR(VALUE($AQ$15&\"\"),0)),IFERROR(VALUE($AS$15&\"\"),0)<0,IFERROR(VALUE($AS$15&\"\"),0)>6,IFERROR(VALUE($AS$15&\"\"),0)<>INT(IFERROR(VALUE($AS$15&\"\"),0))),\"Ponto fora de 0 a 6\",IF(DADOS!$AK$11>DADOS!$AK$10,DADOS!$AK$11-DADOS!$AK$10&\" a mais\",DADOS!$AK$10-DADOS!$AK$11&\" de \"&DADOS!$AK$10))"
+  },
+  {
+    "aba": "FICHA",
+    "r": 15,
+    "c": 26,
+    "antes": "=IF(DADOS!$AK$7>DADOS!$AK$6,DADOS!$AK$7-DADOS!$AK$6&\" a mais\",IF(DADOS!$AK$8>DADOS_CONFIG!$S$5,\"Um atributo passou de \"&DADOS_CONFIG!$S$5,IF(AND(DADOS!$AK$5=0,DADOS!$AK$9>DADOS_CONFIG!$S$4),\"Na criação, nenhum acima de \"&DADOS_CONFIG!$S$4,DADOS!$AK$6-DADOS!$AK$7&\" de \"&DADOS!$AK$6)))",
+    "depois": "=IF(OR(IFERROR(VALUE($D$21&\"\"),0)<0,IFERROR(VALUE($D$21&\"\"),0)>DADOS_CONFIG!$S$5,IFERROR(VALUE($D$21&\"\"),0)<>INT(IFERROR(VALUE($D$21&\"\"),0)),IFERROR(VALUE($L$21&\"\"),0)<0,IFERROR(VALUE($L$21&\"\"),0)>DADOS_CONFIG!$S$5,IFERROR(VALUE($L$21&\"\"),0)<>INT(IFERROR(VALUE($L$21&\"\"),0)),IFERROR(VALUE($T$21&\"\"),0)<0,IFERROR(VALUE($T$21&\"\"),0)>DADOS_CONFIG!$S$5,IFERROR(VALUE($T$21&\"\"),0)<>INT(IFERROR(VALUE($T$21&\"\"),0)),IFERROR(VALUE($AB$21&\"\"),0)<0,IFERROR(VALUE($AB$21&\"\"),0)>DADOS_CONFIG!$S$5,IFERROR(VALUE($AB$21&\"\"),0)<>INT(IFERROR(VALUE($AB$21&\"\"),0)),IFERROR(VALUE($AJ$21&\"\"),0)<0,IFERROR(VALUE($AJ$21&\"\"),0)>DADOS_CONFIG!$S$5,IFERROR(VALUE($AJ$21&\"\"),0)<>INT(IFERROR(VALUE($AJ$21&\"\"),0))),\"Ponto fora de 0 a \"&DADOS_CONFIG!$S$5,IF(DADOS!$AK$7>DADOS!$AK$6,DADOS!$AK$7-DADOS!$AK$6&\" a mais\",IF(DADOS!$AK$8>DADOS_CONFIG!$S$5,\"Um atributo passou de \"&DADOS_CONFIG!$S$5,IF(AND(DADOS!$AK$5=0,DADOS!$AK$9>DADOS_CONFIG!$S$4),\"Na criação, nenhum acima de \"&DADOS_CONFIG!$S$4,DADOS!$AK$6-DADOS!$AK$7&\" de \"&DADOS!$AK$6))))"
+  }
+]

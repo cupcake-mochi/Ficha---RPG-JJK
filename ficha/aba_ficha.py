@@ -84,7 +84,7 @@ def monta(wb, CAT, DEC, ref):
     ITG, ITGM = R["integridade"], R["integridade_max"]
     R["estagio_alma"] = f"${L(4)}${r}"
     txt(ws, 4, r,
-        f'=IF({ITG}=""," ",IF({ITG}<=0,"estágio 4 · você não é mais você",'
+        f'=IF(OR({ITG}="",{ITGM}=0)," ",IF({ITG}<=0,"estágio 4 · você não é mais você",'
         f'IF({ITG}<={ITGM}/4,"estágio 3 · desvantagem em ataques e TRs",'
         f'IF({ITG}<={ITGM}/2,"estágio 2 · metade do deslocamento, +1 PE por Classe",'
         f'IF({ITG}<={ITGM}*3/4,"estágio 1 · desvantagem em perícias","alma inteira")))))',

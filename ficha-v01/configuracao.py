@@ -24,6 +24,175 @@ ALVOS_ANTIGOS = 50
 ALVOS_DA_AMALDICOADA = (("Talentos grátis", "talentos extras"), ("Feitiços fora dos espaços", "feitiços extras"))
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CF = "'CONFIGURAÇÃO'!"
+BASE_CORPORAL = "'DADOS_CUSTOM'!$B$126"
+CORPOS_DEFESA_FIXA = ("Corpo Debilitado", "Corpo Quebradiço", "Corpo Exaurido")
+CONDICAO_DEFESA_FIXA = "AND(" + BASE_CORPORAL + ",OR(" + ",".join(
+    '{marcante}="' + corpo + '"' for corpo in CORPOS_DEFESA_FIXA) + "))"
+DEFESA_FIXA = re.compile(r'=IF\(' + re.escape(CONDICAO_DEFESA_FIXA).replace(
+    r'\{marcante\}', r"'FICHA'!\$[A-Z]+\$[1-9]\d*") + r',0,(IF\(DADOS_CONFIG!.*)\)$')
+# 10/11/2026: menu de atributo vazio ou fora dos cinco nomes ("FORCA" sem cedilha) quebrava a caixa com #N/A, porque o
+# IFS da conta não tem caso padrão. A caixa avisa, sem reescrever o menu. Com valor fixo da campanha o menu não conta.
+# 11/11/2026: vale para toda conta com menu de atributo no IFS (os onze Ofícios e o TR Físico também). Os nomes aceitos
+# saem do próprio IFS, na ordem dele: o TR Físico aceita só FORÇA e DESTREZA, como o menu dele.
+ATRIBUTOS = ("FORÇA", "DESTREZA", "CONSTITUIÇÃO", "INTELIGÊNCIA", "ESSÊNCIA")
+COM_MENU_DE_ATRIBUTO = ("CD de feitiço", "Conjuração", "Corpo a corpo", "À distância")
+AVISO_ATRIBUTO = "Escolha o atributo"
+_REF = r'\$?[A-Z]+\$?[1-9]\d*'
+_NOME = "|".join(ATRIBUTOS)
+MENU_DO_IFS = re.compile(r'IFS\((' + _REF + r')="FORÇA",')
+OPCAO_DO_IFS = re.compile(r'(' + _REF + r')="(' + _NOME + r')"')
+AVISO_MENU = re.compile(r'=IF\(AND\(DADOS_CONFIG!\$C\$(\d+)<>1,NOT\(OR\((' + _REF + r')="FORÇA",([^()]*)\)\)\),"'
+                        + AVISO_ATRIBUTO + r'",(IF\(DADOS_CONFIG!.*)\)$')
+
+
+def menu_invalido(menu, linha, nomes=ATRIBUTOS):
+    return (f'AND({DADOS}!$C${linha}<>1,NOT(OR(' + ",".join(f'{menu}="{a}"' for a in nomes) + ')))')
+
+
+def opcoes_do_menu(valor):
+    """(menu, nomes) do IFS da conta, ou None quando a conta não tem menu de atributo."""
+    menus = set(MENU_DO_IFS.findall(valor))
+    if not menus:
+        return None
+    if len(menus) != 1:
+        raise ValueError(f"menu de atributo inesperado: {sorted(menus)}")
+    menu = menus.pop()
+    nomes = []
+    for ref_, nome in OPCAO_DO_IFS.findall(valor):
+        if ref_ != menu:
+            raise ValueError(f"IFS com dois menus: {menu} e {ref_}")
+        if nome not in nomes:
+            nomes.append(nome)
+    return menu, tuple(nomes)
+
+
+def avisa_menu(formula, valor, linha):
+    achado = opcoes_do_menu(valor)
+    if achado is None:
+        raise ValueError("conta sem menu de atributo")
+    menu, nomes = achado
+    return f'=IF({menu_invalido(menu, linha, nomes)},"{AVISO_ATRIBUTO}",{formula[1:]})'
+
+
+# 11/11/2026: pelo livro (R66, Especialização), a especialização só vale em perícia ou ofício treinado. Com a caixa
+# de especialização marcada e a de treino não, a conta somava maestria e meia sem gastar treino. A caixa avisa, por
+# fora do aviso de atributo; com valor fixo da campanha não avisa. "=TRUE" não quebra com texto colado na caixa.
+AVISO_TREINO = "Marque o treino"
+TREINO_E_ESPEC = re.compile(r'IF\((' + _REF + r'), \$D\$67 \+ INT\(\$D\$67 / 2\), IF\((' + _REF + r'), \$D\$67, 0\)\)')
+AVISO_SEM_TREINO = re.compile(r'=IF\(AND\(DADOS_CONFIG!\$C\$(\d+)<>1,(' + _REF + r')=TRUE,(' + _REF + r')<>TRUE\),"'
+                              + AVISO_TREINO + r'",(IF\(.*)\)$')
+
+
+def caixas_de_treino(valor):
+    """(especialização, treino) da conta, ou None quando ela não tem especialização."""
+    pares = set(TREINO_E_ESPEC.findall(valor))
+    if not pares:
+        return None
+    if len(pares) != 1:
+        raise ValueError(f"conta com duas especializações: {sorted(pares)}")
+    return pares.pop()
+
+
+def sem_treino(espec, treino, linha):
+    return f'AND({DADOS}!$C${linha}<>1,{espec}=TRUE,{treino}<>TRUE)'
+
+
+def avisa_treino(formula, valor, linha):
+    achado = caixas_de_treino(valor)
+    if achado is None:
+        raise ValueError("conta sem especialização")
+    return f'=IF({sem_treino(*achado, linha)},"{AVISO_TREINO}",{formula[1:]})'
+
+
+# 11/11/2026: texto numa caixa de número ("dois" no Extra) ou de marcar ("x" colado em Trein ou Espec) dava #VALUE!
+# no total de perícias, ofícios e TRs. A caixa avisa (decisão do Mizuki), por fora dos outros avisos; com valor fixo
+# da campanha não avisa. O ISERROR repete a operação da conta: um "2" colado como texto soma como número e não avisa.
+AVISO_EXTRA = "Extra só aceita número"
+AVISO_CAIXA = "Apague o texto em Trein/Espec"
+_SOLTA = re.compile(r'(?<![$!A-Za-z_\d])([A-Z]+[1-9]\d*)(?![\d(])')
+AVISO_TEXTO_EXTRA = re.compile(r'=IF\(AND\(DADOS_CONFIG!\$C\$(\d+)<>1,ISERROR\((' + _REF + r')\+0\)\),"'
+                               + AVISO_EXTRA + r'",(IF\(.*)\)$')
+AVISO_TEXTO_CAIXA = re.compile(r'=IF\(AND\(DADOS_CONFIG!\$C\$(\d+)<>1,OR\(ISERROR\(IF\((' + _REF + r'),0,0\)\),'
+                               r'ISERROR\(IF\((' + _REF + r'),0,0\)\)\)\),"' + AVISO_CAIXA + r'",(IF\(.*)\)$')
+
+
+def extra_da_conta(valor):
+    """A caixa Extra: a única referência relativa da conta que não é menu, treino nem especialização."""
+    fora = set(caixas_de_treino(valor) or ())
+    menu = opcoes_do_menu(valor)
+    if menu:
+        fora.add(menu[0])
+    soltas = set(_SOLTA.findall(valor)) - fora
+    if len(soltas) != 1:
+        raise ValueError(f"conta sem um Extra só: {sorted(soltas)}")
+    return soltas.pop()
+
+
+def texto_no_extra(extra, linha):
+    return f'AND({DADOS}!$C${linha}<>1,ISERROR({extra}+0))'
+
+
+def texto_na_caixa(espec, treino, linha):
+    return f'AND({DADOS}!$C${linha}<>1,OR(ISERROR(IF({treino},0,0)),ISERROR(IF({espec},0,0))))'
+
+
+def avisa_texto(formula, valor, linha):
+    caixas = caixas_de_treino(valor)
+    if caixas:
+        formula = f'=IF({texto_na_caixa(*caixas, linha)},"{AVISO_CAIXA}",{formula[1:]})'
+    return f'=IF({texto_no_extra(extra_da_conta(valor), linha)},"{AVISO_EXTRA}",{formula[1:]})'
+
+
+def _so_da_linha(base, linha):
+    return set(re.findall(r'DADOS_CONFIG!\$[A-E]\$(\d+)', base)) == {str(linha)}
+
+
+# Limites do corpo real vêm depois dos ajustes numéricos, como a Defesa fixa.
+# A conta normal continua inteira no ramo sem Restrição e dentro do teto do Exaurido.
+MOLDE_DESLOCAMENTO_CORPORAL = (
+    '=IF(AND(' + BASE_CORPORAL + ',OR({marcante}="Corpo Debilitado",'
+    '{marcante}="Corpo Quebradiço")),"0 m",'
+    'IF(AND(' + BASE_CORPORAL + ',{marcante}="Corpo Exaurido"),'
+    'IF(N({vida})<=INT(N({vida_max})/2),"0 m",'
+    'MIN(4.5,VALUE(SUBSTITUTE(({base})," m","")))&" m"),{base}))'
+)
+
+
+def _padrao_deslocamento_corporal():
+    padrao = re.escape(MOLDE_DESLOCAMENTO_CORPORAL)
+    for nome in ("marcante", "vida", "vida_max", "base"):
+        campo = re.escape("{" + nome + "}")
+        valor = r"'FICHA'!\$[A-Z]+\$[1-9]\d*" if nome != "base" else r"IF\(DADOS_CONFIG!.*"
+        padrao = padrao.replace(campo, "(?P<" + nome + ">" + valor + ")", 1)
+        padrao = padrao.replace(campo, "(?P=" + nome + ")")
+    return re.compile(padrao)
+
+
+DESLOCAMENTO_CORPORAL = _padrao_deslocamento_corporal()
+
+
+def limita_deslocamento_corporal(formula, idx):
+    return MOLDE_DESLOCAMENTO_CORPORAL.format(
+        base=formula[1:], **{k: ref("FICHA", idx[k]) for k in ("marcante", "vida", "vida_max")})
+
+
+# "trocar por" continua sendo uma decisão explícita sobre o resultado final.
+MOLDE_VIDA_QUEBRADICO = (
+    '=IF(AND(' + BASE_CORPORAL + ',{marcante}="Corpo Quebradiço",'
+    'DADOS_CONFIG!$C$2<>1),LET(vidaNormal,{base},'
+    'IF(vidaNormal="","",MAX(1,INT(vidaNormal/2)))),{base})'
+)
+
+
+def _padrao_vida_quebradico():
+    p = re.escape(MOLDE_VIDA_QUEBRADICO)
+    p = p.replace(re.escape("{marcante}"), r"'FICHA'!\$[A-Z]+\$[1-9]\d*")
+    p = p.replace(re.escape("{base}"), r"(?P<base>IF\(DADOS_CONFIG!.*)", 1)
+    p = p.replace(re.escape("{base}"), r"(?P=base)")
+    return re.compile(p)
+
+
+VIDA_QUEBRADICO = _padrao_vida_quebradico()
 
 
 def ref(aba, coord):
@@ -65,6 +234,52 @@ def anterior(formula):
     O comportamento com efeitos é recalculado na regressão de configuração.
     """
     import campanha
+    import origens_recursos
+    import passivas_origem
+    formula = passivas_origem.anterior(formula)
+    formula = origens_recursos.anterior(formula)
+    vida = VIDA_QUEBRADICO.fullmatch(formula) if isinstance(formula, str) else None
+    if vida:
+        formula = "=" + vida["base"]
+    corporal = DESLOCAMENTO_CORPORAL.fullmatch(formula) if isinstance(formula, str) else None
+    if corporal:
+        formula = "=" + corporal["base"]
+    defesa_fixa = DEFESA_FIXA.fullmatch(formula) if isinstance(formula, str) else None
+    if defesa_fixa:
+        formula = "=" + defesa_fixa[1]
+    texto = AVISO_TEXTO_EXTRA.fullmatch(formula) if isinstance(formula, str) else None
+    if texto:
+        linha, base = int(texto[1]), texto[3]
+        # o Extra e a linha da DADOS_CONFIG do aviso têm de ser os da própria conta
+        if extra_da_conta(base) != texto[2] or not _so_da_linha(base, linha) or \
+                f'=IF({texto_no_extra(texto[2], linha)},"{AVISO_EXTRA}",{base})' != formula:
+            raise ValueError("aviso de texto no Extra adulterado")
+        formula = "=" + base
+    texto = AVISO_TEXTO_CAIXA.fullmatch(formula) if isinstance(formula, str) else None
+    if texto:
+        linha, treino_, espec, base = int(texto[1]), texto[2], texto[3], texto[4]
+        if caixas_de_treino(base) != (espec, treino_) or not _so_da_linha(base, linha) or \
+                f'=IF({texto_na_caixa(espec, treino_, linha)},"{AVISO_CAIXA}",{base})' != formula:
+            raise ValueError("aviso de texto em Trein/Espec adulterado")
+        formula = "=" + base
+    treino = AVISO_SEM_TREINO.fullmatch(formula) if isinstance(formula, str) else None
+    if treino:
+        linha, base = int(treino[1]), treino[4]
+        # as duas caixas e a linha da DADOS_CONFIG do aviso têm de ser as da própria conta
+        if caixas_de_treino(base) != (treino[2], treino[3]) or \
+                set(re.findall(r'DADOS_CONFIG!\$[A-E]\$(\d+)', base)) != {str(linha)} or \
+                f'=IF({sem_treino(treino[2], treino[3], linha)},"{AVISO_TREINO}",{base})' != formula:
+            raise ValueError("aviso de especialização sem treino adulterado")
+        formula = "=" + base
+    aviso = AVISO_MENU.fullmatch(formula) if isinstance(formula, str) else None
+    if aviso:
+        linha, menu, base = int(aviso[1]), aviso[2], aviso[4]
+        # os nomes do aviso têm de ser os do IFS da própria conta, e o menu também
+        achado = opcoes_do_menu(base)
+        if achado is None or achado[0] != menu or \
+                f'=IF({menu_invalido(menu, linha, achado[1])},"{AVISO_ATRIBUTO}",{base})' != formula:
+            raise ValueError("aviso do menu de atributo adulterado")
+        formula = "=" + base
     if not isinstance(formula, str) or not formula.startswith("=IF(DADOS_CONFIG!"):
         return campanha.anterior(formula)
     itens = Tokenizer(formula).items
@@ -123,12 +338,76 @@ def alvos(layout, pessoal, fam=None):
 def trocas(layout, pessoal, fam=None):
     destinos = alvos(layout, pessoal, fam)
     celulas, antes = {}, {}
+    idx = ix.indice(layout)
+    imune_exaustao = (f'OR({ref("FICHA", idx["origem"])}="Corpo Amaldiçoado",'
+                     'AND(DADOS_CUSTOM!$B$121,DADOS_CUSTOM!$B$123="Corpo Amaldiçoado"))')
+    casco = None
+    if fam is not None:
+        h = fam["H"]
+        aptidoes = fam["D"].faixa("carta_aptidao", so=1, aba="DADOS_AM!")
+        casco = (f'AND({fam["ROTA"]}=4,{h["refino"]}>=7,'
+                 f'{h["aptidões anotadas"]}<={h["aptidões compráveis"]},'
+                 f'COUNTIF({aptidoes},"Casco")>0,{ref("FICHA", idx["atr_Constituição"])}>=4)')
     for linha, (nome, aba, coord) in enumerate(destinos, 2):
         valor = next(r[1] for r in ix._aba(layout, aba)["celulas"] if r[0] == coord)
         if not isinstance(valor, str) or not valor.startswith("="):
             raise ValueError(f"{aba}!{coord}: o alvo não é calculado")
         antes.setdefault(aba, {})[coord] = valor
-        celulas.setdefault(aba, {})[coord] = envolve(valor, linha)
+        if nome == "Deslocamento" and fam is not None and idx.get("exaustão"):
+            # Reuse os contadores da compra e a rota publicados pela FICHA AMALDIÇOADA.
+            h = fam["H"]
+            aptidoes = fam["D"].faixa("carta_aptidao", so=1, aba="DADOS_AM!")
+            vigilia = (f'AND({fam["ROTA"]}=4,{h["refino"]}>=4,'
+                       f'{h["aptidões anotadas"]}<={h["aptidões compráveis"]},'
+                       f'COUNTIF({aptidoes},"Vigília")>0)')
+            exaustao = f'N({ref("FICHA", idx["exaustão"]).split("!")[1]})'
+            ancora = exaustao + ">=2"
+            if valor.count(ancora) != 1:
+                raise ValueError("Limite de Exaustão mudou no deslocamento")
+            efetiva = f'IF({imune_exaustao},0,MAX(0,{exaustao}-IF({vigilia},1,0)))'
+            valor = valor.replace(ancora, f'{efetiva}>=2')
+        if casco and nome in ("Vida máxima", "TR · Vigor"):
+            bonus = f'INT({ref("FICHA", idx["nivel"])}/2)' if nome == "Vida máxima" else '1'
+            valor = f'=LET(baseBencao,{valor[1:]},IF(baseBencao="","",baseBencao+IF({casco},{bonus},0)))'
+        formula = envolve(valor, linha)
+        if nome == "Defesa":
+            # A Defesa fixa do corpo real prevalece sobre os ajustes numéricos da ficha.
+            cond = CONDICAO_DEFESA_FIXA.format(marcante=ref(aba, idx["marcante"]))
+            formula = f'=IF({cond},0,{formula[1:]})'
+        if nome in COM_MENU_DE_ATRIBUTO or opcoes_do_menu(valor):
+            formula = avisa_menu(formula, valor, linha)
+        if nome.startswith(("Perícia · ", "Ofício · ")):
+            formula = avisa_treino(formula, valor, linha)
+        if nome.startswith(("Perícia · ", "Ofício · ", "TR · ")):
+            formula = avisa_texto(formula, valor, linha)
+        if nome == "Vida máxima":
+            formula = MOLDE_VIDA_QUEBRADICO.format(base=formula[1:], marcante=ref(aba, idx["marcante"]))
+        if nome == "Deslocamento":
+            formula = limita_deslocamento_corporal(formula, idx)
+        celulas.setdefault(aba, {})[coord] = formula
+    if fam is not None and idx.get("exaustão"):
+        import estado_do_personagem as ep
+        r, c = ix._lc(idx["exaustão"])
+        coord = ix._letras(c) + str(r + 1)
+        original = next(v[1] for v in ix._aba(layout, "FICHA")["celulas"] if v[0] == coord)
+        antes.setdefault("FICHA", {})[coord] = original
+        celulas.setdefault("FICHA", {})[coord] = (
+            f'=IF({imune_exaustao},"Imune a Exaustão · o estágio marcado não aplica penalidades",'
+            + ep.efeito(efetiva)[1:] + ')')
+    # Localiza a saída de Bloquear pelo rótulo; não desloca coordenadas globalmente.
+    l, c = ix._lc(ix._Ficha(layout).unico("BLOQUEAR"))
+    coord = ix._letras(c) + str(l + 1)
+    original = next(r[1] for r in ix._aba(layout, "FICHA")["celulas"] if r[0] == coord)
+    if not isinstance(original, str) or not original.startswith('="2d10 + "'):
+        raise ValueError("Molde de Bloquear inesperado")
+    cond = CONDICAO_DEFESA_FIXA.format(marcante=ref("FICHA", idx["marcante"]))
+    antes.setdefault("FICHA", {})[coord] = original
+    celulas.setdefault("FICHA", {})[coord] = f'=IF({cond},"Não pode bloquear",{original[1:]})'
+    import origens_recursos
+    origens_recursos.aplicar(celulas, idx)
+    import passivas_origem
+    carga = pessoal["H"]["limite de carga"].split("!")[-1].replace("$", "")
+    passivas_origem.aplicar(celulas, idx, carga)
     return {"alvos": destinos, "antes": antes, "celulas": celulas}
 
 
@@ -258,6 +537,8 @@ def aplica(layout, tr):
                 r[1] = mudancas[r[0]]
     a, h = abas(layout, tr)
     layout["abas"] += [a, h]
+    import passivas_origem
+    passivas_origem.notas(layout)
     return a
 
 

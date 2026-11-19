@@ -1,0 +1,177 @@
+[
+  {
+    "aba": "INVOCAÇÕES",
+    "a1": "L42",
+    "campo": "nota",
+    "antes": "Só a entidade de criação (o shikigami de talismã e o corpo de criação): o ofício escolhido na criação dela, que serve ao teste de criação, ao reparo e ao socorro. Entalhador, Forja, Alfaiate e Caligrafia são exemplos; a lista não é fechada, e dá para escrever outro. O reparo, num descanso curto, recupera metade da vida máxima; com o corpo uma Classe acima de quem repara, um terço (teste Difícil); duas ou mais acima, um quarto.",
+    "depois": "Só a entidade de criação (o shikigami de talismã e o corpo de criação): o ofício escolhido na criação dela, que serve ao teste de criação, ao reparo e ao socorro. Entalhador, Forja, Alfaiate e Caligrafia são exemplos. Para usar outro, cadastre um Ofício em CONFIGURAÇÃO e depois escolha no menu. O reparo, num descanso curto, recupera metade da vida máxima; com o corpo uma Classe acima de quem repara, um terço (teste Difícil); duas ou mais acima, um quarto."
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "a1": "GU2",
+    "campo": "formula",
+    "antes": "=COUNTIF($EQ2:$EW2,\"?*\")",
+    "depois": "=SUM(IFERROR(IF(AND($HU2<>\"\",TRUE),1,0),0),IFERROR(IF(AND($HV2<>\"\",SUMPRODUCT(IFERROR(($EQ2:$EQ2=$ER2)*($HU2:$HU2<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($HW2<>\"\",SUMPRODUCT(IFERROR(($EQ2:$ER2=$ES2)*($HU2:$HV2<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($HX2<>\"\",SUMPRODUCT(IFERROR(($EQ2:$ES2=$ET2)*($HU2:$HW2<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($HY2<>\"\",SUMPRODUCT(IFERROR(($EQ2:$ET2=$EU2)*($HU2:$HX2<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($HZ2<>\"\",SUMPRODUCT(IFERROR(($EQ2:$EU2=$EV2)*($HU2:$HY2<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($IA2<>\"\",SUMPRODUCT(IFERROR(($EQ2:$EV2=$EW2)*($HU2:$HZ2<>\"\"),0))=0),1,0),0))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "a1": "HT2",
+    "campo": "formula",
+    "antes": "=IF($GU2>$GT2,\"⚠ \",\"\")&\"PERÍCIAS · \"&$GU2&\" DE \"&$GT2",
+    "depois": "=IF(OR(COUNTIF($HU2:$IA2,\"?*\")>$GU2,COUNTIF($EQ2:$EW2,\"?*\")>COUNTIF($HU2:$IA2,\"?*\"),$GU2>$GT2),\"⚠ \",\"\")&\"PERÍCIAS · \"&$GU2&\" DE \"&$GT2&IF(COUNTIF($HU2:$IA2,\"?*\")>$GU2,\" · REPETIDA\",\"\")&IF(COUNTIF($EQ2:$EW2,\"?*\")>COUNTIF($HU2:$IA2,\"?*\"),\" · FORA DO CATÁLOGO\",\"\")&IF($GU2>$GT2,\" · ACIMA DO LIMITE\",\"\")"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "a1": "GU3",
+    "campo": "formula",
+    "antes": "=COUNTIF($EQ3:$EW3,\"?*\")",
+    "depois": "=SUM(IFERROR(IF(AND($HU3<>\"\",TRUE),1,0),0),IFERROR(IF(AND($HV3<>\"\",SUMPRODUCT(IFERROR(($EQ3:$EQ3=$ER3)*($HU3:$HU3<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($HW3<>\"\",SUMPRODUCT(IFERROR(($EQ3:$ER3=$ES3)*($HU3:$HV3<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($HX3<>\"\",SUMPRODUCT(IFERROR(($EQ3:$ES3=$ET3)*($HU3:$HW3<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($HY3<>\"\",SUMPRODUCT(IFERROR(($EQ3:$ET3=$EU3)*($HU3:$HX3<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($HZ3<>\"\",SUMPRODUCT(IFERROR(($EQ3:$EU3=$EV3)*($HU3:$HY3<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($IA3<>\"\",SUMPRODUCT(IFERROR(($EQ3:$EV3=$EW3)*($HU3:$HZ3<>\"\"),0))=0),1,0),0))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "a1": "GU4",
+    "campo": "formula",
+    "antes": "=COUNTIF($EQ4:$EW4,\"?*\")",
+    "depois": "=SUM(IFERROR(IF(AND($HU4<>\"\",TRUE),1,0),0),IFERROR(IF(AND($HV4<>\"\",SUMPRODUCT(IFERROR(($EQ4:$EQ4=$ER4)*($HU4:$HU4<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($HW4<>\"\",SUMPRODUCT(IFERROR(($EQ4:$ER4=$ES4)*($HU4:$HV4<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($HX4<>\"\",SUMPRODUCT(IFERROR(($EQ4:$ES4=$ET4)*($HU4:$HW4<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($HY4<>\"\",SUMPRODUCT(IFERROR(($EQ4:$ET4=$EU4)*($HU4:$HX4<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($HZ4<>\"\",SUMPRODUCT(IFERROR(($EQ4:$EU4=$EV4)*($HU4:$HY4<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($IA4<>\"\",SUMPRODUCT(IFERROR(($EQ4:$EV4=$EW4)*($HU4:$HZ4<>\"\"),0))=0),1,0),0))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "a1": "GU5",
+    "campo": "formula",
+    "antes": "=COUNTIF($EQ5:$EW5,\"?*\")",
+    "depois": "=SUM(IFERROR(IF(AND($HU5<>\"\",TRUE),1,0),0),IFERROR(IF(AND($HV5<>\"\",SUMPRODUCT(IFERROR(($EQ5:$EQ5=$ER5)*($HU5:$HU5<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($HW5<>\"\",SUMPRODUCT(IFERROR(($EQ5:$ER5=$ES5)*($HU5:$HV5<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($HX5<>\"\",SUMPRODUCT(IFERROR(($EQ5:$ES5=$ET5)*($HU5:$HW5<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($HY5<>\"\",SUMPRODUCT(IFERROR(($EQ5:$ET5=$EU5)*($HU5:$HX5<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($HZ5<>\"\",SUMPRODUCT(IFERROR(($EQ5:$EU5=$EV5)*($HU5:$HY5<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($IA5<>\"\",SUMPRODUCT(IFERROR(($EQ5:$EV5=$EW5)*($HU5:$HZ5<>\"\"),0))=0),1,0),0))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "a1": "GU6",
+    "campo": "formula",
+    "antes": "=COUNTIF($EQ6:$EW6,\"?*\")",
+    "depois": "=SUM(IFERROR(IF(AND($HU6<>\"\",TRUE),1,0),0),IFERROR(IF(AND($HV6<>\"\",SUMPRODUCT(IFERROR(($EQ6:$EQ6=$ER6)*($HU6:$HU6<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($HW6<>\"\",SUMPRODUCT(IFERROR(($EQ6:$ER6=$ES6)*($HU6:$HV6<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($HX6<>\"\",SUMPRODUCT(IFERROR(($EQ6:$ES6=$ET6)*($HU6:$HW6<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($HY6<>\"\",SUMPRODUCT(IFERROR(($EQ6:$ET6=$EU6)*($HU6:$HX6<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($HZ6<>\"\",SUMPRODUCT(IFERROR(($EQ6:$EU6=$EV6)*($HU6:$HY6<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($IA6<>\"\",SUMPRODUCT(IFERROR(($EQ6:$EV6=$EW6)*($HU6:$HZ6<>\"\"),0))=0),1,0),0))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "a1": "GU7",
+    "campo": "formula",
+    "antes": "=COUNTIF($EQ7:$EW7,\"?*\")",
+    "depois": "=SUM(IFERROR(IF(AND($HU7<>\"\",TRUE),1,0),0),IFERROR(IF(AND($HV7<>\"\",SUMPRODUCT(IFERROR(($EQ7:$EQ7=$ER7)*($HU7:$HU7<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($HW7<>\"\",SUMPRODUCT(IFERROR(($EQ7:$ER7=$ES7)*($HU7:$HV7<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($HX7<>\"\",SUMPRODUCT(IFERROR(($EQ7:$ES7=$ET7)*($HU7:$HW7<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($HY7<>\"\",SUMPRODUCT(IFERROR(($EQ7:$ET7=$EU7)*($HU7:$HX7<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($HZ7<>\"\",SUMPRODUCT(IFERROR(($EQ7:$EU7=$EV7)*($HU7:$HY7<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($IA7<>\"\",SUMPRODUCT(IFERROR(($EQ7:$EV7=$EW7)*($HU7:$HZ7<>\"\"),0))=0),1,0),0))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "a1": "GU8",
+    "campo": "formula",
+    "antes": "=COUNTIF($EQ8:$EW8,\"?*\")",
+    "depois": "=SUM(IFERROR(IF(AND($HU8<>\"\",TRUE),1,0),0),IFERROR(IF(AND($HV8<>\"\",SUMPRODUCT(IFERROR(($EQ8:$EQ8=$ER8)*($HU8:$HU8<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($HW8<>\"\",SUMPRODUCT(IFERROR(($EQ8:$ER8=$ES8)*($HU8:$HV8<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($HX8<>\"\",SUMPRODUCT(IFERROR(($EQ8:$ES8=$ET8)*($HU8:$HW8<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($HY8<>\"\",SUMPRODUCT(IFERROR(($EQ8:$ET8=$EU8)*($HU8:$HX8<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($HZ8<>\"\",SUMPRODUCT(IFERROR(($EQ8:$EU8=$EV8)*($HU8:$HY8<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($IA8<>\"\",SUMPRODUCT(IFERROR(($EQ8:$EV8=$EW8)*($HU8:$HZ8<>\"\"),0))=0),1,0),0))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "a1": "GU9",
+    "campo": "formula",
+    "antes": "=COUNTIF($EQ9:$EW9,\"?*\")",
+    "depois": "=SUM(IFERROR(IF(AND($HU9<>\"\",TRUE),1,0),0),IFERROR(IF(AND($HV9<>\"\",SUMPRODUCT(IFERROR(($EQ9:$EQ9=$ER9)*($HU9:$HU9<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($HW9<>\"\",SUMPRODUCT(IFERROR(($EQ9:$ER9=$ES9)*($HU9:$HV9<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($HX9<>\"\",SUMPRODUCT(IFERROR(($EQ9:$ES9=$ET9)*($HU9:$HW9<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($HY9<>\"\",SUMPRODUCT(IFERROR(($EQ9:$ET9=$EU9)*($HU9:$HX9<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($HZ9<>\"\",SUMPRODUCT(IFERROR(($EQ9:$EU9=$EV9)*($HU9:$HY9<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($IA9<>\"\",SUMPRODUCT(IFERROR(($EQ9:$EV9=$EW9)*($HU9:$HZ9<>\"\"),0))=0),1,0),0))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "a1": "GU10",
+    "campo": "formula",
+    "antes": "=COUNTIF($EQ10:$EW10,\"?*\")",
+    "depois": "=SUM(IFERROR(IF(AND($HU10<>\"\",TRUE),1,0),0),IFERROR(IF(AND($HV10<>\"\",SUMPRODUCT(IFERROR(($EQ10:$EQ10=$ER10)*($HU10:$HU10<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($HW10<>\"\",SUMPRODUCT(IFERROR(($EQ10:$ER10=$ES10)*($HU10:$HV10<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($HX10<>\"\",SUMPRODUCT(IFERROR(($EQ10:$ES10=$ET10)*($HU10:$HW10<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($HY10<>\"\",SUMPRODUCT(IFERROR(($EQ10:$ET10=$EU10)*($HU10:$HX10<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($HZ10<>\"\",SUMPRODUCT(IFERROR(($EQ10:$EU10=$EV10)*($HU10:$HY10<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($IA10<>\"\",SUMPRODUCT(IFERROR(($EQ10:$EV10=$EW10)*($HU10:$HZ10<>\"\"),0))=0),1,0),0))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "a1": "GU11",
+    "campo": "formula",
+    "antes": "=COUNTIF($EQ11:$EW11,\"?*\")",
+    "depois": "=SUM(IFERROR(IF(AND($HU11<>\"\",TRUE),1,0),0),IFERROR(IF(AND($HV11<>\"\",SUMPRODUCT(IFERROR(($EQ11:$EQ11=$ER11)*($HU11:$HU11<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($HW11<>\"\",SUMPRODUCT(IFERROR(($EQ11:$ER11=$ES11)*($HU11:$HV11<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($HX11<>\"\",SUMPRODUCT(IFERROR(($EQ11:$ES11=$ET11)*($HU11:$HW11<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($HY11<>\"\",SUMPRODUCT(IFERROR(($EQ11:$ET11=$EU11)*($HU11:$HX11<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($HZ11<>\"\",SUMPRODUCT(IFERROR(($EQ11:$EU11=$EV11)*($HU11:$HY11<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($IA11<>\"\",SUMPRODUCT(IFERROR(($EQ11:$EV11=$EW11)*($HU11:$HZ11<>\"\"),0))=0),1,0),0))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "a1": "GU12",
+    "campo": "formula",
+    "antes": "=COUNTIF($EQ12:$EW12,\"?*\")",
+    "depois": "=SUM(IFERROR(IF(AND($HU12<>\"\",TRUE),1,0),0),IFERROR(IF(AND($HV12<>\"\",SUMPRODUCT(IFERROR(($EQ12:$EQ12=$ER12)*($HU12:$HU12<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($HW12<>\"\",SUMPRODUCT(IFERROR(($EQ12:$ER12=$ES12)*($HU12:$HV12<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($HX12<>\"\",SUMPRODUCT(IFERROR(($EQ12:$ES12=$ET12)*($HU12:$HW12<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($HY12<>\"\",SUMPRODUCT(IFERROR(($EQ12:$ET12=$EU12)*($HU12:$HX12<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($HZ12<>\"\",SUMPRODUCT(IFERROR(($EQ12:$EU12=$EV12)*($HU12:$HY12<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($IA12<>\"\",SUMPRODUCT(IFERROR(($EQ12:$EV12=$EW12)*($HU12:$HZ12<>\"\"),0))=0),1,0),0))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "a1": "GU13",
+    "campo": "formula",
+    "antes": "=COUNTIF($EQ13:$EW13,\"?*\")",
+    "depois": "=SUM(IFERROR(IF(AND($HU13<>\"\",TRUE),1,0),0),IFERROR(IF(AND($HV13<>\"\",SUMPRODUCT(IFERROR(($EQ13:$EQ13=$ER13)*($HU13:$HU13<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($HW13<>\"\",SUMPRODUCT(IFERROR(($EQ13:$ER13=$ES13)*($HU13:$HV13<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($HX13<>\"\",SUMPRODUCT(IFERROR(($EQ13:$ES13=$ET13)*($HU13:$HW13<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($HY13<>\"\",SUMPRODUCT(IFERROR(($EQ13:$ET13=$EU13)*($HU13:$HX13<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($HZ13<>\"\",SUMPRODUCT(IFERROR(($EQ13:$EU13=$EV13)*($HU13:$HY13<>\"\"),0))=0),1,0),0),IFERROR(IF(AND($IA13<>\"\",SUMPRODUCT(IFERROR(($EQ13:$EV13=$EW13)*($HU13:$HZ13<>\"\"),0))=0),1,0),0))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "a1": "HT3",
+    "campo": "formula",
+    "antes": "=IF($GU3>$GT3,\"⚠ \",\"\")&\"PERÍCIAS · \"&$GU3&\" DE \"&$GT3",
+    "depois": "=IF(OR(COUNTIF($HU3:$IA3,\"?*\")>$GU3,COUNTIF($EQ3:$EW3,\"?*\")>COUNTIF($HU3:$IA3,\"?*\"),$GU3>$GT3),\"⚠ \",\"\")&\"PERÍCIAS · \"&$GU3&\" DE \"&$GT3&IF(COUNTIF($HU3:$IA3,\"?*\")>$GU3,\" · REPETIDA\",\"\")&IF(COUNTIF($EQ3:$EW3,\"?*\")>COUNTIF($HU3:$IA3,\"?*\"),\" · FORA DO CATÁLOGO\",\"\")&IF($GU3>$GT3,\" · ACIMA DO LIMITE\",\"\")"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "a1": "HT4",
+    "campo": "formula",
+    "antes": "=IF($GU4>$GT4,\"⚠ \",\"\")&\"PERÍCIAS · \"&$GU4&\" DE \"&$GT4",
+    "depois": "=IF(OR(COUNTIF($HU4:$IA4,\"?*\")>$GU4,COUNTIF($EQ4:$EW4,\"?*\")>COUNTIF($HU4:$IA4,\"?*\"),$GU4>$GT4),\"⚠ \",\"\")&\"PERÍCIAS · \"&$GU4&\" DE \"&$GT4&IF(COUNTIF($HU4:$IA4,\"?*\")>$GU4,\" · REPETIDA\",\"\")&IF(COUNTIF($EQ4:$EW4,\"?*\")>COUNTIF($HU4:$IA4,\"?*\"),\" · FORA DO CATÁLOGO\",\"\")&IF($GU4>$GT4,\" · ACIMA DO LIMITE\",\"\")"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "a1": "HT5",
+    "campo": "formula",
+    "antes": "=IF($GU5>$GT5,\"⚠ \",\"\")&\"PERÍCIAS · \"&$GU5&\" DE \"&$GT5",
+    "depois": "=IF(OR(COUNTIF($HU5:$IA5,\"?*\")>$GU5,COUNTIF($EQ5:$EW5,\"?*\")>COUNTIF($HU5:$IA5,\"?*\"),$GU5>$GT5),\"⚠ \",\"\")&\"PERÍCIAS · \"&$GU5&\" DE \"&$GT5&IF(COUNTIF($HU5:$IA5,\"?*\")>$GU5,\" · REPETIDA\",\"\")&IF(COUNTIF($EQ5:$EW5,\"?*\")>COUNTIF($HU5:$IA5,\"?*\"),\" · FORA DO CATÁLOGO\",\"\")&IF($GU5>$GT5,\" · ACIMA DO LIMITE\",\"\")"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "a1": "HT6",
+    "campo": "formula",
+    "antes": "=IF($GU6>$GT6,\"⚠ \",\"\")&\"PERÍCIAS · \"&$GU6&\" DE \"&$GT6",
+    "depois": "=IF(OR(COUNTIF($HU6:$IA6,\"?*\")>$GU6,COUNTIF($EQ6:$EW6,\"?*\")>COUNTIF($HU6:$IA6,\"?*\"),$GU6>$GT6),\"⚠ \",\"\")&\"PERÍCIAS · \"&$GU6&\" DE \"&$GT6&IF(COUNTIF($HU6:$IA6,\"?*\")>$GU6,\" · REPETIDA\",\"\")&IF(COUNTIF($EQ6:$EW6,\"?*\")>COUNTIF($HU6:$IA6,\"?*\"),\" · FORA DO CATÁLOGO\",\"\")&IF($GU6>$GT6,\" · ACIMA DO LIMITE\",\"\")"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "a1": "HT7",
+    "campo": "formula",
+    "antes": "=IF($GU7>$GT7,\"⚠ \",\"\")&\"PERÍCIAS · \"&$GU7&\" DE \"&$GT7",
+    "depois": "=IF(OR(COUNTIF($HU7:$IA7,\"?*\")>$GU7,COUNTIF($EQ7:$EW7,\"?*\")>COUNTIF($HU7:$IA7,\"?*\"),$GU7>$GT7),\"⚠ \",\"\")&\"PERÍCIAS · \"&$GU7&\" DE \"&$GT7&IF(COUNTIF($HU7:$IA7,\"?*\")>$GU7,\" · REPETIDA\",\"\")&IF(COUNTIF($EQ7:$EW7,\"?*\")>COUNTIF($HU7:$IA7,\"?*\"),\" · FORA DO CATÁLOGO\",\"\")&IF($GU7>$GT7,\" · ACIMA DO LIMITE\",\"\")"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "a1": "HT8",
+    "campo": "formula",
+    "antes": "=IF($GU8>$GT8,\"⚠ \",\"\")&\"PERÍCIAS · \"&$GU8&\" DE \"&$GT8",
+    "depois": "=IF(OR(COUNTIF($HU8:$IA8,\"?*\")>$GU8,COUNTIF($EQ8:$EW8,\"?*\")>COUNTIF($HU8:$IA8,\"?*\"),$GU8>$GT8),\"⚠ \",\"\")&\"PERÍCIAS · \"&$GU8&\" DE \"&$GT8&IF(COUNTIF($HU8:$IA8,\"?*\")>$GU8,\" · REPETIDA\",\"\")&IF(COUNTIF($EQ8:$EW8,\"?*\")>COUNTIF($HU8:$IA8,\"?*\"),\" · FORA DO CATÁLOGO\",\"\")&IF($GU8>$GT8,\" · ACIMA DO LIMITE\",\"\")"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "a1": "HT9",
+    "campo": "formula",
+    "antes": "=IF($GU9>$GT9,\"⚠ \",\"\")&\"PERÍCIAS · \"&$GU9&\" DE \"&$GT9",
+    "depois": "=IF(OR(COUNTIF($HU9:$IA9,\"?*\")>$GU9,COUNTIF($EQ9:$EW9,\"?*\")>COUNTIF($HU9:$IA9,\"?*\"),$GU9>$GT9),\"⚠ \",\"\")&\"PERÍCIAS · \"&$GU9&\" DE \"&$GT9&IF(COUNTIF($HU9:$IA9,\"?*\")>$GU9,\" · REPETIDA\",\"\")&IF(COUNTIF($EQ9:$EW9,\"?*\")>COUNTIF($HU9:$IA9,\"?*\"),\" · FORA DO CATÁLOGO\",\"\")&IF($GU9>$GT9,\" · ACIMA DO LIMITE\",\"\")"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "a1": "HT10",
+    "campo": "formula",
+    "antes": "=IF($GU10>$GT10,\"⚠ \",\"\")&\"PERÍCIAS · \"&$GU10&\" DE \"&$GT10",
+    "depois": "=IF(OR(COUNTIF($HU10:$IA10,\"?*\")>$GU10,COUNTIF($EQ10:$EW10,\"?*\")>COUNTIF($HU10:$IA10,\"?*\"),$GU10>$GT10),\"⚠ \",\"\")&\"PERÍCIAS · \"&$GU10&\" DE \"&$GT10&IF(COUNTIF($HU10:$IA10,\"?*\")>$GU10,\" · REPETIDA\",\"\")&IF(COUNTIF($EQ10:$EW10,\"?*\")>COUNTIF($HU10:$IA10,\"?*\"),\" · FORA DO CATÁLOGO\",\"\")&IF($GU10>$GT10,\" · ACIMA DO LIMITE\",\"\")"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "a1": "HT11",
+    "campo": "formula",
+    "antes": "=IF($GU11>$GT11,\"⚠ \",\"\")&\"PERÍCIAS · \"&$GU11&\" DE \"&$GT11",
+    "depois": "=IF(OR(COUNTIF($HU11:$IA11,\"?*\")>$GU11,COUNTIF($EQ11:$EW11,\"?*\")>COUNTIF($HU11:$IA11,\"?*\"),$GU11>$GT11),\"⚠ \",\"\")&\"PERÍCIAS · \"&$GU11&\" DE \"&$GT11&IF(COUNTIF($HU11:$IA11,\"?*\")>$GU11,\" · REPETIDA\",\"\")&IF(COUNTIF($EQ11:$EW11,\"?*\")>COUNTIF($HU11:$IA11,\"?*\"),\" · FORA DO CATÁLOGO\",\"\")&IF($GU11>$GT11,\" · ACIMA DO LIMITE\",\"\")"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "a1": "HT12",
+    "campo": "formula",
+    "antes": "=IF($GU12>$GT12,\"⚠ \",\"\")&\"PERÍCIAS · \"&$GU12&\" DE \"&$GT12",
+    "depois": "=IF(OR(COUNTIF($HU12:$IA12,\"?*\")>$GU12,COUNTIF($EQ12:$EW12,\"?*\")>COUNTIF($HU12:$IA12,\"?*\"),$GU12>$GT12),\"⚠ \",\"\")&\"PERÍCIAS · \"&$GU12&\" DE \"&$GT12&IF(COUNTIF($HU12:$IA12,\"?*\")>$GU12,\" · REPETIDA\",\"\")&IF(COUNTIF($EQ12:$EW12,\"?*\")>COUNTIF($HU12:$IA12,\"?*\"),\" · FORA DO CATÁLOGO\",\"\")&IF($GU12>$GT12,\" · ACIMA DO LIMITE\",\"\")"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "a1": "HT13",
+    "campo": "formula",
+    "antes": "=IF($GU13>$GT13,\"⚠ \",\"\")&\"PERÍCIAS · \"&$GU13&\" DE \"&$GT13",
+    "depois": "=IF(OR(COUNTIF($HU13:$IA13,\"?*\")>$GU13,COUNTIF($EQ13:$EW13,\"?*\")>COUNTIF($HU13:$IA13,\"?*\"),$GU13>$GT13),\"⚠ \",\"\")&\"PERÍCIAS · \"&$GU13&\" DE \"&$GT13&IF(COUNTIF($HU13:$IA13,\"?*\")>$GU13,\" · REPETIDA\",\"\")&IF(COUNTIF($EQ13:$EW13,\"?*\")>COUNTIF($HU13:$IA13,\"?*\"),\" · FORA DO CATÁLOGO\",\"\")&IF($GU13>$GT13,\" · ACIMA DO LIMITE\",\"\")"
+  }
+]

@@ -36,6 +36,7 @@ AQUI = os.path.dirname(os.path.abspath(__file__))
 RAIZ = os.path.dirname(AQUI)
 sys.path.insert(0, RAIZ)
 import livro as Lv
+from r53.textos_revisados import FREQUENCIA_POR_CENA
 
 SAIDA = os.path.join(AQUI, "habilidades-do-livro.json")
 CAPITULO = "## 6. Caminhos e Trilhas"
@@ -212,21 +213,46 @@ def extrai():
             "rotas": rotas, **out}
 
 
+def revisa_r66(dados):
+    """a frequência do R66 (textos_revisados.FREQUENCIA_POR_CENA): cada frase do R53 aparece uma vez na carta e vira
+    a do R66. Uma carta ou frase que sumiu para o extrator para tudo, em vez de deixar a carta com a regra antiga"""
+    for (grupo, d, n), trocas in FREQUENCIA_POR_CENA.items():
+        h = dados[grupo][d][n]
+        for antes, depois in trocas:
+            if h["texto"].count(antes) != 1:
+                raise SystemExit(f"{d} {n}: a frase do R53 não aparece uma vez: {antes[:60]}")
+            h["texto"] = h["texto"].replace(antes, depois)
+    for grupo in ("caminhos", "trilhas", "no_caminho"):
+        for d, por in dados[grupo].items():
+            for n, h in por.items():
+                if re.search(r"por combate|uso da habilidade no combate", h["texto"]):
+                    raise SystemExit(f"{d} {n}: frequência por combate, que o R66 trocou por cena")
+    return dados
+
+
+def _como_no_r53(grupo, d, n, p):
+    """o parágrafo revisado volta à frase do R53, para conferir no manual.txt (que é o R53)"""
+    for antes, depois in FREQUENCIA_POR_CENA.get((grupo, d, n), []):
+        p = p.replace(depois, antes)
+    return p
+
+
 def confere_no_manual(dados):
-    """cada nome e cada parágrafo gravado está no manual palavra por palavra"""
+    """cada nome e cada parágrafo gravado está no manual palavra por palavra (o revisado, na frase do R53)"""
     M = Lv.texto(os.path.join(RAIZ, "manual.txt"))
     ruins = []
     for grupo in ("caminhos", "trilhas", "no_caminho"):
         for d, por in dados[grupo].items():
             for n, h in por.items():
                 for p in [h["nome"]] + h["texto"].split("\n") + h["titulos"]:
+                    p = _como_no_r53(grupo, d, n, p)
                     if p and p not in M:
                         ruins.append(f"{d} {n}: {p[:60]}")
     return ruins
 
 
 if __name__ == "__main__":
-    novo = extrai()
+    novo = revisa_r66(extrai())
     ruins = confere_no_manual(novo)
     if ruins:
         raise SystemExit("fora do manual: " + " · ".join(ruins[:5]))

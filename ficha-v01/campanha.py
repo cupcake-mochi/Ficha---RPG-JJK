@@ -14,6 +14,7 @@ from pathlib import Path
 import indice_ficha as ix
 import ficha_automatica
 import livro
+from leitura_buff import buff as leitura_buff  # 10/11/2026: Buff/Debuff decimal contra o dono
 
 RAIZ = Path(__file__).resolve().parent.parent
 CF = "'CONFIGURAÇÃO'!"
@@ -67,7 +68,7 @@ def trocas(layout, extras=None):
   poe('DADOS',c,s.replace(velho,novo))
  muda_conta('pontos de atributo','=9+',f'={ref("atributos_pontos")}+')
  c=idx['pontos disponíveis'];s=f(c)
- s=s.replace('>6,',f'>{ref("atributos_teto")},').replace('"Um atributo passou de 6"',f'"Um atributo passou de "&{ref("atributos_teto")}')
+ s=s.replace('>6,',f'>{ref("atributos_teto")},').replace('"Um atributo passou de 6"',f'"Um atributo passou de "&{ref("atributos_teto")}').replace('"Ponto fora de 0 a 6"',f'"Ponto fora de 0 a "&{ref("atributos_teto")}')
  s=s.replace('>3)',f'>{ref("atributos_teto_criacao")})').replace('"Na criação, nenhum acima de 3"',f'"Na criação, nenhum acima de "&{ref("atributos_teto_criacao")}')
  poe('FICHA',c,s)
  c=conta('rota do ofício');s=cells['DADOS'][c][1]
@@ -113,7 +114,7 @@ def trocas(layout, extras=None):
  for n in range(2,31):poe('DADOS',f'{ix._letras(col)}{row+n-1}',f'={DC}!$Z${n+1}')
  c=idx['vida_max'];old=f(c);nivel=_r('FICHA',idx['nivel']);con=_r('FICHA',idx['atr_Constituição'])
  buff=_r('FICHA',idx['buff de vida'])
- nova=f'IF({DC}!$AF$32<>"",NA(),SUM({DC}!$AF$2:$AF$31)+IFERROR(VALUE({buff}&""),0))'
+ nova=f'IF({DC}!$AF$32<>"",NA(),SUM({DC}!$AF$2:$AF$31)+{leitura_buff(buff)})'
  poe('FICHA',c,f'=IF({ref("vida_rolada")}="Não",{old[1:]},{nova})')
  return tr
 
@@ -166,7 +167,7 @@ def desenha(layout,tr):
  def helper(c,v):h['celulas'].append([c,v,None])
  def faixa(r,title):put(f'B{r}',title,'secao',f'G{r}')
  def cab(r,labels):
-  for c,v in zip('BDEFG',labels):put(f'{c}{r}',v,'rotulo',f'C{r}' if c=='B' else None,note={'B':'Regra ou nível.','D':'Valor padrão do livro R51.','E':'Em branco usa o livro. Zero é um valor informado.','F':'Valor efetivamente usado pela ficha.','G':'Justificativa da mudança.'}[c])
+  for c,v in zip('BDEFG',labels):put(f'{c}{r}',v,'rotulo',f'C{r}' if c=='B' else None,note={'B':'Regra ou nível.','D':'Valor padrão do livro.','E':'Em branco usa o livro. Zero é um valor informado.','F':'Valor efetivamente usado pela ficha.','G':'Justificativa da mudança.'}[c])
  cat,defaults=dados_livro()
  faixa(43,'REGRAS DE CAMPANHA')
  put('B44','CAMPANHA em branco usa o livro. Preencha só o que mudar e registre o motivo.','nota','G44')
@@ -180,8 +181,8 @@ def desenha(layout,tr):
   valid=f'IFERROR({valid},FALSE)'
   valor=f'=IF({inp}="",D{row},IF({valid},{inp},NA()))'
   note={'nivel_inicial':'XP começa em zero neste nível. Para começar em 1, informe o custo 1→2 na tabela.',
-        'vida_rolada':'Vida inicial fixa do Caminho. Cada nível seguinte guarda o resultado do dado, sem Constituição, no registro abaixo.',
-        'morrendo_prazo':'Rodadas menos uma por Sequela. Inclui as Sequelas extras se preenchidas.'}.get(k,'Regra da campanha. Campo vazio usa o valor do R51.')
+        'vida_rolada':'Vida inicial fixa do Caminho. Nos níveis seguintes, anote só o dado no registro abaixo; a ficha soma a Constituição.',
+        'morrendo_prazo':'Rodadas menos uma por Sequela. Inclui as Sequelas extras se preenchidas.'}.get(k,'Regra da campanha. Campo vazio usa o valor do livro.')
   put(f'B{row}',label,merge=f'C{row}',note=note)
   style='fracao' if kind=='fracao' else 'metro' if k=='deslocamento_base' else 'numero' if kind!='sim_nao' else 'calc'
   put(f'D{row}',default,style);put(inp,None,note=note);put(f'F{row}',valor,style);put(f'G{row}',None)
@@ -208,7 +209,7 @@ def desenha(layout,tr):
   helper(f'Z{j}','='+cum)
  helper('V1','nível');helper('W1','custo');helper('Z1','XP acumulado')
  helper('Z33','=IF(COUNTIF(Z2:Z31,"Pendente")>0,"Informe o custo de XP do nível 1 para 2",IF(ISERROR(SUM(W2:W30)),"Confira os custos de XP",""))')
- # Registro dos dados: dado por Caminho vem da tabela do R51.
+ # Registro dos dados: dado por Caminho vem da tabela do livro.
  nomes=json.loads((RAIZ/'decisoes-ficha.json').read_text())['C1_evocador']['caminhos_no_menu']
  for j,nome in enumerate(nomes,2):
   m=re.search(r'Dado de vida, na variante \| d(\d+)', '\n'.join(livro.secao(nome)))
@@ -219,13 +220,13 @@ def desenha(layout,tr):
  # Vida inicial fixa e CON atual em cada nível, como a conta anterior.
  base=f'IFERROR(VLOOKUP({cam},DADOS!$N$5:$U$10,3,FALSE),"")'
  faixa(97,'VIDA ROLADA · REGISTRO')
- put('B98','Primeiro nível usa a vida inicial fixa. Registre o resultado do dado nos níveis seguintes; Constituição entra normalmente.','nota','G98')
+ put('B98','Primeiro nível usa a vida inicial fixa. Nos níveis seguintes, anote só o dado; a ficha soma a Constituição.','nota','G98')
  cab(99,['NÍVEL','DADO','ROLAGEM','GANHO','MOTIVO'])
  for n in range(1,31):
   row=99+n;j=n+1
   put(f'B{row}',n,'numero',f'C{row}')
   put(f'D{row}','Inicial fixa' if n==1 else f'=IF({DC}!$AI$10="","","d"&{DC}!$AI$10)','calc')
-  put(f'E{row}','—' if n==1 else None,'numero',note='Resultado guardado, sem Constituição. Não há sorteio automático.')
+  put(f'E{row}','—' if n==1 else None,'numero',note='Anote só o dado; a ficha soma a Constituição. Não há sorteio automático.')
   helper(f'AC{j}',n);helper(f'AE{j}',f"={CF}$E${row}" if n>1 else '')
   gain=f'{base}+{con}' if n==1 else f'IF(IFERROR(AND(ISNUMBER(AE{j}),AE{j}>=1,AE{j}<=$AI$10,INT(AE{j})=AE{j}),FALSE),AE{j}+{con},NA())'
   helper(f'AF{j}',f'=IF(OR({ref("vida_rolada")}="Não",{n}>{nv}),0,{gain})')

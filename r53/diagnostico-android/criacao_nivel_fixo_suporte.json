@@ -1,0 +1,296 @@
+[
+  {
+    "aba": "DADOS_INVOC",
+    "r": 2,
+    "c": 170,
+    "depois": "=IFERROR(VLOOKUP($DG2,$BP$2:$BQ$5,2,FALSE),1)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 2,
+    "c": 172,
+    "depois": "=VLOOKUP(MAX(1,$FO2),$A$2:$D$8,2,TRUE)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 3,
+    "c": 170,
+    "depois": "=IFERROR(VLOOKUP($DG3,$BP$2:$BQ$5,2,FALSE),1)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 3,
+    "c": 172,
+    "depois": "=VLOOKUP(MAX(1,$FO3),$A$2:$D$8,2,TRUE)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 4,
+    "c": 170,
+    "depois": "=IFERROR(VLOOKUP($DG4,$BP$2:$BQ$5,2,FALSE),1)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 4,
+    "c": 172,
+    "depois": "=VLOOKUP(MAX(1,$FO4),$A$2:$D$8,2,TRUE)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 5,
+    "c": 170,
+    "depois": "=IFERROR(VLOOKUP($DG5,$BP$2:$BQ$5,2,FALSE),1)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 5,
+    "c": 172,
+    "depois": "=VLOOKUP(MAX(1,$FO5),$A$2:$D$8,2,TRUE)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 6,
+    "c": 170,
+    "depois": "=IFERROR(VLOOKUP($DG6,$BP$2:$BQ$5,2,FALSE),1)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 6,
+    "c": 172,
+    "depois": "=VLOOKUP(MAX(1,$FO6),$A$2:$D$8,2,TRUE)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 7,
+    "c": 170,
+    "depois": "=IFERROR(VLOOKUP($DG7,$BP$2:$BQ$5,2,FALSE),1)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 7,
+    "c": 172,
+    "depois": "=VLOOKUP(MAX(1,$FO7),$A$2:$D$8,2,TRUE)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 8,
+    "c": 170,
+    "depois": "=IFERROR(VLOOKUP($DG8,$BP$2:$BQ$5,2,FALSE),1)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 8,
+    "c": 172,
+    "depois": "=VLOOKUP(MAX(1,$FO8),$A$2:$D$8,2,TRUE)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 9,
+    "c": 170,
+    "depois": "=IFERROR(VLOOKUP($DG9,$BP$2:$BQ$5,2,FALSE),1)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 9,
+    "c": 172,
+    "depois": "=VLOOKUP(MAX(1,$FO9),$A$2:$D$8,2,TRUE)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 10,
+    "c": 170,
+    "depois": "=IFERROR(VLOOKUP($DG10,$BP$2:$BQ$5,2,FALSE),1)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 10,
+    "c": 172,
+    "depois": "=VLOOKUP(MAX(1,$FO10),$A$2:$D$8,2,TRUE)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 11,
+    "c": 170,
+    "depois": "=IFERROR(VLOOKUP($DG11,$BP$2:$BQ$5,2,FALSE),1)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 11,
+    "c": 172,
+    "depois": "=VLOOKUP(MAX(1,$FO11),$A$2:$D$8,2,TRUE)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 12,
+    "c": 170,
+    "depois": "=IFERROR(VLOOKUP($DG12,$BP$2:$BQ$5,2,FALSE),1)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 12,
+    "c": 172,
+    "depois": "=VLOOKUP(MAX(1,$FO12),$A$2:$D$8,2,TRUE)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 13,
+    "c": 170,
+    "depois": "=IFERROR(VLOOKUP($DG13,$BP$2:$BQ$5,2,FALSE),1)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 13,
+    "c": 172,
+    "depois": "=VLOOKUP(MAX(1,$FO13),$A$2:$D$8,2,TRUE)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 5,
+    "c": 68,
+    "depois": "Criação"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 2,
+    "c": 169,
+    "depois": "=IF($DE2<>\"\",1,0)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 2,
+    "c": 173,
+    "depois": "=VLOOKUP(MAX(1,$FO2),$A$2:$D$8,3,TRUE)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 3,
+    "c": 169,
+    "depois": "=IF($DE3<>\"\",1,0)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 3,
+    "c": 173,
+    "depois": "=VLOOKUP(MAX(1,$FO3),$A$2:$D$8,3,TRUE)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 4,
+    "c": 169,
+    "depois": "=IF($DE4<>\"\",1,0)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 4,
+    "c": 173,
+    "depois": "=VLOOKUP(MAX(1,$FO4),$A$2:$D$8,3,TRUE)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 5,
+    "c": 169,
+    "depois": "=IF($DE5<>\"\",1,0)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 5,
+    "c": 173,
+    "depois": "=VLOOKUP(MAX(1,$FO5),$A$2:$D$8,3,TRUE)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 6,
+    "c": 169,
+    "depois": "=IF($DE6<>\"\",1,0)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 6,
+    "c": 173,
+    "depois": "=VLOOKUP(MAX(1,$FO6),$A$2:$D$8,3,TRUE)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 7,
+    "c": 169,
+    "depois": "=IF($DE7<>\"\",1,0)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 7,
+    "c": 173,
+    "depois": "=VLOOKUP(MAX(1,$FO7),$A$2:$D$8,3,TRUE)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 8,
+    "c": 169,
+    "depois": "=IF($DE8<>\"\",1,0)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 8,
+    "c": 173,
+    "depois": "=VLOOKUP(MAX(1,$FO8),$A$2:$D$8,3,TRUE)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 9,
+    "c": 169,
+    "depois": "=IF($DE9<>\"\",1,0)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 9,
+    "c": 173,
+    "depois": "=VLOOKUP(MAX(1,$FO9),$A$2:$D$8,3,TRUE)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 10,
+    "c": 169,
+    "depois": "=IF($DE10<>\"\",1,0)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 10,
+    "c": 173,
+    "depois": "=VLOOKUP(MAX(1,$FO10),$A$2:$D$8,3,TRUE)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 11,
+    "c": 169,
+    "depois": "=IF($DE11<>\"\",1,0)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 11,
+    "c": 173,
+    "depois": "=VLOOKUP(MAX(1,$FO11),$A$2:$D$8,3,TRUE)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 12,
+    "c": 169,
+    "depois": "=IF($DE12<>\"\",1,0)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 12,
+    "c": 173,
+    "depois": "=VLOOKUP(MAX(1,$FO12),$A$2:$D$8,3,TRUE)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 13,
+    "c": 169,
+    "depois": "=IF($DE13<>\"\",1,0)"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 13,
+    "c": 173,
+    "depois": "=VLOOKUP(MAX(1,$FO13),$A$2:$D$8,3,TRUE)"
+  }
+]

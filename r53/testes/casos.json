@@ -1232,7 +1232,7 @@
     "esperado": {
       "valida": true,
       "dano_d8": 0,
-      "cura_d8": 19,
+      "cura_d8": 14,
       "pe": 25,
       "orcamento": 8,
       "entidade": true,
@@ -1274,7 +1274,7 @@
     "esperado": {
       "valida": true,
       "dano_d8": 0,
-      "cura_d8": 22,
+      "cura_d8": 16,
       "pe": 30,
       "orcamento": 12,
       "entidade": true,
@@ -1316,7 +1316,7 @@
     "esperado": {
       "valida": true,
       "dano_d8": 0,
-      "cura_d8": 26,
+      "cura_d8": 19,
       "pe": 35,
       "orcamento": 16,
       "entidade": true,
@@ -1892,6 +1892,109 @@
     },
     "nao_contem": {
       "efeitos": "+1 rodada"
+    }
+  },
+  {
+    "nome": "R67 • Máxima Explosão tira a Forma dos dados",
+    "entrada": {
+      "classe": 5,
+      "nivel": 17,
+      "modalidade": "Técnica Máxima",
+      "forma": "Explosão",
+      "dano": true
+    },
+    "esperado": {
+      "dano_d8": 19,
+      "saldo": 8,
+      "valida": true
+    }
+  },
+  {
+    "nome": "R67 • Máxima cura Aura tira base e Forma",
+    "entrada": {
+      "classe": 5,
+      "nivel": 17,
+      "modalidade": "Técnica Máxima",
+      "forma": "Aura",
+      "cura": true
+    },
+    "esperado": {
+      "cura_d8": 16,
+      "saldo": 8,
+      "valida": true
+    }
+  },
+  {
+    "nome": "R67 • Máxima PV temporária individual",
+    "entrada": {
+      "classe": 5,
+      "nivel": 17,
+      "modalidade": "Técnica Máxima",
+      "vt": true
+    },
+    "esperado": {
+      "vida_temporaria": 63,
+      "saldo": 8,
+      "valida": true
+    }
+  },
+  {
+    "nome": "R67 • Máxima PV temporária coletiva Aura (exemplo do livro)",
+    "entrada": {
+      "classe": 5,
+      "nivel": 17,
+      "modalidade": "Técnica Máxima",
+      "forma": "Aura",
+      "vt": true
+    },
+    "esperado": {
+      "vida_temporaria": 48,
+      "valida": true
+    }
+  },
+  {
+    "nome": "R67 • Máxima sem dano ganha reforço de Controle",
+    "entrada": {
+      "classe": 5,
+      "nivel": 17,
+      "modalidade": "Técnica Máxima",
+      "controle": "Sem dano",
+      "m1": "Condição · Derrubado",
+      "cd": 15
+    },
+    "esperado": {
+      "dano_d8": 0,
+      "bonus_controle": 2,
+      "cd_controle": 17,
+      "valida": true
+    }
+  },
+  {
+    "nome": "R67 • Máxima sem função pede a escolha",
+    "entrada": {
+      "classe": 5,
+      "nivel": 17,
+      "modalidade": "Técnica Máxima"
+    },
+    "esperado": {
+      "valida": false
+    },
+    "contem": {
+      "avisos": "Máxima: marque a função"
+    }
+  },
+  {
+    "nome": "R67 • Máxima de domada Explosão (exemplo do livro)",
+    "entrada": {
+      "modalidade": "Máxima de entidade",
+      "nivel": 17,
+      "classe": 5,
+      "forma": "Explosão",
+      "dano": true
+    },
+    "esperado": {
+      "dano_d8": 14,
+      "valida": true
     }
   }
 ]

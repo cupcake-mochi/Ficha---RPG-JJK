@@ -1,0 +1,362 @@
+{
+  "data": "2026-11-05",
+  "pr": 67,
+  "base": "PR66 f2bc70fd27b73db1cda3260b108f1c78371daea9",
+  "livro": "JJK---Project@e3058ad29180fdec2efec75b512446c49bf87b3d",
+  "geracao": "95250bc5cf94a1b0",
+  "codigoIncrementalSha256": "bae62817a2ae03281dff1247c7e2f97d6ac0518a6f90271bf6de96da98a09130",
+  "alvos": 8,
+  "copiasDescartaveis": [
+    "Era",
+    "Ciclo"
+  ],
+  "nucleo": {
+    "essencia3": {
+      "peMax": [
+        65,
+        23
+      ],
+      "integridadeMax": 0,
+      "inativo": {
+        "movimento": "4,5 m",
+        "bloquear": "Não pode bloquear · Núcleo inativo",
+        "defesa": 11
+      },
+      "ativoComumOuTemp": {
+        "movimento": "9 m",
+        "bloquear": "2d10 + 0"
+      }
+    },
+    "essencia4SegundaVaga": {
+      "peMax": [
+        68,
+        24
+      ]
+    },
+    "marcos": [
+      {
+        "modelo": "Era",
+        "nivel": 5,
+        "essencia": 3,
+        "esperado": 38,
+        "obtido": 38,
+        "saldo": 0
+      },
+      {
+        "modelo": "Ciclo",
+        "nivel": 5,
+        "essencia": 3,
+        "esperado": 38,
+        "obtido": 38,
+        "saldo": 0
+      },
+      {
+        "modelo": "Era",
+        "nivel": 6,
+        "essencia": 3,
+        "esperado": 44,
+        "obtido": 44,
+        "saldo": 0
+      },
+      {
+        "modelo": "Ciclo",
+        "nivel": 6,
+        "essencia": 3,
+        "esperado": 44,
+        "obtido": 44,
+        "saldo": 0
+      },
+      {
+        "modelo": "Era",
+        "nivel": 10,
+        "essencia": 3,
+        "esperado": 65,
+        "obtido": 65,
+        "saldo": 0
+      },
+      {
+        "modelo": "Ciclo",
+        "nivel": 10,
+        "essencia": 3,
+        "esperado": 65,
+        "obtido": 65,
+        "saldo": 0
+      },
+      {
+        "modelo": "Era",
+        "nivel": 14,
+        "essencia": 3,
+        "esperado": 86,
+        "obtido": 86,
+        "saldo": 0
+      },
+      {
+        "modelo": "Ciclo",
+        "nivel": 14,
+        "essencia": 3,
+        "esperado": 86,
+        "obtido": 86,
+        "saldo": 0
+      },
+      {
+        "modelo": "Era",
+        "nivel": 18,
+        "essencia": 3,
+        "esperado": 107,
+        "obtido": 107,
+        "saldo": 0
+      },
+      {
+        "modelo": "Ciclo",
+        "nivel": 18,
+        "essencia": 3,
+        "esperado": 107,
+        "obtido": 107,
+        "saldo": 0
+      },
+      {
+        "modelo": "Era",
+        "nivel": 22,
+        "essencia": 3,
+        "esperado": 128,
+        "obtido": 128,
+        "saldo": 0
+      },
+      {
+        "modelo": "Ciclo",
+        "nivel": 22,
+        "essencia": 3,
+        "esperado": 128,
+        "obtido": 128,
+        "saldo": 0
+      },
+      {
+        "modelo": "Era",
+        "nivel": 26,
+        "essencia": 3,
+        "esperado": 149,
+        "obtido": 149,
+        "saldo": 0
+      },
+      {
+        "modelo": "Ciclo",
+        "nivel": 26,
+        "essencia": 3,
+        "esperado": 149,
+        "obtido": 149,
+        "saldo": 0
+      },
+      {
+        "modelo": "Era",
+        "nivel": 30,
+        "essencia": 3,
+        "esperado": 170,
+        "obtido": 170,
+        "saldo": 0
+      },
+      {
+        "modelo": "Ciclo",
+        "nivel": 30,
+        "essencia": 3,
+        "esperado": 170,
+        "obtido": 170,
+        "saldo": 0
+      }
+    ],
+    "customValida": true,
+    "customInvalidaSemBeneficio": true,
+    "configuracao": {
+      "trocarPe50": [
+        50,
+        50
+      ],
+      "trocarPeZero": [
+        0,
+        0
+      ],
+      "trocarIntegridade99": [
+        0,
+        0
+      ]
+    }
+  },
+  "folego": {
+    "customPropicio": [
+      18,
+      6
+    ],
+    "segundaVagaForaGrau2": [
+      6,
+      2
+    ],
+    "foraGrau3": [
+      0,
+      0
+    ],
+    "teto": [
+      60,
+      20
+    ]
+  },
+  "tempo": {
+    "antesGoogleMs": 24961,
+    "depoisGoogleMs": 13986,
+    "antesCorpoMs": 17817,
+    "depoisCorpoMs": 11329,
+    "moduloPesadoDepois": false,
+    "amostrasPorVersao": 1,
+    "limite": "Um par controlado. Não prova a causa única dos timeouts nem garante ausência futura; não mede Android, RAM ou abertura."
+  },
+  "local": {
+    "descansoCenarios": 88,
+    "auditoriaConformes": 10,
+    "auditoriaDivergentes": 0,
+    "smokeCompletoAnterior": "aprovado",
+    "repeticaoFinal": "limite local de 60 s em pacote_runtime; repetição isolada aprovada, memória disponível <800 MB e swap cheia"
+  },
+  "restauracaoFormulas": [
+    {
+      "modelo": "Era",
+      "aba": "FICHA",
+      "linha": 30,
+      "coluna": 10,
+      "restaurada": true
+    },
+    {
+      "modelo": "Era",
+      "aba": "FICHA",
+      "linha": 34,
+      "coluna": 10,
+      "restaurada": true
+    },
+    {
+      "modelo": "Era",
+      "aba": "FICHA",
+      "linha": 67,
+      "coluna": 15,
+      "restaurada": true
+    },
+    {
+      "modelo": "Era",
+      "aba": "FICHA",
+      "linha": 56,
+      "coluna": 26,
+      "restaurada": true
+    },
+    {
+      "modelo": "Era",
+      "aba": "DADOS_CUSTOM",
+      "linha": 128,
+      "coluna": 2,
+      "restaurada": true
+    },
+    {
+      "modelo": "Era",
+      "aba": "DADOS_CUSTOM",
+      "linha": 129,
+      "coluna": 2,
+      "restaurada": true
+    },
+    {
+      "modelo": "Era",
+      "aba": "DADOS_CUSTOM",
+      "linha": 130,
+      "coluna": 2,
+      "restaurada": true
+    },
+    {
+      "modelo": "Era",
+      "aba": "DADOS_CUSTOM",
+      "linha": 131,
+      "coluna": 2,
+      "restaurada": true
+    },
+    {
+      "modelo": "Ciclo",
+      "aba": "FICHA",
+      "linha": 30,
+      "coluna": 10,
+      "restaurada": true
+    },
+    {
+      "modelo": "Ciclo",
+      "aba": "FICHA",
+      "linha": 34,
+      "coluna": 10,
+      "restaurada": true
+    },
+    {
+      "modelo": "Ciclo",
+      "aba": "FICHA",
+      "linha": 67,
+      "coluna": 15,
+      "restaurada": true
+    },
+    {
+      "modelo": "Ciclo",
+      "aba": "FICHA",
+      "linha": 56,
+      "coluna": 26,
+      "restaurada": true
+    },
+    {
+      "modelo": "Ciclo",
+      "aba": "DADOS_CUSTOM",
+      "linha": 128,
+      "coluna": 2,
+      "restaurada": true
+    },
+    {
+      "modelo": "Ciclo",
+      "aba": "DADOS_CUSTOM",
+      "linha": 129,
+      "coluna": 2,
+      "restaurada": true
+    },
+    {
+      "modelo": "Ciclo",
+      "aba": "DADOS_CUSTOM",
+      "linha": 130,
+      "coluna": 2,
+      "restaurada": true
+    },
+    {
+      "modelo": "Ciclo",
+      "aba": "DADOS_CUSTOM",
+      "linha": 131,
+      "coluna": 2,
+      "restaurada": true
+    }
+  ],
+  "restauracaoEntradas": [
+    {
+      "modelo": "Era",
+      "celulasConferidas": 1433,
+      "diferencas": [],
+      "erros": [],
+      "entradasRestauradas": 24
+    },
+    {
+      "modelo": "Ciclo",
+      "celulasConferidas": 1433,
+      "diferencas": [],
+      "erros": [],
+      "entradasRestauradas": 24
+    }
+  ],
+  "queda": {
+    "morrendoComIntegridadeMaxZero": true,
+    "longoFora": {
+      "vida": [
+        77,
+        37
+      ],
+      "pe": [
+        65,
+        23
+      ],
+      "status": "Encerrado no descanso"
+    }
+  },
+  "codigoReabertoRelidoIgualNasDuas": true
+}

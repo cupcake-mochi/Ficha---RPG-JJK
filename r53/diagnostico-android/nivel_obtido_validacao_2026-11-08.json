@@ -1,0 +1,4756 @@
+{
+  "date": "2026-11-08",
+  "finding": "AQ02",
+  "status": "corrigido e validado nas duas descartáveis; para revisão",
+  "branch": "codex/validacao-nivel-obtido-20261108",
+  "basePr": 89,
+  "baseSha": "e2b03307ebfaa3df67b494704508c10f3bd523b6",
+  "behavior": {
+    "valid": "número inteiro 1–30; texto só com os dígitos de 1–30 convertido explicitamente",
+    "empty": "0 interno; prévia no nível do invocador",
+    "invalid": "-1 interno; cálculo provisório 1 e REVISAR no título/lista nas aquisições fixas",
+    "originalInputRewritten": false,
+    "capBySummoner": true,
+    "followingAcquisitionsIgnoreField": true
+  },
+  "delta": {
+    "formulas": 36,
+    "notes": 2,
+    "validations": 12,
+    "requestsPerCopy": 50,
+    "unchangedRecoverySupport": 60,
+    "previousSupportPreserved": 49
+  },
+  "native": {
+    "copies": [
+      "Era",
+      "Ciclo"
+    ],
+    "locale": "pt_BR",
+    "observations": 240,
+    "fixedCases": 192,
+    "followingControls": 48,
+    "inputVariants": 24,
+    "summonerLevels": [
+      30,
+      9
+    ],
+    "entities": 12,
+    "rawInputTypesRead": true,
+    "uiChecks": 6,
+    "realRecoveryEdits": 12,
+    "onEditConcluded": 16,
+    "manualPackageVerifications": 2,
+    "codeBeforeSha256": "ffd349c9299342d735917697355d3f278f526ff74b9e009706ce61a8b0784352",
+    "codeSavedReadbackSha256": "b709ad14b6340c132279f5a44030cb9a737c3f1251322c9929c6ffd341d9f38e",
+    "readbackAfterReopenBoth": true,
+    "installedLegacyModule": {
+      "generation": "e142593fdc5be157",
+      "sheets": 21,
+      "editorContexts": 251,
+      "moduleContexts": 249,
+      "sobras": []
+    },
+    "recoveries": [
+      {
+        "copy": "Era",
+        "range": "DH2:DH13",
+        "checked": 12,
+        "approved": true,
+        "differences": []
+      },
+      {
+        "copy": "Era",
+        "range": "HG2:HG13",
+        "checked": 12,
+        "approved": true,
+        "differences": []
+      },
+      {
+        "copy": "Era",
+        "range": "JK2:JK13",
+        "checked": 12,
+        "approved": true,
+        "differences": []
+      },
+      {
+        "copy": "Era",
+        "range": "DG2:DI3",
+        "checked": 6,
+        "approved": true,
+        "differences": []
+      },
+      {
+        "copy": "Era",
+        "range": "HF12:HH13",
+        "checked": 6,
+        "approved": true,
+        "differences": []
+      },
+      {
+        "copy": "Era",
+        "range": "JJ12:JK13",
+        "checked": 4,
+        "approved": true,
+        "differences": []
+      },
+      {
+        "copy": "Ciclo",
+        "range": "DH2:DH13",
+        "checked": 12,
+        "approved": true,
+        "differences": []
+      },
+      {
+        "copy": "Ciclo",
+        "range": "HG2:HG13",
+        "checked": 12,
+        "approved": true,
+        "differences": []
+      },
+      {
+        "copy": "Ciclo",
+        "range": "JK2:JK13",
+        "checked": 12,
+        "approved": true,
+        "differences": []
+      },
+      {
+        "copy": "Ciclo",
+        "range": "DG2:DI3",
+        "checked": 6,
+        "approved": true,
+        "differences": []
+      },
+      {
+        "copy": "Ciclo",
+        "range": "HF12:HH13",
+        "checked": 6,
+        "approved": true,
+        "differences": []
+      },
+      {
+        "copy": "Ciclo",
+        "range": "JJ12:JK13",
+        "checked": 4,
+        "approved": true,
+        "differences": []
+      }
+    ]
+  },
+  "preservation": {
+    "inputsRestoredPerCopy": 49,
+    "positionsPerCopy": 86178,
+    "montagensEntire": true,
+    "montagensPositionsPerCopy": 85887,
+    "montagensRange": "A1:I9543",
+    "unexpectedDifferences": 0,
+    "metadataEqual": true,
+    "conditionalFormattingIncluded": true,
+    "auxiliarySheetsHidden": true,
+    "visualCheckedBoth": true,
+    "taskBrowserTabsClosed": true
+  },
+  "local": {
+    "generation": "fe4f36eb411d303b",
+    "modelPositions": 280056,
+    "modelSheets": 26,
+    "onlyPlannedDelta": true,
+    "incrementalMatchesFull": true,
+    "smoke": {
+      "checks": 124,
+      "passed": 124,
+      "exit": 0
+    },
+    "transportLocales": [
+      "pt_BR",
+      "en_US"
+    ],
+    "actualOldBundleTransport": true,
+    "lateFocalGuardTests": true,
+    "calcExecuted": false,
+    "sourceSha256": "548d696de460364631914d7f1ec5f8c96cee9569d979264790f594f5d05a6fd7",
+    "bundleParts": 5,
+    "bundleBase64Bytes": 3860568,
+    "fullPackageInstalled": false,
+    "initialGeneration143NotCounted": true,
+    "finalPipelineExits": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "contract": {
+    "analiseKeysTypesFormulasAddressesUnchanged": true,
+    "nivelFixoInvalidSentinel": -1,
+    "consumerModified": false,
+    "consumerTested": false
+  },
+  "constraints": {
+    "merged": false,
+    "officialsModified": false,
+    "playerModified": false,
+    "pr31Modified": false,
+    "triggersCreated": false,
+    "sharingChanged": false,
+    "spreadsheetsRebuilt": false,
+    "snapshotsVersioned": false
+  },
+  "observations": [
+    {
+      "copy": "Era",
+      "master": 30,
+      "acq": "Criação",
+      "batch": 0,
+      "fixed": true,
+      "entity": 1,
+      "type": "Shikigami de criação",
+      "input": "um",
+      "raw": {
+        "numberValue": 1
+      },
+      "normalized": 1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 30,
+      "acq": "Criação",
+      "batch": 0,
+      "fixed": true,
+      "entity": 2,
+      "type": "Corpo amaldiçoado de criação",
+      "input": "sete",
+      "raw": {
+        "numberValue": 7
+      },
+      "normalized": 7,
+      "level": 7,
+      "hp": 29,
+      "slots": 2,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 30,
+      "acq": "Criação",
+      "batch": 0,
+      "fixed": true,
+      "entity": 3,
+      "type": "Shikigami de criação",
+      "input": "trinta",
+      "raw": {
+        "numberValue": 30
+      },
+      "normalized": 30,
+      "level": 30,
+      "hp": 92,
+      "slots": 8,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 30,
+      "acq": "Criação",
+      "batch": 0,
+      "fixed": true,
+      "entity": 4,
+      "type": "Corpo amaldiçoado de criação",
+      "input": "acima",
+      "raw": {
+        "numberValue": 31
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 30,
+      "acq": "Criação",
+      "batch": 0,
+      "fixed": true,
+      "entity": 5,
+      "type": "Shikigami de criação",
+      "input": "negativo",
+      "raw": {
+        "numberValue": -3
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 30,
+      "acq": "Criação",
+      "batch": 0,
+      "fixed": true,
+      "entity": 6,
+      "type": "Corpo amaldiçoado de criação",
+      "input": "zero",
+      "raw": {
+        "numberValue": 0
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 30,
+      "acq": "Criação",
+      "batch": 0,
+      "fixed": true,
+      "entity": 7,
+      "type": "Shikigami de criação",
+      "input": "fracao",
+      "raw": {
+        "numberValue": 7.5
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 30,
+      "acq": "Criação",
+      "batch": 0,
+      "fixed": true,
+      "entity": 8,
+      "type": "Corpo amaldiçoado de criação",
+      "input": "TRUE",
+      "raw": {
+        "boolValue": true
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 30,
+      "acq": "Criação",
+      "batch": 0,
+      "fixed": true,
+      "entity": 9,
+      "type": "Shikigami de criação",
+      "input": "FALSE",
+      "raw": {
+        "boolValue": false
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 30,
+      "acq": "Criação",
+      "batch": 0,
+      "fixed": true,
+      "entity": 10,
+      "type": "Corpo amaldiçoado de criação",
+      "input": "texto7",
+      "raw": {
+        "stringValue": "7"
+      },
+      "normalized": 7,
+      "level": 7,
+      "hp": 29,
+      "slots": 2,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 30,
+      "acq": "Criação",
+      "batch": 0,
+      "fixed": true,
+      "entity": 11,
+      "type": "Shikigami de criação",
+      "input": "texto_livre",
+      "raw": {
+        "stringValue": "Nível 7"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 30,
+      "acq": "Criação",
+      "batch": 0,
+      "fixed": true,
+      "entity": 12,
+      "type": "Corpo amaldiçoado de criação",
+      "input": "formula_num",
+      "raw": {
+        "formulaValue": "=7"
+      },
+      "normalized": 7,
+      "level": 7,
+      "hp": 29,
+      "slots": 2,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 30,
+      "acq": "Criação",
+      "batch": 1,
+      "fixed": true,
+      "entity": 1,
+      "type": "Shikigami de criação",
+      "input": "formula_texto",
+      "raw": {
+        "formulaValue": "=\"7\""
+      },
+      "normalized": 7,
+      "level": 7,
+      "hp": 23,
+      "slots": 2,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 30,
+      "acq": "Criação",
+      "batch": 1,
+      "fixed": true,
+      "entity": 2,
+      "type": "Corpo amaldiçoado de criação",
+      "input": "formula_vazia",
+      "raw": {
+        "formulaValue": "=\"\""
+      },
+      "normalized": 0,
+      "level": 30,
+      "hp": 121,
+      "slots": 8,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 30,
+      "acq": "Criação",
+      "batch": 1,
+      "fixed": true,
+      "entity": 3,
+      "type": "Shikigami de criação",
+      "input": "vazio",
+      "raw": null,
+      "normalized": 0,
+      "level": 30,
+      "hp": 92,
+      "slots": 8,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 30,
+      "acq": "Criação",
+      "batch": 1,
+      "fixed": true,
+      "entity": 4,
+      "type": "Corpo amaldiçoado de criação",
+      "input": "erro_NA",
+      "raw": {
+        "formulaValue": "=NA()"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 30,
+      "acq": "Criação",
+      "batch": 1,
+      "fixed": true,
+      "entity": 5,
+      "type": "Shikigami de criação",
+      "input": "erro_div",
+      "raw": {
+        "formulaValue": "=1/0"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 30,
+      "acq": "Criação",
+      "batch": 1,
+      "fixed": true,
+      "entity": 6,
+      "type": "Corpo amaldiçoado de criação",
+      "input": "espaco",
+      "raw": {
+        "stringValue": " "
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 30,
+      "acq": "Criação",
+      "batch": 1,
+      "fixed": true,
+      "entity": 7,
+      "type": "Shikigami de criação",
+      "input": "texto_fracao",
+      "raw": {
+        "stringValue": "7,5"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 30,
+      "acq": "Criação",
+      "batch": 1,
+      "fixed": true,
+      "entity": 8,
+      "type": "Corpo amaldiçoado de criação",
+      "input": "formula_neg",
+      "raw": {
+        "formulaValue": "=-2"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 30,
+      "acq": "Criação",
+      "batch": 1,
+      "fixed": true,
+      "entity": 9,
+      "type": "Shikigami de criação",
+      "input": "formula_fracao",
+      "raw": {
+        "formulaValue": "=15/2"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 30,
+      "acq": "Criação",
+      "batch": 1,
+      "fixed": true,
+      "entity": 10,
+      "type": "Corpo amaldiçoado de criação",
+      "input": "formula_true",
+      "raw": {
+        "formulaValue": "=TRUE()"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 30,
+      "acq": "Criação",
+      "batch": 1,
+      "fixed": true,
+      "entity": 11,
+      "type": "Shikigami de criação",
+      "input": "formula_false",
+      "raw": {
+        "formulaValue": "=FALSE()"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 30,
+      "acq": "Criação",
+      "batch": 1,
+      "fixed": true,
+      "entity": 12,
+      "type": "Corpo amaldiçoado de criação",
+      "input": "formula_trinta",
+      "raw": {
+        "formulaValue": "=30"
+      },
+      "normalized": 30,
+      "level": 30,
+      "hp": 121,
+      "slots": 8,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 30,
+      "acq": "Maldição domada",
+      "batch": 0,
+      "fixed": true,
+      "entity": 1,
+      "type": "Maldição domada",
+      "input": "um",
+      "raw": {
+        "numberValue": 1
+      },
+      "normalized": 1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 30,
+      "acq": "Maldição domada",
+      "batch": 0,
+      "fixed": true,
+      "entity": 2,
+      "type": "Maldição domada",
+      "input": "sete",
+      "raw": {
+        "numberValue": 7
+      },
+      "normalized": 7,
+      "level": 7,
+      "hp": 23,
+      "slots": 2,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 30,
+      "acq": "Maldição domada",
+      "batch": 0,
+      "fixed": true,
+      "entity": 3,
+      "type": "Maldição domada",
+      "input": "trinta",
+      "raw": {
+        "numberValue": 30
+      },
+      "normalized": 30,
+      "level": 30,
+      "hp": 92,
+      "slots": 8,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 30,
+      "acq": "Maldição domada",
+      "batch": 0,
+      "fixed": true,
+      "entity": 4,
+      "type": "Maldição domada",
+      "input": "acima",
+      "raw": {
+        "numberValue": 31
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 30,
+      "acq": "Maldição domada",
+      "batch": 0,
+      "fixed": true,
+      "entity": 5,
+      "type": "Maldição domada",
+      "input": "negativo",
+      "raw": {
+        "numberValue": -3
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 30,
+      "acq": "Maldição domada",
+      "batch": 0,
+      "fixed": true,
+      "entity": 6,
+      "type": "Maldição domada",
+      "input": "zero",
+      "raw": {
+        "numberValue": 0
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 30,
+      "acq": "Maldição domada",
+      "batch": 0,
+      "fixed": true,
+      "entity": 7,
+      "type": "Maldição domada",
+      "input": "fracao",
+      "raw": {
+        "numberValue": 7.5
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 30,
+      "acq": "Maldição domada",
+      "batch": 0,
+      "fixed": true,
+      "entity": 8,
+      "type": "Maldição domada",
+      "input": "TRUE",
+      "raw": {
+        "boolValue": true
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 30,
+      "acq": "Maldição domada",
+      "batch": 0,
+      "fixed": true,
+      "entity": 9,
+      "type": "Maldição domada",
+      "input": "FALSE",
+      "raw": {
+        "boolValue": false
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 30,
+      "acq": "Maldição domada",
+      "batch": 0,
+      "fixed": true,
+      "entity": 10,
+      "type": "Maldição domada",
+      "input": "texto7",
+      "raw": {
+        "stringValue": "7"
+      },
+      "normalized": 7,
+      "level": 7,
+      "hp": 23,
+      "slots": 2,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 30,
+      "acq": "Maldição domada",
+      "batch": 0,
+      "fixed": true,
+      "entity": 11,
+      "type": "Maldição domada",
+      "input": "texto_livre",
+      "raw": {
+        "stringValue": "Nível 7"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 30,
+      "acq": "Maldição domada",
+      "batch": 0,
+      "fixed": true,
+      "entity": 12,
+      "type": "Maldição domada",
+      "input": "formula_num",
+      "raw": {
+        "formulaValue": "=7"
+      },
+      "normalized": 7,
+      "level": 7,
+      "hp": 23,
+      "slots": 2,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 30,
+      "acq": "Maldição domada",
+      "batch": 1,
+      "fixed": true,
+      "entity": 1,
+      "type": "Maldição domada",
+      "input": "formula_texto",
+      "raw": {
+        "formulaValue": "=\"7\""
+      },
+      "normalized": 7,
+      "level": 7,
+      "hp": 23,
+      "slots": 2,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 30,
+      "acq": "Maldição domada",
+      "batch": 1,
+      "fixed": true,
+      "entity": 2,
+      "type": "Maldição domada",
+      "input": "formula_vazia",
+      "raw": {
+        "formulaValue": "=\"\""
+      },
+      "normalized": 0,
+      "level": 30,
+      "hp": 92,
+      "slots": 8,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 30,
+      "acq": "Maldição domada",
+      "batch": 1,
+      "fixed": true,
+      "entity": 3,
+      "type": "Maldição domada",
+      "input": "vazio",
+      "raw": null,
+      "normalized": 0,
+      "level": 30,
+      "hp": 92,
+      "slots": 8,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 30,
+      "acq": "Maldição domada",
+      "batch": 1,
+      "fixed": true,
+      "entity": 4,
+      "type": "Maldição domada",
+      "input": "erro_NA",
+      "raw": {
+        "formulaValue": "=NA()"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 30,
+      "acq": "Maldição domada",
+      "batch": 1,
+      "fixed": true,
+      "entity": 5,
+      "type": "Maldição domada",
+      "input": "erro_div",
+      "raw": {
+        "formulaValue": "=1/0"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 30,
+      "acq": "Maldição domada",
+      "batch": 1,
+      "fixed": true,
+      "entity": 6,
+      "type": "Maldição domada",
+      "input": "espaco",
+      "raw": {
+        "stringValue": " "
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 30,
+      "acq": "Maldição domada",
+      "batch": 1,
+      "fixed": true,
+      "entity": 7,
+      "type": "Maldição domada",
+      "input": "texto_fracao",
+      "raw": {
+        "stringValue": "7,5"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 30,
+      "acq": "Maldição domada",
+      "batch": 1,
+      "fixed": true,
+      "entity": 8,
+      "type": "Maldição domada",
+      "input": "formula_neg",
+      "raw": {
+        "formulaValue": "=-2"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 30,
+      "acq": "Maldição domada",
+      "batch": 1,
+      "fixed": true,
+      "entity": 9,
+      "type": "Maldição domada",
+      "input": "formula_fracao",
+      "raw": {
+        "formulaValue": "=15/2"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 30,
+      "acq": "Maldição domada",
+      "batch": 1,
+      "fixed": true,
+      "entity": 10,
+      "type": "Maldição domada",
+      "input": "formula_true",
+      "raw": {
+        "formulaValue": "=TRUE()"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 30,
+      "acq": "Maldição domada",
+      "batch": 1,
+      "fixed": true,
+      "entity": 11,
+      "type": "Maldição domada",
+      "input": "formula_false",
+      "raw": {
+        "formulaValue": "=FALSE()"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 30,
+      "acq": "Maldição domada",
+      "batch": 1,
+      "fixed": true,
+      "entity": 12,
+      "type": "Maldição domada",
+      "input": "formula_trinta",
+      "raw": {
+        "formulaValue": "=30"
+      },
+      "normalized": 30,
+      "level": 30,
+      "hp": 92,
+      "slots": 8,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Criação",
+      "batch": 0,
+      "fixed": true,
+      "entity": 1,
+      "type": "Shikigami de criação",
+      "input": "um",
+      "raw": {
+        "numberValue": 1
+      },
+      "normalized": 1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Criação",
+      "batch": 0,
+      "fixed": true,
+      "entity": 2,
+      "type": "Corpo amaldiçoado de criação",
+      "input": "sete",
+      "raw": {
+        "numberValue": 7
+      },
+      "normalized": 7,
+      "level": 7,
+      "hp": 29,
+      "slots": 2,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Criação",
+      "batch": 0,
+      "fixed": true,
+      "entity": 3,
+      "type": "Shikigami de criação",
+      "input": "trinta",
+      "raw": {
+        "numberValue": 30
+      },
+      "normalized": 30,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Criação",
+      "batch": 0,
+      "fixed": true,
+      "entity": 4,
+      "type": "Corpo amaldiçoado de criação",
+      "input": "acima",
+      "raw": {
+        "numberValue": 31
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Criação",
+      "batch": 0,
+      "fixed": true,
+      "entity": 5,
+      "type": "Shikigami de criação",
+      "input": "negativo",
+      "raw": {
+        "numberValue": -3
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Criação",
+      "batch": 0,
+      "fixed": true,
+      "entity": 6,
+      "type": "Corpo amaldiçoado de criação",
+      "input": "zero",
+      "raw": {
+        "numberValue": 0
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Criação",
+      "batch": 0,
+      "fixed": true,
+      "entity": 7,
+      "type": "Shikigami de criação",
+      "input": "fracao",
+      "raw": {
+        "numberValue": 7.5
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Criação",
+      "batch": 0,
+      "fixed": true,
+      "entity": 8,
+      "type": "Corpo amaldiçoado de criação",
+      "input": "TRUE",
+      "raw": {
+        "boolValue": true
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Criação",
+      "batch": 0,
+      "fixed": true,
+      "entity": 9,
+      "type": "Shikigami de criação",
+      "input": "FALSE",
+      "raw": {
+        "boolValue": false
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Criação",
+      "batch": 0,
+      "fixed": true,
+      "entity": 10,
+      "type": "Corpo amaldiçoado de criação",
+      "input": "texto7",
+      "raw": {
+        "stringValue": "7"
+      },
+      "normalized": 7,
+      "level": 7,
+      "hp": 29,
+      "slots": 2,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Criação",
+      "batch": 0,
+      "fixed": true,
+      "entity": 11,
+      "type": "Shikigami de criação",
+      "input": "texto_livre",
+      "raw": {
+        "stringValue": "Nível 7"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Criação",
+      "batch": 0,
+      "fixed": true,
+      "entity": 12,
+      "type": "Corpo amaldiçoado de criação",
+      "input": "formula_num",
+      "raw": {
+        "formulaValue": "=7"
+      },
+      "normalized": 7,
+      "level": 7,
+      "hp": 29,
+      "slots": 2,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Criação",
+      "batch": 1,
+      "fixed": true,
+      "entity": 1,
+      "type": "Shikigami de criação",
+      "input": "formula_texto",
+      "raw": {
+        "formulaValue": "=\"7\""
+      },
+      "normalized": 7,
+      "level": 7,
+      "hp": 23,
+      "slots": 2,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Criação",
+      "batch": 1,
+      "fixed": true,
+      "entity": 2,
+      "type": "Corpo amaldiçoado de criação",
+      "input": "formula_vazia",
+      "raw": {
+        "formulaValue": "=\"\""
+      },
+      "normalized": 0,
+      "level": 9,
+      "hp": 37,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Criação",
+      "batch": 1,
+      "fixed": true,
+      "entity": 3,
+      "type": "Shikigami de criação",
+      "input": "vazio",
+      "raw": null,
+      "normalized": 0,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Criação",
+      "batch": 1,
+      "fixed": true,
+      "entity": 4,
+      "type": "Corpo amaldiçoado de criação",
+      "input": "erro_NA",
+      "raw": {
+        "formulaValue": "=NA()"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Criação",
+      "batch": 1,
+      "fixed": true,
+      "entity": 5,
+      "type": "Shikigami de criação",
+      "input": "erro_div",
+      "raw": {
+        "formulaValue": "=1/0"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Criação",
+      "batch": 1,
+      "fixed": true,
+      "entity": 6,
+      "type": "Corpo amaldiçoado de criação",
+      "input": "espaco",
+      "raw": {
+        "stringValue": " "
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Criação",
+      "batch": 1,
+      "fixed": true,
+      "entity": 7,
+      "type": "Shikigami de criação",
+      "input": "texto_fracao",
+      "raw": {
+        "stringValue": "7,5"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Criação",
+      "batch": 1,
+      "fixed": true,
+      "entity": 8,
+      "type": "Corpo amaldiçoado de criação",
+      "input": "formula_neg",
+      "raw": {
+        "formulaValue": "=-2"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Criação",
+      "batch": 1,
+      "fixed": true,
+      "entity": 9,
+      "type": "Shikigami de criação",
+      "input": "formula_fracao",
+      "raw": {
+        "formulaValue": "=15/2"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Criação",
+      "batch": 1,
+      "fixed": true,
+      "entity": 10,
+      "type": "Corpo amaldiçoado de criação",
+      "input": "formula_true",
+      "raw": {
+        "formulaValue": "=TRUE()"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Criação",
+      "batch": 1,
+      "fixed": true,
+      "entity": 11,
+      "type": "Shikigami de criação",
+      "input": "formula_false",
+      "raw": {
+        "formulaValue": "=FALSE()"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Criação",
+      "batch": 1,
+      "fixed": true,
+      "entity": 12,
+      "type": "Corpo amaldiçoado de criação",
+      "input": "formula_trinta",
+      "raw": {
+        "formulaValue": "=30"
+      },
+      "normalized": 30,
+      "level": 9,
+      "hp": 37,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Maldição domada",
+      "batch": 0,
+      "fixed": true,
+      "entity": 1,
+      "type": "Maldição domada",
+      "input": "um",
+      "raw": {
+        "numberValue": 1
+      },
+      "normalized": 1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Maldição domada",
+      "batch": 0,
+      "fixed": true,
+      "entity": 2,
+      "type": "Maldição domada",
+      "input": "sete",
+      "raw": {
+        "numberValue": 7
+      },
+      "normalized": 7,
+      "level": 7,
+      "hp": 23,
+      "slots": 2,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Maldição domada",
+      "batch": 0,
+      "fixed": true,
+      "entity": 3,
+      "type": "Maldição domada",
+      "input": "trinta",
+      "raw": {
+        "numberValue": 30
+      },
+      "normalized": 30,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Maldição domada",
+      "batch": 0,
+      "fixed": true,
+      "entity": 4,
+      "type": "Maldição domada",
+      "input": "acima",
+      "raw": {
+        "numberValue": 31
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Maldição domada",
+      "batch": 0,
+      "fixed": true,
+      "entity": 5,
+      "type": "Maldição domada",
+      "input": "negativo",
+      "raw": {
+        "numberValue": -3
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Maldição domada",
+      "batch": 0,
+      "fixed": true,
+      "entity": 6,
+      "type": "Maldição domada",
+      "input": "zero",
+      "raw": {
+        "numberValue": 0
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Maldição domada",
+      "batch": 0,
+      "fixed": true,
+      "entity": 7,
+      "type": "Maldição domada",
+      "input": "fracao",
+      "raw": {
+        "numberValue": 7.5
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Maldição domada",
+      "batch": 0,
+      "fixed": true,
+      "entity": 8,
+      "type": "Maldição domada",
+      "input": "TRUE",
+      "raw": {
+        "boolValue": true
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Maldição domada",
+      "batch": 0,
+      "fixed": true,
+      "entity": 9,
+      "type": "Maldição domada",
+      "input": "FALSE",
+      "raw": {
+        "boolValue": false
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Maldição domada",
+      "batch": 0,
+      "fixed": true,
+      "entity": 10,
+      "type": "Maldição domada",
+      "input": "texto7",
+      "raw": {
+        "stringValue": "7"
+      },
+      "normalized": 7,
+      "level": 7,
+      "hp": 23,
+      "slots": 2,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Maldição domada",
+      "batch": 0,
+      "fixed": true,
+      "entity": 11,
+      "type": "Maldição domada",
+      "input": "texto_livre",
+      "raw": {
+        "stringValue": "Nível 7"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Maldição domada",
+      "batch": 0,
+      "fixed": true,
+      "entity": 12,
+      "type": "Maldição domada",
+      "input": "formula_num",
+      "raw": {
+        "formulaValue": "=7"
+      },
+      "normalized": 7,
+      "level": 7,
+      "hp": 23,
+      "slots": 2,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Maldição domada",
+      "batch": 1,
+      "fixed": true,
+      "entity": 1,
+      "type": "Maldição domada",
+      "input": "formula_texto",
+      "raw": {
+        "formulaValue": "=\"7\""
+      },
+      "normalized": 7,
+      "level": 7,
+      "hp": 23,
+      "slots": 2,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Maldição domada",
+      "batch": 1,
+      "fixed": true,
+      "entity": 2,
+      "type": "Maldição domada",
+      "input": "formula_vazia",
+      "raw": {
+        "formulaValue": "=\"\""
+      },
+      "normalized": 0,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Maldição domada",
+      "batch": 1,
+      "fixed": true,
+      "entity": 3,
+      "type": "Maldição domada",
+      "input": "vazio",
+      "raw": null,
+      "normalized": 0,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Maldição domada",
+      "batch": 1,
+      "fixed": true,
+      "entity": 4,
+      "type": "Maldição domada",
+      "input": "erro_NA",
+      "raw": {
+        "formulaValue": "=NA()"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Maldição domada",
+      "batch": 1,
+      "fixed": true,
+      "entity": 5,
+      "type": "Maldição domada",
+      "input": "erro_div",
+      "raw": {
+        "formulaValue": "=1/0"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Maldição domada",
+      "batch": 1,
+      "fixed": true,
+      "entity": 6,
+      "type": "Maldição domada",
+      "input": "espaco",
+      "raw": {
+        "stringValue": " "
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Maldição domada",
+      "batch": 1,
+      "fixed": true,
+      "entity": 7,
+      "type": "Maldição domada",
+      "input": "texto_fracao",
+      "raw": {
+        "stringValue": "7,5"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Maldição domada",
+      "batch": 1,
+      "fixed": true,
+      "entity": 8,
+      "type": "Maldição domada",
+      "input": "formula_neg",
+      "raw": {
+        "formulaValue": "=-2"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Maldição domada",
+      "batch": 1,
+      "fixed": true,
+      "entity": 9,
+      "type": "Maldição domada",
+      "input": "formula_fracao",
+      "raw": {
+        "formulaValue": "=15/2"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Maldição domada",
+      "batch": 1,
+      "fixed": true,
+      "entity": 10,
+      "type": "Maldição domada",
+      "input": "formula_true",
+      "raw": {
+        "formulaValue": "=TRUE()"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Maldição domada",
+      "batch": 1,
+      "fixed": true,
+      "entity": 11,
+      "type": "Maldição domada",
+      "input": "formula_false",
+      "raw": {
+        "formulaValue": "=FALSE()"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Maldição domada",
+      "batch": 1,
+      "fixed": true,
+      "entity": 12,
+      "type": "Maldição domada",
+      "input": "formula_trinta",
+      "raw": {
+        "formulaValue": "=30"
+      },
+      "normalized": 30,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Espaço conhecido",
+      "batch": 0,
+      "fixed": false,
+      "entity": 1,
+      "type": "Shikigami de técnica",
+      "input": "fracao",
+      "raw": {
+        "numberValue": 7.5
+      },
+      "normalized": -1,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Espaço conhecido",
+      "batch": 0,
+      "fixed": false,
+      "entity": 2,
+      "type": "Shikigami de técnica",
+      "input": "TRUE",
+      "raw": {
+        "boolValue": true
+      },
+      "normalized": -1,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Espaço conhecido",
+      "batch": 0,
+      "fixed": false,
+      "entity": 3,
+      "type": "Shikigami de técnica",
+      "input": "FALSE",
+      "raw": {
+        "boolValue": false
+      },
+      "normalized": -1,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Espaço conhecido",
+      "batch": 0,
+      "fixed": false,
+      "entity": 4,
+      "type": "Shikigami de técnica",
+      "input": "texto7",
+      "raw": {
+        "stringValue": "7"
+      },
+      "normalized": 7,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Espaço conhecido",
+      "batch": 0,
+      "fixed": false,
+      "entity": 5,
+      "type": "Shikigami de técnica",
+      "input": "texto_livre",
+      "raw": {
+        "stringValue": "Nível 7"
+      },
+      "normalized": -1,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Espaço conhecido",
+      "batch": 0,
+      "fixed": false,
+      "entity": 6,
+      "type": "Shikigami de técnica",
+      "input": "formula_num",
+      "raw": {
+        "formulaValue": "=7"
+      },
+      "normalized": 7,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Espaço conhecido",
+      "batch": 0,
+      "fixed": false,
+      "entity": 7,
+      "type": "Shikigami de técnica",
+      "input": "fracao",
+      "raw": {
+        "numberValue": 7.5
+      },
+      "normalized": -1,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Espaço conhecido",
+      "batch": 0,
+      "fixed": false,
+      "entity": 8,
+      "type": "Shikigami de técnica",
+      "input": "TRUE",
+      "raw": {
+        "boolValue": true
+      },
+      "normalized": -1,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Espaço conhecido",
+      "batch": 0,
+      "fixed": false,
+      "entity": 9,
+      "type": "Shikigami de técnica",
+      "input": "FALSE",
+      "raw": {
+        "boolValue": false
+      },
+      "normalized": -1,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Espaço conhecido",
+      "batch": 0,
+      "fixed": false,
+      "entity": 10,
+      "type": "Shikigami de técnica",
+      "input": "texto7",
+      "raw": {
+        "stringValue": "7"
+      },
+      "normalized": 7,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Espaço conhecido",
+      "batch": 0,
+      "fixed": false,
+      "entity": 11,
+      "type": "Shikigami de técnica",
+      "input": "texto_livre",
+      "raw": {
+        "stringValue": "Nível 7"
+      },
+      "normalized": -1,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Espaço conhecido",
+      "batch": 0,
+      "fixed": false,
+      "entity": 12,
+      "type": "Shikigami de técnica",
+      "input": "formula_num",
+      "raw": {
+        "formulaValue": "=7"
+      },
+      "normalized": 7,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Lista de ritual",
+      "batch": 0,
+      "fixed": false,
+      "entity": 1,
+      "type": "Shikigami de técnica",
+      "input": "fracao",
+      "raw": {
+        "numberValue": 7.5
+      },
+      "normalized": -1,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Lista de ritual",
+      "batch": 0,
+      "fixed": false,
+      "entity": 2,
+      "type": "Shikigami de técnica",
+      "input": "TRUE",
+      "raw": {
+        "boolValue": true
+      },
+      "normalized": -1,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Lista de ritual",
+      "batch": 0,
+      "fixed": false,
+      "entity": 3,
+      "type": "Shikigami de técnica",
+      "input": "FALSE",
+      "raw": {
+        "boolValue": false
+      },
+      "normalized": -1,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Lista de ritual",
+      "batch": 0,
+      "fixed": false,
+      "entity": 4,
+      "type": "Shikigami de técnica",
+      "input": "texto7",
+      "raw": {
+        "stringValue": "7"
+      },
+      "normalized": 7,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Lista de ritual",
+      "batch": 0,
+      "fixed": false,
+      "entity": 5,
+      "type": "Shikigami de técnica",
+      "input": "texto_livre",
+      "raw": {
+        "stringValue": "Nível 7"
+      },
+      "normalized": -1,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Lista de ritual",
+      "batch": 0,
+      "fixed": false,
+      "entity": 6,
+      "type": "Shikigami de técnica",
+      "input": "formula_num",
+      "raw": {
+        "formulaValue": "=7"
+      },
+      "normalized": 7,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Lista de ritual",
+      "batch": 0,
+      "fixed": false,
+      "entity": 7,
+      "type": "Shikigami de técnica",
+      "input": "fracao",
+      "raw": {
+        "numberValue": 7.5
+      },
+      "normalized": -1,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Lista de ritual",
+      "batch": 0,
+      "fixed": false,
+      "entity": 8,
+      "type": "Shikigami de técnica",
+      "input": "TRUE",
+      "raw": {
+        "boolValue": true
+      },
+      "normalized": -1,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Lista de ritual",
+      "batch": 0,
+      "fixed": false,
+      "entity": 9,
+      "type": "Shikigami de técnica",
+      "input": "FALSE",
+      "raw": {
+        "boolValue": false
+      },
+      "normalized": -1,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Lista de ritual",
+      "batch": 0,
+      "fixed": false,
+      "entity": 10,
+      "type": "Shikigami de técnica",
+      "input": "texto7",
+      "raw": {
+        "stringValue": "7"
+      },
+      "normalized": 7,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Lista de ritual",
+      "batch": 0,
+      "fixed": false,
+      "entity": 11,
+      "type": "Shikigami de técnica",
+      "input": "texto_livre",
+      "raw": {
+        "stringValue": "Nível 7"
+      },
+      "normalized": -1,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Era",
+      "master": 9,
+      "acq": "Lista de ritual",
+      "batch": 0,
+      "fixed": false,
+      "entity": 12,
+      "type": "Shikigami de técnica",
+      "input": "formula_num",
+      "raw": {
+        "formulaValue": "=7"
+      },
+      "normalized": 7,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 30,
+      "acq": "Criação",
+      "batch": 0,
+      "fixed": true,
+      "entity": 1,
+      "type": "Shikigami de criação",
+      "input": "um",
+      "raw": {
+        "numberValue": 1
+      },
+      "normalized": 1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 30,
+      "acq": "Criação",
+      "batch": 0,
+      "fixed": true,
+      "entity": 2,
+      "type": "Corpo amaldiçoado de criação",
+      "input": "sete",
+      "raw": {
+        "numberValue": 7
+      },
+      "normalized": 7,
+      "level": 7,
+      "hp": 29,
+      "slots": 2,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 30,
+      "acq": "Criação",
+      "batch": 0,
+      "fixed": true,
+      "entity": 3,
+      "type": "Shikigami de criação",
+      "input": "trinta",
+      "raw": {
+        "numberValue": 30
+      },
+      "normalized": 30,
+      "level": 30,
+      "hp": 92,
+      "slots": 8,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 30,
+      "acq": "Criação",
+      "batch": 0,
+      "fixed": true,
+      "entity": 4,
+      "type": "Corpo amaldiçoado de criação",
+      "input": "acima",
+      "raw": {
+        "numberValue": 31
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 30,
+      "acq": "Criação",
+      "batch": 0,
+      "fixed": true,
+      "entity": 5,
+      "type": "Shikigami de criação",
+      "input": "negativo",
+      "raw": {
+        "numberValue": -3
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 30,
+      "acq": "Criação",
+      "batch": 0,
+      "fixed": true,
+      "entity": 6,
+      "type": "Corpo amaldiçoado de criação",
+      "input": "zero",
+      "raw": {
+        "numberValue": 0
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 30,
+      "acq": "Criação",
+      "batch": 0,
+      "fixed": true,
+      "entity": 7,
+      "type": "Shikigami de criação",
+      "input": "fracao",
+      "raw": {
+        "numberValue": 7.5
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 30,
+      "acq": "Criação",
+      "batch": 0,
+      "fixed": true,
+      "entity": 8,
+      "type": "Corpo amaldiçoado de criação",
+      "input": "TRUE",
+      "raw": {
+        "boolValue": true
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 30,
+      "acq": "Criação",
+      "batch": 0,
+      "fixed": true,
+      "entity": 9,
+      "type": "Shikigami de criação",
+      "input": "FALSE",
+      "raw": {
+        "boolValue": false
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 30,
+      "acq": "Criação",
+      "batch": 0,
+      "fixed": true,
+      "entity": 10,
+      "type": "Corpo amaldiçoado de criação",
+      "input": "texto7",
+      "raw": {
+        "stringValue": "7"
+      },
+      "normalized": 7,
+      "level": 7,
+      "hp": 29,
+      "slots": 2,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 30,
+      "acq": "Criação",
+      "batch": 0,
+      "fixed": true,
+      "entity": 11,
+      "type": "Shikigami de criação",
+      "input": "texto_livre",
+      "raw": {
+        "stringValue": "Nível 7"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 30,
+      "acq": "Criação",
+      "batch": 0,
+      "fixed": true,
+      "entity": 12,
+      "type": "Corpo amaldiçoado de criação",
+      "input": "formula_num",
+      "raw": {
+        "formulaValue": "=7"
+      },
+      "normalized": 7,
+      "level": 7,
+      "hp": 29,
+      "slots": 2,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 30,
+      "acq": "Criação",
+      "batch": 1,
+      "fixed": true,
+      "entity": 1,
+      "type": "Shikigami de criação",
+      "input": "formula_texto",
+      "raw": {
+        "formulaValue": "=\"7\""
+      },
+      "normalized": 7,
+      "level": 7,
+      "hp": 23,
+      "slots": 2,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 30,
+      "acq": "Criação",
+      "batch": 1,
+      "fixed": true,
+      "entity": 2,
+      "type": "Corpo amaldiçoado de criação",
+      "input": "formula_vazia",
+      "raw": {
+        "formulaValue": "=\"\""
+      },
+      "normalized": 0,
+      "level": 30,
+      "hp": 121,
+      "slots": 8,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 30,
+      "acq": "Criação",
+      "batch": 1,
+      "fixed": true,
+      "entity": 3,
+      "type": "Shikigami de criação",
+      "input": "vazio",
+      "raw": null,
+      "normalized": 0,
+      "level": 30,
+      "hp": 92,
+      "slots": 8,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 30,
+      "acq": "Criação",
+      "batch": 1,
+      "fixed": true,
+      "entity": 4,
+      "type": "Corpo amaldiçoado de criação",
+      "input": "erro_NA",
+      "raw": {
+        "formulaValue": "=NA()"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 30,
+      "acq": "Criação",
+      "batch": 1,
+      "fixed": true,
+      "entity": 5,
+      "type": "Shikigami de criação",
+      "input": "erro_div",
+      "raw": {
+        "formulaValue": "=1/0"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 30,
+      "acq": "Criação",
+      "batch": 1,
+      "fixed": true,
+      "entity": 6,
+      "type": "Corpo amaldiçoado de criação",
+      "input": "espaco",
+      "raw": {
+        "stringValue": " "
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 30,
+      "acq": "Criação",
+      "batch": 1,
+      "fixed": true,
+      "entity": 7,
+      "type": "Shikigami de criação",
+      "input": "texto_fracao",
+      "raw": {
+        "stringValue": "7,5"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 30,
+      "acq": "Criação",
+      "batch": 1,
+      "fixed": true,
+      "entity": 8,
+      "type": "Corpo amaldiçoado de criação",
+      "input": "formula_neg",
+      "raw": {
+        "formulaValue": "=-2"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 30,
+      "acq": "Criação",
+      "batch": 1,
+      "fixed": true,
+      "entity": 9,
+      "type": "Shikigami de criação",
+      "input": "formula_fracao",
+      "raw": {
+        "formulaValue": "=15/2"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 30,
+      "acq": "Criação",
+      "batch": 1,
+      "fixed": true,
+      "entity": 10,
+      "type": "Corpo amaldiçoado de criação",
+      "input": "formula_true",
+      "raw": {
+        "formulaValue": "=TRUE()"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 30,
+      "acq": "Criação",
+      "batch": 1,
+      "fixed": true,
+      "entity": 11,
+      "type": "Shikigami de criação",
+      "input": "formula_false",
+      "raw": {
+        "formulaValue": "=FALSE()"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 30,
+      "acq": "Criação",
+      "batch": 1,
+      "fixed": true,
+      "entity": 12,
+      "type": "Corpo amaldiçoado de criação",
+      "input": "formula_trinta",
+      "raw": {
+        "formulaValue": "=30"
+      },
+      "normalized": 30,
+      "level": 30,
+      "hp": 121,
+      "slots": 8,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 30,
+      "acq": "Maldição domada",
+      "batch": 0,
+      "fixed": true,
+      "entity": 1,
+      "type": "Maldição domada",
+      "input": "um",
+      "raw": {
+        "numberValue": 1
+      },
+      "normalized": 1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 30,
+      "acq": "Maldição domada",
+      "batch": 0,
+      "fixed": true,
+      "entity": 2,
+      "type": "Maldição domada",
+      "input": "sete",
+      "raw": {
+        "numberValue": 7
+      },
+      "normalized": 7,
+      "level": 7,
+      "hp": 23,
+      "slots": 2,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 30,
+      "acq": "Maldição domada",
+      "batch": 0,
+      "fixed": true,
+      "entity": 3,
+      "type": "Maldição domada",
+      "input": "trinta",
+      "raw": {
+        "numberValue": 30
+      },
+      "normalized": 30,
+      "level": 30,
+      "hp": 92,
+      "slots": 8,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 30,
+      "acq": "Maldição domada",
+      "batch": 0,
+      "fixed": true,
+      "entity": 4,
+      "type": "Maldição domada",
+      "input": "acima",
+      "raw": {
+        "numberValue": 31
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 30,
+      "acq": "Maldição domada",
+      "batch": 0,
+      "fixed": true,
+      "entity": 5,
+      "type": "Maldição domada",
+      "input": "negativo",
+      "raw": {
+        "numberValue": -3
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 30,
+      "acq": "Maldição domada",
+      "batch": 0,
+      "fixed": true,
+      "entity": 6,
+      "type": "Maldição domada",
+      "input": "zero",
+      "raw": {
+        "numberValue": 0
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 30,
+      "acq": "Maldição domada",
+      "batch": 0,
+      "fixed": true,
+      "entity": 7,
+      "type": "Maldição domada",
+      "input": "fracao",
+      "raw": {
+        "numberValue": 7.5
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 30,
+      "acq": "Maldição domada",
+      "batch": 0,
+      "fixed": true,
+      "entity": 8,
+      "type": "Maldição domada",
+      "input": "TRUE",
+      "raw": {
+        "boolValue": true
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 30,
+      "acq": "Maldição domada",
+      "batch": 0,
+      "fixed": true,
+      "entity": 9,
+      "type": "Maldição domada",
+      "input": "FALSE",
+      "raw": {
+        "boolValue": false
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 30,
+      "acq": "Maldição domada",
+      "batch": 0,
+      "fixed": true,
+      "entity": 10,
+      "type": "Maldição domada",
+      "input": "texto7",
+      "raw": {
+        "stringValue": "7"
+      },
+      "normalized": 7,
+      "level": 7,
+      "hp": 23,
+      "slots": 2,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 30,
+      "acq": "Maldição domada",
+      "batch": 0,
+      "fixed": true,
+      "entity": 11,
+      "type": "Maldição domada",
+      "input": "texto_livre",
+      "raw": {
+        "stringValue": "Nível 7"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 30,
+      "acq": "Maldição domada",
+      "batch": 0,
+      "fixed": true,
+      "entity": 12,
+      "type": "Maldição domada",
+      "input": "formula_num",
+      "raw": {
+        "formulaValue": "=7"
+      },
+      "normalized": 7,
+      "level": 7,
+      "hp": 23,
+      "slots": 2,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 30,
+      "acq": "Maldição domada",
+      "batch": 1,
+      "fixed": true,
+      "entity": 1,
+      "type": "Maldição domada",
+      "input": "formula_texto",
+      "raw": {
+        "formulaValue": "=\"7\""
+      },
+      "normalized": 7,
+      "level": 7,
+      "hp": 23,
+      "slots": 2,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 30,
+      "acq": "Maldição domada",
+      "batch": 1,
+      "fixed": true,
+      "entity": 2,
+      "type": "Maldição domada",
+      "input": "formula_vazia",
+      "raw": {
+        "formulaValue": "=\"\""
+      },
+      "normalized": 0,
+      "level": 30,
+      "hp": 92,
+      "slots": 8,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 30,
+      "acq": "Maldição domada",
+      "batch": 1,
+      "fixed": true,
+      "entity": 3,
+      "type": "Maldição domada",
+      "input": "vazio",
+      "raw": null,
+      "normalized": 0,
+      "level": 30,
+      "hp": 92,
+      "slots": 8,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 30,
+      "acq": "Maldição domada",
+      "batch": 1,
+      "fixed": true,
+      "entity": 4,
+      "type": "Maldição domada",
+      "input": "erro_NA",
+      "raw": {
+        "formulaValue": "=NA()"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 30,
+      "acq": "Maldição domada",
+      "batch": 1,
+      "fixed": true,
+      "entity": 5,
+      "type": "Maldição domada",
+      "input": "erro_div",
+      "raw": {
+        "formulaValue": "=1/0"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 30,
+      "acq": "Maldição domada",
+      "batch": 1,
+      "fixed": true,
+      "entity": 6,
+      "type": "Maldição domada",
+      "input": "espaco",
+      "raw": {
+        "stringValue": " "
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 30,
+      "acq": "Maldição domada",
+      "batch": 1,
+      "fixed": true,
+      "entity": 7,
+      "type": "Maldição domada",
+      "input": "texto_fracao",
+      "raw": {
+        "stringValue": "7,5"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 30,
+      "acq": "Maldição domada",
+      "batch": 1,
+      "fixed": true,
+      "entity": 8,
+      "type": "Maldição domada",
+      "input": "formula_neg",
+      "raw": {
+        "formulaValue": "=-2"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 30,
+      "acq": "Maldição domada",
+      "batch": 1,
+      "fixed": true,
+      "entity": 9,
+      "type": "Maldição domada",
+      "input": "formula_fracao",
+      "raw": {
+        "formulaValue": "=15/2"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 30,
+      "acq": "Maldição domada",
+      "batch": 1,
+      "fixed": true,
+      "entity": 10,
+      "type": "Maldição domada",
+      "input": "formula_true",
+      "raw": {
+        "formulaValue": "=TRUE()"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 30,
+      "acq": "Maldição domada",
+      "batch": 1,
+      "fixed": true,
+      "entity": 11,
+      "type": "Maldição domada",
+      "input": "formula_false",
+      "raw": {
+        "formulaValue": "=FALSE()"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 30,
+      "acq": "Maldição domada",
+      "batch": 1,
+      "fixed": true,
+      "entity": 12,
+      "type": "Maldição domada",
+      "input": "formula_trinta",
+      "raw": {
+        "formulaValue": "=30"
+      },
+      "normalized": 30,
+      "level": 30,
+      "hp": 92,
+      "slots": 8,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Criação",
+      "batch": 0,
+      "fixed": true,
+      "entity": 1,
+      "type": "Shikigami de criação",
+      "input": "um",
+      "raw": {
+        "numberValue": 1
+      },
+      "normalized": 1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Criação",
+      "batch": 0,
+      "fixed": true,
+      "entity": 2,
+      "type": "Corpo amaldiçoado de criação",
+      "input": "sete",
+      "raw": {
+        "numberValue": 7
+      },
+      "normalized": 7,
+      "level": 7,
+      "hp": 29,
+      "slots": 2,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Criação",
+      "batch": 0,
+      "fixed": true,
+      "entity": 3,
+      "type": "Shikigami de criação",
+      "input": "trinta",
+      "raw": {
+        "numberValue": 30
+      },
+      "normalized": 30,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Criação",
+      "batch": 0,
+      "fixed": true,
+      "entity": 4,
+      "type": "Corpo amaldiçoado de criação",
+      "input": "acima",
+      "raw": {
+        "numberValue": 31
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Criação",
+      "batch": 0,
+      "fixed": true,
+      "entity": 5,
+      "type": "Shikigami de criação",
+      "input": "negativo",
+      "raw": {
+        "numberValue": -3
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Criação",
+      "batch": 0,
+      "fixed": true,
+      "entity": 6,
+      "type": "Corpo amaldiçoado de criação",
+      "input": "zero",
+      "raw": {
+        "numberValue": 0
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Criação",
+      "batch": 0,
+      "fixed": true,
+      "entity": 7,
+      "type": "Shikigami de criação",
+      "input": "fracao",
+      "raw": {
+        "numberValue": 7.5
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Criação",
+      "batch": 0,
+      "fixed": true,
+      "entity": 8,
+      "type": "Corpo amaldiçoado de criação",
+      "input": "TRUE",
+      "raw": {
+        "boolValue": true
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Criação",
+      "batch": 0,
+      "fixed": true,
+      "entity": 9,
+      "type": "Shikigami de criação",
+      "input": "FALSE",
+      "raw": {
+        "boolValue": false
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Criação",
+      "batch": 0,
+      "fixed": true,
+      "entity": 10,
+      "type": "Corpo amaldiçoado de criação",
+      "input": "texto7",
+      "raw": {
+        "stringValue": "7"
+      },
+      "normalized": 7,
+      "level": 7,
+      "hp": 29,
+      "slots": 2,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Criação",
+      "batch": 0,
+      "fixed": true,
+      "entity": 11,
+      "type": "Shikigami de criação",
+      "input": "texto_livre",
+      "raw": {
+        "stringValue": "Nível 7"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Criação",
+      "batch": 0,
+      "fixed": true,
+      "entity": 12,
+      "type": "Corpo amaldiçoado de criação",
+      "input": "formula_num",
+      "raw": {
+        "formulaValue": "=7"
+      },
+      "normalized": 7,
+      "level": 7,
+      "hp": 29,
+      "slots": 2,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Criação",
+      "batch": 1,
+      "fixed": true,
+      "entity": 1,
+      "type": "Shikigami de criação",
+      "input": "formula_texto",
+      "raw": {
+        "formulaValue": "=\"7\""
+      },
+      "normalized": 7,
+      "level": 7,
+      "hp": 23,
+      "slots": 2,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Criação",
+      "batch": 1,
+      "fixed": true,
+      "entity": 2,
+      "type": "Corpo amaldiçoado de criação",
+      "input": "formula_vazia",
+      "raw": {
+        "formulaValue": "=\"\""
+      },
+      "normalized": 0,
+      "level": 9,
+      "hp": 37,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Criação",
+      "batch": 1,
+      "fixed": true,
+      "entity": 3,
+      "type": "Shikigami de criação",
+      "input": "vazio",
+      "raw": null,
+      "normalized": 0,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Criação",
+      "batch": 1,
+      "fixed": true,
+      "entity": 4,
+      "type": "Corpo amaldiçoado de criação",
+      "input": "erro_NA",
+      "raw": {
+        "formulaValue": "=NA()"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Criação",
+      "batch": 1,
+      "fixed": true,
+      "entity": 5,
+      "type": "Shikigami de criação",
+      "input": "erro_div",
+      "raw": {
+        "formulaValue": "=1/0"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Criação",
+      "batch": 1,
+      "fixed": true,
+      "entity": 6,
+      "type": "Corpo amaldiçoado de criação",
+      "input": "espaco",
+      "raw": {
+        "stringValue": " "
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Criação",
+      "batch": 1,
+      "fixed": true,
+      "entity": 7,
+      "type": "Shikigami de criação",
+      "input": "texto_fracao",
+      "raw": {
+        "stringValue": "7,5"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Criação",
+      "batch": 1,
+      "fixed": true,
+      "entity": 8,
+      "type": "Corpo amaldiçoado de criação",
+      "input": "formula_neg",
+      "raw": {
+        "formulaValue": "=-2"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Criação",
+      "batch": 1,
+      "fixed": true,
+      "entity": 9,
+      "type": "Shikigami de criação",
+      "input": "formula_fracao",
+      "raw": {
+        "formulaValue": "=15/2"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Criação",
+      "batch": 1,
+      "fixed": true,
+      "entity": 10,
+      "type": "Corpo amaldiçoado de criação",
+      "input": "formula_true",
+      "raw": {
+        "formulaValue": "=TRUE()"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Criação",
+      "batch": 1,
+      "fixed": true,
+      "entity": 11,
+      "type": "Shikigami de criação",
+      "input": "formula_false",
+      "raw": {
+        "formulaValue": "=FALSE()"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Criação",
+      "batch": 1,
+      "fixed": true,
+      "entity": 12,
+      "type": "Corpo amaldiçoado de criação",
+      "input": "formula_trinta",
+      "raw": {
+        "formulaValue": "=30"
+      },
+      "normalized": 30,
+      "level": 9,
+      "hp": 37,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Maldição domada",
+      "batch": 0,
+      "fixed": true,
+      "entity": 1,
+      "type": "Maldição domada",
+      "input": "um",
+      "raw": {
+        "numberValue": 1
+      },
+      "normalized": 1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Maldição domada",
+      "batch": 0,
+      "fixed": true,
+      "entity": 2,
+      "type": "Maldição domada",
+      "input": "sete",
+      "raw": {
+        "numberValue": 7
+      },
+      "normalized": 7,
+      "level": 7,
+      "hp": 23,
+      "slots": 2,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Maldição domada",
+      "batch": 0,
+      "fixed": true,
+      "entity": 3,
+      "type": "Maldição domada",
+      "input": "trinta",
+      "raw": {
+        "numberValue": 30
+      },
+      "normalized": 30,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Maldição domada",
+      "batch": 0,
+      "fixed": true,
+      "entity": 4,
+      "type": "Maldição domada",
+      "input": "acima",
+      "raw": {
+        "numberValue": 31
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Maldição domada",
+      "batch": 0,
+      "fixed": true,
+      "entity": 5,
+      "type": "Maldição domada",
+      "input": "negativo",
+      "raw": {
+        "numberValue": -3
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Maldição domada",
+      "batch": 0,
+      "fixed": true,
+      "entity": 6,
+      "type": "Maldição domada",
+      "input": "zero",
+      "raw": {
+        "numberValue": 0
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Maldição domada",
+      "batch": 0,
+      "fixed": true,
+      "entity": 7,
+      "type": "Maldição domada",
+      "input": "fracao",
+      "raw": {
+        "numberValue": 7.5
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Maldição domada",
+      "batch": 0,
+      "fixed": true,
+      "entity": 8,
+      "type": "Maldição domada",
+      "input": "TRUE",
+      "raw": {
+        "boolValue": true
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Maldição domada",
+      "batch": 0,
+      "fixed": true,
+      "entity": 9,
+      "type": "Maldição domada",
+      "input": "FALSE",
+      "raw": {
+        "boolValue": false
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Maldição domada",
+      "batch": 0,
+      "fixed": true,
+      "entity": 10,
+      "type": "Maldição domada",
+      "input": "texto7",
+      "raw": {
+        "stringValue": "7"
+      },
+      "normalized": 7,
+      "level": 7,
+      "hp": 23,
+      "slots": 2,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Maldição domada",
+      "batch": 0,
+      "fixed": true,
+      "entity": 11,
+      "type": "Maldição domada",
+      "input": "texto_livre",
+      "raw": {
+        "stringValue": "Nível 7"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Maldição domada",
+      "batch": 0,
+      "fixed": true,
+      "entity": 12,
+      "type": "Maldição domada",
+      "input": "formula_num",
+      "raw": {
+        "formulaValue": "=7"
+      },
+      "normalized": 7,
+      "level": 7,
+      "hp": 23,
+      "slots": 2,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Maldição domada",
+      "batch": 1,
+      "fixed": true,
+      "entity": 1,
+      "type": "Maldição domada",
+      "input": "formula_texto",
+      "raw": {
+        "formulaValue": "=\"7\""
+      },
+      "normalized": 7,
+      "level": 7,
+      "hp": 23,
+      "slots": 2,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Maldição domada",
+      "batch": 1,
+      "fixed": true,
+      "entity": 2,
+      "type": "Maldição domada",
+      "input": "formula_vazia",
+      "raw": {
+        "formulaValue": "=\"\""
+      },
+      "normalized": 0,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Maldição domada",
+      "batch": 1,
+      "fixed": true,
+      "entity": 3,
+      "type": "Maldição domada",
+      "input": "vazio",
+      "raw": null,
+      "normalized": 0,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Maldição domada",
+      "batch": 1,
+      "fixed": true,
+      "entity": 4,
+      "type": "Maldição domada",
+      "input": "erro_NA",
+      "raw": {
+        "formulaValue": "=NA()"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Maldição domada",
+      "batch": 1,
+      "fixed": true,
+      "entity": 5,
+      "type": "Maldição domada",
+      "input": "erro_div",
+      "raw": {
+        "formulaValue": "=1/0"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Maldição domada",
+      "batch": 1,
+      "fixed": true,
+      "entity": 6,
+      "type": "Maldição domada",
+      "input": "espaco",
+      "raw": {
+        "stringValue": " "
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Maldição domada",
+      "batch": 1,
+      "fixed": true,
+      "entity": 7,
+      "type": "Maldição domada",
+      "input": "texto_fracao",
+      "raw": {
+        "stringValue": "7,5"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Maldição domada",
+      "batch": 1,
+      "fixed": true,
+      "entity": 8,
+      "type": "Maldição domada",
+      "input": "formula_neg",
+      "raw": {
+        "formulaValue": "=-2"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Maldição domada",
+      "batch": 1,
+      "fixed": true,
+      "entity": 9,
+      "type": "Maldição domada",
+      "input": "formula_fracao",
+      "raw": {
+        "formulaValue": "=15/2"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Maldição domada",
+      "batch": 1,
+      "fixed": true,
+      "entity": 10,
+      "type": "Maldição domada",
+      "input": "formula_true",
+      "raw": {
+        "formulaValue": "=TRUE()"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Maldição domada",
+      "batch": 1,
+      "fixed": true,
+      "entity": 11,
+      "type": "Maldição domada",
+      "input": "formula_false",
+      "raw": {
+        "formulaValue": "=FALSE()"
+      },
+      "normalized": -1,
+      "level": 1,
+      "hp": 5,
+      "slots": 1,
+      "titleReview": true,
+      "listReview": true
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Maldição domada",
+      "batch": 1,
+      "fixed": true,
+      "entity": 12,
+      "type": "Maldição domada",
+      "input": "formula_trinta",
+      "raw": {
+        "formulaValue": "=30"
+      },
+      "normalized": 30,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Espaço conhecido",
+      "batch": 0,
+      "fixed": false,
+      "entity": 1,
+      "type": "Shikigami de técnica",
+      "input": "fracao",
+      "raw": {
+        "numberValue": 7.5
+      },
+      "normalized": -1,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Espaço conhecido",
+      "batch": 0,
+      "fixed": false,
+      "entity": 2,
+      "type": "Shikigami de técnica",
+      "input": "TRUE",
+      "raw": {
+        "boolValue": true
+      },
+      "normalized": -1,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Espaço conhecido",
+      "batch": 0,
+      "fixed": false,
+      "entity": 3,
+      "type": "Shikigami de técnica",
+      "input": "FALSE",
+      "raw": {
+        "boolValue": false
+      },
+      "normalized": -1,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Espaço conhecido",
+      "batch": 0,
+      "fixed": false,
+      "entity": 4,
+      "type": "Shikigami de técnica",
+      "input": "texto7",
+      "raw": {
+        "stringValue": "7"
+      },
+      "normalized": 7,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Espaço conhecido",
+      "batch": 0,
+      "fixed": false,
+      "entity": 5,
+      "type": "Shikigami de técnica",
+      "input": "texto_livre",
+      "raw": {
+        "stringValue": "Nível 7"
+      },
+      "normalized": -1,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Espaço conhecido",
+      "batch": 0,
+      "fixed": false,
+      "entity": 6,
+      "type": "Shikigami de técnica",
+      "input": "formula_num",
+      "raw": {
+        "formulaValue": "=7"
+      },
+      "normalized": 7,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Espaço conhecido",
+      "batch": 0,
+      "fixed": false,
+      "entity": 7,
+      "type": "Shikigami de técnica",
+      "input": "fracao",
+      "raw": {
+        "numberValue": 7.5
+      },
+      "normalized": -1,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Espaço conhecido",
+      "batch": 0,
+      "fixed": false,
+      "entity": 8,
+      "type": "Shikigami de técnica",
+      "input": "TRUE",
+      "raw": {
+        "boolValue": true
+      },
+      "normalized": -1,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Espaço conhecido",
+      "batch": 0,
+      "fixed": false,
+      "entity": 9,
+      "type": "Shikigami de técnica",
+      "input": "FALSE",
+      "raw": {
+        "boolValue": false
+      },
+      "normalized": -1,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Espaço conhecido",
+      "batch": 0,
+      "fixed": false,
+      "entity": 10,
+      "type": "Shikigami de técnica",
+      "input": "texto7",
+      "raw": {
+        "stringValue": "7"
+      },
+      "normalized": 7,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Espaço conhecido",
+      "batch": 0,
+      "fixed": false,
+      "entity": 11,
+      "type": "Shikigami de técnica",
+      "input": "texto_livre",
+      "raw": {
+        "stringValue": "Nível 7"
+      },
+      "normalized": -1,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Espaço conhecido",
+      "batch": 0,
+      "fixed": false,
+      "entity": 12,
+      "type": "Shikigami de técnica",
+      "input": "formula_num",
+      "raw": {
+        "formulaValue": "=7"
+      },
+      "normalized": 7,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Lista de ritual",
+      "batch": 0,
+      "fixed": false,
+      "entity": 1,
+      "type": "Shikigami de técnica",
+      "input": "fracao",
+      "raw": {
+        "numberValue": 7.5
+      },
+      "normalized": -1,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Lista de ritual",
+      "batch": 0,
+      "fixed": false,
+      "entity": 2,
+      "type": "Shikigami de técnica",
+      "input": "TRUE",
+      "raw": {
+        "boolValue": true
+      },
+      "normalized": -1,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Lista de ritual",
+      "batch": 0,
+      "fixed": false,
+      "entity": 3,
+      "type": "Shikigami de técnica",
+      "input": "FALSE",
+      "raw": {
+        "boolValue": false
+      },
+      "normalized": -1,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Lista de ritual",
+      "batch": 0,
+      "fixed": false,
+      "entity": 4,
+      "type": "Shikigami de técnica",
+      "input": "texto7",
+      "raw": {
+        "stringValue": "7"
+      },
+      "normalized": 7,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Lista de ritual",
+      "batch": 0,
+      "fixed": false,
+      "entity": 5,
+      "type": "Shikigami de técnica",
+      "input": "texto_livre",
+      "raw": {
+        "stringValue": "Nível 7"
+      },
+      "normalized": -1,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Lista de ritual",
+      "batch": 0,
+      "fixed": false,
+      "entity": 6,
+      "type": "Shikigami de técnica",
+      "input": "formula_num",
+      "raw": {
+        "formulaValue": "=7"
+      },
+      "normalized": 7,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Lista de ritual",
+      "batch": 0,
+      "fixed": false,
+      "entity": 7,
+      "type": "Shikigami de técnica",
+      "input": "fracao",
+      "raw": {
+        "numberValue": 7.5
+      },
+      "normalized": -1,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Lista de ritual",
+      "batch": 0,
+      "fixed": false,
+      "entity": 8,
+      "type": "Shikigami de técnica",
+      "input": "TRUE",
+      "raw": {
+        "boolValue": true
+      },
+      "normalized": -1,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Lista de ritual",
+      "batch": 0,
+      "fixed": false,
+      "entity": 9,
+      "type": "Shikigami de técnica",
+      "input": "FALSE",
+      "raw": {
+        "boolValue": false
+      },
+      "normalized": -1,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Lista de ritual",
+      "batch": 0,
+      "fixed": false,
+      "entity": 10,
+      "type": "Shikigami de técnica",
+      "input": "texto7",
+      "raw": {
+        "stringValue": "7"
+      },
+      "normalized": 7,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Lista de ritual",
+      "batch": 0,
+      "fixed": false,
+      "entity": 11,
+      "type": "Shikigami de técnica",
+      "input": "texto_livre",
+      "raw": {
+        "stringValue": "Nível 7"
+      },
+      "normalized": -1,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    },
+    {
+      "copy": "Ciclo",
+      "master": 9,
+      "acq": "Lista de ritual",
+      "batch": 0,
+      "fixed": false,
+      "entity": 12,
+      "type": "Shikigami de técnica",
+      "input": "formula_num",
+      "raw": {
+        "formulaValue": "=7"
+      },
+      "normalized": 7,
+      "level": 9,
+      "hp": 29,
+      "slots": 3,
+      "titleReview": false,
+      "listReview": false
+    }
+  ],
+  "limits": [
+    "nativo só pt_BR",
+    "escopo delimitado de recuperação; não toda colagem arbitrária",
+    "sem certificação de todas as mecânicas ou de latência Android"
+  ],
+  "modelRecommendation": {
+    "review": "Sol/Medium",
+    "newImplementation": "Sol/High",
+    "changeAutomatically": false
+  }
+}

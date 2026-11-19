@@ -1,0 +1,422 @@
+[
+  {
+    "aba": "DADOS_INVOC",
+    "r": 2,
+    "c": 114,
+    "antes": "=N('INVOCAÇÕES'!$O$20)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$O$20),IF(REGEXMATCH('INVOCAÇÕES'!$O$20,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$O$20),0),N('INVOCAÇÕES'!$O$20))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 2,
+    "c": 115,
+    "antes": "=N('INVOCAÇÕES'!$P$20)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$P$20),IF(REGEXMATCH('INVOCAÇÕES'!$P$20,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$P$20),0),N('INVOCAÇÕES'!$P$20))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 2,
+    "c": 116,
+    "antes": "=N('INVOCAÇÕES'!$Q$20)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$Q$20),IF(REGEXMATCH('INVOCAÇÕES'!$Q$20,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$Q$20),0),N('INVOCAÇÕES'!$Q$20))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 2,
+    "c": 117,
+    "antes": "=N('INVOCAÇÕES'!$R$20)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$R$20),IF(REGEXMATCH('INVOCAÇÕES'!$R$20,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$R$20),0),N('INVOCAÇÕES'!$R$20))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 2,
+    "c": 118,
+    "antes": "=N('INVOCAÇÕES'!$S$20)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$S$20),IF(REGEXMATCH('INVOCAÇÕES'!$S$20,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$S$20),0),N('INVOCAÇÕES'!$S$20))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 3,
+    "c": 114,
+    "antes": "=N('INVOCAÇÕES'!$O$251)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$O$251),IF(REGEXMATCH('INVOCAÇÕES'!$O$251,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$O$251),0),N('INVOCAÇÕES'!$O$251))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 3,
+    "c": 115,
+    "antes": "=N('INVOCAÇÕES'!$P$251)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$P$251),IF(REGEXMATCH('INVOCAÇÕES'!$P$251,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$P$251),0),N('INVOCAÇÕES'!$P$251))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 3,
+    "c": 116,
+    "antes": "=N('INVOCAÇÕES'!$Q$251)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$Q$251),IF(REGEXMATCH('INVOCAÇÕES'!$Q$251,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$Q$251),0),N('INVOCAÇÕES'!$Q$251))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 3,
+    "c": 117,
+    "antes": "=N('INVOCAÇÕES'!$R$251)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$R$251),IF(REGEXMATCH('INVOCAÇÕES'!$R$251,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$R$251),0),N('INVOCAÇÕES'!$R$251))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 3,
+    "c": 118,
+    "antes": "=N('INVOCAÇÕES'!$S$251)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$S$251),IF(REGEXMATCH('INVOCAÇÕES'!$S$251,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$S$251),0),N('INVOCAÇÕES'!$S$251))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 4,
+    "c": 114,
+    "antes": "=N('INVOCAÇÕES'!$O$482)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$O$482),IF(REGEXMATCH('INVOCAÇÕES'!$O$482,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$O$482),0),N('INVOCAÇÕES'!$O$482))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 4,
+    "c": 115,
+    "antes": "=N('INVOCAÇÕES'!$P$482)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$P$482),IF(REGEXMATCH('INVOCAÇÕES'!$P$482,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$P$482),0),N('INVOCAÇÕES'!$P$482))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 4,
+    "c": 116,
+    "antes": "=N('INVOCAÇÕES'!$Q$482)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$Q$482),IF(REGEXMATCH('INVOCAÇÕES'!$Q$482,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$Q$482),0),N('INVOCAÇÕES'!$Q$482))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 4,
+    "c": 117,
+    "antes": "=N('INVOCAÇÕES'!$R$482)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$R$482),IF(REGEXMATCH('INVOCAÇÕES'!$R$482,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$R$482),0),N('INVOCAÇÕES'!$R$482))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 4,
+    "c": 118,
+    "antes": "=N('INVOCAÇÕES'!$S$482)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$S$482),IF(REGEXMATCH('INVOCAÇÕES'!$S$482,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$S$482),0),N('INVOCAÇÕES'!$S$482))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 5,
+    "c": 114,
+    "antes": "=N('INVOCAÇÕES'!$O$713)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$O$713),IF(REGEXMATCH('INVOCAÇÕES'!$O$713,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$O$713),0),N('INVOCAÇÕES'!$O$713))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 5,
+    "c": 115,
+    "antes": "=N('INVOCAÇÕES'!$P$713)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$P$713),IF(REGEXMATCH('INVOCAÇÕES'!$P$713,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$P$713),0),N('INVOCAÇÕES'!$P$713))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 5,
+    "c": 116,
+    "antes": "=N('INVOCAÇÕES'!$Q$713)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$Q$713),IF(REGEXMATCH('INVOCAÇÕES'!$Q$713,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$Q$713),0),N('INVOCAÇÕES'!$Q$713))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 5,
+    "c": 117,
+    "antes": "=N('INVOCAÇÕES'!$R$713)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$R$713),IF(REGEXMATCH('INVOCAÇÕES'!$R$713,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$R$713),0),N('INVOCAÇÕES'!$R$713))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 5,
+    "c": 118,
+    "antes": "=N('INVOCAÇÕES'!$S$713)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$S$713),IF(REGEXMATCH('INVOCAÇÕES'!$S$713,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$S$713),0),N('INVOCAÇÕES'!$S$713))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 6,
+    "c": 114,
+    "antes": "=N('INVOCAÇÕES'!$O$944)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$O$944),IF(REGEXMATCH('INVOCAÇÕES'!$O$944,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$O$944),0),N('INVOCAÇÕES'!$O$944))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 6,
+    "c": 115,
+    "antes": "=N('INVOCAÇÕES'!$P$944)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$P$944),IF(REGEXMATCH('INVOCAÇÕES'!$P$944,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$P$944),0),N('INVOCAÇÕES'!$P$944))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 6,
+    "c": 116,
+    "antes": "=N('INVOCAÇÕES'!$Q$944)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$Q$944),IF(REGEXMATCH('INVOCAÇÕES'!$Q$944,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$Q$944),0),N('INVOCAÇÕES'!$Q$944))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 6,
+    "c": 117,
+    "antes": "=N('INVOCAÇÕES'!$R$944)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$R$944),IF(REGEXMATCH('INVOCAÇÕES'!$R$944,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$R$944),0),N('INVOCAÇÕES'!$R$944))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 6,
+    "c": 118,
+    "antes": "=N('INVOCAÇÕES'!$S$944)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$S$944),IF(REGEXMATCH('INVOCAÇÕES'!$S$944,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$S$944),0),N('INVOCAÇÕES'!$S$944))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 7,
+    "c": 114,
+    "antes": "=N('INVOCAÇÕES'!$O$1175)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$O$1175),IF(REGEXMATCH('INVOCAÇÕES'!$O$1175,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$O$1175),0),N('INVOCAÇÕES'!$O$1175))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 7,
+    "c": 115,
+    "antes": "=N('INVOCAÇÕES'!$P$1175)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$P$1175),IF(REGEXMATCH('INVOCAÇÕES'!$P$1175,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$P$1175),0),N('INVOCAÇÕES'!$P$1175))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 7,
+    "c": 116,
+    "antes": "=N('INVOCAÇÕES'!$Q$1175)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$Q$1175),IF(REGEXMATCH('INVOCAÇÕES'!$Q$1175,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$Q$1175),0),N('INVOCAÇÕES'!$Q$1175))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 7,
+    "c": 117,
+    "antes": "=N('INVOCAÇÕES'!$R$1175)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$R$1175),IF(REGEXMATCH('INVOCAÇÕES'!$R$1175,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$R$1175),0),N('INVOCAÇÕES'!$R$1175))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 7,
+    "c": 118,
+    "antes": "=N('INVOCAÇÕES'!$S$1175)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$S$1175),IF(REGEXMATCH('INVOCAÇÕES'!$S$1175,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$S$1175),0),N('INVOCAÇÕES'!$S$1175))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 8,
+    "c": 114,
+    "antes": "=N('INVOCAÇÕES'!$AH$20)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$AH$20),IF(REGEXMATCH('INVOCAÇÕES'!$AH$20,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$AH$20),0),N('INVOCAÇÕES'!$AH$20))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 8,
+    "c": 115,
+    "antes": "=N('INVOCAÇÕES'!$AI$20)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$AI$20),IF(REGEXMATCH('INVOCAÇÕES'!$AI$20,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$AI$20),0),N('INVOCAÇÕES'!$AI$20))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 8,
+    "c": 116,
+    "antes": "=N('INVOCAÇÕES'!$AJ$20)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$AJ$20),IF(REGEXMATCH('INVOCAÇÕES'!$AJ$20,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$AJ$20),0),N('INVOCAÇÕES'!$AJ$20))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 8,
+    "c": 117,
+    "antes": "=N('INVOCAÇÕES'!$AK$20)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$AK$20),IF(REGEXMATCH('INVOCAÇÕES'!$AK$20,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$AK$20),0),N('INVOCAÇÕES'!$AK$20))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 8,
+    "c": 118,
+    "antes": "=N('INVOCAÇÕES'!$AL$20)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$AL$20),IF(REGEXMATCH('INVOCAÇÕES'!$AL$20,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$AL$20),0),N('INVOCAÇÕES'!$AL$20))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 9,
+    "c": 114,
+    "antes": "=N('INVOCAÇÕES'!$AH$251)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$AH$251),IF(REGEXMATCH('INVOCAÇÕES'!$AH$251,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$AH$251),0),N('INVOCAÇÕES'!$AH$251))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 9,
+    "c": 115,
+    "antes": "=N('INVOCAÇÕES'!$AI$251)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$AI$251),IF(REGEXMATCH('INVOCAÇÕES'!$AI$251,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$AI$251),0),N('INVOCAÇÕES'!$AI$251))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 9,
+    "c": 116,
+    "antes": "=N('INVOCAÇÕES'!$AJ$251)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$AJ$251),IF(REGEXMATCH('INVOCAÇÕES'!$AJ$251,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$AJ$251),0),N('INVOCAÇÕES'!$AJ$251))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 9,
+    "c": 117,
+    "antes": "=N('INVOCAÇÕES'!$AK$251)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$AK$251),IF(REGEXMATCH('INVOCAÇÕES'!$AK$251,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$AK$251),0),N('INVOCAÇÕES'!$AK$251))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 9,
+    "c": 118,
+    "antes": "=N('INVOCAÇÕES'!$AL$251)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$AL$251),IF(REGEXMATCH('INVOCAÇÕES'!$AL$251,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$AL$251),0),N('INVOCAÇÕES'!$AL$251))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 10,
+    "c": 114,
+    "antes": "=N('INVOCAÇÕES'!$AH$482)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$AH$482),IF(REGEXMATCH('INVOCAÇÕES'!$AH$482,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$AH$482),0),N('INVOCAÇÕES'!$AH$482))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 10,
+    "c": 115,
+    "antes": "=N('INVOCAÇÕES'!$AI$482)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$AI$482),IF(REGEXMATCH('INVOCAÇÕES'!$AI$482,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$AI$482),0),N('INVOCAÇÕES'!$AI$482))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 10,
+    "c": 116,
+    "antes": "=N('INVOCAÇÕES'!$AJ$482)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$AJ$482),IF(REGEXMATCH('INVOCAÇÕES'!$AJ$482,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$AJ$482),0),N('INVOCAÇÕES'!$AJ$482))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 10,
+    "c": 117,
+    "antes": "=N('INVOCAÇÕES'!$AK$482)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$AK$482),IF(REGEXMATCH('INVOCAÇÕES'!$AK$482,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$AK$482),0),N('INVOCAÇÕES'!$AK$482))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 10,
+    "c": 118,
+    "antes": "=N('INVOCAÇÕES'!$AL$482)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$AL$482),IF(REGEXMATCH('INVOCAÇÕES'!$AL$482,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$AL$482),0),N('INVOCAÇÕES'!$AL$482))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 11,
+    "c": 114,
+    "antes": "=N('INVOCAÇÕES'!$AH$713)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$AH$713),IF(REGEXMATCH('INVOCAÇÕES'!$AH$713,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$AH$713),0),N('INVOCAÇÕES'!$AH$713))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 11,
+    "c": 115,
+    "antes": "=N('INVOCAÇÕES'!$AI$713)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$AI$713),IF(REGEXMATCH('INVOCAÇÕES'!$AI$713,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$AI$713),0),N('INVOCAÇÕES'!$AI$713))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 11,
+    "c": 116,
+    "antes": "=N('INVOCAÇÕES'!$AJ$713)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$AJ$713),IF(REGEXMATCH('INVOCAÇÕES'!$AJ$713,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$AJ$713),0),N('INVOCAÇÕES'!$AJ$713))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 11,
+    "c": 117,
+    "antes": "=N('INVOCAÇÕES'!$AK$713)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$AK$713),IF(REGEXMATCH('INVOCAÇÕES'!$AK$713,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$AK$713),0),N('INVOCAÇÕES'!$AK$713))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 11,
+    "c": 118,
+    "antes": "=N('INVOCAÇÕES'!$AL$713)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$AL$713),IF(REGEXMATCH('INVOCAÇÕES'!$AL$713,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$AL$713),0),N('INVOCAÇÕES'!$AL$713))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 12,
+    "c": 114,
+    "antes": "=N('INVOCAÇÕES'!$AH$944)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$AH$944),IF(REGEXMATCH('INVOCAÇÕES'!$AH$944,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$AH$944),0),N('INVOCAÇÕES'!$AH$944))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 12,
+    "c": 115,
+    "antes": "=N('INVOCAÇÕES'!$AI$944)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$AI$944),IF(REGEXMATCH('INVOCAÇÕES'!$AI$944,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$AI$944),0),N('INVOCAÇÕES'!$AI$944))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 12,
+    "c": 116,
+    "antes": "=N('INVOCAÇÕES'!$AJ$944)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$AJ$944),IF(REGEXMATCH('INVOCAÇÕES'!$AJ$944,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$AJ$944),0),N('INVOCAÇÕES'!$AJ$944))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 12,
+    "c": 117,
+    "antes": "=N('INVOCAÇÕES'!$AK$944)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$AK$944),IF(REGEXMATCH('INVOCAÇÕES'!$AK$944,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$AK$944),0),N('INVOCAÇÕES'!$AK$944))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 12,
+    "c": 118,
+    "antes": "=N('INVOCAÇÕES'!$AL$944)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$AL$944),IF(REGEXMATCH('INVOCAÇÕES'!$AL$944,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$AL$944),0),N('INVOCAÇÕES'!$AL$944))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 13,
+    "c": 114,
+    "antes": "=N('INVOCAÇÕES'!$AH$1175)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$AH$1175),IF(REGEXMATCH('INVOCAÇÕES'!$AH$1175,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$AH$1175),0),N('INVOCAÇÕES'!$AH$1175))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 13,
+    "c": 115,
+    "antes": "=N('INVOCAÇÕES'!$AI$1175)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$AI$1175),IF(REGEXMATCH('INVOCAÇÕES'!$AI$1175,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$AI$1175),0),N('INVOCAÇÕES'!$AI$1175))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 13,
+    "c": 116,
+    "antes": "=N('INVOCAÇÕES'!$AJ$1175)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$AJ$1175),IF(REGEXMATCH('INVOCAÇÕES'!$AJ$1175,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$AJ$1175),0),N('INVOCAÇÕES'!$AJ$1175))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 13,
+    "c": 117,
+    "antes": "=N('INVOCAÇÕES'!$AK$1175)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$AK$1175),IF(REGEXMATCH('INVOCAÇÕES'!$AK$1175,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$AK$1175),0),N('INVOCAÇÕES'!$AK$1175))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 13,
+    "c": 118,
+    "antes": "=N('INVOCAÇÕES'!$AL$1175)",
+    "depois": "=IF(ISTEXT('INVOCAÇÕES'!$AL$1175),IF(REGEXMATCH('INVOCAÇÕES'!$AL$1175,\"^[0-6]$\"),VALUE('INVOCAÇÕES'!$AL$1175),0),N('INVOCAÇÕES'!$AL$1175))"
+  }
+]

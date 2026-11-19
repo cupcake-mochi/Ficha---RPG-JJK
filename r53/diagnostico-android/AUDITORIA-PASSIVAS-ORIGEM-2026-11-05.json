@@ -1,0 +1,483 @@
+{
+  "tipo": "diagnóstico de recálculo nativo; controles e repetições incluídos",
+  "baseLivro": "JJK---Project@e3058ad29180fdec2efec75b512446c49bf87b3d",
+  "base": "971228d2b82980a331a8ebcc577bde6f4fa8b804",
+  "total": 52,
+  "conformes": 28,
+  "divergentes": 24,
+  "causas": [
+    "P01",
+    "P02",
+    "P03"
+  ],
+  "resultados": [
+    {
+      "modelo": "Era",
+      "caso": "oaReservaPrimeira",
+      "alvo": "FICHA!J30",
+      "esperado": 56,
+      "obtido": 50,
+      "conforme": false,
+      "achado": "P01"
+    },
+    {
+      "modelo": "Era",
+      "caso": "oaReservaPrimeira saldo preservado",
+      "alvo": "FICHA!D30",
+      "esperado": 0,
+      "obtido": 0,
+      "conforme": true
+    },
+    {
+      "modelo": "Era",
+      "caso": "oaReservaSegundaEss4",
+      "alvo": "FICHA!J30",
+      "esperado": 58,
+      "obtido": 50,
+      "conforme": false,
+      "achado": "P01"
+    },
+    {
+      "modelo": "Era",
+      "caso": "oaReservaSegundaEss4 saldo preservado",
+      "alvo": "FICHA!D30",
+      "esperado": 0,
+      "obtido": 0,
+      "conforme": true
+    },
+    {
+      "modelo": "Era",
+      "caso": "oaReservaEvento",
+      "alvo": "FICHA!J30",
+      "esperado": 58,
+      "obtido": 50,
+      "conforme": false,
+      "achado": "P01"
+    },
+    {
+      "modelo": "Era",
+      "caso": "oaReservaEvento saldo preservado",
+      "alvo": "FICHA!D30",
+      "esperado": 0,
+      "obtido": 0,
+      "conforme": true
+    },
+    {
+      "modelo": "Era",
+      "caso": "compensação manual da Reserva",
+      "alvo": "FICHA!J30",
+      "esperado": 58,
+      "obtido": 58,
+      "conforme": true
+    },
+    {
+      "modelo": "Era",
+      "caso": "oaBolsaPrimeira",
+      "alvo": "DADOS!CZ41",
+      "esperado": 10,
+      "obtido": 8,
+      "conforme": false,
+      "achado": "P02"
+    },
+    {
+      "modelo": "Era",
+      "caso": "oaBolsaSegunda",
+      "alvo": "DADOS!CZ41",
+      "esperado": 10,
+      "obtido": 8,
+      "conforme": false,
+      "achado": "P02"
+    },
+    {
+      "modelo": "Era",
+      "caso": "oaBolsaCarga83",
+      "alvo": "DADOS!CZ41",
+      "esperado": 10,
+      "obtido": 8,
+      "conforme": false,
+      "achado": "P02"
+    },
+    {
+      "modelo": "Era",
+      "caso": "oaBolsaCarga83 movimento",
+      "alvo": "FICHA!O67",
+      "esperado": "9 m",
+      "obtido": "4,5 m",
+      "conforme": false,
+      "achado": "P02"
+    },
+    {
+      "modelo": "Era",
+      "caso": "oaBolsaCarga163",
+      "alvo": "DADOS!CZ41",
+      "esperado": 10,
+      "obtido": 8,
+      "conforme": false,
+      "achado": "P02"
+    },
+    {
+      "modelo": "Era",
+      "caso": "oaBolsaCarga163 movimento",
+      "alvo": "FICHA!O67",
+      "esperado": "4,5 m",
+      "obtido": "0 m",
+      "conforme": false,
+      "achado": "P02"
+    },
+    {
+      "modelo": "Era",
+      "caso": "oaBolsaManualCarga163",
+      "alvo": "DADOS!CZ41",
+      "esperado": 10,
+      "obtido": 10,
+      "conforme": true
+    },
+    {
+      "modelo": "Era",
+      "caso": "oaBolsaManualCarga163 movimento",
+      "alvo": "FICHA!O67",
+      "esperado": "4,5 m",
+      "obtido": "4,5 m",
+      "conforme": true
+    },
+    {
+      "modelo": "Era",
+      "caso": "oaBolsaManualCarga83",
+      "alvo": "DADOS!CZ41",
+      "esperado": 10,
+      "obtido": 10,
+      "conforme": true
+    },
+    {
+      "modelo": "Era",
+      "caso": "oaBolsaManualCarga83 movimento",
+      "alvo": "FICHA!O67",
+      "esperado": "9 m",
+      "obtido": "9 m",
+      "conforme": true
+    },
+    {
+      "modelo": "Era",
+      "caso": "oaPraticaPrimeira mostrador",
+      "alvo": "DADOS_AM!HM10",
+      "esperado": 5,
+      "obtido": 3,
+      "conforme": false,
+      "achado": "P03"
+    },
+    {
+      "modelo": "Era",
+      "caso": "oaPraticaSegundoNivelOriginal mostrador",
+      "alvo": "DADOS_AM!HM10",
+      "esperado": 5,
+      "obtido": 3,
+      "conforme": false,
+      "achado": "P03"
+    },
+    {
+      "modelo": "Era",
+      "caso": "Prática no nível 30, mostrador",
+      "alvo": "DADOS_AM!HM10",
+      "esperado": 7,
+      "obtido": 5,
+      "conforme": false,
+      "achado": "P03"
+    },
+    {
+      "modelo": "Era",
+      "caso": "oaManifestacao",
+      "alvo": "DADOS_AM!HM51",
+      "esperado": 1,
+      "obtido": 1,
+      "conforme": true
+    },
+    {
+      "modelo": "Era",
+      "caso": "oaTracoCoexistencia",
+      "alvo": "DADOS_AM!HM51",
+      "esperado": 1,
+      "obtido": 1,
+      "conforme": true
+    },
+    {
+      "modelo": "Era",
+      "caso": "oaConstrucao",
+      "alvo": "DADOS_AM!HM51",
+      "esperado": 1,
+      "obtido": 1,
+      "conforme": true
+    },
+    {
+      "modelo": "Era",
+      "caso": "Coexistência, repertório",
+      "alvo": "DADOS_AM!HM53",
+      "esperado": 2,
+      "obtido": 2,
+      "conforme": true
+    },
+    {
+      "modelo": "Era",
+      "caso": "Coexistência, total gratuito",
+      "alvo": "DADOS_AM!HM55",
+      "esperado": 2,
+      "obtido": 2,
+      "conforme": true
+    },
+    {
+      "modelo": "Era",
+      "caso": "retirada da menor de Talento",
+      "alvo": "DADOS_AM!HM51",
+      "esperado": 0,
+      "obtido": 0,
+      "conforme": true
+    },
+    {
+      "modelo": "Ciclo",
+      "caso": "oaReservaPrimeira",
+      "alvo": "FICHA!J30",
+      "esperado": 16,
+      "obtido": 10,
+      "conforme": false,
+      "achado": "P01"
+    },
+    {
+      "modelo": "Ciclo",
+      "caso": "oaReservaPrimeira saldo preservado",
+      "alvo": "FICHA!D30",
+      "esperado": 0,
+      "obtido": 0,
+      "conforme": true
+    },
+    {
+      "modelo": "Ciclo",
+      "caso": "oaReservaSegundaEss4",
+      "alvo": "FICHA!J30",
+      "esperado": 18,
+      "obtido": 10,
+      "conforme": false,
+      "achado": "P01"
+    },
+    {
+      "modelo": "Ciclo",
+      "caso": "oaReservaSegundaEss4 saldo preservado",
+      "alvo": "FICHA!D30",
+      "esperado": 0,
+      "obtido": 0,
+      "conforme": true
+    },
+    {
+      "modelo": "Ciclo",
+      "caso": "oaReservaEvento",
+      "alvo": "FICHA!J30",
+      "esperado": 18,
+      "obtido": 10,
+      "conforme": false,
+      "achado": "P01"
+    },
+    {
+      "modelo": "Ciclo",
+      "caso": "oaReservaEvento saldo preservado",
+      "alvo": "FICHA!D30",
+      "esperado": 0,
+      "obtido": 0,
+      "conforme": true
+    },
+    {
+      "modelo": "Ciclo",
+      "caso": "compensação manual da Reserva",
+      "alvo": "FICHA!J30",
+      "esperado": 18,
+      "obtido": 18,
+      "conforme": true
+    },
+    {
+      "modelo": "Ciclo",
+      "caso": "oaBolsaPrimeira",
+      "alvo": "DADOS!CZ41",
+      "esperado": 9,
+      "obtido": 8,
+      "conforme": false,
+      "achado": "P02"
+    },
+    {
+      "modelo": "Ciclo",
+      "caso": "oaBolsaSegunda",
+      "alvo": "DADOS!CZ41",
+      "esperado": 9,
+      "obtido": 8,
+      "conforme": false,
+      "achado": "P02"
+    },
+    {
+      "modelo": "Ciclo",
+      "caso": "oaBolsaCarga83",
+      "alvo": "DADOS!CZ41",
+      "esperado": 9,
+      "obtido": 8,
+      "conforme": false,
+      "achado": "P02"
+    },
+    {
+      "modelo": "Ciclo",
+      "caso": "oaBolsaCarga83 movimento",
+      "alvo": "FICHA!O67",
+      "esperado": "9 m",
+      "obtido": "4,5 m",
+      "conforme": false,
+      "achado": "P02"
+    },
+    {
+      "modelo": "Ciclo",
+      "caso": "oaBolsaCarga163",
+      "alvo": "DADOS!CZ41",
+      "esperado": 9,
+      "obtido": 8,
+      "conforme": false,
+      "achado": "P02"
+    },
+    {
+      "modelo": "Ciclo",
+      "caso": "oaBolsaCarga163 movimento",
+      "alvo": "FICHA!O67",
+      "esperado": "4,5 m",
+      "obtido": "0 m",
+      "conforme": false,
+      "achado": "P02"
+    },
+    {
+      "modelo": "Ciclo",
+      "caso": "oaBolsaManualCarga163",
+      "alvo": "DADOS!CZ41",
+      "esperado": 9,
+      "obtido": 9,
+      "conforme": true
+    },
+    {
+      "modelo": "Ciclo",
+      "caso": "oaBolsaManualCarga163 movimento",
+      "alvo": "FICHA!O67",
+      "esperado": "4,5 m",
+      "obtido": "4,5 m",
+      "conforme": true
+    },
+    {
+      "modelo": "Ciclo",
+      "caso": "oaBolsaManualCarga83",
+      "alvo": "DADOS!CZ41",
+      "esperado": 9,
+      "obtido": 9,
+      "conforme": true
+    },
+    {
+      "modelo": "Ciclo",
+      "caso": "oaBolsaManualCarga83 movimento",
+      "alvo": "FICHA!O67",
+      "esperado": "9 m",
+      "obtido": "9 m",
+      "conforme": true
+    },
+    {
+      "modelo": "Ciclo",
+      "caso": "oaPraticaPrimeira mostrador",
+      "alvo": "DADOS_AM!HM10",
+      "esperado": 4,
+      "obtido": 2,
+      "conforme": false,
+      "achado": "P03"
+    },
+    {
+      "modelo": "Ciclo",
+      "caso": "oaPraticaSegundoNivelOriginal mostrador",
+      "alvo": "DADOS_AM!HM10",
+      "esperado": 4,
+      "obtido": 2,
+      "conforme": false,
+      "achado": "P03"
+    },
+    {
+      "modelo": "Ciclo",
+      "caso": "Prática no nível 30, mostrador",
+      "alvo": "DADOS_AM!HM10",
+      "esperado": 7,
+      "obtido": 5,
+      "conforme": false,
+      "achado": "P03"
+    },
+    {
+      "modelo": "Ciclo",
+      "caso": "oaManifestacao",
+      "alvo": "DADOS_AM!HM51",
+      "esperado": 1,
+      "obtido": 1,
+      "conforme": true
+    },
+    {
+      "modelo": "Ciclo",
+      "caso": "oaTracoCoexistencia",
+      "alvo": "DADOS_AM!HM51",
+      "esperado": 1,
+      "obtido": 1,
+      "conforme": true
+    },
+    {
+      "modelo": "Ciclo",
+      "caso": "oaConstrucao",
+      "alvo": "DADOS_AM!HM51",
+      "esperado": 1,
+      "obtido": 1,
+      "conforme": true
+    },
+    {
+      "modelo": "Ciclo",
+      "caso": "Coexistência, repertório",
+      "alvo": "DADOS_AM!HM53",
+      "esperado": 2,
+      "obtido": 2,
+      "conforme": true
+    },
+    {
+      "modelo": "Ciclo",
+      "caso": "Coexistência, total gratuito",
+      "alvo": "DADOS_AM!HM55",
+      "esperado": 2,
+      "obtido": 2,
+      "conforme": true
+    },
+    {
+      "modelo": "Ciclo",
+      "caso": "retirada da menor de Talento",
+      "alvo": "DADOS_AM!HM51",
+      "esperado": 0,
+      "obtido": 0,
+      "conforme": true
+    }
+  ],
+  "estruturaClasse0": {
+    "linhas": 5,
+    "linhasComBeneficioNivel30": 7,
+    "mostradorNativo": "FICHA AMALDIÇOADA!P59: 5 feitiços grátis · 6d8 cada",
+    "limite": "linhas disponíveis aceitam nomes; não demonstrado bloqueio de conjuração"
+  },
+  "codigoNasDuas": "bae62817a2ae03281dff1247c7e2f97d6ac0518a6f90271bf6de96da98a09130",
+  "restauracao": [
+    {
+      "modelo": "Era",
+      "celulasConferidas": 1939,
+      "diferencas": 0,
+      "errosNosIntervalos": 0,
+      "entradasRestauradasAoFinal": 9
+    },
+    {
+      "modelo": "Ciclo",
+      "celulasConferidas": 1939,
+      "diferencas": 0,
+      "errosNosIntervalos": 0,
+      "entradasRestauradasAoFinal": 9
+    }
+  ],
+  "limites": [
+    "benefícios de cena e combate não automatizados não são bugs presumidos",
+    "duas suites históricas sem fixture continuam não executadas",
+    "notas das linhas de Classe 0 não constavam do snapshot focal, não foram escritas nem certificadas por igualdade"
+  ]
+}

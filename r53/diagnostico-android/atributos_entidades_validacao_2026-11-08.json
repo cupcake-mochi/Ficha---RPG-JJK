@@ -1,0 +1,2415 @@
+{
+  "schema": 1,
+  "date": "2026-11-08",
+  "basePR": 91,
+  "generation": "ec14f1ff36db9816",
+  "packageSha256": "0bdd207cbe0f99cecad9700a3474581547efb8da37db12d2e3ff409a7a351881",
+  "scope": {
+    "formulas": 60,
+    "range": "DADOS_INVOC!DJ2:DN13",
+    "modelPositions": 280056,
+    "tabs": 26,
+    "modelEqualsCandidate": true,
+    "qa": [
+      "Era",
+      "Ciclo"
+    ],
+    "locale": "pt_BR"
+  },
+  "nativeObservations": 96,
+  "entryChecks": 480,
+  "native": [
+    {
+      "copy": 0,
+      "stages": [
+        {
+          "name": "digitos_textuais",
+          "checkedInputs": 60,
+          "records": [
+            {
+              "entity": 1,
+              "points": [
+                0,
+                1,
+                2,
+                3,
+                4
+              ],
+              "totals": [
+                0,
+                1,
+                2,
+                3,
+                4
+              ],
+              "spent": 10,
+              "pericias": 5,
+              "pv": 52,
+              "budget": "ATRIBUTOS · 10 DE 11 PONTOS",
+              "periciasResumo": "PERÍCIAS · 0 DE 5"
+            },
+            {
+              "entity": 2,
+              "points": [
+                5,
+                6,
+                0,
+                1,
+                2
+              ],
+              "totals": [
+                5,
+                6,
+                0,
+                1,
+                2
+              ],
+              "spent": 14,
+              "pericias": 4,
+              "pv": 32,
+              "budget": "⚠ ATRIBUTOS · 14 DE 11 PONTOS · ACIMA DE 3 SÓ COM MARCO",
+              "periciasResumo": "PERÍCIAS · 0 DE 4"
+            },
+            {
+              "entity": 3,
+              "points": [
+                3,
+                4,
+                5,
+                6,
+                0
+              ],
+              "totals": [
+                3,
+                4,
+                5,
+                6,
+                0
+              ],
+              "spent": 18,
+              "pericias": 7,
+              "pv": 82,
+              "budget": "⚠ ATRIBUTOS · 18 DE 11 PONTOS · ACIMA DE 3 SÓ COM MARCO",
+              "periciasResumo": "PERÍCIAS · 0 DE 7"
+            },
+            {
+              "entity": 4,
+              "points": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "totals": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "spent": 15,
+              "pericias": 6,
+              "pv": 62,
+              "budget": "⚠ ATRIBUTOS · 15 DE 11 PONTOS · ACIMA DE 3 SÓ COM MARCO",
+              "periciasResumo": "PERÍCIAS · 0 DE 6"
+            },
+            {
+              "entity": 5,
+              "points": [
+                6,
+                0,
+                1,
+                2,
+                3
+              ],
+              "totals": [
+                6,
+                0,
+                1,
+                2,
+                3
+              ],
+              "spent": 12,
+              "pericias": 5,
+              "pv": 42,
+              "budget": "⚠ ATRIBUTOS · 12 DE 11 PONTOS · ACIMA DE 3 SÓ COM MARCO",
+              "periciasResumo": "PERÍCIAS · 0 DE 5"
+            },
+            {
+              "entity": 6,
+              "points": [
+                4,
+                5,
+                6,
+                0,
+                1
+              ],
+              "totals": [
+                4,
+                5,
+                6,
+                0,
+                1
+              ],
+              "spent": 16,
+              "pericias": 4,
+              "pv": 92,
+              "budget": "⚠ ATRIBUTOS · 16 DE 11 PONTOS · ACIMA DE 3 SÓ COM MARCO",
+              "periciasResumo": "PERÍCIAS · 0 DE 4"
+            },
+            {
+              "entity": 7,
+              "points": [
+                2,
+                3,
+                4,
+                5,
+                6
+              ],
+              "totals": [
+                2,
+                3,
+                4,
+                5,
+                6
+              ],
+              "spent": 20,
+              "pericias": 6,
+              "pv": 72,
+              "budget": "⚠ ATRIBUTOS · 20 DE 11 PONTOS · ACIMA DE 3 SÓ COM MARCO",
+              "periciasResumo": "PERÍCIAS · 0 DE 6"
+            },
+            {
+              "entity": 8,
+              "points": [
+                0,
+                1,
+                2,
+                3,
+                4
+              ],
+              "totals": [
+                0,
+                1,
+                2,
+                3,
+                4
+              ],
+              "spent": 10,
+              "pericias": 5,
+              "pv": 52,
+              "budget": "ATRIBUTOS · 10 DE 11 PONTOS",
+              "periciasResumo": "PERÍCIAS · 0 DE 5"
+            },
+            {
+              "entity": 9,
+              "points": [
+                5,
+                6,
+                0,
+                1,
+                2
+              ],
+              "totals": [
+                5,
+                6,
+                0,
+                1,
+                2
+              ],
+              "spent": 14,
+              "pericias": 4,
+              "pv": 32,
+              "budget": "⚠ ATRIBUTOS · 14 DE 11 PONTOS · ACIMA DE 3 SÓ COM MARCO",
+              "periciasResumo": "PERÍCIAS · 0 DE 4"
+            },
+            {
+              "entity": 10,
+              "points": [
+                3,
+                4,
+                5,
+                6,
+                0
+              ],
+              "totals": [
+                3,
+                4,
+                5,
+                6,
+                0
+              ],
+              "spent": 18,
+              "pericias": 7,
+              "pv": 82,
+              "budget": "⚠ ATRIBUTOS · 18 DE 11 PONTOS · ACIMA DE 3 SÓ COM MARCO",
+              "periciasResumo": "PERÍCIAS · 0 DE 7"
+            },
+            {
+              "entity": 11,
+              "points": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "totals": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "spent": 15,
+              "pericias": 6,
+              "pv": 62,
+              "budget": "⚠ ATRIBUTOS · 15 DE 11 PONTOS · ACIMA DE 3 SÓ COM MARCO",
+              "periciasResumo": "PERÍCIAS · 0 DE 6"
+            },
+            {
+              "entity": 12,
+              "points": [
+                6,
+                0,
+                1,
+                2,
+                3
+              ],
+              "totals": [
+                6,
+                0,
+                1,
+                2,
+                3
+              ],
+              "spent": 12,
+              "pericias": 5,
+              "pv": 42,
+              "budget": "⚠ ATRIBUTOS · 12 DE 11 PONTOS · ACIMA DE 3 SÓ COM MARCO",
+              "periciasResumo": "PERÍCIAS · 0 DE 5"
+            }
+          ]
+        },
+        {
+          "name": "numeros",
+          "checkedInputs": 60,
+          "records": [
+            {
+              "entity": 1,
+              "points": [
+                0,
+                1,
+                2,
+                3,
+                4
+              ],
+              "totals": [
+                0,
+                1,
+                2,
+                3,
+                4
+              ],
+              "spent": 10,
+              "pericias": 5,
+              "pv": 52,
+              "budget": "ATRIBUTOS · 10 DE 11 PONTOS",
+              "periciasResumo": "PERÍCIAS · 0 DE 5"
+            },
+            {
+              "entity": 2,
+              "points": [
+                5,
+                6,
+                0,
+                1,
+                2
+              ],
+              "totals": [
+                5,
+                6,
+                0,
+                1,
+                2
+              ],
+              "spent": 14,
+              "pericias": 4,
+              "pv": 32,
+              "budget": "⚠ ATRIBUTOS · 14 DE 11 PONTOS · ACIMA DE 3 SÓ COM MARCO",
+              "periciasResumo": "PERÍCIAS · 0 DE 4"
+            },
+            {
+              "entity": 3,
+              "points": [
+                3,
+                4,
+                5,
+                6,
+                0
+              ],
+              "totals": [
+                3,
+                4,
+                5,
+                6,
+                0
+              ],
+              "spent": 18,
+              "pericias": 7,
+              "pv": 82,
+              "budget": "⚠ ATRIBUTOS · 18 DE 11 PONTOS · ACIMA DE 3 SÓ COM MARCO",
+              "periciasResumo": "PERÍCIAS · 0 DE 7"
+            },
+            {
+              "entity": 4,
+              "points": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "totals": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "spent": 15,
+              "pericias": 6,
+              "pv": 62,
+              "budget": "⚠ ATRIBUTOS · 15 DE 11 PONTOS · ACIMA DE 3 SÓ COM MARCO",
+              "periciasResumo": "PERÍCIAS · 0 DE 6"
+            },
+            {
+              "entity": 5,
+              "points": [
+                6,
+                0,
+                1,
+                2,
+                3
+              ],
+              "totals": [
+                6,
+                0,
+                1,
+                2,
+                3
+              ],
+              "spent": 12,
+              "pericias": 5,
+              "pv": 42,
+              "budget": "⚠ ATRIBUTOS · 12 DE 11 PONTOS · ACIMA DE 3 SÓ COM MARCO",
+              "periciasResumo": "PERÍCIAS · 0 DE 5"
+            },
+            {
+              "entity": 6,
+              "points": [
+                4,
+                5,
+                6,
+                0,
+                1
+              ],
+              "totals": [
+                4,
+                5,
+                6,
+                0,
+                1
+              ],
+              "spent": 16,
+              "pericias": 4,
+              "pv": 92,
+              "budget": "⚠ ATRIBUTOS · 16 DE 11 PONTOS · ACIMA DE 3 SÓ COM MARCO",
+              "periciasResumo": "PERÍCIAS · 0 DE 4"
+            },
+            {
+              "entity": 7,
+              "points": [
+                2,
+                3,
+                4,
+                5,
+                6
+              ],
+              "totals": [
+                2,
+                3,
+                4,
+                5,
+                6
+              ],
+              "spent": 20,
+              "pericias": 6,
+              "pv": 72,
+              "budget": "⚠ ATRIBUTOS · 20 DE 11 PONTOS · ACIMA DE 3 SÓ COM MARCO",
+              "periciasResumo": "PERÍCIAS · 0 DE 6"
+            },
+            {
+              "entity": 8,
+              "points": [
+                0,
+                1,
+                2,
+                3,
+                4
+              ],
+              "totals": [
+                0,
+                1,
+                2,
+                3,
+                4
+              ],
+              "spent": 10,
+              "pericias": 5,
+              "pv": 52,
+              "budget": "ATRIBUTOS · 10 DE 11 PONTOS",
+              "periciasResumo": "PERÍCIAS · 0 DE 5"
+            },
+            {
+              "entity": 9,
+              "points": [
+                5,
+                6,
+                0,
+                1,
+                2
+              ],
+              "totals": [
+                5,
+                6,
+                0,
+                1,
+                2
+              ],
+              "spent": 14,
+              "pericias": 4,
+              "pv": 32,
+              "budget": "⚠ ATRIBUTOS · 14 DE 11 PONTOS · ACIMA DE 3 SÓ COM MARCO",
+              "periciasResumo": "PERÍCIAS · 0 DE 4"
+            },
+            {
+              "entity": 10,
+              "points": [
+                3,
+                4,
+                5,
+                6,
+                0
+              ],
+              "totals": [
+                3,
+                4,
+                5,
+                6,
+                0
+              ],
+              "spent": 18,
+              "pericias": 7,
+              "pv": 82,
+              "budget": "⚠ ATRIBUTOS · 18 DE 11 PONTOS · ACIMA DE 3 SÓ COM MARCO",
+              "periciasResumo": "PERÍCIAS · 0 DE 7"
+            },
+            {
+              "entity": 11,
+              "points": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "totals": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "spent": 15,
+              "pericias": 6,
+              "pv": 62,
+              "budget": "⚠ ATRIBUTOS · 15 DE 11 PONTOS · ACIMA DE 3 SÓ COM MARCO",
+              "periciasResumo": "PERÍCIAS · 0 DE 6"
+            },
+            {
+              "entity": 12,
+              "points": [
+                6,
+                0,
+                1,
+                2,
+                3
+              ],
+              "totals": [
+                6,
+                0,
+                1,
+                2,
+                3
+              ],
+              "spent": 12,
+              "pericias": 5,
+              "pv": 42,
+              "budget": "⚠ ATRIBUTOS · 12 DE 11 PONTOS · ACIMA DE 3 SÓ COM MARCO",
+              "periciasResumo": "PERÍCIAS · 0 DE 5"
+            }
+          ]
+        },
+        {
+          "name": "outros_textos",
+          "checkedInputs": 60,
+          "records": [
+            {
+              "entity": 1,
+              "points": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "totals": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "spent": 0,
+              "pericias": 4,
+              "pv": 32,
+              "budget": "ATRIBUTOS · 0 DE 11 PONTOS",
+              "periciasResumo": "PERÍCIAS · 0 DE 4"
+            },
+            {
+              "entity": 2,
+              "points": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "totals": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "spent": 0,
+              "pericias": 4,
+              "pv": 32,
+              "budget": "ATRIBUTOS · 0 DE 11 PONTOS",
+              "periciasResumo": "PERÍCIAS · 0 DE 4"
+            },
+            {
+              "entity": 3,
+              "points": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "totals": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "spent": 0,
+              "pericias": 4,
+              "pv": 32,
+              "budget": "ATRIBUTOS · 0 DE 11 PONTOS",
+              "periciasResumo": "PERÍCIAS · 0 DE 4"
+            },
+            {
+              "entity": 4,
+              "points": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "totals": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "spent": 0,
+              "pericias": 4,
+              "pv": 32,
+              "budget": "ATRIBUTOS · 0 DE 11 PONTOS",
+              "periciasResumo": "PERÍCIAS · 0 DE 4"
+            },
+            {
+              "entity": 5,
+              "points": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "totals": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "spent": 0,
+              "pericias": 4,
+              "pv": 32,
+              "budget": "ATRIBUTOS · 0 DE 11 PONTOS",
+              "periciasResumo": "PERÍCIAS · 0 DE 4"
+            },
+            {
+              "entity": 6,
+              "points": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "totals": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "spent": 0,
+              "pericias": 4,
+              "pv": 32,
+              "budget": "ATRIBUTOS · 0 DE 11 PONTOS",
+              "periciasResumo": "PERÍCIAS · 0 DE 4"
+            },
+            {
+              "entity": 7,
+              "points": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "totals": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "spent": 0,
+              "pericias": 4,
+              "pv": 32,
+              "budget": "ATRIBUTOS · 0 DE 11 PONTOS",
+              "periciasResumo": "PERÍCIAS · 0 DE 4"
+            },
+            {
+              "entity": 8,
+              "points": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "totals": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "spent": 0,
+              "pericias": 4,
+              "pv": 32,
+              "budget": "ATRIBUTOS · 0 DE 11 PONTOS",
+              "periciasResumo": "PERÍCIAS · 0 DE 4"
+            },
+            {
+              "entity": 9,
+              "points": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "totals": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "spent": 0,
+              "pericias": 4,
+              "pv": 32,
+              "budget": "ATRIBUTOS · 0 DE 11 PONTOS",
+              "periciasResumo": "PERÍCIAS · 0 DE 4"
+            },
+            {
+              "entity": 10,
+              "points": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "totals": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "spent": 0,
+              "pericias": 4,
+              "pv": 32,
+              "budget": "ATRIBUTOS · 0 DE 11 PONTOS",
+              "periciasResumo": "PERÍCIAS · 0 DE 4"
+            },
+            {
+              "entity": 11,
+              "points": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "totals": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "spent": 0,
+              "pericias": 4,
+              "pv": 32,
+              "budget": "ATRIBUTOS · 0 DE 11 PONTOS",
+              "periciasResumo": "PERÍCIAS · 0 DE 4"
+            },
+            {
+              "entity": 12,
+              "points": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "totals": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "spent": 0,
+              "pericias": 4,
+              "pv": 32,
+              "budget": "ATRIBUTOS · 0 DE 11 PONTOS",
+              "periciasResumo": "PERÍCIAS · 0 DE 4"
+            }
+          ]
+        },
+        {
+          "name": "vazios_e_formulas",
+          "checkedInputs": 60,
+          "records": [
+            {
+              "entity": 1,
+              "points": [
+                0,
+                0,
+                3,
+                3,
+                0
+              ],
+              "totals": [
+                0,
+                0,
+                3,
+                3,
+                0
+              ],
+              "spent": 6,
+              "pericias": 5,
+              "pv": 62,
+              "budget": "ATRIBUTOS · 6 DE 11 PONTOS",
+              "periciasResumo": "PERÍCIAS · 0 DE 5"
+            },
+            {
+              "entity": 2,
+              "points": [
+                0,
+                0,
+                3,
+                3,
+                0
+              ],
+              "totals": [
+                0,
+                0,
+                3,
+                3,
+                0
+              ],
+              "spent": 6,
+              "pericias": 5,
+              "pv": 62,
+              "budget": "ATRIBUTOS · 6 DE 11 PONTOS",
+              "periciasResumo": "PERÍCIAS · 0 DE 5"
+            },
+            {
+              "entity": 3,
+              "points": [
+                0,
+                0,
+                3,
+                3,
+                0
+              ],
+              "totals": [
+                0,
+                0,
+                3,
+                3,
+                0
+              ],
+              "spent": 6,
+              "pericias": 5,
+              "pv": 62,
+              "budget": "ATRIBUTOS · 6 DE 11 PONTOS",
+              "periciasResumo": "PERÍCIAS · 0 DE 5"
+            },
+            {
+              "entity": 4,
+              "points": [
+                0,
+                0,
+                3,
+                3,
+                0
+              ],
+              "totals": [
+                0,
+                0,
+                3,
+                3,
+                0
+              ],
+              "spent": 6,
+              "pericias": 5,
+              "pv": 62,
+              "budget": "ATRIBUTOS · 6 DE 11 PONTOS",
+              "periciasResumo": "PERÍCIAS · 0 DE 5"
+            },
+            {
+              "entity": 5,
+              "points": [
+                0,
+                0,
+                3,
+                3,
+                0
+              ],
+              "totals": [
+                0,
+                0,
+                3,
+                3,
+                0
+              ],
+              "spent": 6,
+              "pericias": 5,
+              "pv": 62,
+              "budget": "ATRIBUTOS · 6 DE 11 PONTOS",
+              "periciasResumo": "PERÍCIAS · 0 DE 5"
+            },
+            {
+              "entity": 6,
+              "points": [
+                0,
+                0,
+                3,
+                3,
+                0
+              ],
+              "totals": [
+                0,
+                0,
+                3,
+                3,
+                0
+              ],
+              "spent": 6,
+              "pericias": 5,
+              "pv": 62,
+              "budget": "ATRIBUTOS · 6 DE 11 PONTOS",
+              "periciasResumo": "PERÍCIAS · 0 DE 5"
+            },
+            {
+              "entity": 7,
+              "points": [
+                0,
+                0,
+                3,
+                3,
+                0
+              ],
+              "totals": [
+                0,
+                0,
+                3,
+                3,
+                0
+              ],
+              "spent": 6,
+              "pericias": 5,
+              "pv": 62,
+              "budget": "ATRIBUTOS · 6 DE 11 PONTOS",
+              "periciasResumo": "PERÍCIAS · 0 DE 5"
+            },
+            {
+              "entity": 8,
+              "points": [
+                0,
+                0,
+                3,
+                3,
+                0
+              ],
+              "totals": [
+                0,
+                0,
+                3,
+                3,
+                0
+              ],
+              "spent": 6,
+              "pericias": 5,
+              "pv": 62,
+              "budget": "ATRIBUTOS · 6 DE 11 PONTOS",
+              "periciasResumo": "PERÍCIAS · 0 DE 5"
+            },
+            {
+              "entity": 9,
+              "points": [
+                0,
+                0,
+                3,
+                3,
+                0
+              ],
+              "totals": [
+                0,
+                0,
+                3,
+                3,
+                0
+              ],
+              "spent": 6,
+              "pericias": 5,
+              "pv": 62,
+              "budget": "ATRIBUTOS · 6 DE 11 PONTOS",
+              "periciasResumo": "PERÍCIAS · 0 DE 5"
+            },
+            {
+              "entity": 10,
+              "points": [
+                0,
+                0,
+                3,
+                3,
+                0
+              ],
+              "totals": [
+                0,
+                0,
+                3,
+                3,
+                0
+              ],
+              "spent": 6,
+              "pericias": 5,
+              "pv": 62,
+              "budget": "ATRIBUTOS · 6 DE 11 PONTOS",
+              "periciasResumo": "PERÍCIAS · 0 DE 5"
+            },
+            {
+              "entity": 11,
+              "points": [
+                0,
+                0,
+                3,
+                3,
+                0
+              ],
+              "totals": [
+                0,
+                0,
+                3,
+                3,
+                0
+              ],
+              "spent": 6,
+              "pericias": 5,
+              "pv": 62,
+              "budget": "ATRIBUTOS · 6 DE 11 PONTOS",
+              "periciasResumo": "PERÍCIAS · 0 DE 5"
+            },
+            {
+              "entity": 12,
+              "points": [
+                0,
+                0,
+                3,
+                3,
+                0
+              ],
+              "totals": [
+                0,
+                0,
+                3,
+                3,
+                0
+              ],
+              "spent": 6,
+              "pericias": 5,
+              "pv": 62,
+              "budget": "ATRIBUTOS · 6 DE 11 PONTOS",
+              "periciasResumo": "PERÍCIAS · 0 DE 5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "copy": 1,
+      "stages": [
+        {
+          "name": "digitos_textuais",
+          "checkedInputs": 60,
+          "records": [
+            {
+              "entity": 1,
+              "points": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "totals": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "spent": 15,
+              "pericias": 6,
+              "pv": 14,
+              "budget": "⚠ ATRIBUTOS · 15 DE 9 PONTOS · ACIMA DE 3 SÓ COM MARCO",
+              "periciasResumo": "PERÍCIAS · 0 DE 6"
+            },
+            {
+              "entity": 2,
+              "points": [
+                6,
+                0,
+                1,
+                2,
+                3
+              ],
+              "totals": [
+                6,
+                0,
+                1,
+                2,
+                3
+              ],
+              "spent": 12,
+              "pericias": 5,
+              "pv": 10,
+              "budget": "⚠ ATRIBUTOS · 12 DE 9 PONTOS · ACIMA DE 3 SÓ COM MARCO",
+              "periciasResumo": "PERÍCIAS · 0 DE 5"
+            },
+            {
+              "entity": 3,
+              "points": [
+                4,
+                5,
+                6,
+                0,
+                1
+              ],
+              "totals": [
+                4,
+                5,
+                6,
+                0,
+                1
+              ],
+              "spent": 16,
+              "pericias": 4,
+              "pv": 20,
+              "budget": "⚠ ATRIBUTOS · 16 DE 9 PONTOS · ACIMA DE 3 SÓ COM MARCO",
+              "periciasResumo": "PERÍCIAS · 0 DE 4"
+            },
+            {
+              "entity": 4,
+              "points": [
+                2,
+                3,
+                4,
+                5,
+                6
+              ],
+              "totals": [
+                2,
+                3,
+                4,
+                5,
+                6
+              ],
+              "spent": 20,
+              "pericias": 6,
+              "pv": 16,
+              "budget": "⚠ ATRIBUTOS · 20 DE 9 PONTOS · ACIMA DE 3 SÓ COM MARCO",
+              "periciasResumo": "PERÍCIAS · 0 DE 6"
+            },
+            {
+              "entity": 5,
+              "points": [
+                0,
+                1,
+                2,
+                3,
+                4
+              ],
+              "totals": [
+                0,
+                1,
+                2,
+                3,
+                4
+              ],
+              "spent": 10,
+              "pericias": 5,
+              "pv": 12,
+              "budget": "⚠ ATRIBUTOS · 10 DE 9 PONTOS · ACIMA DE 3 SÓ COM MARCO",
+              "periciasResumo": "PERÍCIAS · 0 DE 5"
+            },
+            {
+              "entity": 6,
+              "points": [
+                5,
+                6,
+                0,
+                1,
+                2
+              ],
+              "totals": [
+                5,
+                6,
+                0,
+                1,
+                2
+              ],
+              "spent": 14,
+              "pericias": 4,
+              "pv": 8,
+              "budget": "⚠ ATRIBUTOS · 14 DE 9 PONTOS · ACIMA DE 3 SÓ COM MARCO",
+              "periciasResumo": "PERÍCIAS · 0 DE 4"
+            },
+            {
+              "entity": 7,
+              "points": [
+                3,
+                4,
+                5,
+                6,
+                0
+              ],
+              "totals": [
+                3,
+                4,
+                5,
+                6,
+                0
+              ],
+              "spent": 18,
+              "pericias": 7,
+              "pv": 18,
+              "budget": "⚠ ATRIBUTOS · 18 DE 9 PONTOS · ACIMA DE 3 SÓ COM MARCO",
+              "periciasResumo": "PERÍCIAS · 0 DE 7"
+            },
+            {
+              "entity": 8,
+              "points": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "totals": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "spent": 15,
+              "pericias": 6,
+              "pv": 14,
+              "budget": "⚠ ATRIBUTOS · 15 DE 9 PONTOS · ACIMA DE 3 SÓ COM MARCO",
+              "periciasResumo": "PERÍCIAS · 0 DE 6"
+            },
+            {
+              "entity": 9,
+              "points": [
+                6,
+                0,
+                1,
+                2,
+                3
+              ],
+              "totals": [
+                6,
+                0,
+                1,
+                2,
+                3
+              ],
+              "spent": 12,
+              "pericias": 5,
+              "pv": 10,
+              "budget": "⚠ ATRIBUTOS · 12 DE 9 PONTOS · ACIMA DE 3 SÓ COM MARCO",
+              "periciasResumo": "PERÍCIAS · 0 DE 5"
+            },
+            {
+              "entity": 10,
+              "points": [
+                4,
+                5,
+                6,
+                0,
+                1
+              ],
+              "totals": [
+                4,
+                5,
+                6,
+                0,
+                1
+              ],
+              "spent": 16,
+              "pericias": 4,
+              "pv": 20,
+              "budget": "⚠ ATRIBUTOS · 16 DE 9 PONTOS · ACIMA DE 3 SÓ COM MARCO",
+              "periciasResumo": "PERÍCIAS · 0 DE 4"
+            },
+            {
+              "entity": 11,
+              "points": [
+                2,
+                3,
+                4,
+                5,
+                6
+              ],
+              "totals": [
+                2,
+                3,
+                4,
+                5,
+                6
+              ],
+              "spent": 20,
+              "pericias": 6,
+              "pv": 16,
+              "budget": "⚠ ATRIBUTOS · 20 DE 9 PONTOS · ACIMA DE 3 SÓ COM MARCO",
+              "periciasResumo": "PERÍCIAS · 0 DE 6"
+            },
+            {
+              "entity": 12,
+              "points": [
+                0,
+                1,
+                2,
+                3,
+                4
+              ],
+              "totals": [
+                0,
+                1,
+                2,
+                3,
+                4
+              ],
+              "spent": 10,
+              "pericias": 5,
+              "pv": 12,
+              "budget": "⚠ ATRIBUTOS · 10 DE 9 PONTOS · ACIMA DE 3 SÓ COM MARCO",
+              "periciasResumo": "PERÍCIAS · 0 DE 5"
+            }
+          ]
+        },
+        {
+          "name": "numeros",
+          "checkedInputs": 60,
+          "records": [
+            {
+              "entity": 1,
+              "points": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "totals": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "spent": 15,
+              "pericias": 6,
+              "pv": 14,
+              "budget": "⚠ ATRIBUTOS · 15 DE 9 PONTOS · ACIMA DE 3 SÓ COM MARCO",
+              "periciasResumo": "PERÍCIAS · 0 DE 6"
+            },
+            {
+              "entity": 2,
+              "points": [
+                6,
+                0,
+                1,
+                2,
+                3
+              ],
+              "totals": [
+                6,
+                0,
+                1,
+                2,
+                3
+              ],
+              "spent": 12,
+              "pericias": 5,
+              "pv": 10,
+              "budget": "⚠ ATRIBUTOS · 12 DE 9 PONTOS · ACIMA DE 3 SÓ COM MARCO",
+              "periciasResumo": "PERÍCIAS · 0 DE 5"
+            },
+            {
+              "entity": 3,
+              "points": [
+                4,
+                5,
+                6,
+                0,
+                1
+              ],
+              "totals": [
+                4,
+                5,
+                6,
+                0,
+                1
+              ],
+              "spent": 16,
+              "pericias": 4,
+              "pv": 20,
+              "budget": "⚠ ATRIBUTOS · 16 DE 9 PONTOS · ACIMA DE 3 SÓ COM MARCO",
+              "periciasResumo": "PERÍCIAS · 0 DE 4"
+            },
+            {
+              "entity": 4,
+              "points": [
+                2,
+                3,
+                4,
+                5,
+                6
+              ],
+              "totals": [
+                2,
+                3,
+                4,
+                5,
+                6
+              ],
+              "spent": 20,
+              "pericias": 6,
+              "pv": 16,
+              "budget": "⚠ ATRIBUTOS · 20 DE 9 PONTOS · ACIMA DE 3 SÓ COM MARCO",
+              "periciasResumo": "PERÍCIAS · 0 DE 6"
+            },
+            {
+              "entity": 5,
+              "points": [
+                0,
+                1,
+                2,
+                3,
+                4
+              ],
+              "totals": [
+                0,
+                1,
+                2,
+                3,
+                4
+              ],
+              "spent": 10,
+              "pericias": 5,
+              "pv": 12,
+              "budget": "⚠ ATRIBUTOS · 10 DE 9 PONTOS · ACIMA DE 3 SÓ COM MARCO",
+              "periciasResumo": "PERÍCIAS · 0 DE 5"
+            },
+            {
+              "entity": 6,
+              "points": [
+                5,
+                6,
+                0,
+                1,
+                2
+              ],
+              "totals": [
+                5,
+                6,
+                0,
+                1,
+                2
+              ],
+              "spent": 14,
+              "pericias": 4,
+              "pv": 8,
+              "budget": "⚠ ATRIBUTOS · 14 DE 9 PONTOS · ACIMA DE 3 SÓ COM MARCO",
+              "periciasResumo": "PERÍCIAS · 0 DE 4"
+            },
+            {
+              "entity": 7,
+              "points": [
+                3,
+                4,
+                5,
+                6,
+                0
+              ],
+              "totals": [
+                3,
+                4,
+                5,
+                6,
+                0
+              ],
+              "spent": 18,
+              "pericias": 7,
+              "pv": 18,
+              "budget": "⚠ ATRIBUTOS · 18 DE 9 PONTOS · ACIMA DE 3 SÓ COM MARCO",
+              "periciasResumo": "PERÍCIAS · 0 DE 7"
+            },
+            {
+              "entity": 8,
+              "points": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "totals": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "spent": 15,
+              "pericias": 6,
+              "pv": 14,
+              "budget": "⚠ ATRIBUTOS · 15 DE 9 PONTOS · ACIMA DE 3 SÓ COM MARCO",
+              "periciasResumo": "PERÍCIAS · 0 DE 6"
+            },
+            {
+              "entity": 9,
+              "points": [
+                6,
+                0,
+                1,
+                2,
+                3
+              ],
+              "totals": [
+                6,
+                0,
+                1,
+                2,
+                3
+              ],
+              "spent": 12,
+              "pericias": 5,
+              "pv": 10,
+              "budget": "⚠ ATRIBUTOS · 12 DE 9 PONTOS · ACIMA DE 3 SÓ COM MARCO",
+              "periciasResumo": "PERÍCIAS · 0 DE 5"
+            },
+            {
+              "entity": 10,
+              "points": [
+                4,
+                5,
+                6,
+                0,
+                1
+              ],
+              "totals": [
+                4,
+                5,
+                6,
+                0,
+                1
+              ],
+              "spent": 16,
+              "pericias": 4,
+              "pv": 20,
+              "budget": "⚠ ATRIBUTOS · 16 DE 9 PONTOS · ACIMA DE 3 SÓ COM MARCO",
+              "periciasResumo": "PERÍCIAS · 0 DE 4"
+            },
+            {
+              "entity": 11,
+              "points": [
+                2,
+                3,
+                4,
+                5,
+                6
+              ],
+              "totals": [
+                2,
+                3,
+                4,
+                5,
+                6
+              ],
+              "spent": 20,
+              "pericias": 6,
+              "pv": 16,
+              "budget": "⚠ ATRIBUTOS · 20 DE 9 PONTOS · ACIMA DE 3 SÓ COM MARCO",
+              "periciasResumo": "PERÍCIAS · 0 DE 6"
+            },
+            {
+              "entity": 12,
+              "points": [
+                0,
+                1,
+                2,
+                3,
+                4
+              ],
+              "totals": [
+                0,
+                1,
+                2,
+                3,
+                4
+              ],
+              "spent": 10,
+              "pericias": 5,
+              "pv": 12,
+              "budget": "⚠ ATRIBUTOS · 10 DE 9 PONTOS · ACIMA DE 3 SÓ COM MARCO",
+              "periciasResumo": "PERÍCIAS · 0 DE 5"
+            }
+          ]
+        },
+        {
+          "name": "outros_textos",
+          "checkedInputs": 60,
+          "records": [
+            {
+              "entity": 1,
+              "points": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "totals": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "spent": 0,
+              "pericias": 4,
+              "pv": 8,
+              "budget": "ATRIBUTOS · 0 DE 9 PONTOS",
+              "periciasResumo": "PERÍCIAS · 0 DE 4"
+            },
+            {
+              "entity": 2,
+              "points": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "totals": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "spent": 0,
+              "pericias": 4,
+              "pv": 8,
+              "budget": "ATRIBUTOS · 0 DE 9 PONTOS",
+              "periciasResumo": "PERÍCIAS · 0 DE 4"
+            },
+            {
+              "entity": 3,
+              "points": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "totals": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "spent": 0,
+              "pericias": 4,
+              "pv": 8,
+              "budget": "ATRIBUTOS · 0 DE 9 PONTOS",
+              "periciasResumo": "PERÍCIAS · 0 DE 4"
+            },
+            {
+              "entity": 4,
+              "points": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "totals": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "spent": 0,
+              "pericias": 4,
+              "pv": 8,
+              "budget": "ATRIBUTOS · 0 DE 9 PONTOS",
+              "periciasResumo": "PERÍCIAS · 0 DE 4"
+            },
+            {
+              "entity": 5,
+              "points": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "totals": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "spent": 0,
+              "pericias": 4,
+              "pv": 8,
+              "budget": "ATRIBUTOS · 0 DE 9 PONTOS",
+              "periciasResumo": "PERÍCIAS · 0 DE 4"
+            },
+            {
+              "entity": 6,
+              "points": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "totals": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "spent": 0,
+              "pericias": 4,
+              "pv": 8,
+              "budget": "ATRIBUTOS · 0 DE 9 PONTOS",
+              "periciasResumo": "PERÍCIAS · 0 DE 4"
+            },
+            {
+              "entity": 7,
+              "points": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "totals": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "spent": 0,
+              "pericias": 4,
+              "pv": 8,
+              "budget": "ATRIBUTOS · 0 DE 9 PONTOS",
+              "periciasResumo": "PERÍCIAS · 0 DE 4"
+            },
+            {
+              "entity": 8,
+              "points": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "totals": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "spent": 0,
+              "pericias": 4,
+              "pv": 8,
+              "budget": "ATRIBUTOS · 0 DE 9 PONTOS",
+              "periciasResumo": "PERÍCIAS · 0 DE 4"
+            },
+            {
+              "entity": 9,
+              "points": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "totals": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "spent": 0,
+              "pericias": 4,
+              "pv": 8,
+              "budget": "ATRIBUTOS · 0 DE 9 PONTOS",
+              "periciasResumo": "PERÍCIAS · 0 DE 4"
+            },
+            {
+              "entity": 10,
+              "points": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "totals": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "spent": 0,
+              "pericias": 4,
+              "pv": 8,
+              "budget": "ATRIBUTOS · 0 DE 9 PONTOS",
+              "periciasResumo": "PERÍCIAS · 0 DE 4"
+            },
+            {
+              "entity": 11,
+              "points": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "totals": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "spent": 0,
+              "pericias": 4,
+              "pv": 8,
+              "budget": "ATRIBUTOS · 0 DE 9 PONTOS",
+              "periciasResumo": "PERÍCIAS · 0 DE 4"
+            },
+            {
+              "entity": 12,
+              "points": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "totals": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "spent": 0,
+              "pericias": 4,
+              "pv": 8,
+              "budget": "ATRIBUTOS · 0 DE 9 PONTOS",
+              "periciasResumo": "PERÍCIAS · 0 DE 4"
+            }
+          ]
+        },
+        {
+          "name": "vazios_e_formulas",
+          "checkedInputs": 60,
+          "records": [
+            {
+              "entity": 1,
+              "points": [
+                0,
+                0,
+                3,
+                3,
+                0
+              ],
+              "totals": [
+                0,
+                0,
+                3,
+                3,
+                0
+              ],
+              "spent": 6,
+              "pericias": 5,
+              "pv": 14,
+              "budget": "ATRIBUTOS · 6 DE 9 PONTOS",
+              "periciasResumo": "PERÍCIAS · 0 DE 5"
+            },
+            {
+              "entity": 2,
+              "points": [
+                0,
+                0,
+                3,
+                3,
+                0
+              ],
+              "totals": [
+                0,
+                0,
+                3,
+                3,
+                0
+              ],
+              "spent": 6,
+              "pericias": 5,
+              "pv": 14,
+              "budget": "ATRIBUTOS · 6 DE 9 PONTOS",
+              "periciasResumo": "PERÍCIAS · 0 DE 5"
+            },
+            {
+              "entity": 3,
+              "points": [
+                0,
+                0,
+                3,
+                3,
+                0
+              ],
+              "totals": [
+                0,
+                0,
+                3,
+                3,
+                0
+              ],
+              "spent": 6,
+              "pericias": 5,
+              "pv": 14,
+              "budget": "ATRIBUTOS · 6 DE 9 PONTOS",
+              "periciasResumo": "PERÍCIAS · 0 DE 5"
+            },
+            {
+              "entity": 4,
+              "points": [
+                0,
+                0,
+                3,
+                3,
+                0
+              ],
+              "totals": [
+                0,
+                0,
+                3,
+                3,
+                0
+              ],
+              "spent": 6,
+              "pericias": 5,
+              "pv": 14,
+              "budget": "ATRIBUTOS · 6 DE 9 PONTOS",
+              "periciasResumo": "PERÍCIAS · 0 DE 5"
+            },
+            {
+              "entity": 5,
+              "points": [
+                0,
+                0,
+                3,
+                3,
+                0
+              ],
+              "totals": [
+                0,
+                0,
+                3,
+                3,
+                0
+              ],
+              "spent": 6,
+              "pericias": 5,
+              "pv": 14,
+              "budget": "ATRIBUTOS · 6 DE 9 PONTOS",
+              "periciasResumo": "PERÍCIAS · 0 DE 5"
+            },
+            {
+              "entity": 6,
+              "points": [
+                0,
+                0,
+                3,
+                3,
+                0
+              ],
+              "totals": [
+                0,
+                0,
+                3,
+                3,
+                0
+              ],
+              "spent": 6,
+              "pericias": 5,
+              "pv": 14,
+              "budget": "ATRIBUTOS · 6 DE 9 PONTOS",
+              "periciasResumo": "PERÍCIAS · 0 DE 5"
+            },
+            {
+              "entity": 7,
+              "points": [
+                0,
+                0,
+                3,
+                3,
+                0
+              ],
+              "totals": [
+                0,
+                0,
+                3,
+                3,
+                0
+              ],
+              "spent": 6,
+              "pericias": 5,
+              "pv": 14,
+              "budget": "ATRIBUTOS · 6 DE 9 PONTOS",
+              "periciasResumo": "PERÍCIAS · 0 DE 5"
+            },
+            {
+              "entity": 8,
+              "points": [
+                0,
+                0,
+                3,
+                3,
+                0
+              ],
+              "totals": [
+                0,
+                0,
+                3,
+                3,
+                0
+              ],
+              "spent": 6,
+              "pericias": 5,
+              "pv": 14,
+              "budget": "ATRIBUTOS · 6 DE 9 PONTOS",
+              "periciasResumo": "PERÍCIAS · 0 DE 5"
+            },
+            {
+              "entity": 9,
+              "points": [
+                0,
+                0,
+                3,
+                3,
+                0
+              ],
+              "totals": [
+                0,
+                0,
+                3,
+                3,
+                0
+              ],
+              "spent": 6,
+              "pericias": 5,
+              "pv": 14,
+              "budget": "ATRIBUTOS · 6 DE 9 PONTOS",
+              "periciasResumo": "PERÍCIAS · 0 DE 5"
+            },
+            {
+              "entity": 10,
+              "points": [
+                0,
+                0,
+                3,
+                3,
+                0
+              ],
+              "totals": [
+                0,
+                0,
+                3,
+                3,
+                0
+              ],
+              "spent": 6,
+              "pericias": 5,
+              "pv": 14,
+              "budget": "ATRIBUTOS · 6 DE 9 PONTOS",
+              "periciasResumo": "PERÍCIAS · 0 DE 5"
+            },
+            {
+              "entity": 11,
+              "points": [
+                0,
+                0,
+                3,
+                3,
+                0
+              ],
+              "totals": [
+                0,
+                0,
+                3,
+                3,
+                0
+              ],
+              "spent": 6,
+              "pericias": 5,
+              "pv": 14,
+              "budget": "ATRIBUTOS · 6 DE 9 PONTOS",
+              "periciasResumo": "PERÍCIAS · 0 DE 5"
+            },
+            {
+              "entity": 12,
+              "points": [
+                0,
+                0,
+                3,
+                3,
+                0
+              ],
+              "totals": [
+                0,
+                0,
+                3,
+                3,
+                0
+              ],
+              "spent": 6,
+              "pericias": 5,
+              "pv": 14,
+              "budget": "ATRIBUTOS · 6 DE 9 PONTOS",
+              "periciasResumo": "PERÍCIAS · 0 DE 5"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "ui": [
+    {
+      "copy": 0,
+      "textCase": {
+        "type": "texto",
+        "value": {
+          "stringValue": "3"
+        },
+        "strict": true,
+        "con": 3,
+        "spent": 9,
+        "hp": 8
+      },
+      "numberCase": {
+        "type": "número",
+        "value": {
+          "numberValue": 3
+        },
+        "strict": true,
+        "con": 3,
+        "spent": 9,
+        "hp": 8
+      },
+      "restored": {
+        "copy": 0,
+        "active": false,
+        "restoredScope": 14,
+        "changedValuesRestored": 6,
+        "changedFormatsRestored": 2
+      }
+    },
+    {
+      "copy": 1,
+      "textCase": {
+        "type": "texto",
+        "value": {
+          "stringValue": "3"
+        },
+        "strict": true,
+        "con": 3,
+        "spent": 9,
+        "hp": 8
+      },
+      "numberCase": {
+        "type": "número",
+        "value": {
+          "numberValue": 3
+        },
+        "strict": true,
+        "con": 3,
+        "spent": 9,
+        "hp": 8
+      },
+      "restored": {
+        "copy": 1,
+        "active": false,
+        "restoredScope": 14,
+        "changedValuesRestored": 6,
+        "changedFormatsRestored": 2
+      }
+    }
+  ],
+  "preservation": [
+    {
+      "copy": 0,
+      "inputsRestored": true,
+      "scopeDifferences": [
+        "DADOS_INVOC!DJ2",
+        "DADOS_INVOC!DK2",
+        "DADOS_INVOC!DL2",
+        "DADOS_INVOC!DM2",
+        "DADOS_INVOC!DN2",
+        "DADOS_INVOC!DJ13",
+        "DADOS_INVOC!DK13",
+        "DADOS_INVOC!DL13",
+        "DADOS_INVOC!DM13",
+        "DADOS_INVOC!DN13",
+        "DADOS_INVOC!DJ3",
+        "DADOS_INVOC!DK3",
+        "DADOS_INVOC!DL3",
+        "DADOS_INVOC!DM3",
+        "DADOS_INVOC!DN3",
+        "DADOS_INVOC!DJ4",
+        "DADOS_INVOC!DK4",
+        "DADOS_INVOC!DL4",
+        "DADOS_INVOC!DM4",
+        "DADOS_INVOC!DN4",
+        "DADOS_INVOC!DJ5",
+        "DADOS_INVOC!DK5",
+        "DADOS_INVOC!DL5",
+        "DADOS_INVOC!DM5",
+        "DADOS_INVOC!DN5",
+        "DADOS_INVOC!DJ6",
+        "DADOS_INVOC!DK6",
+        "DADOS_INVOC!DL6",
+        "DADOS_INVOC!DM6",
+        "DADOS_INVOC!DN6",
+        "DADOS_INVOC!DJ7",
+        "DADOS_INVOC!DK7",
+        "DADOS_INVOC!DL7",
+        "DADOS_INVOC!DM7",
+        "DADOS_INVOC!DN7",
+        "DADOS_INVOC!DJ8",
+        "DADOS_INVOC!DK8",
+        "DADOS_INVOC!DL8",
+        "DADOS_INVOC!DM8",
+        "DADOS_INVOC!DN8",
+        "DADOS_INVOC!DJ9",
+        "DADOS_INVOC!DK9",
+        "DADOS_INVOC!DL9",
+        "DADOS_INVOC!DM9",
+        "DADOS_INVOC!DN9",
+        "DADOS_INVOC!DJ10",
+        "DADOS_INVOC!DK10",
+        "DADOS_INVOC!DL10",
+        "DADOS_INVOC!DM10",
+        "DADOS_INVOC!DN10",
+        "DADOS_INVOC!DJ11",
+        "DADOS_INVOC!DK11",
+        "DADOS_INVOC!DL11",
+        "DADOS_INVOC!DM11",
+        "DADOS_INVOC!DN11",
+        "DADOS_INVOC!DJ12",
+        "DADOS_INVOC!DK12",
+        "DADOS_INVOC!DL12",
+        "DADOS_INVOC!DM12",
+        "DADOS_INVOC!DN12"
+      ],
+      "montagensDifferences": [],
+      "metadataEqual": true,
+      "mountPositions": 85887,
+      "positions": 86594,
+      "onlyExpectedFormulasChanged": true,
+      "menuEntriesVerified": 60
+    },
+    {
+      "copy": 1,
+      "inputsRestored": true,
+      "scopeDifferences": [
+        "DADOS_INVOC!DJ2",
+        "DADOS_INVOC!DK2",
+        "DADOS_INVOC!DL2",
+        "DADOS_INVOC!DM2",
+        "DADOS_INVOC!DN2",
+        "DADOS_INVOC!DJ13",
+        "DADOS_INVOC!DK13",
+        "DADOS_INVOC!DL13",
+        "DADOS_INVOC!DM13",
+        "DADOS_INVOC!DN13",
+        "DADOS_INVOC!DJ3",
+        "DADOS_INVOC!DK3",
+        "DADOS_INVOC!DL3",
+        "DADOS_INVOC!DM3",
+        "DADOS_INVOC!DN3",
+        "DADOS_INVOC!DJ4",
+        "DADOS_INVOC!DK4",
+        "DADOS_INVOC!DL4",
+        "DADOS_INVOC!DM4",
+        "DADOS_INVOC!DN4",
+        "DADOS_INVOC!DJ5",
+        "DADOS_INVOC!DK5",
+        "DADOS_INVOC!DL5",
+        "DADOS_INVOC!DM5",
+        "DADOS_INVOC!DN5",
+        "DADOS_INVOC!DJ6",
+        "DADOS_INVOC!DK6",
+        "DADOS_INVOC!DL6",
+        "DADOS_INVOC!DM6",
+        "DADOS_INVOC!DN6",
+        "DADOS_INVOC!DJ7",
+        "DADOS_INVOC!DK7",
+        "DADOS_INVOC!DL7",
+        "DADOS_INVOC!DM7",
+        "DADOS_INVOC!DN7",
+        "DADOS_INVOC!DJ8",
+        "DADOS_INVOC!DK8",
+        "DADOS_INVOC!DL8",
+        "DADOS_INVOC!DM8",
+        "DADOS_INVOC!DN8",
+        "DADOS_INVOC!DJ9",
+        "DADOS_INVOC!DK9",
+        "DADOS_INVOC!DL9",
+        "DADOS_INVOC!DM9",
+        "DADOS_INVOC!DN9",
+        "DADOS_INVOC!DJ10",
+        "DADOS_INVOC!DK10",
+        "DADOS_INVOC!DL10",
+        "DADOS_INVOC!DM10",
+        "DADOS_INVOC!DN10",
+        "DADOS_INVOC!DJ11",
+        "DADOS_INVOC!DK11",
+        "DADOS_INVOC!DL11",
+        "DADOS_INVOC!DM11",
+        "DADOS_INVOC!DN11",
+        "DADOS_INVOC!DJ12",
+        "DADOS_INVOC!DK12",
+        "DADOS_INVOC!DL12",
+        "DADOS_INVOC!DM12",
+        "DADOS_INVOC!DN12"
+      ],
+      "montagensDifferences": [],
+      "metadataEqual": true,
+      "mountPositions": 85887,
+      "positions": 86594,
+      "onlyExpectedFormulasChanged": true,
+      "menuEntriesVerified": 60
+    }
+  ],
+  "visual": {
+    "sameScenarioRestagedAfterNativeTest": true,
+    "textStillFlaggedByStrictMenu": true,
+    "pv": 8,
+    "restored": true
+  },
+  "local": {
+    "focalPassed": true,
+    "priorPericiasPlanReproduced": true,
+    "transportLocales": [
+      "pt_BR",
+      "en_US"
+    ]
+  }
+}

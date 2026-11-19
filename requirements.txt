@@ -5,3 +5,4 @@ python-docx==1.1.0
 et-xmlfile==2.0.0
 lxml==5.2.1
 typing-extensions==4.10.0
+zopfli==0.2.3.post1

@@ -1,0 +1,93 @@
+[
+  {
+    "aba": "DADOS_INVOC",
+    "r": 2,
+    "c": 171,
+    "antes": "=IF($FN2=1,$DB$2,IF($FN2=2,MIN($DB$2,IF(MAX(1,MIN($DB$2,IF($DH2=0,$DB$2,$DH2)))<=4,4,IF(MAX(1,MIN($DB$2,IF($DH2=0,$DB$2,$DH2)))<=8,8,IF(MAX(1,MIN($DB$2,IF($DH2=0,$DB$2,$DH2)))<=12,12,IF(MAX(1,MIN($DB$2,IF($DH2=0,$DB$2,$DH2)))<=16,16,IF(MAX(1,MIN($DB$2,IF($DH2=0,$DB$2,$DH2)))<=20,20,IF(MAX(1,MIN($DB$2,IF($DH2=0,$DB$2,$DH2)))<=25,25,IF(MAX(1,MIN($DB$2,IF($DH2=0,$DB$2,$DH2)))<=30,30,30)))))))),MAX(1,MIN($DB$2,IF($DH2=0,$DB$2,$DH2)))))",
+    "depois": "=IF($FN2=1,$DB$2,MAX(1,MIN($DB$2,IF($DH2=0,$DB$2,$DH2))))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 5,
+    "c": 69,
+    "antes": 2,
+    "depois": 0
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 3,
+    "c": 171,
+    "antes": "=IF($FN3=1,$DB$2,IF($FN3=2,MIN($DB$2,IF(MAX(1,MIN($DB$2,IF($DH3=0,$DB$2,$DH3)))<=4,4,IF(MAX(1,MIN($DB$2,IF($DH3=0,$DB$2,$DH3)))<=8,8,IF(MAX(1,MIN($DB$2,IF($DH3=0,$DB$2,$DH3)))<=12,12,IF(MAX(1,MIN($DB$2,IF($DH3=0,$DB$2,$DH3)))<=16,16,IF(MAX(1,MIN($DB$2,IF($DH3=0,$DB$2,$DH3)))<=20,20,IF(MAX(1,MIN($DB$2,IF($DH3=0,$DB$2,$DH3)))<=25,25,IF(MAX(1,MIN($DB$2,IF($DH3=0,$DB$2,$DH3)))<=30,30,30)))))))),MAX(1,MIN($DB$2,IF($DH3=0,$DB$2,$DH3)))))",
+    "depois": "=IF($FN3=1,$DB$2,MAX(1,MIN($DB$2,IF($DH3=0,$DB$2,$DH3))))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 4,
+    "c": 171,
+    "antes": "=IF($FN4=1,$DB$2,IF($FN4=2,MIN($DB$2,IF(MAX(1,MIN($DB$2,IF($DH4=0,$DB$2,$DH4)))<=4,4,IF(MAX(1,MIN($DB$2,IF($DH4=0,$DB$2,$DH4)))<=8,8,IF(MAX(1,MIN($DB$2,IF($DH4=0,$DB$2,$DH4)))<=12,12,IF(MAX(1,MIN($DB$2,IF($DH4=0,$DB$2,$DH4)))<=16,16,IF(MAX(1,MIN($DB$2,IF($DH4=0,$DB$2,$DH4)))<=20,20,IF(MAX(1,MIN($DB$2,IF($DH4=0,$DB$2,$DH4)))<=25,25,IF(MAX(1,MIN($DB$2,IF($DH4=0,$DB$2,$DH4)))<=30,30,30)))))))),MAX(1,MIN($DB$2,IF($DH4=0,$DB$2,$DH4)))))",
+    "depois": "=IF($FN4=1,$DB$2,MAX(1,MIN($DB$2,IF($DH4=0,$DB$2,$DH4))))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 5,
+    "c": 171,
+    "antes": "=IF($FN5=1,$DB$2,IF($FN5=2,MIN($DB$2,IF(MAX(1,MIN($DB$2,IF($DH5=0,$DB$2,$DH5)))<=4,4,IF(MAX(1,MIN($DB$2,IF($DH5=0,$DB$2,$DH5)))<=8,8,IF(MAX(1,MIN($DB$2,IF($DH5=0,$DB$2,$DH5)))<=12,12,IF(MAX(1,MIN($DB$2,IF($DH5=0,$DB$2,$DH5)))<=16,16,IF(MAX(1,MIN($DB$2,IF($DH5=0,$DB$2,$DH5)))<=20,20,IF(MAX(1,MIN($DB$2,IF($DH5=0,$DB$2,$DH5)))<=25,25,IF(MAX(1,MIN($DB$2,IF($DH5=0,$DB$2,$DH5)))<=30,30,30)))))))),MAX(1,MIN($DB$2,IF($DH5=0,$DB$2,$DH5)))))",
+    "depois": "=IF($FN5=1,$DB$2,MAX(1,MIN($DB$2,IF($DH5=0,$DB$2,$DH5))))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 6,
+    "c": 171,
+    "antes": "=IF($FN6=1,$DB$2,IF($FN6=2,MIN($DB$2,IF(MAX(1,MIN($DB$2,IF($DH6=0,$DB$2,$DH6)))<=4,4,IF(MAX(1,MIN($DB$2,IF($DH6=0,$DB$2,$DH6)))<=8,8,IF(MAX(1,MIN($DB$2,IF($DH6=0,$DB$2,$DH6)))<=12,12,IF(MAX(1,MIN($DB$2,IF($DH6=0,$DB$2,$DH6)))<=16,16,IF(MAX(1,MIN($DB$2,IF($DH6=0,$DB$2,$DH6)))<=20,20,IF(MAX(1,MIN($DB$2,IF($DH6=0,$DB$2,$DH6)))<=25,25,IF(MAX(1,MIN($DB$2,IF($DH6=0,$DB$2,$DH6)))<=30,30,30)))))))),MAX(1,MIN($DB$2,IF($DH6=0,$DB$2,$DH6)))))",
+    "depois": "=IF($FN6=1,$DB$2,MAX(1,MIN($DB$2,IF($DH6=0,$DB$2,$DH6))))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 7,
+    "c": 171,
+    "antes": "=IF($FN7=1,$DB$2,IF($FN7=2,MIN($DB$2,IF(MAX(1,MIN($DB$2,IF($DH7=0,$DB$2,$DH7)))<=4,4,IF(MAX(1,MIN($DB$2,IF($DH7=0,$DB$2,$DH7)))<=8,8,IF(MAX(1,MIN($DB$2,IF($DH7=0,$DB$2,$DH7)))<=12,12,IF(MAX(1,MIN($DB$2,IF($DH7=0,$DB$2,$DH7)))<=16,16,IF(MAX(1,MIN($DB$2,IF($DH7=0,$DB$2,$DH7)))<=20,20,IF(MAX(1,MIN($DB$2,IF($DH7=0,$DB$2,$DH7)))<=25,25,IF(MAX(1,MIN($DB$2,IF($DH7=0,$DB$2,$DH7)))<=30,30,30)))))))),MAX(1,MIN($DB$2,IF($DH7=0,$DB$2,$DH7)))))",
+    "depois": "=IF($FN7=1,$DB$2,MAX(1,MIN($DB$2,IF($DH7=0,$DB$2,$DH7))))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 8,
+    "c": 171,
+    "antes": "=IF($FN8=1,$DB$2,IF($FN8=2,MIN($DB$2,IF(MAX(1,MIN($DB$2,IF($DH8=0,$DB$2,$DH8)))<=4,4,IF(MAX(1,MIN($DB$2,IF($DH8=0,$DB$2,$DH8)))<=8,8,IF(MAX(1,MIN($DB$2,IF($DH8=0,$DB$2,$DH8)))<=12,12,IF(MAX(1,MIN($DB$2,IF($DH8=0,$DB$2,$DH8)))<=16,16,IF(MAX(1,MIN($DB$2,IF($DH8=0,$DB$2,$DH8)))<=20,20,IF(MAX(1,MIN($DB$2,IF($DH8=0,$DB$2,$DH8)))<=25,25,IF(MAX(1,MIN($DB$2,IF($DH8=0,$DB$2,$DH8)))<=30,30,30)))))))),MAX(1,MIN($DB$2,IF($DH8=0,$DB$2,$DH8)))))",
+    "depois": "=IF($FN8=1,$DB$2,MAX(1,MIN($DB$2,IF($DH8=0,$DB$2,$DH8))))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 9,
+    "c": 171,
+    "antes": "=IF($FN9=1,$DB$2,IF($FN9=2,MIN($DB$2,IF(MAX(1,MIN($DB$2,IF($DH9=0,$DB$2,$DH9)))<=4,4,IF(MAX(1,MIN($DB$2,IF($DH9=0,$DB$2,$DH9)))<=8,8,IF(MAX(1,MIN($DB$2,IF($DH9=0,$DB$2,$DH9)))<=12,12,IF(MAX(1,MIN($DB$2,IF($DH9=0,$DB$2,$DH9)))<=16,16,IF(MAX(1,MIN($DB$2,IF($DH9=0,$DB$2,$DH9)))<=20,20,IF(MAX(1,MIN($DB$2,IF($DH9=0,$DB$2,$DH9)))<=25,25,IF(MAX(1,MIN($DB$2,IF($DH9=0,$DB$2,$DH9)))<=30,30,30)))))))),MAX(1,MIN($DB$2,IF($DH9=0,$DB$2,$DH9)))))",
+    "depois": "=IF($FN9=1,$DB$2,MAX(1,MIN($DB$2,IF($DH9=0,$DB$2,$DH9))))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 10,
+    "c": 171,
+    "antes": "=IF($FN10=1,$DB$2,IF($FN10=2,MIN($DB$2,IF(MAX(1,MIN($DB$2,IF($DH10=0,$DB$2,$DH10)))<=4,4,IF(MAX(1,MIN($DB$2,IF($DH10=0,$DB$2,$DH10)))<=8,8,IF(MAX(1,MIN($DB$2,IF($DH10=0,$DB$2,$DH10)))<=12,12,IF(MAX(1,MIN($DB$2,IF($DH10=0,$DB$2,$DH10)))<=16,16,IF(MAX(1,MIN($DB$2,IF($DH10=0,$DB$2,$DH10)))<=20,20,IF(MAX(1,MIN($DB$2,IF($DH10=0,$DB$2,$DH10)))<=25,25,IF(MAX(1,MIN($DB$2,IF($DH10=0,$DB$2,$DH10)))<=30,30,30)))))))),MAX(1,MIN($DB$2,IF($DH10=0,$DB$2,$DH10)))))",
+    "depois": "=IF($FN10=1,$DB$2,MAX(1,MIN($DB$2,IF($DH10=0,$DB$2,$DH10))))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 11,
+    "c": 171,
+    "antes": "=IF($FN11=1,$DB$2,IF($FN11=2,MIN($DB$2,IF(MAX(1,MIN($DB$2,IF($DH11=0,$DB$2,$DH11)))<=4,4,IF(MAX(1,MIN($DB$2,IF($DH11=0,$DB$2,$DH11)))<=8,8,IF(MAX(1,MIN($DB$2,IF($DH11=0,$DB$2,$DH11)))<=12,12,IF(MAX(1,MIN($DB$2,IF($DH11=0,$DB$2,$DH11)))<=16,16,IF(MAX(1,MIN($DB$2,IF($DH11=0,$DB$2,$DH11)))<=20,20,IF(MAX(1,MIN($DB$2,IF($DH11=0,$DB$2,$DH11)))<=25,25,IF(MAX(1,MIN($DB$2,IF($DH11=0,$DB$2,$DH11)))<=30,30,30)))))))),MAX(1,MIN($DB$2,IF($DH11=0,$DB$2,$DH11)))))",
+    "depois": "=IF($FN11=1,$DB$2,MAX(1,MIN($DB$2,IF($DH11=0,$DB$2,$DH11))))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 12,
+    "c": 171,
+    "antes": "=IF($FN12=1,$DB$2,IF($FN12=2,MIN($DB$2,IF(MAX(1,MIN($DB$2,IF($DH12=0,$DB$2,$DH12)))<=4,4,IF(MAX(1,MIN($DB$2,IF($DH12=0,$DB$2,$DH12)))<=8,8,IF(MAX(1,MIN($DB$2,IF($DH12=0,$DB$2,$DH12)))<=12,12,IF(MAX(1,MIN($DB$2,IF($DH12=0,$DB$2,$DH12)))<=16,16,IF(MAX(1,MIN($DB$2,IF($DH12=0,$DB$2,$DH12)))<=20,20,IF(MAX(1,MIN($DB$2,IF($DH12=0,$DB$2,$DH12)))<=25,25,IF(MAX(1,MIN($DB$2,IF($DH12=0,$DB$2,$DH12)))<=30,30,30)))))))),MAX(1,MIN($DB$2,IF($DH12=0,$DB$2,$DH12)))))",
+    "depois": "=IF($FN12=1,$DB$2,MAX(1,MIN($DB$2,IF($DH12=0,$DB$2,$DH12))))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 13,
+    "c": 171,
+    "antes": "=IF($FN13=1,$DB$2,IF($FN13=2,MIN($DB$2,IF(MAX(1,MIN($DB$2,IF($DH13=0,$DB$2,$DH13)))<=4,4,IF(MAX(1,MIN($DB$2,IF($DH13=0,$DB$2,$DH13)))<=8,8,IF(MAX(1,MIN($DB$2,IF($DH13=0,$DB$2,$DH13)))<=12,12,IF(MAX(1,MIN($DB$2,IF($DH13=0,$DB$2,$DH13)))<=16,16,IF(MAX(1,MIN($DB$2,IF($DH13=0,$DB$2,$DH13)))<=20,20,IF(MAX(1,MIN($DB$2,IF($DH13=0,$DB$2,$DH13)))<=25,25,IF(MAX(1,MIN($DB$2,IF($DH13=0,$DB$2,$DH13)))<=30,30,30)))))))),MAX(1,MIN($DB$2,IF($DH13=0,$DB$2,$DH13)))))",
+    "depois": "=IF($FN13=1,$DB$2,MAX(1,MIN($DB$2,IF($DH13=0,$DB$2,$DH13))))"
+  }
+]

@@ -28,15 +28,16 @@ extrair_invocacao.py lê dos capítulos 16 e 17 do manual.txt. As Melhorias, as 
 proibidos são os da FICHA AMALDIÇOADA (catalogo-projeto-m.json e decisoes-ficha.json), lidos por ficha_amaldicoada.regras().
 
 O QUE ESTA ABA NÃO FAZ: as Intervenções de Vínculo (são ações; a aba guarda os pontos), a lista de ritual e a
-fabricação. Ela não confere quem pode ter trunfo (o livro os dá à domada com técnica própria), nem se os degraus de
-Domínio da domada gastaram espaço de especial. A Integridade da entidade com alma não tem caixa: o capítulo 17 não dá
-a máxima dela.
+fabricação. O módulo expansao_domada.py acrescenta a conferência de requisitos
+estruturados e do orçamento de especiais/domínio depois do layout final.
+Técnica própria e histórico de aquisição dos degraus ainda exigem revisão da mesa.
 """
 import json, math, os, re
 
 import indice_ficha as ix
 import ficha_pessoal as fp
 import ficha_amaldicoada as fa
+from leitura_buff import buff as leitura_buff  # 10/11/2026: Buff/Debuff decimal contra o dono
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 NOME = "INVOCAÇÕES"
@@ -70,6 +71,20 @@ def blocos(k):
     return [lombada(k) + 1 + (N_BLOCO + 1) * j for j in range(3)]
 
 
+def pontos_distribuidos(entrada):
+    """Conta um dígito do menu mesmo quando a colagem o preserva como texto."""
+    return f'=IF(ISTEXT({entrada}),IF(REGEXMATCH({entrada},"^[0-6]$"),VALUE({entrada}),0),N({entrada}))'
+
+
+def ajuste_textual(entrada):
+    """Buff/Debuff da entidade: a mesma leitura da ficha do jogador (leitura_buff).
+
+    Inteiro vale ele mesmo; decimal, digitado ou colado, arredonda contra o dono
+    (10/11/2026); outro texto vale zero.
+    """
+    return "=" + leitura_buff(entrada)
+
+
 COLS = lombada(N_COLUNAS - 1) + PASSO_COL - 1          # a última é o respiro da direita
 PX_COLUNAS = [PX_FINA] * 3 + [PX_CONJ] * N_CONJ + [PX_FINA] + ([PX_FINA] + ([PX_BLOCO] * N_BLOCO + [PX_FINA]) * 3) * N_COLUNAS
 assert len(PX_COLUNAS) == COLS
@@ -81,7 +96,7 @@ N_ATR, N_PER, N_FAM, N_TAL, N_TALX, N_LIB = 5, 7, 5, 8, 3, 3
 COM_ALMA, SEM_ALMA = "Com alma", "Sem alma"
 # o que a caixa do estágio diz: inteira, os quatro estágios (Estágios de Integridade) e a entidade sem alma
 ESTAGIOS = ("Alma inteira", "Estágio 1 · desvantagem em perícias", "Estágio 2 · metade do deslocamento, +1 PE por Classe",
-            "Estágio 3 · desvantagem em ataques e TRs, Classe pela metade", "Estágio 4 · caída, como a zero de vida",
+            "Estágio 3 · desvantagem em ataques e TRs, Classe máxima à metade", "Estágio 4 · Inconsciente e Derrotada",
             "Sem alma · imune a dano de Alma")
 EM_USO = ("MÃO 1", "MÃO 2", "VESTE")         # o equipamento em uso, um lugar por linha
 N_GUARDA = 6                                 # as linhas de item guardado
@@ -369,10 +384,9 @@ def trocas(layout, cor_da_barra=None):
              [[t["nome"], t["ce"], t["faz"], t["nome"] if t["ce"] == 1 else ""] for t in R["talentos"]])
     TALENTOS = D.faixa("talentos")
     D.tabela("tipos", ["tipo de entidade"], [[t["nome"]] for t in LIV["tipos"]])
-    # o que a aquisição faz com o nível: 1 acompanha o seu, 0 conserva o de quando foi obtida, 2 acompanha o seu até o
-    # último nível da Classe em que foi criada (a Criação, desde o livro R44)
+    # AQ01/R66: 1 acompanha o invocador; 0 conserva o nível obtido/fabricado.
     D.tabela("aquis", ["aquisição", "acompanha o nível"],
-             [[a["nome"], 2 if a.get("ate_o_fim_da_classe") else int(a["acompanha"])] for a in LIV["aquisicoes"]])
+             [[a["nome"], int(a["acompanha"])] for a in LIV["aquisicoes"]])
     AQUIS = D.faixa("aquis")
     D.tabela("familias", ["família"], [[f] for f in R["familias"]])
     D.tabela("atributos", ["atributo"], [[n] for n, _ in ATRS])
@@ -436,18 +450,26 @@ def trocas(layout, cor_da_barra=None):
         P = lambda k: f"${L(colf[k])}{n}"
         Rg = lambda a, b: f"${L(colf[a])}{n}:${L(colf[b])}{n}"
         da = lambda cel: f'={_A(cel, IV)}&""'
-        o = {"ficha": i, "nome": da(g["nome"]), "tipo": da(g["tipo"]), "aquis": da(g["aquis"]), "nfixo": f"=N({_A(g['nivel_fixo'], IV)})",
+        # AQ02: não perder o tipo com N(). Zero é só o vazio; -1 é inválido.
+        entrada_nivel = _A(g['nivel_fixo'], IV)
+        vazio_nivel = f'OR(ISBLANK({entrada_nivel}),AND(ISTEXT({entrada_nivel}),{entrada_nivel}=""))'
+        nivel_validado = (f'=IFERROR(IF({vazio_nivel},0,IF(ISNUMBER({entrada_nivel}),'
+                          f'IF(AND({entrada_nivel}=INT({entrada_nivel}),{entrada_nivel}>=1,{entrada_nivel}<=30),'
+                          f'{entrada_nivel},-1),IF(ISTEXT({entrada_nivel}),'
+                          f'IF(REGEXMATCH({entrada_nivel},"^([1-9]|[12][0-9]|30)$"),VALUE({entrada_nivel}),-1),-1))),-1)')
+        o = {"ficha": i, "nome": da(g["nome"]), "tipo": da(g["tipo"]), "aquis": da(g["aquis"]), "nfixo": nivel_validado,
              "talisma": da(g["talisma"]), "acerto": da(g["acerto"]), "fis": da(g["fis"]), "trT": da(g["trT"]),
              "vida_c": da(g["vida"]), "temp": f"=N({_A(g['temp'], IV)})",
              # o Volume do que ela empunha, veste e guarda: a soma das caixas de VOL. do equipamento
              "evol": f"=SUM({_A(g['eq_vol'][0], IV)}:{_A(g['eq_vol'][-1], IV)},{_A(g['guarda_vol'][0], IV)}:{_A(g['guarda_vol'][-1], IV)})",
              "reserva": da(g["reserva"]), "exp": da(g["exp"]["degrau"]), "alma": da(g["alma"]), "integ_c": da(g["integ"])}
         for k in range(N_ATR):
-            o[f"p{k}"], o[f"u{k}"] = f"=N({_A(g['pts'][k], IV)})", f"=N({_A(g['buff'][k], IV)})"
+            o[f"p{k}"] = pontos_distribuidos(_A(g["pts"][k], IV))
+            o[f"u{k}"] = ajuste_textual(_A(g['buff'][k], IV))
         for k in range(5):
-            o[f"us{k}"] = f"=N({_A(g['bstat'][k], IV)})"
+            o[f"us{k}"] = ajuste_textual(_A(g['bstat'][k], IV))
         for k in range(4):
-            o[f"ut{k}"] = f"=N({_A(g['btr'][k], IV)})"
+            o[f"ut{k}"] = ajuste_textual(_A(g['btr'][k], IV))
         for k in range(N_FAM):
             o[f"f{k}"] = da(g["fam"][k])
         for k in range(N_PER):
@@ -463,11 +485,10 @@ def trocas(layout, cor_da_barra=None):
         nn, cl, tem = P("n"), P("cl"), P("tem")
         o["tem"] = f'=IF({P("nome")}<>"",1,0)'
         o["acomp"] = f'=IFERROR(VLOOKUP({P("aquis")},{AQUIS},2,FALSE),1)'
-        # 14/10/2026 (B46): a criada acompanha o seu nível até o último da Classe do nível em que foi criada (ou
-        # reconstruída): com o nível fixo 6 (Classe 2, níveis 5 a 8) e você no 11, ela fica no 8
+        # AQ01/R66: domada e criada conservam o nível registrado, até o seu.
+        # O vazio mantém a prévia histórica no nível do invocador.
         fixo = f'MAX(1,MIN({NIV},IF({P("nfixo")}=0,{NIV},{P("nfixo")})))'
-        fim_da_classe = "".join(f'IF({fixo}<={p_["ate"]},{p_["ate"]},' for p_ in LIV["progressao"]) + f'{LIV["progressao"][-1]["ate"]}' + ")" * len(LIV["progressao"])
-        o["n"] = f'=IF({P("acomp")}=1,{NIV},IF({P("acomp")}=2,MIN({NIV},{fim_da_classe}),{fixo}))'
+        o["n"] = f'=IF({P("acomp")}=1,{NIV},{fixo})'
         o["cl"] = f"=VLOOKUP(MAX(1,{nn}),{PROG},2,TRUE)"
         o["db"] = f"=VLOOKUP(MAX(1,{nn}),{PROG},3,TRUE)"
         for k in range(N_ATR):
@@ -494,21 +515,33 @@ def trocas(layout, cor_da_barra=None):
         # de Classe se aplicam às especiais que ela executa" (Queda e destruição); "Um corpo não autônomo não tem alma".
         # A caixa da atual nasce cheia, como a da vida, e é livre.
         com = f'AND({P("tem")}=1,{P("alma")}<>"{SEM_ALMA}")'
-        o["imax"] = f'=IF({com},MAX(1,INT({P("vida")}/2)),"")'
+        o["imax"] = f'=IF({com},IF({P("vida")}>0,MAX(1,INT({P("vida")}/2)),0),"")'
         o["integ0"] = f'={P("imax")}'
         o["iatual"] = (f'=IF({P("imax")}="","",IF({P("integ_c")}="",{P("imax")},'
                        f'MAX(0,MIN(IFERROR(VALUE({P("integ_c")}),{P("imax")}),{P("imax")}))))')
         o["d_imax"] = f'=IF({P("tem")}=0,"",IF({P("imax")}="","—",{P("imax")}))'
         ia, im = P("iatual"), P("imax")
-        o["d_est"] = (f'=IF({P("tem")}=0,"",IF({im}="","{ESTAGIOS[5]}",IF({ia}<=0,"{ESTAGIOS[4]}",IF({ia}<={im}/4,"{ESTAGIOS[3]}",'
-                      f'IF({ia}<={im}/2,"{ESTAGIOS[2]}",IF({ia}<={im}*3/4,"{ESTAGIOS[1]}","{ESTAGIOS[0]}"))))))')
+        o["d_est"] = (f'=IF({P("tem")}=0,"",IF({im}="","{ESTAGIOS[5]}",IF(N({im})<=0,"—",IF({ia}<=0,"{ESTAGIOS[4]}",IF({ia}<={im}/4,"{ESTAGIOS[3]}",'
+                      f'IF({ia}<={im}/2,"{ESTAGIOS[2]}",IF({ia}<={im}*3/4,"{ESTAGIOS[1]}","{ESTAGIOS[0]}")))))))')
         o["desl"] = f'=9+{P("us4")}'
         o["vf"] = f'=IF({P("fis")}="Destreza",{P("t1")},{P("t0")})'
         for k, (nome_tr, atr) in enumerate(TESTES):
             base = P("vf") if atr is None else P(f"t{atr}")
             o[f"tr{k}"] = f'={base}+IF({P("trT")}="{nome_tr}",{MAE},0)+{P(f"ut{k}")}'
         o["nper"] = f'=4+INT({P("p3")}/2)'
-        o["tper"] = f'=COUNTIF({PER},"?*")'
+        # O bônus preenchido confirma que a escolha ainda resolve no catálogo.
+        # Compare os nomes diretamente para não interpretar caracteres como curingas.
+        escolhas = []
+        for k in range(N_PER):
+            bonus = P(f"d_pb{k}")
+            primeira = "TRUE"
+            if k:
+                nomes_anteriores = Rg("per0", f"per{k - 1}")
+                bonus_anteriores = Rg("d_pb0", f"d_pb{k - 1}")
+                anteriores = f'SUMPRODUCT(IFERROR(({nomes_anteriores}={P(f"per{k}")})*({bonus_anteriores}<>""),0))'
+                primeira = f'{anteriores}=0'
+            escolhas.append(f'IFERROR(IF(AND({bonus}<>"",{primeira}),1,0),0)')
+        o["tper"] = '=SUM(' + ','.join(escolhas) + ')'
         o["esp"] = f"=INT((2+{nn}/2)/2)"
         o["nbas"] = f"=IF({nn}>={ABRE_BAS[1]},2,1)"
         o["ntal"] = f'=1+{P("marc")}'
@@ -525,22 +558,43 @@ def trocas(layout, cor_da_barra=None):
         o["rep"] = "=" + "+".join(f'IF({P(f"f{k}")}="",0,IF(COUNTIF({FF},{P(f"f{k}")})>1,1,0))' for k in range(N_FAM))
         o["maxfam"] = f"={H['famílias da trilha']}"
         # --- o que a aba mostra
-        o["d_titulo"] = (f'=IF({tem}=0,"INVOCAÇÃO {i} · lugar vazio",{P("nome")}&" · "&{P("tipo")}&" · nível "&{nn}&" · vida "&{P("atual")}&" de "&{P("vida")})')
+        revisao_nivel = (f'IF(AND({P("acomp")}=0,{P("nfixo")}=-1),'
+                         '" · REVISAR: nível obtido inválido; cálculo provisório no nível 1","")')
+        # 09/11/2026: "a entidade tem um Teste de Resistência treinado". Vazio, ou texto colado por cima do menu, tirava a
+        # maestria de todos os TR em silêncio; o título passa a pedir a escolha, sem reescrever a caixa.
+        tr_valido = "OR(" + ",".join(f'{P("trT")}="{nome_tr}"' for nome_tr, _ in TESTES) + ")"
+        revisao_tr = f'IF({tr_valido},""," · REVISAR: escolha o TR treinado")'
+        o["d_titulo"] = (f'=IF({tem}=0,"INVOCAÇÃO {i} · lugar vazio",{P("nome")}&" · "&{P("tipo")}&{revisao_nivel}&{revisao_tr}&" · nível "&{nn}&" · vida "&{P("atual")}&" de "&{P("vida")})')
         o["d_lomb"] = f'=IF({tem}=0,"VAZIA",UPPER({P("nome")}))'
         o["d_mae"] = f"={sinal(MAE)}"
         o["d_ent"] = f'={P("ent")}&" PE"'
         o["d_ret"] = f'={P("ret")}&" PE"'
-        o["d_pontos"] = (f'=IF(OR({P("gastos")}>{P("disp")},{P("acima")}>{P("marc")}),"{T_ERRO} ",IF(AND({tem}=1,{P("gastos")}<{P("disp")}),"{T_AVISO}",""))'
-                         f'&"ATRIBUTOS · "&{P("gastos")}&" DE "&{P("disp")}&" PONTOS"&IF({P("acima")}>{P("marc")}," · ACIMA DE 3 SÓ COM MARCO","")')
+        # 09/11/2026: o menu dos pontos só aceita 0–6, mas Colar especial › Só os valores grava qualquer número por
+        # cima dele. Negativo e fração fechavam o orçamento sem aviso; agora acusam erro, sem reescrever a entrada.
+        fora = "OR(" + ",".join(f'{P(f"p{k}")}<0,{P(f"p{k}")}>6,{P(f"p{k}")}<>INT({P(f"p{k}")})' for k in range(N_ATR)) + ")"
+        o["d_pontos"] = (f'=IF(OR({P("gastos")}>{P("disp")},{P("acima")}>{P("marc")},{fora}),"{T_ERRO} ",IF(AND({tem}=1,{P("gastos")}<{P("disp")}),"{T_AVISO}",""))'
+                         f'&"ATRIBUTOS · "&{P("gastos")}&" DE "&{P("disp")}&" PONTOS"&IF({P("acima")}>{P("marc")}," · ACIMA DE 3 SÓ COM MARCO","")'
+                         f'&IF({fora}," · PONTO FORA DE 0 A 6","")')
         o["d_atq"] = f'=IF({P("atq")}="","",{sinal(P("atq"))})'
         o["d_cd"] = f'=IF({P("cd")}="","",{P("cd")})'
         # 10/10/2026 (B45): a entidade "segue as regras gerais de Carga": acima do limite e até o dobro, metade do
         # deslocamento; acima do dobro, não se desloca com a carga
-        o["d_desl"] = (f'=SUBSTITUTE(IF({P("evol")}>2*{P("carga")},0,IF({P("evol")}>{P("carga")},{P("desl")}/2,{P("desl")}))'
-                       f'&" m",".",",")')
+        distancia = f'IF({P("evol")}>{P("carga")},{P("desl")}/2,{P("desl")})'
+        metade = f'AND(ISNUMBER({ia}),N({im})>0,{ia}<={im}/2)'
+        o["d_desl"] = (f'=SUBSTITUTE(IF({P("evol")}>2*{P("carga")},0,'
+                       f'IF({metade},IF({ia}<=0,0,FLOOR(MAX(0,({distancia})/2),1.5)),{distancia}))'
+                       '&" m",".",",")')
         for k in range(4):
             o[f"d_tr{k}"] = f'={sinal(P(f"tr{k}"))}'
-        o["d_per"] = f'=IF({P("tper")}>{P("nper")},"{T_ERRO} ","")&"PERÍCIAS · "&{P("tper")}&" DE "&{P("nper")}'
+        validas = f'COUNTIF({Rg("d_pb0", f"d_pb{N_PER - 1}")},"?*")'
+        repetidas = f'{validas}>{P("tper")}'
+        fora_do_catalogo = f'COUNTIF({PER},"?*")>{validas}'
+        excesso_pericias = f'{P("tper")}>{P("nper")}'
+        o["d_per"] = (f'=IF(OR({repetidas},{fora_do_catalogo},{excesso_pericias}),"{T_ERRO} ","")'
+                      f'&"PERÍCIAS · "&{P("tper")}&" DE "&{P("nper")}'
+                      f'&IF({repetidas}," · REPETIDA","")'
+                      f'&IF({fora_do_catalogo}," · FORA DO CATÁLOGO","")'
+                      f'&IF({excesso_pericias}," · ACIMA DO LIMITE","")')
         for k in range(N_PER):
             pk = P(f"per{k}")
             o[f"d_pb{k}"] = f'=IF({pk}="","",IFERROR({sinal(f"(INDEX({TT},1,MATCH(VLOOKUP({pk},{PERICIAS},2,FALSE),{ATRIBUTOS},0))+{MAE})")},""))'
@@ -581,7 +635,7 @@ def trocas(layout, cor_da_barra=None):
         o["d_ea"] = (f'="Acerto "&MAX(0,INDEX({PONTOS},{cl})-INDEX({PRECOS},{cl},2+3*IF(AND({fam_ines}<>"",'
                      f'OR({fam_ines}={P("f0")},{fam_ines}={P("f1")})),1,0)))&"d8"')
         o["d_er"] = f'=IFERROR(VLOOKUP({P("exp")},{EXPANSAO},3,FALSE),"Escolha o degrau")'
-        o["d_rol"] = (f'={i}&" · "&IF({tem}=0,"vazia",{P("nome")}&" · nv "&{nn}&" · "&{P("atual")}&"/"&{P("vida")})')
+        o["d_rol"] = (f'={i}&" · "&IF({tem}=0,"vazia",{P("nome")}&{revisao_nivel}&" · nv "&{nn}&" · "&{P("atual")}&"/"&{P("vida")})')
         return [o[k] for k in nomes_f]
 
     D.tabela("fichas", [("conta de ficha" if k == "ficha" else k) for k in nomes_f], [[None] for _ in LUG])
@@ -842,20 +896,23 @@ NOTAS = {
     "tipo": "O tipo combina origem e corpo. O shikigami de técnica é a referência; o corpo de criação ganha 4 + Constituição de vida "
             "por nível; o shikigami de criação mora num talismã; a domada conserva o nível em que foi domada.",
     "oficio": "Só a entidade de criação (o shikigami de talismã e o corpo de criação): o ofício escolhido na criação dela, que "
-              "serve ao teste de criação, ao reparo e ao socorro. Entalhador, Forja, Alfaiate e Caligrafia são exemplos; a lista "
-              "não é fechada, e dá para escrever outro. O reparo, num descanso curto, recupera metade da vida máxima; com o corpo "
+              "serve ao teste de criação, ao reparo e ao socorro. Entalhador, Forja, Alfaiate e Caligrafia são exemplos. "
+              "Para usar outro, cadastre um Ofício em CONFIGURAÇÃO e depois escolha no menu. "
+              "O reparo, num descanso curto, recupera metade da vida máxima; com o corpo "
               "uma Classe acima de quem repara, um terço (teste Difícil); duas ou mais acima, um quarto.",
-    # 14/10/2026 (B46, livro R44, item 189): a criada acompanha o seu nível até o último nível da Classe dela
     "aquis": "Como ela foi obtida. Espaço conhecido e lista de ritual acompanham o seu nível. A domada fica no nível em que foi "
-             "domada. A criada acompanha o seu nível até o último nível da Classe em que foi criada; passar à Classe seguinte "
-             "pede reconstruir (o mesmo teste, um degrau mais fácil). Escreva ao lado o nível em que ela foi obtida.",
-    "nivel_fixo": "Só para a domada e a criada: o nível em que ela foi domada, ou criada e reconstruída, até o seu. A domada fica "
-                  "nele; a criada sobe com você até o fim da Classe dele (criada no 6, Classe 2, vai até o 8). Em branco, a "
-                  "ficha usa o seu nível.",
+             "domada. A criada conserva o nível de fabricação; uma versão mais poderosa exige novo projeto. "
+             "Escreva ao lado o nível em que ela foi obtida ou fabricada.",
+    "nivel_fixo": "Só para a domada e a criada: registre o nível em que foi obtida ou fabricada, até o seu. "
+                  "Ela conserva esse nível; a criada não melhora quando você sobe de nível ou a repara. "
+                  "Em branco, a ficha mantém a prévia no seu nível; preencha o nível obtido para fixá-lo. "
+                  "Use um inteiro de 1 a 30. Texto contendo só os dígitos desse nível é interpretado como número. "
+                  "Entrada inválida fica preservada, exige revisão e usa cálculo provisório no nível 1.",
     "talisma": "Só o shikigami de criação: a carga deixada no talismã no descanso longo adianta parte da próxima entrada. O "
                "talismã ocupa 0,5 de Volume.",
-    "nivel": "O nível dela. Com espaço conhecido ou lista de ritual é o seu; a domada fica no nível em que foi domada; a criada "
-             "acompanha o seu até o último nível da Classe em que foi criada. Nunca passa do seu.",
+    "nivel": "O nível dela. Com espaço conhecido ou lista de ritual é o seu; a domada conserva o nível obtido e a criada "
+             "conserva o de fabricação. Nunca passa do seu. Para domada e criada, preencha o nível obtido ao lado da aquisição. "
+             "Entrada inválida mostra REVISAR no título e na lista; as contas no nível 1 são provisórias, não aprovam a entidade.",
     "classe": "A maior Classe que o nível dela permite: sobe nos níveis 5, 9, 13, 17, 21 e 26.",
     "maestria": "Sempre a sua, mesmo numa domada de nível menor. Vem da FICHA.",
     "entrada": "Manifestar custa a maior Classe dela em PE, e a sua Ação Bônus. Com o talismã carregado, metade, para cima. "
@@ -864,7 +921,7 @@ NOTAS = {
                "Ação Bônus. A carga do talismã não abate este preço. Ela volta com metade da vida máxima, no mínimo 1.",
     "pontos": "9 pontos, cada atributo entre 0 e 3, e mais 1 ponto nos níveis 6, 10, 14, 18, 22, 26 e 30. O teto é 6.",
     "atributo": "O número grande é o total. Embaixo dele, os pontos que você distribuiu, e embaixo o Buff/Debuff.",
-    "bd": "Buff/Debuff: o que você digitar aqui soma, ou tira, do número de cima.",
+    "bd": "Buff/Debuff: o que você digitar aqui soma, ou tira, do número de cima. Decimal arredonda contra você (1,5 vale 1; −1,5 vale −2) e deixa o número âmbar.",
     "ataque": "Atributo de acerto + a sua maestria.",
     "cd": "8 + atributo de acerto + a sua maestria.",
     "defesa": "10 + Destreza dela + metade da sua Essência ou Inteligência, a que o conjunto escolheu. Com traje ou revestimento, a "
@@ -878,14 +935,15 @@ NOTAS = {
               "desvantagem, porque a entidade não tem treino em armas.",
     "pericias": "4 + metade da Inteligência, para baixo. O número ao lado é o atributo da perícia mais a sua maestria.",
     "delta": "Escreva −9 ou +5 e aperte Enter: a ficha aplica na vida atual e limpa a caixa. A perda gasta a vida temporária "
-             "primeiro, e a vida não passa da máxima.",
+             "primeiro, e a vida não passa da máxima."
+             " Enquanto o número está aqui, a caixa fica âmbar: ainda não foi aplicado. Se continuar depois de um minuto, ele se perdeu (o Google às vezes descarta edições rápidas em sequência): confira o atual e digite de novo.",
     "vida_atual": "Nasce cheia, igual à máxima, e a acompanha até você escrever aqui ou usar a caixa de ±. Em branco, a vida "
                   "conta como cheia. Curar não funciona a zero: use o retorno ou o descanso longo.",
     "alma": "O corpo amaldiçoado não autônomo não tem alma: é imune ao dano de Alma e não tem Integridade. O autônomo, com alma, "
             "precisa constar da definição.",
     "integ": "Nasce cheia e acompanha a máxima até você escrever aqui. Cada ponto de dano de Alma tira 1 de vida e 1 de "
              "Integridade. A zero ela cai, como a zero de vida, e volta com pelo menos 1.",
-    "integ_max": "Metade da vida máxima, para baixo, com mínimo 1: a regra das criaturas que não são personagens.",
+    "integ_max": "Metade da vida máxima, para baixo, com mínimo 1 se a vida máxima for positiva.",
     "estagio": "Pelo que falta da Integridade: um quarto, desvantagem em perícias; metade, deslocamento pela metade e +1 PE por "
                "Classe nas especiais; três quartos, desvantagem em ataques e TRs e a Classe das especiais pela metade; toda, ela cai.",
     "reserva": "Só a maldição domada com técnica própria: nível × (1 + um terço da Essência dela). Escreva quanto ainda resta. O "
@@ -915,7 +973,8 @@ NOTAS = {
     "trunfos": "Trunfos exigem maldição domada com técnica própria e os níveis de aquisição do livro. Confira os avisos dos cartões; a descrição registra as permissões específicas.",
     "lib": "A domada conhece uma no nível 10, duas no 20 e três no 30. Classe 3 ou maior, e não ocupa espaço de especial. "
            "Custa 3 × Classe × 1,5 PE, para cima.",
-    "tm": "A faixa usa o nível dela, que não sobe com o seu. Os pontos pagam Forma e Melhorias, sem comprar dados.",
+    "tm": "A faixa usa o nível dela, que não sobe com o seu. A Forma e a base da função saem dos dados-base; os pontos "
+          "pagam só as Melhorias, sem comprar dados. A correção pela R67 não gasta a revisão.",
     "exp": "O refino, a maestria e a especialização são os seus. Posição, vida e Teste de Resistência de Vigor são os dela. O Acerto "
            "de dano é montado como o do jogador: os pontos de especial da maior Classe dela, menos o preço Médio do Inescapável "
            "(com o desconto da Família Livre), 1d8 por ponto.",
@@ -1105,6 +1164,7 @@ def aba(layout, tr):
         assert caixa(A1, a[1], r + 37, "AQUISIÇÃO", LIV["aquisicoes"][0]["nome"], "cel", nota("aquis")) == g["aquis"]
         f.menu(g["aquis"], D.faixa("aquis", so=0, aba=DI))
         assert caixa(a[2], a[2], r + 37, "OBTIDA NO NÍVEL", None, "cel", nota("nivel_fixo")) == g["nivel_fixo"]
+        f.menu(g["nivel_fixo"], '"' + ",".join(str(n) for n in range(1, 31)) + '"')
         assert caixa(a[3], A5, r + 37, "TALISMÃ", SEM_CARGA, "cel", nota("talisma")) == g["talisma"]
         f.menu(g["talisma"], D.faixa("carga", aba=DI))
         # --- no meio: os números
@@ -1302,6 +1362,15 @@ def aba(layout, tr):
     condicional = [{"faixas": [corpo], "contem": T_ERRO, "fundo": VERMELHO, "fonte": BRANCO},
                    {"faixas": [corpo], "comeca": T_AVISO, "fonte": AMBAR},
                    {"faixas": [corpo], "contem": SEM_NOME, "fonte": AMBAR}]
+    # 14/11/2026: o Buff/Debuff decimal arredonda contra o dono (CORRECAO-BUFF-DECIMAL), mas a caixa "B/D "+0
+    # mostrava 1,5 como "B/D +2". A letra fica âmbar quando o número tem decimal, e a nota da primeira caixa explica.
+    # A referência é relativa à primeira caixa: cada célula das 36 faixas se lê a si mesma.
+    bd0 = tr["fichas_c"][0]["buff"][0]
+    condicional.append({"faixas": [f"{g[k][0]}:{g[k][-1]}" for g in tr["fichas_c"] for k in ("buff", "bstat", "btr")],
+                        "formula": f"=N({bd0})<>INT(N({bd0}))", "fonte": AMBAR})
+    # 14/11/2026: a caixa de ± com número ainda não foi aplicada; se ficar assim, a edição se perdeu (a nota explica)
+    d0 = tr["fichas_c"][0]["delta"]
+    condicional.append({"faixas": [g["delta"] for g in tr["fichas_c"]], "formula": f'={d0}<>""', "fundo": AMBAR, "fonte": BRANCO})
     base = ficha["colunas_larg"][0][2]
     return {
         "nome": NOME, "estado": "visible", "linhas": LIN, "colunas": COLS,
@@ -1311,6 +1380,7 @@ def aba(layout, tr):
         "mescladas": f.mesclas,
         "menus": [{"onde": " ".join(onde), "tipo": "list", "formula": formula, "vazio_ok": True, "mostra_seta": True}
                   for formula, onde in f.menus.items()],
+        "menus_estritos": [g["nivel_fixo"] for g in tr["fichas_c"]],
         "condicional": [], "imagens": pincel, "notas": f.notas,
         "grupos": {"linhas": grupos, "colunas": grupos_col},
         # 08/10/2026, do pente-fino no Sheets: "O link da segunda invocação chega ao cabeçalho, mas a ficha continua

@@ -1,0 +1,86 @@
+{
+  "base": "600f4ec81f74d523e7b0f07598d6a60b2b8a6c12",
+  "data": "2026-11-04",
+  "escopo": "Auditoria nativa; defeitos confirmados, ainda sem correção",
+  "vida": [
+    {
+      "name": "Quebradiço nível 1",
+      "body": "Corpo Quebradiço",
+      "level": 1,
+      "buff": 0,
+      "expected": 4,
+      "observado": 8
+    },
+    {
+      "name": "Quebradiço nível 2",
+      "body": "Corpo Quebradiço",
+      "level": 2,
+      "buff": 0,
+      "expected": 6,
+      "observado": 13
+    },
+    {
+      "name": "Quebradiço bônus +3",
+      "body": "Corpo Quebradiço",
+      "level": 2,
+      "buff": 3,
+      "expected": 8,
+      "observado": 16
+    },
+    {
+      "name": "Exaurido controle",
+      "body": "Corpo Exaurido",
+      "level": 2,
+      "buff": 3,
+      "expected": 16,
+      "observado": 16
+    },
+    {
+      "name": "Debilitado controle",
+      "body": "Corpo Debilitado",
+      "level": 2,
+      "buff": 3,
+      "expected": 16,
+      "observado": 16
+    },
+    {
+      "name": "Corpo próprio controle",
+      "body": "Corpo Próprio",
+      "level": 2,
+      "buff": 3,
+      "expected": 16,
+      "observado": 16
+    }
+  ],
+  "configuracao": {
+    "nivel": 2,
+    "buff": 3,
+    "somar": 6,
+    "vida_esperada": 11,
+    "vida_observada": 22,
+    "aguentar_esperado": 3,
+    "aguentar_observado": 6,
+    "insistir_esperado": 4,
+    "insistir_observado": 8
+  },
+  "bloquear": [
+    {
+      "corpo": "Corpo Quebradiço",
+      "defesa": 0,
+      "observado": "2d10 + -11",
+      "esperado": "Ação indisponível pela regra do corpo real"
+    },
+    {
+      "corpo": "Corpo Debilitado",
+      "defesa": 0,
+      "observado": "2d10 + -11",
+      "esperado": "Ação indisponível pela regra do corpo real"
+    },
+    {
+      "corpo": "Corpo Exaurido",
+      "defesa": 0,
+      "observado": "2d10 + -11",
+      "esperado": "Ação indisponível pela regra do corpo real"
+    }
+  ]
+}

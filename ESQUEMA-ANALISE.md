@@ -344,3 +344,42 @@ Leque.
 
 A ficha não confere se o Talento da Origem é passivo (Traço Incorporado e Construção Especializada pedem isso): fica com
 o mestre e com o bot.
+
+## ANALISE estática · formato 13 (17/11/2026)
+
+A coluna B da ANALISE deixa de ser viva. Ela guarda **valores**, refeitos numa exportação sob pedido
+(`apps-script/AnaliseEstatica.gs`). Motivo: as 18.480 fórmulas pesavam em toda edição da ficha; numa cópia da Era, o ±
+caiu de ~17,1 s para ~14,1 s com a coluna congelada. O CSV exportado saiu igual ao vivo nas 18.500 linhas, nas quatro
+colunas.
+
+**O que muda para o bot:**
+- As chaves antigas continuam nas mesmas linhas e com o mesmo sentido. O valor vale **na hora da exportação**, não na
+  hora da leitura.
+- `formato.versao` vira `13` na primeira exportação completa. A ficha que nunca exportou continua `12` e viva: o bot
+  aceita as duas.
+- Duas chaves novas no fim da aba, sem parte (como o resto do cabeçalho):
+
+| chave | o que é |
+|---|---|
+| `analise.estado` | `em_dia`: exportada e ninguém editou depois · `desatualizada`: alguém editou depois · `exportando`: a exportação parou no meio (falta marcar de novo) · `viva`: nunca exportou |
+| `analise.exportada_em` | data e hora da última exportação completa, `AAAA-MM-DDTHH:MM:SS` no fuso da planilha |
+
+- Com `formato.versao` 13, o bot só confere quando `analise.estado` é `em_dia`. Fora disso responde ao jogador que
+  marque a caixa "Bot" da CARTEIRA (AT4), ou use o menu Bot > Exportar para o bot, e o chame de novo.
+
+**Como a ficha mantém o estado:**
+- Os modelos (o texto das fórmulas) moram na aba oculta `ANALISE_MODELOS`. A linha N de lá é a linha N da ANALISE. O
+  link do bot (`sheet=ANALISE`) não a baixa.
+- Exportar: escreve os modelos em blocos de 6.500 linhas, espera o cálculo e troca cada bloco pelo valor. O progresso é
+  guardado bloco a bloco: se o tempo acabar (a caixa tem os 30 s do gatilho simples), a próxima marcação continua. A
+  caixa usa blocos de 4.000 linhas; numa ficha do tamanho das oficiais, reexportar por ela leva umas cinco marcações.
+- A primeira edição depois de exportar marca `desatualizada` na ANALISE e na CARTEIRA. As seguintes só leem uma
+  propriedade do documento. Edição no meio de uma exportação faz a próxima recomeçar do início.
+- Escrita à mão na coluna B congelada é apagada e marca `desatualizada`; não vira modelo.
+- Cópia da ficha (sem as propriedades do documento): a primeira edição lê o estado na própria ANALISE.
+- Edição feita por menu de script (Aplicar cura e afins) não passa pelo onEdit e **não marca**. É o buraco conhecido:
+  quem usa esses menus exporta de novo.
+
+**Quem mexer nas fórmulas da ANALISE depois disto** (preparador, coluna nova): escreva a fórmula na coluna B e rode o
+menu Bot > Exportar para o bot. O menu junta as fórmulas vivas aos modelos antes de exportar; a caixa da CARTEIRA não
+junta. Chave nova no fim da aba: o modelo entra pelo mesmo caminho.

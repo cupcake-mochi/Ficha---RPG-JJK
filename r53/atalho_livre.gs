@@ -5,6 +5,7 @@ var R53_LIVRE_FAMILIAS_=["CARTEIRA","FICHA AMALDIÇOADA","INVOCAÇÕES","CONFIGU
 var R53_LIVRE_GATILHOS_=[[11,4,11,4],[11,14,11,14]];
 var R53_LIVRE_HASHES_=["9dc3480af82287b153bf6e18c76f2bc111baaca63bd3cbf4f85ecd628ac09ffc","e4502f595c23edb8807c7241f330fa481599b6ec2ef687e9b2ce440ade3ddce8"];
 var R53_LIVRE_PROP_='r53_amparo_sujo';
+var R53_LIVRE_TEMP_INVOC_=[[13,23,13,23],[13,42,13,42],[244,23,244,23],[244,42,244,42],[475,23,475,23],[475,42,475,42],[706,23,706,23],[706,42,706,42],[937,23,937,23],[937,42,937,42],[1168,23,1168,23],[1168,42,1168,42]];
 // Onde se mudam as marcas DADOS_PROGRESSAO!K7:K8 que o módulo guarda (marcasCustom_).
 var R53_LIVRE_MARCAS_={"CONFIGURAÇÃO":[[11,41,11,41],[11,49,11,49],[11,54,11,54],[11,58,11,58],[11,62,11,62],[11,66,11,66],[13,37,13,37],[13,45,13,45],[13,54,13,54],[13,62,13,62],[13,71,13,71],[13,79,13,79],[14,40,36,40],[14,48,15,48],[14,57,14,57],[14,65,14,65],[16,54,16,54],[16,62,16,62],[25,54,25,54],[25,58,25,58],[25,62,25,62],[25,66,25,66],[27,54,27,54],[27,62,27,62],[27,71,27,71],[27,79,27,79],[28,57,28,57],[28,65,28,65],[30,54,30,54],[30,62,30,62],[39,54,39,54],[39,58,39,58],[39,62,39,62],[39,66,39,66],[41,54,41,54],[41,62,41,62],[41,71,41,71],[41,79,41,79],[42,57,42,57],[42,65,42,65],[44,54,44,54],[44,62,44,62],[53,54,53,54],[53,58,53,58],[53,62,53,62],[53,66,53,66],[55,54,55,54],[55,62,55,62],[55,71,55,71],[55,79,55,79],[56,57,56,57],[56,65,56,65],[58,54,58,54],[58,62,58,62],[67,54,67,54],[67,58,67,58],[67,62,67,62],[67,66,67,66],[69,54,69,54],[69,62,69,62],[69,71,69,71],[69,79,69,79],[70,57,70,57],[70,65,70,65],[72,54,72,54],[72,62,72,62]],"FICHA":[[11,4,11,4],[11,14,11,14]]};
 function r53LivreToca_(lista,r){var l1=r.getRow(),l2=r.getLastRow(),c1=r.getColumn(),c2=r.getLastColumn();
@@ -22,7 +23,8 @@ function r53EdicaoLivre_(e){
   if(m&&r53LivreToca_(m,r))PropertiesService.getDocumentProperties().deleteProperty('r53_marcas_custom');
   if(aba==='FICHA'&&r.getA1Notation()===R53_LIVRE_NIVEL_.nivel)r53LivreNivel_(e);
   if(aba==='FICHA'&&R53_LIVRE_XP_.caixas.indexOf(r.getA1Notation())>=0&&r53LivreXp_(e))return true;
-  if(aba==='FICHA'&&R53_LIVRE_DELTA_.hasOwnProperty(r.getA1Notation())&&r53LivreValido_())return r53LivreDelta_(r);
+  if(aba==='FICHA'&&R53_LIVRE_DELTA_.hasOwnProperty(r.getA1Notation())&&r53LivreValido_())return r53LivreDelta_(r,e);
+  if(aba==='INVOCAÇÕES'&&r53LivreToca_(R53_LIVRE_TEMP_INVOC_,r))return false;
   if(!lista||r53LivreToca_(lista,r)||!r53LivreValido_())return false;
   // Trilha ou Caminho mudou desde a última sincronização: a próxima edição nas quatro abas sincroniza.
   if(R53_LIVRE_FAMILIAS_.indexOf(aba)>=0&&PropertiesService.getDocumentProperties().getProperty(R53_LIVRE_PROP_))return false;
@@ -34,6 +36,7 @@ function r53EdicaoLivre_(e){
 var R53_LIVRE_DELTA_={"AM26":{"a":"D26","m":"J26","t":"AF26","l":[26,4,1,36],"p":[[0,35],[0,0],[0,6],[0,28]]},"AM30":{"a":"D30","m":"J30","t":"AF30","l":[30,4,1,36],"p":[[0,35],[0,0],[0,6],[0,28]]},"AM34":{"a":"D34","m":"J34","t":"AF34","l":[34,4,1,36],"p":[[0,35],[0,0],[0,6],[0,28]]}};
 function r53LivrePasso_(atual, max, temp, passo) {
   atual = Number(atual) || 0;
+  var maximoZero = max === 0 || (typeof max === 'string' && max.trim() !== '' && Number(max) === 0);
   max = Number(max) || 0;
   temp = Math.max(0, Number(temp) || 0);
   passo = Number(passo) || 0;
@@ -47,22 +50,89 @@ function r53LivrePasso_(atual, max, temp, passo) {
     novo = atual + passo;
   }
   return {
-    atual: Math.max(0, max ? Math.min(novo, max) : novo),
+    atual: Math.max(0, max || maximoZero ? Math.min(novo, max) : novo),
     temp: temp
   };
 }
-/** true: a caixa de ± foi tratada aqui. Erro antes de gravar devolve false, e o módulo faz como sempre. */
-function r53LivreDelta_(r){
- var x=R53_LIVRE_DELTA_[r.getA1Notation()],gravou=false;
- try{
-  var ficha=r.getSheet(),v=ficha.getRange(x.l[0],x.l[1],x.l[2],x.l[3]).getValues(),q=function(i){var p=x.p[i];return v[p[0]][p[1]];};
-  var passo=Number(q(0));if(!passo)return true;
-  var antes=x.t?Math.max(0,Number(q(3))||0):0,fim=r53LivrePasso_(q(1),q(2),antes,passo);
-  gravou=true;ficha.getRange(x.a).setValue(fim.atual);
-  if(x.t&&fim.temp!==antes)ficha.getRange(x.t).setValue(fim.temp);
-  r.clearContent();return true;
- }catch(err){console.log('atalho do ±: '+err.message);return gravou;}
+// O evento é preservado no atalho. Uma falha nunca repete o ajuste no módulo.
+function r53LivreDelta_(r,e){
+ var x=R53_LIVRE_DELTA_[r.getA1Notation()];
+ return r53LivreDeltaExecutar_(e||{range:r},{d:r.getA1Notation(),a:x.a,m:x.m,t:x.t},r53LivrePasso_);
 }
+/** ±: usa o valor do evento entregue; a trava serializa somente estes ajustes.
+ * Não reconstrói eventos descartados pelo Google nem ordena eventos fora de ordem.
+ * x = {d:delta,a:atual,m:max,t:temp,cheio:atual vazio significa máximo}.
+ * Sempre consome o caminho, mesmo numa falha: não repetir uma gravação parcial.
+ */
+function r53LivreDeltaExecutar_(e, x, calcular) {
+  var trava, passo = null, presa = false, escreveu = false, enviou = false;
+  var aba = e.range.getSheet();
+  try {
+    var unica = e.range.getNumRows() === 1 && e.range.getNumColumns() === 1;
+    // Uma exclusão antiga não deve consumir a entrada que chegou depois dela.
+    if (unica && e.value === undefined && e.oldValue !== undefined) return true;
+    var evento = unica && e.value !== undefined;
+    if (evento) {
+      passo = Number(e.value);
+      // No pt-BR, o evento pode trazer o texto com vírgula, mesmo quando a célula é numérica.
+      if (isNaN(passo) && typeof e.value === 'string' &&
+          /^[+-]?\d+(?:\.\d{3})*,\d+$/.test(e.value.trim()) &&
+          (e.source || aba.getParent()).getSpreadsheetLocale() === 'pt_BR') {
+        passo = Number(e.value.trim().replace(/\./g, '').replace(',', '.'));
+      }
+    }
+    if (evento && (!isFinite(passo) || !passo)) return true;
+    trava = LockService.getDocumentLock();
+    // Dá tempo para o desconto anterior gravar, com espera limitada no onEdit.
+    if (!trava || !trava.tryLock(12000)) throw Error('outro ajuste de recurso ainda está em execução');
+    presa = true;
+    var enderecos = [x.d, x.a, x.m].concat(x.t ? [x.t] : []);
+    var pos = enderecos.map(function (a) {
+      var m = /^([A-Z]+)([0-9]+)$/.exec(a), c = 0;
+      if (!m) throw Error('endereço de recurso inválido');
+      for (var i = 0; i < m[1].length; i++) c = c * 26 + m[1].charCodeAt(i) - 64;
+      return [Number(m[2]), c];
+    });
+    var ls = pos.map(function (p) { return p[0]; }), cs = pos.map(function (p) { return p[1]; });
+    var l = Math.min.apply(null, ls), c = Math.min.apply(null, cs);
+    var v = aba.getRange(l, c, Math.max.apply(null, ls)-l+1, Math.max.apply(null, cs)-c+1).getValues();
+    var q = function (i) { return v[pos[i][0]-l][pos[i][1]-c]; };
+    var comandoAtual = Number(q(0));
+    if (!evento) passo = comandoAtual;
+    if (!isFinite(passo) || !passo) return true;
+    var max = q(2), atual = q(1);
+    var antes = x.t ? Math.max(0, Number(q(3)) || 0) : 0;
+    if (x.cheio && (atual === '' || atual === null)) atual = Number(max) || 0;
+    var fim = calcular(atual, max, antes, passo);
+    escreveu = true;
+    aba.getRange(x.a).setValue(fim.atual);
+    if (x.t && fim.temp !== antes) aba.getRange(x.t).setValue(fim.temp);
+    // Usa a leitura sob a trava, antes de escrever. Reler depois das escritas
+    // força um envio intermediário ao Sheets e prolonga a contenção.
+    if (comandoAtual === passo) aba.getRange(x.d).clearContent();
+    SpreadsheetApp.flush();
+    enviou = true;
+  } catch (err) {
+    console.log('ajuste ±: ' + err.message);
+    try {
+      var alvo = aba.getName() + '!' + x.d;
+      var ajuste = passo !== null && isFinite(passo) ? 'Ajuste ' + passo + ' em ' + alvo : 'Ajuste em ' + alvo;
+      var mensagem = escreveu ? ajuste + ' pode ter sido aplicado parcialmente. Confira os saldos antes de repetir.' :
+        ajuste + ' não aplicado. Confira os saldos e repita esse ajuste se necessário.';
+      (e.source || SpreadsheetApp.getActive()).toast(mensagem, 'Recursos', 10);
+    } catch (aviso) { console.log('aviso ±: ' + aviso.message); }
+  } finally {
+    if (presa) {
+      // Uma falha parcial também precisa ser enviada antes de liberar a trava.
+      try { if (escreveu && !enviou) SpreadsheetApp.flush(); }
+      catch (envio) { console.log('envio ±: ' + envio.message); }
+      try { trava.releaseLock(); }
+      catch (liberar) { console.log('trava ±: ' + liberar.message); }
+    }
+  }
+  return true;
+}
+
 // O nível escrito na mão (27/10/2026): o XP total da DADOS é a soma das missões mais a base, e aqui a base é acertada
 // para o XP caber no nível novo. Subindo, o XP vai para o acumulado do nível; descendo, guarda a mesma fração do caminho
 // até o próximo. Se o XP já cabe no nível, nada muda. Só a caixa do nível sozinha; a ficha sem a base fica como estava.
