@@ -1451,7 +1451,9 @@ function montarAba_(aba, spec) {
     // que a montagem é em inglês.
     v[t[0] - 1][t[1] - 1] = t[2];
     if (typeof t[2] === 'string' && t[2].charAt(0) === '=') formulas++;
-    if (t.length > 3) {
+    // 18/11/2026: a R53_EVENTOS (r53/caminho_leve.js) grava o estilo 0 com a lista de estilos vazia; sem o estilo,
+    // a caixa fica com o padrão da aba.
+    if (t.length > 3 && spec.estilos && spec.estilos[t[3]]) {
       var e = spec.estilos[t[3]];
       ff[t[0] - 1][t[1] - 1] = e[0];
       fs[t[0] - 1][t[1] - 1] = e[1];
