@@ -150,6 +150,29 @@ Gerado pelo preparador como `batchUpdate` com guarda (antes exato, senão para),
 6. `construir()` na cópia **só com o seu ok** (é o único jeito de provar o `criarGrupos_` e a guarda do estilo).
 7. Inversa e reaplicação, como em 16/11. A cópia fica para você apagar.
 
+### 6.1 O que rodou de verdade em 18/11 (cópia `19XMnZ…`, feita da oficial `19I1mr…` na conta dona)
+
+Rodou:
+- Os seis arquivos foram instalados no editor (forma B), buscados de um servidor local (`servir.js`, porta 8767), porque o
+  `eval` é barrado pelos Trusted Types. Depois de salvar e recarregar, os hashes relidos batem com a seção 0.
+- DADOS_R53: 26 células por `updateCells`, mais CV, DA, DB, DG, DH, DI, FH e FX por findReplace com regex. As contagens
+  vieram todas como esperado (2.034 no total).
+- Cartões da FA, das INVOCAÇÕES e da DADOS_AM!HM38: 263 pedidos em 3 chamadas, todos aceitos.
+- Varredura das células lidas pela API: nenhum `#`.
+- Marcar o SEM DANO da FA (T356) pela API faz a O46 virar "Sem dano". A caixa voltou para FALSE depois.
+
+Achado: a planilha está em pt_BR. Fórmula com vírgula dá "Formula parse error", então o pedido sai com
+`--ponto-e-virgula`. O `valorApi` agora converte também os `updateCells`, e o teste confere isso.
+
+**Não rodou no Sheets (fica para você):**
+- Os testes do passo 5 pela interface: dano, cura, PV temporário, domada, troca de Classe com a R356, digitar por cima,
+  Buff com `R53_ONEDIT` medido e o clique no SEM DANO disparando o onEdit. Escrita pela API não dispara onEdit, e as
+  linhas da seção estão num grupo fechado no painel estreito.
+- O `construir()`, que não foi pedido.
+- A inversa e a reaplicação. A volta da DADOS_R53 existe nos pedidos de volta. A dos cartões não tem pedido pronto: o
+  caminho é o backup.
+- A foto de antes dos 6 blocos das INVOCAÇÕES. Só a FA N355:U358 e o HM38 foram lidos.
+
 ## 7. O que fica de fora e os riscos
 
 - Oficiais: nada nesta sessão. Depois, só com você no PC e backup antes.

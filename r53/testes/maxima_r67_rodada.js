@@ -198,6 +198,17 @@ const editorSintetico = (contextos) => {
   const torta = new Map(original); torta.set('100:180', torta.get('100:180').replace('sem dano', 'sem  dano'));
   recusa(() => aplicar(ida, torta), /contagem da regex DADOS_R53 FX82:FX121/, 'FX divergente não acusou');
   ok(R.pedidos(ids, { pontoEVirgula: true }).filter(l => l.esperado).every(l => R.pontoEVirgula(l.pedidos[0].findReplace.find) === l.pedidos[0].findReplace.find), 'variante com ponto e vírgula');
+  {
+    // pt_BR: a fórmula do updateCells também vai com ponto e vírgula (com vírgula a API deu "Formula parse error").
+    const fora = f => f.split(/("(?:[^"]|"")*")/).filter((x, i) => i % 2 === 0).join('');
+    const formulas = [].concat(...R.pedidos(ids, { pontoEVirgula: true }).map(l => l.pedidos))
+      .filter(q => q.updateCells).map(q => q.updateCells.rows[0].values[0].userEnteredValue)
+      .filter(v => v && v.formulaValue).map(v => v.formulaValue);
+    ok(formulas.length > 40 && formulas.every(f => fora(f).indexOf(',') < 0), 'updateCells com ponto e vírgula: ' + formulas.length);
+    const todas = [].concat(...P.celulas.map(c => [c[3], c[4]]), ...P.dadosR53.map(d => [d[1], d[2]]))
+      .filter(f => typeof f === 'string');
+    ok(todas.every(f => !/\d\.\d|[{}]/.test(fora(f))), 'sem decimal nem matriz literal fora das aspas');
+  }
   recusa(() => R.pedidos({ DADOS_R53: 1 }), /sheetId ausente/, 'sheetId ausente');
   ok(R.faixasDaFoto().length === 8, 'faixas da foto: ' + R.faixasDaFoto().length);
 }

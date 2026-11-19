@@ -344,10 +344,12 @@ function regexDoTrecho(t) {
 }
 const substituicao = t => t.replace(/\$/g, '$$$$').replace(/\x01/g, '$1');
 
-function valorApi(v) {
+// Planilha em pt_BR: a API lê e devolve a fórmula com ponto e vírgula; com vírgula dá "Formula parse error" (visto
+// no ensaio de 18/11). As fórmulas da R67 não têm decimal nem matriz literal fora das aspas (o teste confere).
+function valorApi(v, fr) {
   if (typeof v === 'boolean') return { boolValue: v };
   if (typeof v === 'number') return { numberValue: v };
-  if (typeof v === 'string' && v[0] === '=') return { formulaValue: v };
+  if (typeof v === 'string' && v[0] === '=') return { formulaValue: (fr || (s => s))(v) };
   return { stringValue: v };
 }
 
@@ -365,7 +367,7 @@ function pedidos(ids, opcoes) {
   const fr = opcoes.pontoEVirgula ? pontoEVirgula : (s => s);
   // 1. DADOS_R53: as 26 células
   lotes.push({ nome: 'DADOS_R53 células', pedidos: p.celulas.filter(d => d[0] === 'DADOS_R53').map(d => ({
-    updateCells: { range: cel('DADOS_R53', d[1], d[2]), rows: [{ values: [{ userEnteredValue: valorApi(d[4]) }] }], fields: 'userEnteredValue' } })) });
+    updateCells: { range: cel('DADOS_R53', d[1], d[2]), rows: [{ values: [{ userEnteredValue: valorApi(d[4], fr) }] }], fields: 'userEnteredValue' } })) });
   // 2. DADOS_R53: colunas por regex
   for (const [c, ta, tb, linhas] of p.dadosR53) {
     // faixas contínuas (a linha 251 fica de fora: a R67 não muda nada nela) de até `faixa` linhas
@@ -386,7 +388,7 @@ function pedidos(ids, opcoes) {
   for (const [aba, me] of Object.entries(p.mesclas)) for (const m of me.menos)
     cartoes.push({ unmergeCells: { range: { sheetId: id(aba), startRowIndex: m[0] - 1, endRowIndex: m[2], startColumnIndex: m[1] - 1, endColumnIndex: m[3] } } });
   for (const d of p.celulas.filter(d => d[0] !== 'DADOS_R53')) {
-    const v = { userEnteredValue: valorApi(d[4]) };
+    const v = { userEnteredValue: valorApi(d[4], fr) };
     let fields = 'userEnteredValue';
     if (d[5]) {
       const e = d[5];
