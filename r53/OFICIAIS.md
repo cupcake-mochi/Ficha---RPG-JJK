@@ -75,6 +75,104 @@ nas oficiais. Os testes rodaram em duas cópias descartáveis feitas pelo Drive,
     então, e o `construir()` completo não foi certificado nesta rodada. O remendo do teste foi desfeito.
 - **Não rodou:** o celular (não há como daqui) e o `construir()` num Sheets de verdade com o pacote completo.
 
+### Testes que faltavam da R67 · 19/11/2026, noite
+
+Pedido do Mizuki, repassado pela sessão da R67: fechar o que as duas seções acima deixaram em "Não rodou". Pelo
+Claude in Chrome, na conta dona (`/u/0/`).
+
+**1. `onEdit` nas oficiais, pela interface**
+- **Backup antes.** Os backups `16fAW6…` e `1sw4tc…` são das 10:46/10:47, de antes da instalação. As oficiais mudaram
+  depois deles (exportação das 11:23). Por isso fiz backups novos pela página de cópia, que leva o projeto junto:
+  "BACKUP antes do onEdit R67 19-11-2026 · Era da Revolução" (`1W6JxP…`) e "… · Ciclo Maldito" (`1H1h4V…`).
+- **A edição.** Usei o Buff/Debuff da vida (FICHA!P26), o mesmo do 17/11: 0 → 1 → 0 → 1 → 0. Antes de cada Enter, a
+  barra de fórmula foi conferida.
+- **Resultado.** Todas as execuções terminaram dentro do limite:
+
+  | Oficial | `onOpen` | 1ª edição (fria) | 2ª | 3ª | 4ª (volta ao 0) |
+  | --- | --- | --- | --- | --- | --- |
+  | Era | 2,96 s | 9,75 s | 7,83 s | 5,05 s | 8,12 s |
+  | Ciclo | 2,72 s | 10,73 s | 6,05 s | 6,35 s | 5,24 s |
+  | `R53_ONEDIT` Era (ms) | — | 3.466 | 331 | 306 | 404 |
+  | `R53_ONEDIT` Ciclo (ms) | — | 3.108 | 227 | 250 | 214 |
+
+  - A 1ª edição é a que marca a ANALISE `desatualizada`. Ela leva uns 3 s dentro do código; o resto é o Google
+    abrindo o projeto.
+  - Nas seguintes o atalho das edições livres responde em 0,2–0,4 s. Isso confirma que os dois `R53_LIVRE_HASHES_`
+    novos da R67 seguem ligando o atalho.
+  - O estouro de 30 s do ensaio não se repetiu: o código frio desta vez ficou em 10–11 s.
+- **Escorregão evitado (Era).** Depois de um Enter, a seleção desceu para a P28, e o "1" seguinte foi digitado lá.
+  Cancelei com Esc antes de confirmar. A P28 continua vazia (conferido pelo CSV). Daí em diante, cada edição foi
+  precedida pela caixa de nome (`FICHA!P26`).
+- **Releitura.** D26/J26/P26 ficaram iguais a antes: Era 0/0/0, Ciclo 19/0/0. Depois rodei Bot > Exportar para o
+  bot nas duas:
+  - Era: 87,7 s, em dia às 22:04.
+  - Ciclo: 75,4 s, em dia às 22:10.
+
+  O CSV da ANALISE (11.732 linhas pelo `gviz`) ficou igual, linha a linha, ao lido antes da primeira edição. Só mudou
+  o `analise.exportada_em`. Nenhum `#`.
+- **Execuções que aparecem na Era e não na Ciclo.** Na Era há `onSelectionChange` de 1,8–3,0 s a cada mudança de
+  seleção; na Ciclo não aparece nenhum. Não investiguei.
+
+**2. `construir()` num Sheets de verdade, com o pacote completo**
+- **Pacote.** Gerado na main `8c68939` com `PYTHONUTF8=1 python r53/empacotar_script.py` (no Windows, sem o
+  `PYTHONUTF8`, ele para num `UnicodeDecodeError`). Saíram 12 arquivos `.gs`:
+  - fonte `69550a6f84ce…`, em 5 partes;
+  - `GERACAO_` `9b17fb20d12cde78`;
+  - já com a R67 (52 "SEM DANO" e a conta "− Melhorias" no módulo).
+- **Planilha descartável nova.** "DESCARTÁVEL construir() pacote completo R67 19-11-2026"
+  (`1ejjHeL3iPbnXxsxaXf9MUplKJE77C3OaNQekRc3_HEA`), com projeto vinculado `1RJBuLF…`.
+  - Os 12 arquivos foram buscados de um servidor local (o `servir.js` da rodada R67) e gravados no editor. Os hashes
+    lidos no editor batem com o `manifesto.json`.
+  - Acrescentei o serviço avançado Sheets v4, que as oficiais têm desde 24/10.
+  - Recarreguei o editor: os 12 arquivos e o serviço continuavam lá.
+- **Parou na autorização.** A primeira execução (`verificarPacoteR53`) pediu "Autorização obrigatória": o projeto
+  novo precisa da permissão da conta. Essa autorização fica com o Mizuki, e eu cancelei. Por isso o `construir()`
+  ainda não rodou no Sheets.
+- **Para terminar** (com a autorização dada):
+  1. Rodar `verificarPacoteR53`: tem de dar `geracao 9b17fb20d12cde78`.
+  2. Rodar `construir` e repetir `continuar` enquanto o registro pedir. Se aparecer `FALTA O ACABAMENTO`, rodar
+     `acabar`.
+  3. Comparar o fim com o que o `regressao-construir.js` espera: `FICHA PRONTA` e a ANALISE em dia.
+  4. Mandar a descartável para a lixeira.
+
+**3. Celular**
+- Daqui não tem como. Depende do Mizuki com o aparelho.
+- O roteiro abaixo usa uma cópia de jogador feita pelo Drive ("Fazer uma cópia" de uma das oficiais), nunca a
+  oficial. Para medir: cronômetro do toque até a célula mudar. Depois, no PC, a página Execuções do projeto da cópia
+  dá o tempo exato.
+  1. Abrir a cópia no app do Sheets e esperar carregar. Anotar o tempo até o `onOpen` terminar: o menu não aparece
+     no celular, então vale o momento em que a CARTEIRA AH4 aparece.
+  2. **Cartão da Máxima.** Na FICHA AMALDIÇOADA, seção da Técnica Máxima (linhas 355–357), escrever um nome no cartão
+     e marcar DANO.
+     - Esperado: a R356 mostra "8 − Melhorias 0 = 8 pontos", a P356 "5 PE" e a L357 o dano.
+     - Desmarcar DANO e marcar SEM DANO (T356).
+     - Anotar o tempo de cada toque. A 1ª edição depois de abrir é a fria: no ensaio chegou a 30,9 s.
+  3. **Caixa AT4 da CARTEIRA.** A edição do passo 2 deixa a AH4 em "Bot: desatualizada · marque ao lado".
+     - Tocar na caixa AT4 e anotar o tempo de cada toque até a AH4 voltar a "Bot: em dia".
+     - No PC, em 18/11, foram 5 toques de ~20 s.
+  4. Mandar a cópia para a lixeira.
+
+**4. PR45** ("Sinaliza funções bloqueadas e amplia a revisão mecânica nativa", ramo
+`codex/revisao-mecanicas-20261030`)
+- **Não entrou na main.** Nenhum dos 4 commits (`c4f6901`, `a11eb58`, `542b50e`, `b9cf807`) é ancestral da
+  `8c68939`, e os 7 arquivos novos dela não existem na main (`ficha-v01/avisos_cartoes_r53.py`,
+  `r53/diagnosticos_funcoes.py`, `r53/testes/revisao_mecanicas.py` e outros).
+- **Conflita com a main.** O GitHub dá `CONFLICTING`. O `git merge-tree` dá 67 conflitos: os 66 `.gs` gerados (a
+  base dela é a `46f850a`, 235 commits atrás) e o `ficha-v01/cartoes_diretos.py`. Na main essa linha virou
+  `R.aviso_requisito(g)`, com texto de requisito configurável.
+- **O problema que ela resolve continua na main.** Com Amparo Fechada, a coluna `avisos_funcoes` (GA da DADOS_R53) só
+  mostra o aviso de Trunfo. A cura e o PV temporário salvos aparecem calados, com resultado zero.
+- **Achado no caminho.** O `r53/limpar_validacao.py` apaga o sheetId `53018005`, que é a R53_EVENTOS. E o
+  `r53/testes/gerar_nativo.py` da main ainda usa esse mesmo ID para o catálogo de QA. A PR45 troca o ID para
+  `53018901`.
+- **Recomendação.** Não mesclar como está. Refazer sobre a main:
+  - portar a `formula_avisos_funcoes` para dentro do `R.aviso_requisito` atual;
+  - levar junto a troca do `CAT_ID` e os testes `test_revisao_mecanicas.py`;
+  - regerar os `.gs`.
+
+  A migração só da coluna GA nas oficiais seria uma rodada própria, com backup. Ela mexe em 249 células que a R67 não
+  tocou. A #45 ficou aberta, sem comentário meu.
+
 ## ANALISE estática · 17/11/2026
 
 Pedido do Mizuki no chat, com ele no PC: "Sim, as duas coisas" (mesclar a PR #132 da ficha e a RPG---BOT#104 do bot,
