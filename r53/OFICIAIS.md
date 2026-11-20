@@ -128,6 +128,9 @@ Claude in Chrome, na conta dona (`/u/0/`).
 - **Parou na autorização.** A primeira execução (`verificarPacoteR53`) pediu "Autorização obrigatória": o projeto
   novo precisa da permissão da conta. Essa autorização fica com o Mizuki, e eu cancelei. Por isso o `construir()`
   ainda não rodou no Sheets.
+- **Referência no arnês.** Na mesma main, `REG_CONSTRUIR_CARREGAMENTO_JA_CONFERIDO=1 node regressao-construir.js`
+  deu SAIDA=0, com 152 verificações ok e nenhuma FALHA. No Sheets de mentira, a montagem em partes chegou a 11
+  `continuar()` e terminou igual à montagem inteira.
 - **Para terminar** (com a autorização dada):
   1. Rodar `verificarPacoteR53`: tem de dar `geracao 9b17fb20d12cde78`.
   2. Rodar `construir` e repetir `continuar` enquanto o registro pedir. Se aparecer `FALTA O ACABAMENTO`, rodar
