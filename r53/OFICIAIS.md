@@ -125,18 +125,72 @@ Claude in Chrome, na conta dona (`/u/0/`).
     lidos no editor batem com o `manifesto.json`.
   - Acrescentei o serviço avançado Sheets v4, que as oficiais têm desde 24/10.
   - Recarreguei o editor: os 12 arquivos e o serviço continuavam lá.
-- **Parou na autorização.** A primeira execução (`verificarPacoteR53`) pediu "Autorização obrigatória": o projeto
-  novo precisa da permissão da conta. Essa autorização fica com o Mizuki, e eu cancelei. Por isso o `construir()`
-  ainda não rodou no Sheets.
+- **Autorização.** A primeira execução pediu "Autorização obrigatória". Quem autorizou foi o Mizuki, no Brave ("Roda
+  e revoga depois"). O projeto (renomeado "DESCARTAVEL construir R67 19-11") pede três escopos: `script.scriptapp`,
+  `spreadsheets.currentonly` e `drive`. A origem provável do `drive` é o serviço avançado Sheets, mas não
+  confirmei.
+  - **O Mizuki precisa revogar esse acesso** em myaccount.google.com/permissions. O projeto aparece com o nome acima
+    ou como "Projeto sem título".
+- **`verificarPacoteR53`** (22:27): `{"geracao":"9b17fb20d12cde78","abas":26,"cartoes":251,"sobras":[]}`. É a mesma
+  geração do pacote, sem sobras.
+- **Montagem no Sheets de verdade:** sete execuções, um `construir()`, cinco `continuar()` e um `acabar()`. As cinco
+  primeiras pararam antes de estourar os 6 min, como o roteiro prevê. A sexta, o último `continuar()`, estourou no
+  acabamento (ver abaixo).
+
+  | Execução | Duração | Abas montadas (tempo) | Parou antes de |
+  | --- | --- | --- | --- |
+  | `construir` 22:30 | 241 s | abas criadas 20,4 s; CARTEIRA 8,2; FICHA 54,3; FICHA AMALDIÇOADA 29,8; INVOCAÇÕES 114,6; FICHA PESSOAL 23,5 | DADOS |
+  | `continuar` 22:38 | ~245 s | DADOS 20; DADOS_AM 40,3; DADOS_INVOC 94,1; GLOSSÁRIO 4,1; DADOS_PROGRESSAO 3,4; DADOS_CUSTOM 30,5; DADOS_CRIACAO 1,6; DADOS_MELHORIAS 9,9; DADOS_RESTRICOES 2,7; DADOS_DANOS 1,5; DADOS_FORMAS 17,1; DADOS_APTIDOES 7,7; DADOS_TALENTOS 3,4; DADOS_ENTIDADES 2,5 | ANALISE |
+  | `continuar` 22:44 | ~137 s | ANALISE 128,7 (74.000 células, 34.444 fórmulas) | CONFIGURAÇÃO |
+  | `continuar` 22:47 | ~191 s | CONFIGURAÇÃO 175,7; DADOS_CONFIG 7 | MONTAGENS |
+  | `continuar` 22:52 | ~254 s | MONTAGENS 162,5 (61.741 células); DADOS_R53 81,6 (11.726 células, 10.573 fórmulas) | DADOS_R53_CATALOGO |
+  | `continuar` 22:57 | 361 s, **tempo limite** | DADOS_R53_CATALOGO 33,2; R53_EVENTOS 2,8; fila esvaziada 0,2; menus 218,2; cor de estado 9; notas 5,1; notas da ficha pessoal 4,7; notas dos tipos 2,1; saltos 3,9; paleta 2,8; travas de antes 5 | estourou no acabamento, depois das travas |
+  | `acabar` 23:05 | 90 s | cor de estado 6,6; notas 6,7; ficha pessoal 3,4; tipos 1,1; saltos 1,9; paleta 2,8; travas 4; constantes da ANALISE 6,6; ANALISE exportada 49,5; saltos conferidos 7,6 | — `ACABAMENTO PRONTO` |
+
+  - As 26 abas foram montadas.
+  - Contagens por aba no primeiro trecho: CARTEIRA 1.503 células e 5 imagens; FICHA 6.583 células com as fileiras
+    copiadas; FICHA AMALDIÇOADA 3.261 células com as fileiras copiadas; INVOCAÇÕES 14.490 células e 4.857 fórmulas;
+    FICHA PESSOAL 2.325 células.
+  - **No `construir`**, o registro traz uma linha de erro às 22:34:26, logo depois da INVOCAÇÕES: "ocorreu um erro no
+    servidor: IllegalStateException". Mesmo assim a execução seguiu e montou a FICHA PESSOAL. A página Execuções a
+    marca como "Falha", e o motivo não aparece no registro. Os quatro primeiros `continuar()` vieram "Concluído", sem
+    erro.
+  - **O último `continuar()` estourou os 6 min dentro do acabamento.** Às 23:03 o registro deu "Tempo máximo de
+    execução excedido", e a página Execuções marca "Tempo limite atingido".
+    - Os menus sozinhos levaram 218 s e terminaram aos 254 s. A conferência do `TETO_DA_MONTAGEM_` (300 s) vem depois
+      deles, e por isso o acabamento foi chamado.
+    - O acabamento não confere o relógio. Faltavam as constantes da ANALISE e a exportação (~56 s no `acabar`), e não
+      couberam.
+    - A parada já tinha sido apagada antes da fila. Por isso o passo seguinte é o `acabar()`, não o `continuar()`.
+  - **O `acabar()` fechou a ficha:** `ACABAMENTO PRONTO em 90s`. O registro traz cor de estado com 25 regras, 62 notas,
+    10 saltos e 12 ligações da lista de invocações. A paleta foi criada em CARTEIRA!C27:M28, sem travas. Houve 550
+    constantes Android, a ANALISE foi exportada `em_dia 18480/18480` e os saltos foram conferidos depois do idioma, sem
+    nenhum em erro. Como o `acabar()` só roda com as 26 abas presentes e devolve o português no fim, isso também ficou
+    conferido.
+  - **Acesso a outros arquivos:** nenhum. Nenhuma linha do registro cita outro arquivo, e o código não usa `DriveApp`,
+    `openById`, `openByUrl` nem `UrlFetchApp`. O serviço avançado `Sheets.Spreadsheets.batchUpdate` só recebe o
+    `ss.getId()` da própria planilha (`Ficha.gs` e `Socorro.gs`).
+- **Comparação com o `regressao-construir.js`.** O fim bate com o que o arnês confere:
+  - as 26 abas presentes;
+  - os 10 saltos da FICHA AMALDIÇOADA e as 12 linhas da lista de invocações;
+  - a caixa da paleta na CARTEIRA;
+  - o registro dizendo que os saltos foram conferidos depois do idioma, sem nenhum em erro;
+  - a planilha em português;
+  - a ANALISE em dia.
+
+  **A diferença é a parada.** O arnês confere que "a montagem que passa do teto de tempo deixa as abas de pé, em
+  português, e avisa que falta o acabar()". No Sheets de verdade, a execução passou do limite do Google antes de chegar
+  a esse aviso, porque os menus custaram 218 s.
+  - O conserto provável é conferir o relógio de novo antes das constantes e da exportação da ANALISE, ou descontar o
+    custo do acabamento (~90 s) do teto.
+  - Fica como pendência, sem mudança nesta PR.
+- **Descartável na lixeira:** `1ejjHeL3iPbnXxsxaXf9MUplKJE77C3OaNQekRc3_HEA` ("DESCARTÁVEL construir() pacote completo
+  R67 19-11-2026"), projeto `1RJBuLFIRmK95XL3a0M3XbcezF09plypgSvXwn7i8fZTIBDOftEkvnyL3`. Foi para a lixeira, sem
+  exclusão definitiva.
 - **Referência no arnês.** Na mesma main, `REG_CONSTRUIR_CARREGAMENTO_JA_CONFERIDO=1 node regressao-construir.js`
   deu SAIDA=0, com 152 verificações ok e nenhuma FALHA. No Sheets de mentira, a montagem em partes chegou a 11
-  `continuar()` e terminou igual à montagem inteira.
-- **Para terminar** (com a autorização dada):
-  1. Rodar `verificarPacoteR53`: tem de dar `geracao 9b17fb20d12cde78`.
-  2. Rodar `construir` e repetir `continuar` enquanto o registro pedir. Se aparecer `FALTA O ACABAMENTO`, rodar
-     `acabar`.
-  3. Comparar o fim com o que o `regressao-construir.js` espera: `FICHA PRONTA` e a ANALISE em dia.
-  4. Mandar a descartável para a lixeira.
+  `continuar()` e terminou igual à montagem inteira. No Sheets de verdade as abas couberam em 6 execuções. A diferença
+  é esperada, porque o arnês mede a parada pelo custo estimado de cada aba.
 
 **3. Celular**
 - Daqui não tem como. Depende do Mizuki com o aparelho.
