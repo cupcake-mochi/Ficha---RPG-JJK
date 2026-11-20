@@ -9,6 +9,43 @@ Estes são os **dois modelos oficiais**, confirmados expressamente pelo usuário
 
 A antiga `1u0zWQ…`, a C, a candidata A `1427…` e as cópias de ensaio são referências históricas. Não substituir estes dois endereços pelos links de publicações antigas. A ficha do amigo usada para diagnóstico não integra este par e não foi alterada.
 
+## Avisos de funções (PR #141) nas oficiais · 20/11/2026
+
+Pedido do Mizuki no chat: "pode levar pras oficiais". Base: main `a3cefc1`, que já tem a #141 (avisos de funções)
+e a #142 (relógio do acabamento do `construir()`).
+
+- **O que entrou.** Só a coluna `avisos_funcoes` (GA) da DADOS_R53, linhas 2–250. Nenhum `.gs` mudou nas oficiais:
+  - a #141 só mexe no texto do aviso;
+  - a #142 só age dentro do `construir()`, que não roda nas oficiais.
+- **Backup antes**, pela página de cópia de cada oficial (leva o projeto junto):
+  "BACKUP antes dos avisos de funções (PR141) 20-11-2026 · Era da Revolução" (`1LVr_2…`) e
+  "… · Ciclo Maldito" (`1_Bg36…`).
+- **Plano offline.** `r53/diagnosticos_funcoes.py` com `--modelo-novo`, que guarda os embrulhos de Classe 0, Prática
+  Cotidiana e trilha do repertório. Deu, em cada oficial:
+  - 244 trocas;
+  - 7 linhas já iguais ao alvo, regravadas com o mesmo conteúdo.
+  
+  Na Ciclo, gravada depois da Era, A1:M300 e GA1:GA300 foram relidas antes de gravar e estavam iguais à foto do plano.
+- **Gravação.** API do Sheets, `updateCells` só em `userEnteredValue` da GA, em blocos de até 42 linhas, todos
+  aceitos. A gravação pela API não dispara `onEdit`.
+- **Conferido depois**, GA1:GA300 relida e comparada com o alvo. Como o Sheets normaliza a fórmula guardada, a
+  comparação é pela assinatura do `diagnosticos_funcoes`.
+
+  | Oficial | Exatas | Iguais por assinatura | Diferentes | Erros |
+  |---|---|---|---|---|
+  | Era | 29 | 220 | 0 | 0 |
+  | Ciclo | 29 | 220 | 0 | 0 |
+- **O que aparece no modelo vazio** é o mesmo de antes da troca:
+  - **48 linhas de Trunfo:** "Trunfo exige maldição domada com técnica própria e nível de aquisição". As fórmulas
+    antigas já davam esse texto, por exemplo `=IF(AND(DADOS_INVOC!DF2="Maldição domada";…);"";"Trunfo exige…")`.
+  - **Liberação Máxima:** "nível mínimo 20/30" na Era e "nível mínimo 10/20/30" na Ciclo. A fórmula antiga já era
+    `IF(DADOS_AM!$HM$2>=N;…)`. A diferença entre as duas vem do nível preenchido em cada modelo.
+  - **Avisos novos de Amparo Fechada e Classe 0:** nenhum, porque o modelo vazio não tem cura nem PV temporários salvos.
+- **Reverter.** Os planos guardam a fórmula antiga de cada linha (chave `reversao`). Ficaram nas notas da sessão:
+  `plano-era.json` e `plano-ciclo.json`. Os backups acima também servem.
+- **Não rodou:** nenhuma edição pela interface nas oficiais e nenhum teste no celular. A troca é só de texto de aviso,
+  então não muda conta nem tempo de `onEdit`.
+
 ## Técnica Máxima R67 · 19/11/2026
 
 Pedido do Mizuki no chat, depois do ensaio na cópia `1H6snr…`: "Pode instalar". Preparador e pedidos da PR #136
