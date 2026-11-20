@@ -180,6 +180,19 @@ edita("a nota de regra vai sempre para a caixa, nunca para o titulo", C, "return
       "as notas de regra da FICHA moram no título", teste=K)
 edita("o construir() nunca passa a vez ao acabar()", F, "var TETO_DA_MONTAGEM_ = 300000;", "var TETO_DA_MONTAGEM_ = 300000000000;",
       "avisa que falta o acabar()", teste=K)
+# 19/11/2026: o acabamento que começa abaixo do teto e não confere o relógio estourou os seis minutos num Sheets de verdade
+edita("o acabamento nunca confere o relogio, e estoura os seis minutos", F,
+      "    if (!rel.prazo || rel.passou() + (CUSTO_DO_ACABAMENTO_[etapa] || 0) <= rel.prazo) return true;",
+      "    return true;", "o acabamento que começa abaixo do teto confere o relógio", teste=K)
+edita("os menus nunca conferem o relogio, e estouram os seis minutos", F,
+      "    if (de < ABAS.length && rel.passou() + CUSTO_DOS_MENUS_ > PRAZO_DOS_MENUS_) {", "    if (false) {",
+      "para antes dos menus", teste=K)
+edita("a parada some antes dos menus, e o corte neles fica sem aviso", F,
+      "    props.setProperty(CHAVE_DA_MONTAGEM_, String(ABAS.length));\n    if (de < ABAS.length", "    props.deleteProperty(CHAVE_DA_MONTAGEM_);\n    if (de < ABAS.length",
+      "o corte no meio dos menus", teste=K)
+edita("o acabamento para sem avisar que falta o acabar()", F,
+      "      falta = acabamento_(ss, feito, rel) === false;", "      acabamento_(ss, feito, rel);",
+      "o acabamento que começa abaixo do teto confere o relógio", teste=K)
 # 07/10/2026: a montagem que para sozinha antes de estourar os seis minutos, e o continuar()
 edita("a montagem nunca para, e estoura os seis minutos", F, "if (i > de && rel.passou() + custoDaAba_(spec) > LIMITE_DA_EXECUCAO_) {",
       "if (false) {", "para ANTES de começar uma aba", teste=K)
@@ -187,8 +200,8 @@ edita("o continuar() recomeca da primeira aba, em vez de seguir", F, "      if (
       "fica igual à de uma montagem que não parou", teste=K)
 edita("a montagem para sem guardar em que aba parou", F, "      props.setProperty(CHAVE_DA_MONTAGEM_, String(parou));", "",
       "guarda em que aba parou", teste=K)
-edita("a montagem parada nao e esquecida quando as abas acabam", F, "    props.deleteProperty(CHAVE_DA_MONTAGEM_);\n\n    // 19/09/2026, testando no Sheets",
-      "\n    // 19/09/2026, testando no Sheets", "segue de onde o anterior parou", teste=K)
+edita("a montagem parada nao e esquecida quando as abas acabam", F, "    rel.etapa('menus');\n    props.deleteProperty(CHAVE_DA_MONTAGEM_);",
+      "    rel.etapa('menus');", "A montagem não avançou até o fim", teste=K)
 edita("o acabar() roda por cima de uma montagem parada", F, "  if (parada !== null) throw new Error('a montagem das abas parou antes da aba '", "  if (false) throw new Error('a montagem das abas parou antes da aba '",
       "não roda por cima de uma montagem parada", teste=K)
 edita("o construir() do zero segue a montagem parada de antes", F, "      // do zero: a montagem parada que houver deixa de valer\n      props.deleteProperty(CHAVE_DA_MONTAGEM_);",
