@@ -8,8 +8,9 @@ import emitir_gs as E
 def gerar():
  src=json.loads((ROOT/'r53/saidas/testes-integral.json').read_text())
  meta=json.loads((ROOT/'r53/saidas/testes-integral.json.meta.json').read_text())
+ # 53018901 = CAT_ID do gerar_nativo.py (catálogo de QA); 53018005 é a R53_EVENTOS.
  req=[]
- for sid,grid in [(53018002,{'rowCount':meta['linhas'],'columnCount':meta['colunas']}),(53018005,{'columnCount':meta['catalogo_colunas']})]:
+ for sid,grid in [(53018002,{'rowCount':meta['linhas'],'columnCount':meta['colunas']}),(53018901,{'columnCount':meta['catalogo_colunas']})]:
   req.append({'updateSheetProperties':{'properties':{'sheetId':sid,'gridProperties':grid},'fields':','.join('gridProperties.'+k for k in grid)}})
  for item in src:
   u=item['updateCells'];sid=u['start']['sheetId'];rows=u['rows'];vals=[];cells={}

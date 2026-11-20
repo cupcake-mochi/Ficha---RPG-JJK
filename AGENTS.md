@@ -7,6 +7,37 @@ Mizuki, as QAs e o estado delas, e o que está pendente:
 - a auditoria da CONFIGURAÇÃO (feita, e os achados fechados em 14/11);
 - as decisões abertas dele.
 
+# Avisos de funções bloqueadas (PR45 refeita sobre a R67) · 19/11/2026
+
+A PR45 (Codex, 30/10, ramo `codex/revisao-mecanicas-20261030`) ficou 235 commits atrás e dava 67 conflitos. Refeita
+sobre a main `d837b64`. Diagnóstico: `r53/OFICIAIS.md`, "Testes que faltavam da R67", item 4.
+
+- Problema: com Amparo Fechada, a coluna `avisos_funcoes` (GA da DADOS_R53) só mostrava o requisito (Trunfo ou
+  Liberação Máxima N). Cura e PV temporários salvos ficavam calados, com resultado zero.
+- Conserto: `ficha-v01/avisos_cartoes_r53.py` (`formula_avisos_funcoes`) monta a GA com o `R.aviso_requisito(g)` da main
+  na frente e um aviso por função que a porta bloqueia: "Amparo Fechada: função de cura/vida temporária salva
+  indisponível" ou "Função indisponível nesta modalidade". A intenção sai da versão salva na MONTAGENS (Classe ativa)
+  ou dos pontos do cartão; na modalidade fixa (Máxima), só da caixa marcada, como o flag da main.
+- Contas, entradas e validação não mudam: é só texto de aviso. A Classe 0 (`classe_zero.py`) segue embrulhando a GA,
+  e a Prática Cotidiana (`pratica_cotidiana.py`) segue reescrevendo a dela.
+- Catálogo de QA do `r53/testes/gerar_nativo.py`: sheetId `53018005` → `53018901` (a 53018005 é a R53_EVENTOS). O
+  `r53/limpar_validacao.py` e o `r53/testes/compactar_nativo.py` acompanham, para não apagar nem redimensionar a
+  R53_EVENTOS.
+- Migração offline só da GA: `r53/diagnosticos_funcoes.py` (guardas de ID, layout A:M e fórmula; reversão exata). O
+  alvo vem do modelo novo (`--modelo-novo`), porque Classe 0, Prática e trilha do repertório embrulham a GA de algumas
+  linhas; a PR45 recalculava a fórmula crua e tiraria os embrulhos.
+- Carta extra de entidade: a porta é `AND(Classe<>0; Amparo aberta)`. Com Classe 0 o aviso diz "Classe 0 (Básica)",
+  não culpa a Amparo (a PR45 culpava).
+  Teste: `r53/testes/test_revisao_mecanicas.py`, no smoke. `r53/testes/revisao_mecanicas.py` veio junto (planos de QA
+  e leitura de recibos); os oráculos dele são da R53 de 30/10, não revalidados na R67.
+- Achado ao regerar: os consertos de 18/11 da PR #135 (`criarGrupos_` e estilo ausente, `19c8f4a`/`b2078d4`) e do
+  portador da CARTEIRA (`6840223`/`8f46597`) estavam só nos `.gs` gerados. O `ficha/emitir_gs.py` e o `monta.py` os
+  apagavam (o `r53/testes/maxima_r67_rodada.js` acusou). Levados para as fontes: `ficha/modelo.gs.js` e
+  `r53/runtime_direto.gs`. **Conserto em `Ficha.gs` ou `EditorR53.gs` vai na fonte, não só no gerado.**
+- Regerar no Windows: `.venv` com o `requirements.txt` (Pillow 10.2.0; o 13 muda os PNG e o `GERACAO_`), `PYTHONUTF8=1`,
+  e não versionar o `.xlsx` nem os JSON que só trocam LF por CRLF.
+- Oficiais: nada. A GA das oficiais (cerca de 250 células) é rodada própria, com backup e ok do Mizuki.
+
 # ANALISE estática · 17/11/2026
 
 Leia `r53/diagnostico-android/ANALISE-ESTATICA-2026-11-17.md`. A coluna B da ANALISE vira valor numa exportação sob

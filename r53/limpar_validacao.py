@@ -33,6 +33,7 @@ def preparar():
  for g in tr['contextos']:values(IDS[g['aba']],g['abrir_editor'],[[False]])
  values(53018006,'B1',[['Validada; exemplos de teste retirados']])
  for row in [3,4]:values(53018006,'D'+str(row),[['Exemplo sintético retirado da ficha; registro preservado para recuperação']])
- req.extend({'deleteSheet':{'sheetId':sid}}for sid in [53018002,53018005])
+ # 53018005 é a R53_EVENTOS (r53/caminho_leve.js); o catálogo de QA do gerar_nativo.py mora na 53018901.
+ req.extend({'deleteSheet':{'sheetId':sid}}for sid in [53018002,53018901])
  out=ROOT/'r53/saidas/limpeza-final.json';out.write_text(json.dumps(req,ensure_ascii=False));print(json.dumps({'arquivo':str(out),'pedidos':len(req),'caracteres':len(out.read_text())}))
 if __name__=='__main__':preparar()
