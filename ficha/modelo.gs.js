@@ -272,6 +272,28 @@ function relogio_() {
 // notas 1,3, notas da ficha pessoal 4,7, saltos 6,4, caixa da paleta 1,5), e o teto sobe para 300 s.
 var TETO_DA_MONTAGEM_ = 300000;
 
+// 19/11/2026, o construir() do pacote completo num Sheets de verdade: o último continuar() acabou as abas e os menus
+// (218 s, ninguém estimava) aos 254 s, abaixo do teto, e o acabamento começou. Ele não olhava o relógio: as constantes e
+// a exportação da ANALISE (~56 s no acabar() da mesma noite) não couberam, e o Google cortou a execução aos 361 s, sem o
+// aviso do acabar(). Agora, quando o acabamento vem da montagem, cada etapa só começa se o custo dela couber antes do
+// prazo; se não couber, ele para ali e a montagem avisa que falta o acabar(), que refaz tudo (cada etapa pode ser
+// refeita). O prazo deixa 40 s para a volta ao português e a conferência dos saltos. O custo de cada etapa é a medida
+// de 19/11 com folga; a exportação leva a do Bot > Exportar numa oficial (87,7 s).
+var PRAZO_DO_ACABAMENTO_ = 320000;
+var CUSTO_DO_ACABAMENTO_ = {
+  'cor de estado': 15000, 'notas': 10000, 'notas da ficha pessoal': 8000, 'notas dos tipos de entidade': 4000,
+  'saltos da ficha amaldiçoada': 6000, 'caixa da paleta': 5000, 'travas de antes': 8000,
+  'constantes da ANALISE': 12000, 'ANALISE exportada para o bot': 90000
+};
+
+// 19/11/2026, na mesma execução: os menus suspensos levaram 218 s (35 s em 07/10, quando o LIMITE_DA_EXECUCAO_ lhes
+// reservou uns 90). A parada era apagada antes deles e o acabar() não faz menus: se o Google cortasse a execução ali, a
+// ficha ficava sem menus e sem aviso. Agora a parada vira ABAS.length ("só faltam os menus") antes deles e só é
+// apagada depois; e, se eles não couberem antes do prazo depois da última aba montada nesta execução, a montagem para
+// ali e pede o continuar(), que faz os menus logo no começo (com a parada em ABAS.length, nenhuma aba é montada).
+var CUSTO_DOS_MENUS_ = 240000;
+var PRAZO_DOS_MENUS_ = 320000;
+
 // 07/10/2026, a INVOCAÇÕES com doze fichas: a montagem das abas sozinha já não cabe com folga nos seis minutos. O
 // Mizuki mediu 288 s com uma ficha (187 s de abas, 101 s de menus e acabamento), e as doze trazem mais de dez vezes as
 // células dela. A montagem agora PARA SOZINHA antes de começar uma aba que pode não acabar, guarda em que aba parou e
@@ -528,7 +550,14 @@ function montar_() {
                  ' aba(s), os menus e o acabamento. · ' + feito.join(' · ') + ' · tempos: ' + ETAPAS_.join(', '));
       return;
     }
-    props.deleteProperty(CHAVE_DA_MONTAGEM_);
+    // 19/11/2026: só faltam os menus (ver CUSTO_DOS_MENUS_). Numa execução que montou abas, eles só começam se couberem.
+    props.setProperty(CHAVE_DA_MONTAGEM_, String(ABAS.length));
+    if (de < ABAS.length && rel.passou() + CUSTO_DOS_MENUS_ > PRAZO_DOS_MENUS_) {
+      Logger.log('A MONTAGEM PAROU ANTES DOS MENUS, em ' + Math.round(rel.passou() / 1000) +
+                 's, PARA NÃO ESTOURAR OS SEIS MINUTOS: rode a função continuar(). Faltam os menus e o acabamento. · ' +
+                 feito.join(' · ') + ' · tempos: ' + ETAPAS_.join(', '));
+      return;
+    }
 
     // 19/09/2026, testando no Sheets: o Mizuki reportou borda errada logo no construir() — a
     // FICHA!AK17 branca, a GLOSSÁRIO!B4 sem borda esquerda —, mas os dados (a viva ORIGINAL, o
@@ -543,6 +572,7 @@ function montar_() {
     // Os menus suspensos SÓ agora: eles apontam para a aba DADOS, e ela tem de estar preenchida.
     feito.push('menus: ' + menusSuspensos_(ss));
     rel.etapa('menus');
+    props.deleteProperty(CHAVE_DA_MONTAGEM_);
 
     // A ordem em que elas aparecem é a ordem do ABAS. Elas já nascem nessa ordem; só se o Sheets as tiver posto
     // em outra é que cada uma é movida.
@@ -558,7 +588,9 @@ function montar_() {
     if (rel.passou() > TETO_DA_MONTAGEM_) {
       falta = true;
     } else {
-      acabamento_(ss, feito, rel);
+      // 19/11/2026: daqui o acabamento confere o relógio a cada etapa (ver PRAZO_DO_ACABAMENTO_)
+      rel.prazo = PRAZO_DO_ACABAMENTO_;
+      falta = acabamento_(ss, feito, rel) === false;
     }
   } finally {
     // 09/10/2026: quando o serviço do Google estoura o tempo no meio da montagem, ele costuma estourar aqui também, e
@@ -587,34 +619,50 @@ function montar_() {
  * O acabamento: a cor de estado, as notas, as travas de fórmula, as notas da FICHA PESSOAL, os saltos da FICHA
  * AMALDIÇOADA e a caixa da paleta.
  * Cada passo pode ser refeito sem estragar o que já está lá, e é por isso que ele pode rodar sozinho, pelo acabar().
+ * Com rel.prazo (só a montagem o põe), a etapa que não cabe antes dele não começa: o acabamento devolve false e para.
  */
 function acabamento_(ss, feito, rel) {
+  var cabe = function (etapa) {
+    if (!rel.prazo || rel.passou() + (CUSTO_DO_ACABAMENTO_[etapa] || 0) <= rel.prazo) return true;
+    feito.push('o acabamento parou antes de: ' + etapa + ', em ' + Math.round(rel.passou() / 1000) + 's');
+    return false;
+  };
   var idx = indice();
+  if (!cabe('cor de estado')) return false;
   feito.push('cor de estado: ' + corDeEstado_(ss, idx));
   rel.etapa('cor de estado');
+  if (!cabe('notas')) return false;
   feito.push('notas: ' + notasDeRegra_(ss, idx));
   rel.etapa('notas');
+  if (!cabe('notas da ficha pessoal')) return false;
   feito.push('ficha pessoal: ' + configurarPessoal_(ss));
   rel.etapa('notas da ficha pessoal');
+  if (!cabe('notas dos tipos de entidade')) return false;
   feito.push('notas dos tipos: ' + notasDosTipos_());
   rel.etapa('notas dos tipos de entidade');
+  if (!cabe('saltos da ficha amaldiçoada')) return false;
   feito.push('saltos: ' + ligarSaltos_(ss));
   rel.etapa('saltos da ficha amaldiçoada');
+  if (!cabe('caixa da paleta')) return false;
   feito.push('paleta: ' + configurarPaleta_(ss, true));
   rel.etapa('caixa da paleta');
   // 07/10/2026: as travas de aviso saíram (a conta em que alguém escreve por cima volta sozinha, pelo onEdit). Aqui
   // só saem as de uma ficha montada antes, quando o acabar() roda nela.
+  if (!cabe('travas de antes')) return false;
   feito.push('travas: ' + tirarTravasDeFormula_(ss));
   rel.etapa('travas de antes');
   if (typeof otimizarAnaliseAndroid === 'function') {
+    if (!cabe('constantes da ANALISE')) return false;
     feito.push('constantes Android: ' + otimizarAnaliseAndroid().convertidas);
     rel.etapa('constantes da ANALISE');
   }
   // 17/11/2026: a ficha nova nasce com a ANALISE exportada (valores, sem fórmula viva). AnaliseEstatica.gs.
   if (typeof analiseExportarNaMontagem_ === 'function') {
+    if (!cabe('ANALISE exportada para o bot')) return false;
     feito.push('ANALISE exportada: ' + analiseExportarNaMontagem_());
     rel.etapa('ANALISE exportada para o bot');
   }
+  return true;
 }
 
 /**
@@ -631,7 +679,7 @@ function soOAcabamento_() {
   var faltam = ABAS.filter(function (spec) { return !ss.getSheetByName(spec.nome); });
   if (faltam.length) throw new Error('a planilha não tem a aba ' + faltam[0].nome + ': rode construir() antes.');
   var parada = PropertiesService.getDocumentProperties().getProperty(CHAVE_DA_MONTAGEM_);
-  if (parada !== null) throw new Error('a montagem das abas parou antes da aba ' + (ABAS[Number(parada)] || {}).nome + ': rode continuar() antes do acabar().');
+  if (parada !== null) throw new Error('a montagem das abas parou antes da aba ' + (ABAS[Number(parada)] || { nome: '(faltam só os menus)' }).nome + ': rode continuar() antes do acabar().');
   ss.setSpreadsheetLocale('en_US');
   try {
     acabamento_(ss, feito, rel);

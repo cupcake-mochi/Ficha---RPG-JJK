@@ -988,15 +988,91 @@ const L = criaSheets(FICHA_SRC, GS, { Date: RelogioQueCorre });
 // aqui a montagem das abas não para no meio (isso é o teste de baixo): o que se cobra é a vez passada ao acabar()
 L.ctx.LIMITE_DA_EXECUCAO_ = Infinity;
 L.ctx.LIMITE_DA_CRIACAO_ = Infinity; // este caso isola o acabamento, não a preparação
+L.ctx.PRAZO_DOS_MENUS_ = Infinity;   // nem os menus (o caso deles vem abaixo)
 let erroL = null;
 try { L.ctx.construir(); } catch (e) { erroL = e; }
 const semAcabamento = !L.acha('FICHA').prot.length && L.acha('FICHA').notas.size === (ABAS.find((a) => a.nome === 'FICHA').notas || []).length && !L.P.nomeados['PALETA_ESCOLHIDA'];
+// o teto passa a vez ANTES de o acabamento começar: nenhuma etapa dele chega a ser tentada
 ok('a montagem que passa do teto de tempo deixa as abas de pé, em português, e avisa que falta o acabar()',
-   !erroL && semAcabamento && L.P.locale === 'pt_BR' && L.P.abas.map((a) => a.nome).join('|') === ABAS.map((a) => a.nome).join('|') && /FALTA O ACABAMENTO: rode a função acabar\(\)/.test(L.P.registro),
+   !erroL && semAcabamento && L.P.locale === 'pt_BR' && L.P.abas.map((a) => a.nome).join('|') === ABAS.map((a) => a.nome).join('|') && /FALTA O ACABAMENTO: rode a função acabar\(\)/.test(L.P.registro)
+   && !/o acabamento parou antes de/.test(L.P.registro),
    erroL ? erroL.message : `${L.acha('FICHA').prot.length} travas · ${L.P.registro.slice(0, 120)}`);
 try { L.ctx.acabar(); } catch (e) { erroL = e; }
 ok('e o acabar() depois dela deixa a planilha igual à de uma montagem que não parou', !erroL && assinatura(L.P) === antes, erroL ? erroL.message : 'a planilha ficou diferente');
 ok('o acabar() escreve a regra de cor com a planilha em inglês, como o construir()', !R.P.orfas.length && !L.P.orfas.length, R.P.orfas.concat(L.P.orfas).slice(0, 3).join(' · '));
+}
+
+if (FASE === 'acabamento') {
+// 19/11/2026, o construir() do pacote completo num Sheets de verdade: os menus levaram 218 s e acabaram aos 254 s, abaixo
+// do teto, e o acabamento começou sem olhar o relógio. As etapas levaram o que levaram naquela noite; a exportação da
+// ANALISE não cabia, e o Google cortou a execução aos 361 s, sem o aviso do acabar(). Aqui o relógio só anda quando cada
+// etapa termina, com os tempos medidos naquela execução; a das constantes e a da exportação vêm do acabar() da mesma
+// noite, e a exportação sobe para 70 s, o mínimo que ela levou na execução cortada (o corte veio 74 s depois das
+// travas). Passar dos 360 s é o corte do Google.
+let agora = 0, cortou = null;
+const anda = (s) => { agora += s * 1000; if (agora > 360000 && !cortou) cortou = 'passou dos 360 s em ' + Math.round(agora / 1000) + 's'; };
+class RelogioDe19 extends Date { getTime() { return agora; } }
+const T = criaSheets(FICHA_SRC, GS, { Date: RelogioDe19 });
+T.ctx.LIMITE_DA_EXECUCAO_ = Infinity; T.ctx.LIMITE_DA_CRIACAO_ = Infinity; // a montagem das abas cabe; o que se cobra é o acabamento
+const medido = { menusSuspensos_: 254, corDeEstado_: 9, notasDeRegra_: 5.1, configurarPessoal_: 4.7, notasDosTipos_: 2.1,
+                 ligarSaltos_: 3.9, configurarPaleta_: 2.8, tirarTravasDeFormula_: 5, otimizarAnaliseAndroid: 6.6,
+                 analiseExportarNaMontagem_: 70, conferirSaltos_: 7.6 };
+const deVerdade = {}, chamadas = [];
+for (const f of Object.keys(medido)) {
+  deVerdade[f] = T.ctx[f];
+  T.ctx[f] = function () { const r = deVerdade[f].apply(this, arguments); chamadas.push(f); anda(medido[f]); return r; };
+}
+let erroT19 = null;
+try { T.ctx.construir(); } catch (e) { erroT19 = e; }
+ok('o acabamento que começa abaixo do teto confere o relógio: a etapa que não cabe nos seis minutos não começa, e a montagem avisa que falta o acabar() (19/11/2026)',
+   !erroT19 && !cortou && T.P.locale === 'pt_BR' && T.P.props.montagem_parada === undefined
+   && chamadas.includes('tirarTravasDeFormula_') && !chamadas.includes('analiseExportarNaMontagem_')
+   && /FALTA O ACABAMENTO: rode a função acabar\(\)/.test(T.P.registro) && /o acabamento parou antes de: ANALISE exportada para o bot/.test(T.P.registro),
+   erroT19 ? erroT19.message : `${cortou || 'sem corte'} · ${chamadas.join(', ')} · ${T.P.registro.slice(0, 160)}`);
+for (const f of Object.keys(medido)) T.ctx[f] = deVerdade[f];
+agora = 0;
+try { T.ctx.acabar(); } catch (e) { erroT19 = e; }
+ok('e o acabar() depois dela, sem prazo, fecha a ficha igual à de uma montagem que não parou',
+   !erroT19 && /^ACABAMENTO PRONTO em /.test(T.P.registro) && assinatura(T.P) === antes, erroT19 ? erroT19.message : T.P.registro.slice(0, 160));
+}
+
+if (FASE === 'acabamento') {
+if (global.gc) global.gc();
+// 19/11/2026, o buraco dos menus: eles levaram 218 s, e a parada era apagada antes deles. Se a última aba acabasse tarde,
+// o Google cortaria a execução nos menus com a parada já apagada, e o acabar() não faz menus: a ficha ficaria sem eles
+// e sem aviso. Aqui cada aba leva 10 s (260 s no total) e os menus os 218 s daquela noite; o relógio só anda aí.
+let agora = 0;
+class RelogioParado extends Date { getTime() { return agora; } }
+const M = criaSheets(FICHA_SRC, GS, { Date: RelogioParado });
+M.ctx.LIMITE_DA_EXECUCAO_ = Infinity; M.ctx.LIMITE_DA_CRIACAO_ = Infinity; // as abas cabem todas numa execução
+const montaDeVerdade = M.ctx.montarAba_, menusDeVerdade = M.ctx.menusSuspensos_;
+let abasMontadas = 0, menusFeitos = 0, erroM = null;
+const menusQueDemoram = function () { const r = menusDeVerdade.apply(this, arguments); menusFeitos++; agora += 218000; return r; };
+M.ctx.montarAba_ = function () { abasMontadas++; agora += 10000; return montaDeVerdade.apply(this, arguments); };
+M.ctx.menusSuspensos_ = menusQueDemoram;
+try { M.ctx.construir(); } catch (e) { erroM = e; }
+ok('a montagem cujas abas acabam tarde para antes dos menus, em português, guarda que só faltam eles e pede o continuar() (19/11/2026)',
+   !erroM && abasMontadas === ABAS.length && menusFeitos === 0 && M.P.props.montagem_parada === String(ABAS.length) && M.P.locale === 'pt_BR'
+   && /^A MONTAGEM PAROU ANTES DOS MENUS, .* rode a função continuar\(\)/.test(M.P.registro),
+   erroM ? erroM.message : `${abasMontadas} abas · ${menusFeitos} menus · parada ${M.P.props.montagem_parada} · ${M.P.registro.slice(0, 160)}`);
+let erroAcM = null;
+try { M.ctx.acabar(); } catch (e) { erroAcM = e; }
+ok('o acabar() não roda antes dos menus: manda rodar o continuar(), dizendo que só faltam eles',
+   !!erroAcM && /faltam só os menus.*rode continuar\(\) antes do acabar\(\)/.test(erroAcM.message), erroAcM ? erroAcM.message : 'não parou');
+// o Google cortando a execução no meio dos menus deixa a parada onde estava: só faltam os menus
+agora = 0; abasMontadas = 0;
+let cortadoM = null;
+M.ctx.menusSuspensos_ = function () { throw new Error('Tempo máximo de execução excedido'); };
+try { M.ctx.continuar(); } catch (e) { cortadoM = e; }
+ok('o corte no meio dos menus deixa a parada em "só faltam os menus", sem montar aba nenhuma de novo',
+   !!cortadoM && abasMontadas === 0 && M.P.props.montagem_parada === String(ABAS.length) && M.P.locale === 'pt_BR',
+   cortadoM ? `${abasMontadas} abas · parada ${M.P.props.montagem_parada}` : 'não cortou');
+M.ctx.menusSuspensos_ = menusQueDemoram;
+agora = 0;
+try { M.ctx.continuar(); } catch (e) { erroM = e; }
+ok('e o continuar() seguinte faz só os menus e o acabamento: a ficha fica igual à de uma montagem que não parou',
+   !erroM && abasMontadas === 0 && menusFeitos === 1 && M.P.props.montagem_parada === undefined && /^FICHA PRONTA em /.test(M.P.registro) && assinatura(M.P) === antes,
+   erroM ? erroM.message : `${abasMontadas} abas · ${menusFeitos} menus · parada ${M.P.props.montagem_parada} · ${M.P.registro.slice(0, 160)}`);
 }
 
 if (FASE === 'continua') {
@@ -1039,8 +1115,10 @@ while (!erroC && parada() !== null && voltas < 30) {
   try { C.ctx.continuar(); } catch (e) { erroC = e; }
   paradas.push(parada() === null ? ABAS.length : parada());
 }
-ok(`cada continuar() segue de onde o anterior parou e monta pelo menos uma aba: ${voltas} vez(es), paradas em ${paradas.join(', ')}`,
-   !erroC && voltas >= 1 && paradas.every((p, i) => !i || p > paradas[i - 1]) && parada() === null && !vazias().length && C.P.locale === 'pt_BR',
+// 19/11/2026: o último pode fazer só os menus (a parada em ABAS.length), sem montar aba
+const soOsMenus = (p, i) => i === paradas.length - 1 && p === ABAS.length && paradas[i - 1] === ABAS.length;
+ok(`cada continuar() segue de onde o anterior parou e monta pelo menos uma aba, menos o que só faz os menus: ${voltas} vez(es), paradas em ${paradas.join(', ')}`,
+   !erroC && voltas >= 1 && paradas.every((p, i) => !i || p > paradas[i - 1] || soOsMenus(p, i)) && parada() === null && !vazias().length && C.P.locale === 'pt_BR',
    erroC ? erroC.message : `paradas em ${paradas.join(', ')} · vazias: ${vazias().join(', ')}`);
 if (!erroC && /(FALTA O ACABAMENTO|FALTAM AS TRAVAS DO ACABAMENTO): rode a função acabar\(\)/.test(C.P.registro)) { try { C.ctx.acabar(); } catch (e) { erroC = e; } }
 ok('e a planilha montada em várias execuções fica igual à de uma montagem que não parou', !erroC && assinatura(C.P) === antes, erroC ? erroC.message : 'a planilha ficou diferente');
@@ -1067,7 +1145,7 @@ try { C.ctx.continuar(); } catch (e) { erroV = e; }
 ok('o corte esquece a parada antiga e permite retomar o primeiro preenchimento',
    !!cortada && paradaDoCorte === 0 && parada() > 0 && C.P.locale === 'pt_BR' && !erroV,
    cortada ? `parada ${paradaDoCorte} → ${parada()} · ${erroV && erroV.message}` : 'a montagem não foi cortada');
-try { C.ctx.LIMITE_DA_CRIACAO_ = Infinity; C.ctx.LIMITE_DA_EXECUCAO_ = Infinity; C.ctx.TETO_DA_MONTAGEM_ = Infinity; C.ctx.TETO_DAS_TRAVAS_ = Infinity; C.ctx.construir(); } catch (e) { erroC = e; }
+try { C.ctx.LIMITE_DA_CRIACAO_ = Infinity; C.ctx.LIMITE_DA_EXECUCAO_ = Infinity; C.ctx.TETO_DA_MONTAGEM_ = Infinity; C.ctx.PRAZO_DO_ACABAMENTO_ = Infinity; C.ctx.PRAZO_DOS_MENUS_ = Infinity; C.ctx.TETO_DAS_TRAVAS_ = Infinity; C.ctx.construir(); } catch (e) { erroC = e; }
 ok('o construir() começa do zero e esquece a montagem parada que houver', !erroC && parada() === null && assinatura(C.P) === antes && /^FICHA PRONTA em /.test(C.P.registro),
    erroC ? erroC.message : C.P.registro.slice(0, 100));
 }
