@@ -113,6 +113,10 @@ def main():
                              cwd=ROOT, capture_output=True, text=True, timeout=60)
         check('ANALISE: origens, tipos e migração somente de C', run.returncode == 0,
               run.stderr.strip() or run.stdout.strip())
+        run = subprocess.run([sys.executable, '-m', 'unittest', 'r53.testes.test_revisao_mecanicas'],
+                             cwd=ROOT, capture_output=True, text=True, timeout=60)
+        check('avisos de funções bloqueadas (GA) e guardas da migração offline', run.returncode == 0,
+              run.stderr.strip() or run.stdout.strip())
         run = subprocess.run([sys.executable, '-m', 'unittest', 'r53.testes.test_rajada_alvos'],
                              cwd=ROOT, capture_output=True, text=True, timeout=60)
         check('Rajada e Tudo ou Nada: validação e devolução', run.returncode == 0,

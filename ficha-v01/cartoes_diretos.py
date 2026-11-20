@@ -7,6 +7,7 @@ import copy,json,re
 from openpyxl.utils.cell import coordinate_to_tuple,range_boundaries,get_column_letter as L
 import montagens_r53 as R
 import modelo as M
+from avisos_cartoes_r53 import formula_avisos_funcoes
 
 # Técnica Máxima R67 (livro v0.378): textos das caixas de função e da caixa SEM DANO.
 NOTA_FUNCAO_MAXIMA=('Marque somente uma função: dano, cura ou PV temporários (ou a caixa SEM DANO). A Forma e a base da '
@@ -268,7 +269,8 @@ def aplica(layout,tr):
             raw(key,'='+flag)
             raw('p_'+key,'=0' if g['fixa'] else f'=IF(AND({gate},ISNUMBER({val})),{val},0)')
         for k in ['r1_valida','r2_valida']:raw(k,True)
-        dc[tr['colunas']['avisos_funcoes']+str(row)][1]='='+R.aviso_requisito(g)
+        # Requisito (R.aviso_requisito) + cura/PV temp. salvos que a porta bloqueou (PR45).
+        dc[tr['colunas']['avisos_funcoes']+str(row)][1]=formula_avisos_funcoes(g,data('classe'))
         # Textual adjudication belongs to COMO É, not a second input form.
         # Ampliação preserves the spell's identity; only its allocation scales.
         invariants=['forma','funcao1','funcao2','funcao3','m1','m2','m3','m4','r1','r2','controle','pessoal']
