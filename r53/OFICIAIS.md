@@ -75,6 +75,161 @@ nas oficiais. Os testes rodaram em duas cópias descartáveis feitas pelo Drive,
     então, e o `construir()` completo não foi certificado nesta rodada. O remendo do teste foi desfeito.
 - **Não rodou:** o celular (não há como daqui) e o `construir()` num Sheets de verdade com o pacote completo.
 
+### Testes que faltavam da R67 · 19/11/2026, noite
+
+Pedido do Mizuki, repassado pela sessão da R67: fechar o que as duas seções acima deixaram em "Não rodou". Pelo
+Claude in Chrome, na conta dona (`/u/0/`).
+
+**1. `onEdit` nas oficiais, pela interface**
+- **Backup antes.** Os backups `16fAW6…` e `1sw4tc…` são das 10:46/10:47, de antes da instalação. As oficiais mudaram
+  depois deles (exportação das 11:23). Por isso fiz backups novos pela página de cópia, que leva o projeto junto:
+  "BACKUP antes do onEdit R67 19-11-2026 · Era da Revolução" (`1W6JxP…`) e "… · Ciclo Maldito" (`1H1h4V…`).
+- **A edição.** Usei o Buff/Debuff da vida (FICHA!P26), o mesmo do 17/11: 0 → 1 → 0 → 1 → 0. Antes de cada Enter, a
+  barra de fórmula foi conferida.
+- **Resultado.** Todas as execuções terminaram dentro do limite:
+
+  | Oficial | `onOpen` | 1ª edição (fria) | 2ª | 3ª | 4ª (volta ao 0) |
+  | --- | --- | --- | --- | --- | --- |
+  | Era | 2,96 s | 9,75 s | 7,83 s | 5,05 s | 8,12 s |
+  | Ciclo | 2,72 s | 10,73 s | 6,05 s | 6,35 s | 5,24 s |
+  | `R53_ONEDIT` Era (ms) | — | 3.466 | 331 | 306 | 404 |
+  | `R53_ONEDIT` Ciclo (ms) | — | 3.108 | 227 | 250 | 214 |
+
+  - A 1ª edição é a que marca a ANALISE `desatualizada`. Ela leva uns 3 s dentro do código; o resto é o Google
+    abrindo o projeto.
+  - Nas seguintes o atalho das edições livres responde em 0,2–0,4 s. Isso confirma que os dois `R53_LIVRE_HASHES_`
+    novos da R67 seguem ligando o atalho.
+  - O estouro de 30 s do ensaio não se repetiu: o código frio desta vez ficou em 10–11 s.
+- **Escorregão evitado (Era).** Depois de um Enter, a seleção desceu para a P28, e o "1" seguinte foi digitado lá.
+  Cancelei com Esc antes de confirmar. A P28 continua vazia (conferido pelo CSV). Daí em diante, cada edição foi
+  precedida pela caixa de nome (`FICHA!P26`).
+- **Releitura.** D26/J26/P26 ficaram iguais a antes: Era 0/0/0, Ciclo 19/0/0. Depois rodei Bot > Exportar para o
+  bot nas duas:
+  - Era: 87,7 s, em dia às 22:04.
+  - Ciclo: 75,4 s, em dia às 22:10.
+
+  O CSV da ANALISE (11.732 linhas pelo `gviz`) ficou igual, linha a linha, ao lido antes da primeira edição. Só mudou
+  o `analise.exportada_em`. Nenhum `#`.
+- **Execuções que aparecem na Era e não na Ciclo.** Na Era há `onSelectionChange` de 1,8–3,0 s a cada mudança de
+  seleção; na Ciclo não aparece nenhum. Não investiguei.
+
+**2. `construir()` num Sheets de verdade, com o pacote completo**
+- **Pacote.** Gerado na main `8c68939` com `PYTHONUTF8=1 python r53/empacotar_script.py` (no Windows, sem o
+  `PYTHONUTF8`, ele para num `UnicodeDecodeError`). Saíram 12 arquivos `.gs`:
+  - fonte `69550a6f84ce…`, em 5 partes;
+  - `GERACAO_` `9b17fb20d12cde78`;
+  - já com a R67 (52 "SEM DANO" e a conta "− Melhorias" no módulo).
+- **Planilha descartável nova.** "DESCARTÁVEL construir() pacote completo R67 19-11-2026"
+  (`1ejjHeL3iPbnXxsxaXf9MUplKJE77C3OaNQekRc3_HEA`), com projeto vinculado `1RJBuLF…`.
+  - Os 12 arquivos foram buscados de um servidor local (o `servir.js` da rodada R67) e gravados no editor. Os hashes
+    lidos no editor batem com o `manifesto.json`.
+  - Acrescentei o serviço avançado Sheets v4, que as oficiais têm desde 24/10.
+  - Recarreguei o editor: os 12 arquivos e o serviço continuavam lá.
+- **Autorização.** A primeira execução pediu "Autorização obrigatória". Quem autorizou foi o Mizuki, no Brave ("Roda
+  e revoga depois"). O projeto (renomeado "DESCARTAVEL construir R67 19-11") pede três escopos: `script.scriptapp`,
+  `spreadsheets.currentonly` e `drive`. A origem provável do `drive` é o serviço avançado Sheets, mas não
+  confirmei.
+  - **O Mizuki precisa revogar esse acesso** em myaccount.google.com/permissions. O projeto aparece com o nome acima
+    ou como "Projeto sem título".
+- **`verificarPacoteR53`** (22:27): `{"geracao":"9b17fb20d12cde78","abas":26,"cartoes":251,"sobras":[]}`. É a mesma
+  geração do pacote, sem sobras.
+- **Montagem no Sheets de verdade:** sete execuções, um `construir()`, cinco `continuar()` e um `acabar()`. As cinco
+  primeiras pararam antes de estourar os 6 min, como o roteiro prevê. A sexta, o último `continuar()`, estourou no
+  acabamento (ver abaixo).
+
+  | Execução | Duração | Abas montadas (tempo) | Parou antes de |
+  | --- | --- | --- | --- |
+  | `construir` 22:30 | 241 s | abas criadas 20,4 s; CARTEIRA 8,2; FICHA 54,3; FICHA AMALDIÇOADA 29,8; INVOCAÇÕES 114,6; FICHA PESSOAL 23,5 | DADOS |
+  | `continuar` 22:38 | ~245 s | DADOS 20; DADOS_AM 40,3; DADOS_INVOC 94,1; GLOSSÁRIO 4,1; DADOS_PROGRESSAO 3,4; DADOS_CUSTOM 30,5; DADOS_CRIACAO 1,6; DADOS_MELHORIAS 9,9; DADOS_RESTRICOES 2,7; DADOS_DANOS 1,5; DADOS_FORMAS 17,1; DADOS_APTIDOES 7,7; DADOS_TALENTOS 3,4; DADOS_ENTIDADES 2,5 | ANALISE |
+  | `continuar` 22:44 | ~137 s | ANALISE 128,7 (74.000 células, 34.444 fórmulas) | CONFIGURAÇÃO |
+  | `continuar` 22:47 | ~191 s | CONFIGURAÇÃO 175,7; DADOS_CONFIG 7 | MONTAGENS |
+  | `continuar` 22:52 | ~254 s | MONTAGENS 162,5 (61.741 células); DADOS_R53 81,6 (11.726 células, 10.573 fórmulas) | DADOS_R53_CATALOGO |
+  | `continuar` 22:57 | 361 s, **tempo limite** | DADOS_R53_CATALOGO 33,2; R53_EVENTOS 2,8; fila esvaziada 0,2; menus 218,2; cor de estado 9; notas 5,1; notas da ficha pessoal 4,7; notas dos tipos 2,1; saltos 3,9; paleta 2,8; travas de antes 5 | estourou no acabamento, depois das travas |
+  | `acabar` 23:05 | 90 s | cor de estado 6,6; notas 6,7; ficha pessoal 3,4; tipos 1,1; saltos 1,9; paleta 2,8; travas 4; constantes da ANALISE 6,6; ANALISE exportada 49,5; saltos conferidos 7,6 | — `ACABAMENTO PRONTO` |
+
+  - As 26 abas foram montadas.
+  - Contagens por aba no primeiro trecho: CARTEIRA 1.503 células e 5 imagens; FICHA 6.583 células com as fileiras
+    copiadas; FICHA AMALDIÇOADA 3.261 células com as fileiras copiadas; INVOCAÇÕES 14.490 células e 4.857 fórmulas;
+    FICHA PESSOAL 2.325 células.
+  - **No `construir`**, o registro traz uma linha de erro às 22:34:26, logo depois da INVOCAÇÕES: "ocorreu um erro no
+    servidor: IllegalStateException". Mesmo assim a execução seguiu e montou a FICHA PESSOAL. A página Execuções a
+    marca como "Falha", e o motivo não aparece no registro. Os quatro primeiros `continuar()` vieram "Concluído", sem
+    erro.
+  - **O último `continuar()` estourou os 6 min dentro do acabamento.** Às 23:03 o registro deu "Tempo máximo de
+    execução excedido", e a página Execuções marca "Tempo limite atingido".
+    - Os menus sozinhos levaram 218 s e terminaram aos 254 s. A conferência do `TETO_DA_MONTAGEM_` (300 s) vem depois
+      deles, e por isso o acabamento foi chamado.
+    - O acabamento não confere o relógio. Faltavam as constantes da ANALISE e a exportação (~56 s no `acabar`), e não
+      couberam.
+    - A parada já tinha sido apagada antes da fila. Por isso o passo seguinte é o `acabar()`, não o `continuar()`.
+  - **O `acabar()` fechou a ficha:** `ACABAMENTO PRONTO em 90s`. O registro traz cor de estado com 25 regras, 62 notas,
+    10 saltos e 12 ligações da lista de invocações. A paleta foi criada em CARTEIRA!C27:M28, sem travas. Houve 550
+    constantes Android, a ANALISE foi exportada `em_dia 18480/18480` e os saltos foram conferidos depois do idioma, sem
+    nenhum em erro. Como o `acabar()` só roda com as 26 abas presentes e devolve o português no fim, isso também ficou
+    conferido.
+  - **Acesso a outros arquivos:** nenhum. Nenhuma linha do registro cita outro arquivo, e o código não usa `DriveApp`,
+    `openById`, `openByUrl` nem `UrlFetchApp`. O serviço avançado `Sheets.Spreadsheets.batchUpdate` só recebe o
+    `ss.getId()` da própria planilha (`Ficha.gs` e `Socorro.gs`).
+- **Comparação com o `regressao-construir.js`.** O fim bate com o que o arnês confere:
+  - as 26 abas presentes;
+  - os 10 saltos da FICHA AMALDIÇOADA e as 12 linhas da lista de invocações;
+  - a caixa da paleta na CARTEIRA;
+  - o registro dizendo que os saltos foram conferidos depois do idioma, sem nenhum em erro;
+  - a planilha em português;
+  - a ANALISE em dia.
+
+  **A diferença é a parada.** O arnês confere que "a montagem que passa do teto de tempo deixa as abas de pé, em
+  português, e avisa que falta o acabar()". No Sheets de verdade, a execução passou do limite do Google antes de chegar
+  a esse aviso, porque os menus custaram 218 s.
+  - O conserto provável é conferir o relógio de novo antes das constantes e da exportação da ANALISE, ou descontar o
+    custo do acabamento (~90 s) do teto.
+  - Fica como pendência, sem mudança nesta PR.
+- **Descartável na lixeira:** `1ejjHeL3iPbnXxsxaXf9MUplKJE77C3OaNQekRc3_HEA` ("DESCARTÁVEL construir() pacote completo
+  R67 19-11-2026"), projeto `1RJBuLFIRmK95XL3a0M3XbcezF09plypgSvXwn7i8fZTIBDOftEkvnyL3`. Foi para a lixeira, sem
+  exclusão definitiva.
+- **Referência no arnês.** Na mesma main, `REG_CONSTRUIR_CARREGAMENTO_JA_CONFERIDO=1 node regressao-construir.js`
+  deu SAIDA=0, com 152 verificações ok e nenhuma FALHA. No Sheets de mentira, a montagem em partes chegou a 11
+  `continuar()` e terminou igual à montagem inteira. No Sheets de verdade as abas couberam em 6 execuções. A diferença
+  é esperada, porque o arnês mede a parada pelo custo estimado de cada aba.
+
+**3. Celular**
+- Daqui não tem como. Depende do Mizuki com o aparelho.
+- O roteiro abaixo usa uma cópia de jogador feita pelo Drive ("Fazer uma cópia" de uma das oficiais), nunca a
+  oficial. Para medir: cronômetro do toque até a célula mudar. Depois, no PC, a página Execuções do projeto da cópia
+  dá o tempo exato.
+  1. Abrir a cópia no app do Sheets e esperar carregar. Anotar o tempo até o `onOpen` terminar: o menu não aparece
+     no celular, então vale o momento em que a CARTEIRA AH4 aparece.
+  2. **Cartão da Máxima.** Na FICHA AMALDIÇOADA, seção da Técnica Máxima (linhas 355–357), escrever um nome no cartão
+     e marcar DANO.
+     - Esperado: a R356 mostra "8 − Melhorias 0 = 8 pontos", a P356 "5 PE" e a L357 o dano.
+     - Desmarcar DANO e marcar SEM DANO (T356).
+     - Anotar o tempo de cada toque. A 1ª edição depois de abrir é a fria: no ensaio chegou a 30,9 s.
+  3. **Caixa AT4 da CARTEIRA.** A edição do passo 2 deixa a AH4 em "Bot: desatualizada · marque ao lado".
+     - Tocar na caixa AT4 e anotar o tempo de cada toque até a AH4 voltar a "Bot: em dia".
+     - No PC, em 18/11, foram 5 toques de ~20 s.
+  4. Mandar a cópia para a lixeira.
+
+**4. PR45** ("Sinaliza funções bloqueadas e amplia a revisão mecânica nativa", ramo
+`codex/revisao-mecanicas-20261030`)
+- **Não entrou na main.** Nenhum dos 4 commits (`c4f6901`, `a11eb58`, `542b50e`, `b9cf807`) é ancestral da
+  `8c68939`, e os 7 arquivos novos dela não existem na main (`ficha-v01/avisos_cartoes_r53.py`,
+  `r53/diagnosticos_funcoes.py`, `r53/testes/revisao_mecanicas.py` e outros).
+- **Conflita com a main.** O GitHub dá `CONFLICTING`. O `git merge-tree` dá 67 conflitos: os 66 `.gs` gerados (a
+  base dela é a `46f850a`, 235 commits atrás) e o `ficha-v01/cartoes_diretos.py`. Na main essa linha virou
+  `R.aviso_requisito(g)`, com texto de requisito configurável.
+- **O problema que ela resolve continua na main.** Com Amparo Fechada, a coluna `avisos_funcoes` (GA da DADOS_R53) só
+  mostra o aviso de Trunfo. A cura e o PV temporário salvos aparecem calados, com resultado zero.
+- **Achado no caminho.** O `r53/limpar_validacao.py` apaga o sheetId `53018005`, que é a R53_EVENTOS. E o
+  `r53/testes/gerar_nativo.py` da main ainda usa esse mesmo ID para o catálogo de QA. A PR45 troca o ID para
+  `53018901`.
+- **Recomendação.** Não mesclar como está. Refazer sobre a main:
+  - portar a `formula_avisos_funcoes` para dentro do `R.aviso_requisito` atual;
+  - levar junto a troca do `CAT_ID` e os testes `test_revisao_mecanicas.py`;
+  - regerar os `.gs`.
+
+  A migração só da coluna GA nas oficiais seria uma rodada própria, com backup. Ela mexe em 249 células que a R67 não
+  tocou. A #45 ficou aberta, sem comentário meu.
+
 ## ANALISE estática · 17/11/2026
 
 Pedido do Mizuki no chat, com ele no PC: "Sim, as duas coisas" (mesclar a PR #132 da ficha e a RPG---BOT#104 do bot,
