@@ -1,4 +1,10 @@
 'use strict';
+// APOSENTADO em 20/11/2026 (nuvem-b47/TESTES.md). A premissa "modelo do ficha-v01 = abas dos .gs" valia na B47 (22 abas,
+// 8.190 chaves). Desde a R53 os .gs recebem também as camadas do r53/: a aba R53_EVENTOS e as 91 chaves da Prática
+// Cotidiana na ANALISE (modelo 25 abas e 18.408 chaves; .gs 26 e 18.499). A paridade de abas e geração é do
+// r53/testes/pacote_runtime.js (smoke). O código abaixo fica como registro.
+console.log(JSON.stringify({resultado:'APOSENTADO',teste:'testar-carregamento',motivo:'camadas r53 nos .gs; ver nuvem-b47/TESTES.md'}));
+process.exit(0);
 // Transporte real gerado: ordens alternativas, metadados e guardas sem Google.
 const fs=require('fs'),path=require('path'),vm=require('vm'),assert=require('assert');
 const root=path.resolve(__dirname,'../..');

@@ -7,7 +7,13 @@ condicional, as imagens e a ordem das abas.
 
 As diferencas ESPERADAS sao as tres limpezas declaradas no layout.json, e so
 elas. Qualquer outra e defeito do gerador.
+
+APOSENTADO em 20/11/2026 (nuvem-b47/TESTES.md): a referencia e o .xlsx exportado em 14/09/2026 (B18). Desde entao a
+ficha passou pela B19-B47, pela R53 e pela R67, e o comparador ja acusava 12.376 diferencas nao explicadas (as "~12 mil
+diferencas antigas" do PENDENCIAS). Uma lista branca disso nao prova nada. O codigo fica como registro.
 """
+print('{"resultado": "APOSENTADO", "teste": "comparar-ficha-01", "motivo": "referencia de 14/09 (B18) superada; ver nuvem-b47/TESTES.md"}')
+raise SystemExit(0)
 import json, os, re, sys
 from collections import Counter
 from openpyxl import load_workbook

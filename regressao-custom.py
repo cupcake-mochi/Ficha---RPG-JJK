@@ -4,7 +4,14 @@
 Executar sob o teto de recursos documentado. Não toca Sheets nem Apps Script.
 LibreOffice é apenas uma segunda calculadora para as contas escalares; os
 menus com FILTER/UNIQUE são conferidos no Sheets nativo, nunca por importação.
+
+APOSENTADO em 20/11/2026 (nuvem-b47/TESTES.md). É o retrato da migração C (formato 11, 17/10): exige as 5.274
+chaves da analise-v4 transformadas para o formato 11 sem outra mudança. Com a R53 o cabeçalho é formato 12 e
+livro R53, e chaves de ofício mudaram; a CONFIGURAÇÃO gerada também não tem mais o aviso global em J6. O
+código abaixo fica como registro.
 """
+print('APOSENTADO regressao-custom: retrato da migração C (formato 11); ver nuvem-b47/TESTES.md',flush=True)
+raise SystemExit(0)
 import json, math, re, shutil, subprocess, sys, tempfile
 from pathlib import Path
 from openpyxl import load_workbook

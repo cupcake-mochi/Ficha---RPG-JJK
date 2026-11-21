@@ -123,12 +123,12 @@ edita("o ganho zera a temporaria", GS,
       "ganho nao mexe na temporaria")
 
 edita("o piso de zero cai", GS,
-      "    atual: Math.max(0, max ? Math.min(novo, max) : novo),",
-      "    atual: (max ? Math.min(novo, max) : novo),",
+      "    atual: Math.max(0, max || maximoZero ? Math.min(novo, max) : novo),",  # cb04317: máximo zero explícito
+      "    atual: (max || maximoZero ? Math.min(novo, max) : novo),",
       "perda nao passa de zero")
 
 edita("o teto do maximo cai", GS,
-      "    atual: Math.max(0, max ? Math.min(novo, max) : novo),",
+      "    atual: Math.max(0, max || maximoZero ? Math.min(novo, max) : novo),",  # cb04317: máximo zero explícito
       "    atual: Math.max(0, novo),",
       "ganho nao passa do maximo")
 

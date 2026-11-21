@@ -16,10 +16,10 @@ print("\n  base limpa. pode perturbar.\n")
 print("=" * 66)
 print("PASSO 2 - cada perturbacao acende a checagem certa?")
 PERTURBACOES = [
-    ("R3 teto de Melhorias", {**BASE, "melhorias": ["Precisão","Fura","Certeiro","De Novo"]}, "R3"),
+    ("R3 teto de Melhorias", {**BASE, "melhorias": ["Precisão","Fura","Sem Cobertura","De Novo"]}, "R3"),  # R53: Certeiro saiu do catálogo
     ("R3 teto de Restricoes", {**BASE, "restricoes": ["Gesto","Parado","Barulho"]}, "R3"),
     ("R7 duas de frequencia", {**BASE, "restricoes": ["Uma Vez","Aquecer"]}, "R7"),
-    ("Familia fechada",       {**BASE, "melhorias": ["Precisão","Junto"]}, "Familia fechada"),
+    ("Familia fechada",       {**BASE, "melhorias": ["Precisão","Divide"]}, "Familia fechada"),  # R53: Junto virou Mais Um; Divide é do Amparo
     ("R2b espalhar o dano",   {**BASE, "melhorias": ["Salto","Queima"], "restricoes": ["Gesto","Barulho"],
                                "familias_livres": ["Castigo","Área"], "familias_fechadas": ["Amparo","Mira","Tempo"]}, "R2b"),
     ("A3 Rapido + Atrasar",   {**BASE, "melhorias": ["Rápido"], "restricoes": ["Atrasar"]}, "A3"),

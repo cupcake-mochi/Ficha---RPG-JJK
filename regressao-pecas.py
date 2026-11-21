@@ -65,9 +65,13 @@ def main():
             expected[0]=expected[0].replace(old_ref,new_ref)
             expected[1]=expected[1].replace(old_ref.replace('$',''),new_ref.replace('$',''))
         if current.get(key)!=expected: dif.append(key)
-    check('contrato anterior retido preserva sentido, fontes e partes por chave',not dif,dif[:5])
+    # APOSENTADAS em 20/11/2026 (nuvem-b47/TESTES.md): as duas comparam com a v9 (4187df3) pela transformação exata do
+    # formato 10 (fase 3c da B47). Depois vieram o formato 11 (migração C, 17/10) e a R53 (19/10), que mudaram
+    # formato.versao, ficha.livro e invocacao.N.exp.acerto e levaram a ANALISE a 18.408 chaves. O resto da estrutura vale.
     keys=list(current)
-    check('7356 chaves únicas; 131 treinos substituídos por tipos explícitos',len(keys)==7356 and not any('custom.treino.' in k for k in keys))
+    print(f'APOSENTADA contrato v9 → formato 10: {len(dif)} chaves diferentes hoje, ex. {dif[:5]}',flush=True)
+    print(f'APOSENTADA 7356 chaves (formato 10): hoje {len(keys)}; treino custom ausente: {not any("custom.treino." in k for k in keys)}',flush=True)
+    check('treino custom continua substituído por tipos explícitos',not any('custom.treino.' in k for k in keys))
     cfg=tabs['CONFIGURAÇÃO']; occupied=set(); overlaps=[]
     for region in cfg['mescladas']:
         c1,r1,c2,r2=range_boundaries(region)

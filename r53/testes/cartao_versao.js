@@ -10,7 +10,11 @@ const fs=require('fs'),vm=require('vm'),assert=require('assert'),{execSync}=requ
 let checks=0;
 function eq(a,b,m){assert.deepStrictEqual(a,b,m);checks++;}
 const novo=fs.readFileSync('apps-script/EditorR53.gs','utf8');
-const arq=process.argv.slice(2).find(a=>!a.startsWith('--')),antigo=arq?fs.readFileSync(arq,'utf8'):execSync('git show ce0cb65:apps-script/EditorR53.gs',{maxBuffer:1<<26}).toString('utf8');
+// 20/11/2026: a comparação é do caminho de execução. A configuração dos cartões (1ª linha, R53_EDITOR_) mudou por
+// regra depois do ce0cb65: bc4bd46 (Prática Cotidiana, 249 → 251 cartões) e 7b645e5 (R67, PV temporária da Máxima com a
+// porta do Amparo). Por isso o código de antes, vindo do git, roda com a configuração de agora.
+function comConfigAtual(fonte){const ini='var R53_EDITOR_ = ';assert(novo.startsWith(ini)&&fonte.startsWith(ini),'1ª linha não é a configuração');return novo.slice(0,novo.indexOf('\n')+1)+fonte.slice(fonte.indexOf('\n')+1);}
+const arq=process.argv.slice(2).find(a=>!a.startsWith('--')),antigo=arq?fs.readFileSync(arq,'utf8'):comConfigAtual(execSync('git show ce0cb65:apps-script/EditorR53.gs',{maxBuffer:1<<26}).toString('utf8'));
 assert.notStrictEqual(novo,antigo,'o EditorR53 de antes é igual ao de agora');
 
 function pos(a){const m=/^([A-Z]+)(\d+)(?::([A-Z]+)(\d+))?$/.exec(a.replace(/\$/g,''));assert(m,a);const col=s=>[...s].reduce((n,c)=>n*26+c.charCodeAt(0)-64,0);return [+m[2],col(m[1]),+(m[4]||m[2]),col(m[3]||m[1])];}
