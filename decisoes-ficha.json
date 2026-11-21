@@ -32,11 +32,11 @@
     "gasta_primeiro": "manual, Melhoria Rasga Escudo: 'O dano ignora a vida temporária e uma barreira que esteja absorvendo dano no lugar do alvo'"
    },
    "fontes_no_manual": {
-    "Apoio": "Cada ponto do saldo concede 3 pontos de vida temporária.",
+    "Vida temporária individual": "Cada ponto reservado vira 3 pontos de vida temporária.",
     "Fluxo": "você recebe 2 × a Classe usada em pontos de vida temporária",
     "Proteger a Manifestação": "Ela recebe vida temporária igual a 5 × a Classe correspondente ao nível dela."
    },
-   "fontes_que_sairam": "04/10/2026: Aprumo, Crosta, Vento a Favor e Muralha não existem no livro reconstruído; Proteger a Manifestação (Evocador, Invocação Principal) entrou, e é da invocação, não do personagem"
+   "fontes_que_sairam": "04/10/2026: Aprumo, Crosta, Vento a Favor e Muralha não existem no livro reconstruído; Proteger a Manifestação (Evocador, Invocação Principal) entrou, e é da invocação, não do personagem. 20/11/2026: na R53 a Melhoria Apoio saiu; a vida temporária do feitiço virou a função Vida temporária individual, com os mesmos 3 pontos por ponto do saldo"
   },
   "energia": {
    "empilha": false,
@@ -71,7 +71,7 @@
     "a": "Rápido",
     "b": "Atrasar",
     "fonte": "manual",
-    "texto": "Rápido + Atrasar | Não combina.",
+    "texto": "Rápido + Atrasar | Não combina: Bônus e Ação Completa são exigências incompatíveis.",
     "onde": "manual, Fundamento, Combinar peças (tabela Combinação | Resultado)"
    },
    {
@@ -113,7 +113,7 @@
     "a": "Armado",
     "b": "Carregar",
     "fonte": "manual",
-    "texto": "Armado + Carregar | Não combina.",
+    "texto": "Armado + Carregar | Não combina: procedimentos de preparação incompatíveis.",
     "onde": "manual, Fundamento, Combinar peças (tabela Combinação | Resultado)"
    }
   ],

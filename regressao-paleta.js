@@ -77,7 +77,8 @@ function carrega(src, P, {autorizado=false}={}){
     getRangeList:(lista)=>({setBorder:(t,l,b,r,v,h,cor)=>{gasta(CUSTO.borda()); log.chamadasBorda=(log.chamadasBorda||0)+1;
       for(const f of lista) [['top',t],['left',l],['bottom',b],['right',r]].forEach(([n,x])=>{ if(x) log.bordas[nome+'|'+f+'|'+n]=cor; });}}),
   };};
-  const celPaleta={getA1Notation:()=>'C27',getSheet:()=>sheet('CARTEIRA'),getRow:()=>27,getLastRow:()=>27,getColumn:()=>3,getLastColumn:()=>3,getValue:()=>{gasta(CUSTO.cel());return abas.CARTEIRA.valores.paleta;},getCell:()=>celPaleta,
+  // 20/11/2026: o onEdit passou a conferir o tamanho da edição (r53RestaurarVersaoPublica_); só o simulador mudou
+  const celPaleta={getA1Notation:()=>'C27',getSheet:()=>sheet('CARTEIRA'),getRow:()=>27,getLastRow:()=>27,getColumn:()=>3,getLastColumn:()=>3,getNumRows:()=>1,getNumColumns:()=>1,getValue:()=>{gasta(CUSTO.cel());return abas.CARTEIRA.valores.paleta;},getCell:()=>celPaleta,
     setBorder:(...a)=>{log.bordas['caixa']=a[6];}};
   const nomeado=(n)=>{ const [r,c,nl,nc]=CAIXA[n]; return {getA1Notation:()=>a1(r-1,c-1)+':'+a1(r+nl-2,c+nc-2),getSheet:()=>sheet('CARTEIRA'),
     getCell:()=>n==='PALETA_ESCOLHIDA'?celPaleta:null,getRow:()=>r,getColumn:()=>c,getNumRows:()=>nl,getNumColumns:()=>nc,
@@ -357,7 +358,8 @@ ESCALA=1.4; P=criaPlanilha(ABAS);
 P=criaPlanilha(ABAS);
 { const {ctx:C,celPaleta:cp}=carrega(SRC_NOVO,P); P.abas.CARTEIRA.valores.paleta=E; C.onEdit({range:cp,value:E});
   const antes=P.props.paleta_feito; P.clock.t+=500;
-  C.onEdit({range:{getSheet:()=>({getName:()=>'INVOCAÇÃO'}),getA1Notation:()=>'B5'},value:'x'});
+  // 20/11/2026: o onEdit passou a ler a posição da edição (Prática Cotidiana, versão pública); a célula ganhou B5 por extenso
+  C.onEdit({range:{getSheet:()=>({getName:()=>'INVOCAÇÃO'}),getA1Notation:()=>'B5',getRow:()=>5,getLastRow:()=>5,getColumn:()=>2,getLastColumn:()=>2,getNumRows:()=>1,getNumColumns:()=>1},value:'x'});
   ok('uma edição fora da FICHA continua a troca pendente', !!P.props.paleta_pendente===false || P.props.paleta_feito!==antes, 'nada andou'); }
 ESCALA=1;
 

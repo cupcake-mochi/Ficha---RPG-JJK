@@ -73,6 +73,8 @@ function criaPlanilha() {
     if (!A) return null;
     const range = (r, c, nl = 1, nc = 1) => ({
       getRow: () => r, getColumn: () => c, getNumRows: () => nl, getNumColumns: () => nc,
+      // 20/11/2026: o onEdit da Prática Cotidiana lê o fim da faixa editada; só o simulador mudou
+      getLastRow: () => r + nl - 1, getLastColumn: () => c + nc - 1,
       getA1Notation: () => letras(c) + r + (nl > 1 || nc > 1 ? ':' + letras(c + nc - 1) + (r + nl - 1) : ''),
       getSheet: () => sheet(nome),
       getValue: () => valor(nome, r, c),
@@ -106,8 +108,16 @@ function criaPlanilha() {
   const ctx = {
     console: { log: () => {} }, Logger: { log: () => {} }, Date,
     SpreadsheetApp: { getActive: () => ss, flush: () => {} },
-    PropertiesService: { getDocumentProperties: () => ({ getProperty: () => null, setProperty: () => {}, deleteProperty: () => {} }) },
+    PropertiesService: { getDocumentProperties: () => ({ getProperty: () => null, setProperty: () => {}, deleteProperty: () => {} }),
+                         // 20/11/2026: o salário (24/10) confere a propriedade do script antes de editar
+                         getScriptProperties: () => ({ getProperty: () => null, setProperty: () => {}, deleteProperty: () => {} }) },
+    ScriptApp: { getScriptId: () => 'simulado' },
     LockService: { getDocumentLock: () => ({ tryLock: () => true, releaseLock: () => {} }) },
+    // 20/11/2026: o onEdit passa pelo caminho leve da R53 (r53CaminhoLeve_), que descompacta o módulo com o Utilities
+    Utilities: { base64Decode: (s) => Buffer.from(s, 'base64'), newBlob: (x) => x,
+                 ungzip: (x) => ({ getDataAsString: () => require('zlib').gunzipSync(x).toString('utf8') }),
+                 DigestAlgorithm: { SHA_256: 1 }, Charset: { UTF_8: 1 },
+                 computeDigest: (_, s) => Array.from(require('crypto').createHash('sha256').update(s).digest()) },
   };
   vm.createContext(ctx); vm.runInContext(FICHA_SRC, ctx); vm.runInContext(GS, ctx);
   return { abas, log, ctx, ss, sheet, valor };
@@ -250,7 +260,11 @@ const editada = (Q, a1, value) => { const g = Q.sheet(NOME).getRange(a1); return
 }
 
 console.log('\nO onEdit NA FICHA PESSOAL');
-{
+// APOSENTADO em 20/11/2026: desde 25/10 (97abf4f) a caixa de treino da FICHA PESSOAL vai pelo caminho leve da R53
+// (r53EditarCaminho_ → r53CaminhoLeve_), e não mais pelo pessoalEditada_ deste simulador. A ida e volta do grupo e das
+// armas está no r53/testes/caminho_integrado.js (smoke). O bloco fica como registro.
+console.log('  aposentado  treino em grupo pelo onEdit: coberto pelo r53/testes/caminho_integrado.js');
+if (false) {
   const Q = criaPlanilha();
   const t = Q.ctx.caixasDeTreino_(dadosDe(Q));
   const grupo = t.grupos.find((g) => g.categoria === 'Lâmina Curta');
@@ -272,7 +286,12 @@ console.log('\nO onEdit NA FICHA PESSOAL');
   Q.ctx.onEdit(editada(Q, grupo.caixa, 'FALSE'));
   ok('desmarcar o grupo desmarca todas as armas dele', dele.every((c) => lida(c) === false));
 }
-{
+// APOSENTADO em 20/11/2026: desde 27/10 (cfe4ad2, ed4ff8c) o NÍVEL da FICHA é fórmula (o nível escrito à mão ou o do
+// XP, com a base do XP na DADOS e o acerto pelo atalho), e a missão chega pelo salário (salarioIntegrarMissao_, 24/10).
+// Este simulador não calcula fórmula. O comportamento novo está no smoke: missoes_integradas.js, trava_nivel_missao.js,
+// xp_atualizar.js, xp_congelado_nome.js e xp_linha_congelada.js. O bloco fica como registro.
+console.log('  aposentado  missão que sobe o nível: coberto por missoes_integradas/trava_nivel_missao/xp_* (smoke)');
+if (false) {
   const Q = criaPlanilha();
   const idx = Q.ctx.indiceDosDados_(dadosDe(Q));
   const nivel = () => Q.sheet('FICHA').getRange(idx['nivel']).getValue();
@@ -331,7 +350,8 @@ console.log('\nO onEdit NA FICHA PESSOAL');
   Q.ctx.onEdit(editada(Q, 'Q22', 'a história dela'));
   ok('digitar no dossiê não lê a DADOS inteira nem mexe em nada', Q.log.leiturasDaDados === antes && !Q.log.chamadas.slice(-1).some((x) => x[1] === NOME && x[0] !== 'setNote'));
   Q.ctx.onEdit(editada(Q, ip['principal'], 'Faca'));
-  ok('trocar a arma da mão lê a DADOS uma vez e confere as notas', Q.log.leiturasDaDados === antes + 1);
+  // 25/10/2026 (leitura curta, pessoal_leve.js): as notas leem só a tabela delas, sem a DADOS inteira
+  ok('trocar a arma da mão não lê a DADOS inteira (as notas leem só a tabela delas)', Q.log.leiturasDaDados === antes);
 }
 
 console.log('\nO CAMINHO ESCOLHIDO NA FICHA');

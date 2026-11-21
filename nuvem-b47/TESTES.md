@@ -1,3 +1,63 @@
+# Testes fora do smoke: pente fino · 20/11/2026
+
+Base main 78fc37d (depois da pilha de 19/11, merge 8c68939). Rodado no Windows com node 26 e Python 3.12 +
+`requirements.txt`. O smoke (`nuvem-b47/conferir.py --smoke`) segue verde: 160 OK. A última etapa dele, que passa os 380 `.js`/`.gs` numa linha de comando só, estoura o limite do Windows (WinError 206); rodada em lotes, passa. No ubuntu do CI isso não acontece. Regra usada: a expectativa só
+mudou onde o código atual está certo pela regra vigente; o resto saiu como aposentado (o teste imprime
+`APOSENTADO` e sai com 0, o código antigo fica como registro). A planilha não mudou: nenhum `.gs`, gerador ou
+fonte de regra foi tocado. As exceções são texto: a spec, o `decisoes-ficha.json` e uma nota de diagnóstico.
+
+## R53: quebrados pelo merge de 19/11
+
+| teste | antes | depois | motivo |
+|---|---|---|---|
+| `r53/testes/cartoes_diretos_runtime.js` | falha | OK, 589 | 251 cartões (bc4bd46: entram `classe0.6` e `classe0.7`). Na R67 (7b645e5), o PV temporário da Máxima virou função com porta do Amparo; o traço de bloqueado agora é provado na Máxima com o Amparo fechado. |
+| `r53/testes/cartao_leve.js` | falha | OK, 50 | Compara o código de 3e77909 com o atual. A linha 1 (`R53_EDITOR_`) é configuração, não runtime: o código antigo roda com a configuração atual. |
+| `r53/testes/cartao_versao.js` | falha | OK, 117 | Mesmo motivo, base ce0cb65. |
+| `r53/testes/test_compactar.py` | falha | OK | O compactador passou a exigir a ref `sem_volta_declarada` quando o caso é livre (262e264). O teste monta as refs por caso. |
+
+## R53: nascidos na pilha
+
+| teste | antes | depois | motivo |
+|---|---|---|---|
+| `r53/testes/deslocamento_molde.js` | falha | OK, 22 | A fórmula gerada passou a embrulhar o molde num `LET(movNucleo, …)`. O teste agora prova o envoltório, não mais a cópia literal. A nota está no `DESLOCAMENTO-CORPORAL-2026-11-04.md`. |
+| `r53/testes/auditoria_eventos_recursos.js` | falha | OK, 4/4 | O redutor passa por `r53DeltaExecutar_` (15019f2). O simulador ganhou a faixa numérica, `flush`, `toast`, `LockService` e as três funções extraídas. |
+| `r53/testes/delta_fila.js` | falha | APOSENTADO | Exige zero diferença contra f484f49 (27/10). Desde então entraram 16 `.gs` novos e a R53_EVENTOS, com 140.060 diferenças legítimas. A paridade de geração é do `pacote_runtime.js` (smoke). |
+| os outros 31 `.js` de `r53/testes` fora do smoke | OK | OK | Sem mudança. |
+| 7 que pedem arquivo privado (`*_modelo.js`, `fila_loader.js`) | falha | não tocados | Precisam do modelo nativo, que fica fora do repositório. |
+
+## Bateria `rodar-tudo.sh`: expectativa velha
+
+| teste | antes | depois | motivo |
+|---|---|---|---|
+| `arnes.py` | falha | OK | Usava `Certeiro` e `Junto`, que saíram do catálogo na R53 (`r53/migracao.py`: Certeiro→Precisão, Junto→Mais Um). Agora as perturbações usam `Sem Cobertura` e `Divide`. |
+| `regressao-delta.js` + `arnes-delta.py` | falha | OK, 77; 40 perturbações | cb04317: máximo zero explícito trava em 0; máximo em branco é "sem máximo". A âncora do arnês acompanhou a linha nova. |
+| `revisao-cetica.py` | falha | REVISAO LIMPA | Agulhas com o texto R53 do livro. A spec ainda dizia "29 das 68 Melhorias"; o catálogo R53 tem 25 das 61. A linha agora traz o número novo e o antigo, com a data. |
+| `arnes-pessoal.py` | base suja (o `regressao-pessoal.js` falhava) | base limpa; passo 2 com âncoras novas | Acompanha o `regressao-pessoal.js`. A nota regravada ganhou a linha nova do `notasVivas_` (getNotes em lote, 17/10). A caixa livre ancora na lista `livres` da FICHA PESSOAL, porque FICHA e AMALDIÇOADA também têm uma. O onEdit cego para a aba é pego pelo Volume apagado. Aposentadas: as duas de missão (o bloco saiu) e a do dossiê (desde a leitura curta, tirar a guarda não lê a DADOS inteira). Cada âncora nova foi conferida isolada e acende a checagem certa. O passo 2b (97 perturbações, quase todas com o `construir()` inteiro) não coube no teto de 1 h desta rodada e não foi tocado. |
+| `regressao-paleta.js` | falha | OK, 51 | O simulador não tinha `getNumRows/getNumColumns` nem as bordas da faixa; o código passou a ler isso. |
+| `regressao-pessoal.js` | falha | OK, 48 | Simulador ganhou `Utilities`, `PropertiesService` e `ScriptApp`. Dois blocos aposentados: o grupo do treino (97abf4f: editar vai por `r53CaminhoLeve_`, coberto por `caminho_integrado.js`) e missão→nível (a célula NÍVEL virou fórmula em cfe4ad2/ed4ff8c, coberta por `missoes_integradas`, `trava_nivel_missao` e `xp_*`). A troca de arma não relê a DADOS (leitura curta, 25/10). |
+| `regressao-pecas.py --estrutura` | falha | OK | Duas checagens aposentadas: comparavam com o contrato v9 pela transformação do formato 10 (B47). Depois vieram o formato 11 e a R53: hoje são 18.408 chaves, não 7.356. Fica a checagem de que não há treino custom. |
+| `conteudos-b47/comum/testar-carregamento.js` | falha | APOSENTADO | Exige modelo = abas dos `.gs`. Os `.gs` têm as camadas do `r53/` (R53_EVENTOS e 91 chaves da Prática Cotidiana): 26 abas e 18.499 chaves contra 25 e 18.408. Paridade coberta por `pacote_runtime.js`. |
+| `comparar-ficha-01.py` | falha | APOSENTADO | A referência é de 14/09: 12.376 diferenças, todas de evolução. |
+| `conferir-ficha-xlsx.py` | falha (WinError 206) | falha, 29 de 222 | Passava o programa do node pela linha de comando, que estoura no Windows; agora vai pelo stdin. Rodado contra o `.xlsx` regerado com `monta.py` (o versionado é de 18/10, pré-R53, e não foi trocado): 193 OK, 29 FALHA. **Não aposentado**: cada falha pede julgamento próprio. Grupos: C2 carimbo (2); abas e tetos da R53: `DADOS_R53`, `DADOS_R53_CATALOGO`, `MONTAGENS` e .gs acima de 900 KB (3); leitura do código da troca de paleta no onEdit (8; uma delas só caiu porque o worktree rodou o `regressao-paleta.js` da main, e o desta PR passa); textos R43/R51 do catálogo (4); B42 Buff/Debuff e onEdit da Trilha e das perícias (4); largura, cores, aviso A1, imagens, fórmulas embrulhadas, ordem de criação das abas, INVOCAÇÕES e CONFIGURAÇÃO (8). Ver follow-up. |
+| `regressao-custom.py` | falha | APOSENTADO | É o retrato da migração C (formato 11, 17/10): exige as 5.274 chaves da analise-v4 só com formato 10→11. Com a R53 o cabeçalho é formato 12 e livro R53, e chaves de ofício mudaram; na CONFIGURAÇÃO regerada a J6 está vazia. O próprio TESTES.md já o listava como expectativa de etapa anterior. |
+| `decisoes-ficha.json` (para `conferir-decisoes`/`arnes-decisoes`) | falha | falta 1 | Atualizadas as fontes da Forma Apoio (saiu na R53) e os textos A3. **C2 fica aberto:** o JSON diz versão corrente `1.0` e a planilha carimba `R53` (b7eaa00). É decisão do Mizuki, não expectativa. |
+
+## Falha real (não é teste velho)
+
+- `regressao-exemplos`: o `conferir_feitico.py` não aplica a devolução Leve do Toque (R53). O Peso nas Mãos dá
+  2d8; o livro diz 3d8. O conserto é no conferidor, não no teste.
+- `regressao-amaldicoada`, `regressao-invocacoes`, `regressao-familias-invocacao`: o modelo de peças ainda é
+  pré-R53 (sem pesos em degraus; as Formas Cura, Apoio, Onda e Efeito saíram). Precisa ser reescrito a partir do
+  `r53/catalogo.json` e rodado com LibreOffice.
+
+## Ambiente (LibreOffice ausente neste PC)
+
+`regressao-kaori-na-ficha`, `regressao-ficha-pessoal`, `regressao-configuracao` (a parte de estrutura passa),
+`regressao-campanha`, `regressao-progressao` e `regressao-pecas` sem `--estrutura` param no passo do `soffice`.
+Não dizem nada sobre a expectativa. Verdes sem mudança: `conferir-catalogo`, `conferir-kaori`, `conferir-progressao`,
+`regressao-construir` (687 s), `exportar-baseline`, `conferir-copias`, `regressao-arte`, `regressao-textos-custom`
+e os 9 `testar-*` da B47.
+
 # Base do delta_fila e editor_runtime aposentado · 27/10/2026
 
 `r53/testes/delta_fila.js` compara a geração com o f484f49 e não aceita

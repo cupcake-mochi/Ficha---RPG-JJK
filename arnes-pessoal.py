@@ -123,13 +123,21 @@ edita("o nivel sobe um XP antes da hora", C, "if (Number(l.xp) <= xp) melhor = N
 edita("o Volume digitado e apagado pela conta", C, "if (l[0] || valores[i][0] !== '') return;", "if (l[0]) return;",
       "Volume digitado por cima da conta fica")
 edita("o Volume apagado nao volta", C, "aba.getRange(f.l1 + i, f.c1).setFormulaR1C1(molde[0]);", "", "apagar o Volume do item traz a conta de volta")
-edita("digitar no dossie le a DADOS inteira", C, "if (!treino && !missao && !notas) return;", "", "digitar no dossiê não lê a DADOS inteira")
-edita("a nota e regravada mesmo igual", C, "if (caixa.getNote() !== texto) { caixa.setNote(texto); n++; }", "caixa.setNote(texto); n++;",
-      "uma segunda passada não grava de novo")
-edita("o onEdit nao reconhece a FICHA PESSOAL", C, "if (aba === ABA_PESSOAL_) {", "if (aba === 'OUTRA ABA') {", "marcar o grupo Lâmina Curta")
+# APOSENTADA em 20/11/2026: desde a leitura curta (25/10) nada abaixo dessa guarda lê a DADOS inteira quando não é
+# treino, missão nem nota; tirar a guarda não é mais defeito. A checagem do dossiê segue no regressao-pessoal.js.
+# edita("digitar no dossie le a DADOS inteira", C, "if (!treino && !missao && !notas) return;", "", "digitar no dossiê não lê a DADOS inteira")
+# 20/11/2026: desde 17/10 o notasVivas_ lê as notas em lote (getNotes) antes de gravar; mesmo defeito, linha nova
+edita("a nota e regravada mesmo igual", C, "if ((notas[f.l1 - 1][f.c1 - 1] || '') !== texto) { aba.getRange(a1).setNote(texto); n++; }",
+      "aba.getRange(a1).setNote(texto); n++;", "uma segunda passada não grava de novo")
+# 20/11/2026: o bloco do treino em grupo saiu do regressao-pessoal.js (vai pelo caminho leve da R53); quem pega o
+# onEdit cego para a aba agora é o Volume apagado, que também é edição na FICHA PESSOAL
+edita("o onEdit nao reconhece a FICHA PESSOAL", C, "if (aba === ABA_PESSOAL_) {", "if (aba === 'OUTRA ABA') {", "apagar o Volume do item traz a conta de volta")
 edita("o indice da aba e lido da coluna errada", C, "var IDXP_COL_CAMPO = ", "var IDXP_COL_CAMPO = 1 + ", "o IDXP_COL_CAMPO do Codigo.gs aponta")
-edita("a missao do segundo bloco nao conta", C, "return k.indexOf('missões ') === 0 && toca(k); });",
-      "return k === 'missões 1' && toca(k); });", "missão no segundo bloco também sobe")
+# APOSENTADAS em 20/11/2026 (esta e "a missao da extensao nao conta"): o bloco missão→nível do regressao-pessoal.js
+# saiu porque o NÍVEL virou fórmula (27/10, cfe4ad2/ed4ff8c); a missão é coberta no smoke por missoes_integradas.js,
+# trava_nivel_missao.js e xp_*.js.
+# edita("a missao do segundo bloco nao conta", C, "return k.indexOf('missões ') === 0 && toca(k); });",
+#       "return k === 'missões 1' && toca(k); });", "missão no segundo bloco também sobe")
 edita("o Caminho escolhido nao marca o treino", C, "if (caminho) treinoPeloCaminho_(ss, dados, String(e.value || ''));", "",
       "Bastião: as 65 caixas de treino marcadas")
 F = "apps-script/Ficha.gs"
@@ -138,9 +146,12 @@ edita("a cor de aviso procura um texto que a formula nao escreve", F, '"contem":
 edita("o painel de XP nasce aberto", F, '"col":[[48,72,true,1]', '"col":[[48,72,false,1]', "a aba fecha o treino em grupo de linhas aberto")
 edita("a extensao nasce aberta", F, ',true,2]]}', ',false,2]]}', "a extensão é um segundo grupo de colunas")
 # 07/10/2026: as travas de aviso sairam; a aba declara as caixas livres, que o onEdit nao devolve
-edita("uma conta da aba passa a ser caixa livre, e deixa de voltar", F, '"livres":["', '"livres":["D20","', "a aba declara livres só o Volume de cada item")
-edita("a missao da extensao nao conta", C, "return k.indexOf('missões ') === 0 && toca(k); });",
-      "return (k === 'missões 1' || k === 'missões 2') && toca(k); });", "a da extensão, também sobe o nível")
+# 20/11/2026: FICHA e FICHA AMALDIÇOADA também declaram `livres`; a âncora fica na lista da FICHA PESSOAL, e a
+# checagem dela passou a se chamar "a aba declara livres os volumes, foto, capacidades…"
+edita("uma conta da aba passa a ser caixa livre, e deixa de voltar", F, '"livres":["AH45","AR104"', '"livres":["D20","AH45","AR104"',
+      "a aba declara livres os volumes")
+# edita("a missao da extensao nao conta", C, "return k.indexOf('missões ') === 0 && toca(k); });",
+#       "return (k === 'missões 1' || k === 'missões 2') && toca(k); });", "a da extensão, também sobe o nível")
 
 executa_pendentes()
 print("\nPASSO 2b - o construir() inteiro, no Sheets de mentira rigoroso (duas cópias isoladas por vez)")

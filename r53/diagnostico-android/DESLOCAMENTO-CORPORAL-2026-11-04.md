@@ -137,3 +137,12 @@ máxima do Quebradiço e outras regras não abrangidas por este delta.
 
 Para revisar: Sol/Medium. Para preparar aplicação integrada: Sol/High, conforme
 AGENTS.md. Nenhuma configuração do usuário foi alterada.
+
+## Molde aposentado como cópia · 20/11/2026
+
+O `deslocamento_corporal_molde.gs` guarda a fórmula de O67 de 04/11. A conta
+interna cresceu depois (971228d, Núcleo e Fôlego com LET; 4e2f908, Buff/Debuff
+decimal), e aplicar o `p.depois` hoje desfaria esses consertos. Não usar o
+molde nas fichas. O `r53/testes/deslocamento_molde.js` deixou de exigir
+igualdade com a geração: confere que ela ainda abre O67 com o mesmo envoltório
+dos corpos.
