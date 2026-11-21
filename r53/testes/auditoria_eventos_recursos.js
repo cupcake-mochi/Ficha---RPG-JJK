@@ -10,9 +10,15 @@ function extrair(nome) {
 const resultados=[];
 function ambiente(valores) {
   const dados={...valores};
-  function range(a1) {
+  const letra=n=>{let s='';for(;n>0;n=Math.floor((n-1)/26))s=String.fromCharCode(65+(n-1)%26)+s;return s;};
+  const coluna=l=>[...l].reduce((n,ch)=>n*26+ch.charCodeAt(0)-64,0);
+  function range(a1,c,nr,nc) {
+    // 20/11/2026: o redutor passou pelo motor do ± (r53DeltaExecutar_, 15019f2), que lê um bloco por linha/coluna.
+    if(typeof a1==='number'){const l=a1;return {getValues:()=>Array.from({length:nr},(_,i)=>Array.from({length:nc},(_,j)=>dados[letra(c+j)+(l+i)]??''))};}
     const inicio=a1.split(':')[0];
+    const [p1,p2=p1]=a1.split(':').map(x=>x.match(/^([A-Z]+)(\d+)$/).slice(1));
     return {getA1Notation:()=>a1,getSheet:()=>sheet,getValue:()=>dados[inicio]??'',
+      getRow:()=>Number(p1[1]),getColumn:()=>coluna(p1[0]),getNumRows:()=>Number(p2[1])-Number(p1[1])+1,getNumColumns:()=>coluna(p2[0])-coluna(p1[0])+1,
       setValue:v=>{dados[inicio]=v;},clearContent:()=>{
         const [a,b=a]=a1.split(':');
         const [col,row]=a.match(/^([A-Z]+)(\d+)$/).slice(1);
@@ -22,12 +28,13 @@ function ambiente(valores) {
         for(let c=col.charCodeAt(0);c<=colFim.charCodeAt(0);c++)dados[String.fromCharCode(c)+row]='';
       }};
   }
-  const sheet={getRange:range};
+  const sheet={getRange:range,getName:()=>'INVOCAÇÕES'};
   const ctx={ABAS:[{nome:'INVOCAÇÕES',redutores:[['X13','U13','W13','V13']]}],
-    ABA_INVOCACOES_:'INVOCAÇÕES',SpreadsheetApp:{getActive:()=>({getSheetByName:()=>sheet})},
+    ABA_INVOCACOES_:'INVOCAÇÕES',SpreadsheetApp:{getActive:()=>({getSheetByName:()=>sheet,toast:t=>{throw Error('aviso inesperado: '+t);}}),flush(){}},
+    LockService:{getDocumentLock:()=>({tryLock:()=>true,releaseLock(){}})},console,
     cel_:(idx,k)=>idx[k],lerCelulas_:(_,refs)=>Object.fromEntries(refs.map(x=>[x,dados[x]??'']))};
   vm.createContext(ctx);
-  vm.runInContext(['aplicaPasso_','tetoTemp_','prenderTemp_','redutorDaInvocacao_'].map(extrair).join('\n'),ctx);
+  vm.runInContext(['aplicaPasso_','tetoTemp_','prenderTemp_','redutorDaInvocacao_','r53DeltaExecutar_','limitesA1_','tocaFaixa_'].map(extrair).join('\n'),ctx);
   return {ctx,dados,range};
 }
 function registrar(nome,esperado,obtido){resultados.push({nome,esperado,obtido,conforme:JSON.stringify(esperado)===JSON.stringify(obtido)});}

@@ -956,7 +956,8 @@ const SpreadsheetApp = { newDataValidation() {
 try { menusSuspensos_(ss); console.log(JSON.stringify({ regras })); }
 catch (e) { console.log(JSON.stringify({ erro: e.message })); }
 """)
-        _r = _sp.run([_node, "-e", _prog], capture_output=True, text=True)
+        # 20/11/2026: o programa vai pela entrada padrão; no "-e" ele passa do limite de linha de comando do Windows
+        _r = _sp.run([_node], input=_prog, capture_output=True, text=True, encoding="utf-8")
         try:
             _saida = _js.loads(_r.stdout.strip().splitlines()[-1])
         except Exception:

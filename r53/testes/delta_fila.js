@@ -1,4 +1,10 @@
 'use strict';
+// APOSENTADO em 20/11/2026 (nuvem-b47/TESTES.md). A base f484f49 é de 27/10 e a lista só conhece as mudanças até 30/10.
+// Desde então a geração ganhou 16 .gs (AnaliseEstatica, PraticaCotidiana, Descanso, R53Dados13–18…), a aba R53_EVENTOS
+// e 140.060 diferenças de célula autorizadas (Prática Cotidiana, R67, Integridade…). Manter uma lista branca disso não
+// prova nada. A paridade fonte × pacote fica com o r53/testes/pacote_runtime.js (smoke). O código abaixo fica como registro.
+console.log(JSON.stringify({resultado:'APOSENTADO',teste:'delta_fila',motivo:'base f484f49 (27/10) superada; ver nuvem-b47/TESTES.md'}));
+process.exit(0);
 // Compara toda a geração com a base auditada (f484f49, 27/10/2026); só muda o que a lista diz.
 // A base anterior, fa54ab6, só aceitava as 12 mudanças das barras e das Sementes e ficou para trás
 // com o Caminho.gs, o Eventos.gs e as 17 mudanças que vieram depois.

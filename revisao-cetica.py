@@ -43,9 +43,9 @@ print("\nAFIRMACOES DA SPEC vs MANUAL")
 for frase, agulha in [
     ("Vida do Bastiao 12/7 e PE 4",        "Vida no nível 1 | 12 + Constituição. Vida em cada nível seguinte | +7 + Constituição. PE máximo | 4 × seu nível"),
     ("teto de dano e 4 x Classe",          "não pode passar de 4 × Classe em d8"),
-    ("devolucao maxima e 2 x Classe",      "O total não passa de 2 × Classe"),
+    ("devolucao maxima e 2 x Classe",      "Aproveite no máximo o gasto em Melhorias e no máximo 2 × Classe."),  # R53
     ("Liberacao Maxima da + Classe",       "acrescente +Classe em d8 ao dano da montagem"),
-    ("a Forma nao conta como Melhoria",    "A Forma não conta como Melhoria."),
+    ("a Forma nao conta como Melhoria",    "A base da função e a Forma ficam fora dele."),  # R53: fora do limite de Melhorias
     ("Classe 0 e gratis",                  "Classe 0 reúne aplicações pequenas que você pode usar sem gastar PE."),
     ("arredondamento contra voce",         "Arredonde os preços para cima."),
 ]:

@@ -19,7 +19,14 @@ for(const v of [[],[inicial[0],inicial[0]],[{nome:'FICHA',vals:[]}],[{nome:'FICH
 }
 const f={};vm.createContext(f);vm.runInContext(require('../../medidas/carregar-ficha').fontes(),f);
 const gerada=f.ABAS.find(a=>a.nome==='FICHA').vals.find(v=>v[0]===67&&v[1]===15)[2];
-ok(()=>assert.equal(p.depois,gerada));
+// 20/11/2026: o molde é o delta pontual de 04/11 (DESLOCAMENTO-CORPORAL-2026-11-04.md) e está aposentado como
+// cópia da fórmula: a conta interna de FICHA!O67 cresceu depois (971228d Núcleo/Fôlego com LET, 4e2f908 Buff/Debuff
+// decimal), e aplicar o p.depois hoje desfaria esses consertos. Continua valendo o que ele instalou: a geração ainda
+// abre O67 com o mesmo envoltório dos corpos (Debilitado/Quebradiço 0 m, Exaurido 4,5 m ou 0 m na metade da vida).
+const envoltorio=p.depois.slice(1,p.depois.indexOf('MIN(4.5,VALUE(SUBSTITUTE(('));
+ok(()=>assert.ok(envoltorio.length>200&&envoltorio.includes('Corpo Exaurido')));
+ok(()=>assert.ok(gerada.startsWith('=LET(movNucleo,'+envoltorio+'MIN(4.5,VALUE(SUBSTITUTE((')));
+ok(()=>assert.notEqual(p.depois,gerada));
 const fonte='var R53_MODULO_;\nfunction r53Modulo_(){\n'+ancora+'\n return R53_MODULO_;\n}\n// preservar outros incrementos\n';
 const sha=s=>crypto.createHash('sha256').update(s).digest('hex');
 const novo=preparar(fonte,sha(fonte));
@@ -27,4 +34,4 @@ ok(()=>assert.equal(novo,fonte.replace(ancora,chamada+ancora)+'\n'+helper));
 ok(()=>assert.throws(()=>preparar(fonte,'errado')));
 ok(()=>assert.throws(()=>preparar(novo,sha(novo))));
 for(const x of ['sem ancora',fonte+ancora])ok(()=>assert.throws(()=>preparar(x,sha(x))));
-console.log(JSON.stringify({resultado:'OK',verificacoes:n,escopo:'Delta exato do molde, idempotência, recusa de divergências, paridade com GS e preservação do carregador'}));
+console.log(JSON.stringify({resultado:'OK',verificacoes:n,escopo:'Delta exato do molde, idempotência, recusa de divergências, envoltório dos corpos preservado na geração (molde de 04/11 aposentado como cópia) e preservação do carregador'}));

@@ -36,9 +36,13 @@ class Compactacao(unittest.TestCase):
                     self.assertEqual(before, evaluate(compact, trial, catalog))
 
     def test_emissao_menor_e_identificadores(self):
-        refs = {k:'A1' for k in M.INPUTS+list(M.ARVORE)}
+        base = {k:'A1' for k in M.INPUTS+list(M.ARVORE)}
         for sep in (',',';'):
             for livre in (False, True):
+                refs = dict(base)
+                # A árvore do registro livre lê a declaração de Sem Volta na descrição
+                # (262e264); M.formulas() acrescenta essa referência do mesmo jeito.
+                if livre: refs['sem_volta_declarada'] = 'REGEXMATCH(TO_TEXT(B1),"x")'
                 for field in ('efeitos','avisos'):
                     e = M.arvore(livre)[field]
                     old = native(e,refs,'CAT!A2:O200',M.LOOKUP_FIELDS,sep)

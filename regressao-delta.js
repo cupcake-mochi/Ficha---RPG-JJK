@@ -98,8 +98,11 @@ checa('perda alem de zero nao deixa temporaria para tras',
       aplicaPasso_(4, 19, 3, -30).temp, 0);
 checa('temporaria negativa e lida como zero',
       aplicaPasso_(19, 19, -5, -2).atual, 17);
+// 04/11/2026 (cb04317, MAXIMOS-ZERO-2026-11-04.md): "sem máximo" é a célula em branco; o zero explícito prende em 0.
 checa('sem maximo declarado o ganho nao e preso',
-      aplicaPasso_(10, 0, 0, 40).atual, 50);
+      aplicaPasso_(10, '', 0, 40).atual, 50);
+checa('maximo zero explicito prende o ganho em zero',
+      aplicaPasso_(0, 0, 0, 5).atual, 0);
 checa('passo zero nao move nada', aplicaPasso_(10, 19, 5, 0), { atual: 10, temp: 5 });
 
 // --- 7. o teto do campo TEMP, o B19 -----------------------------------
@@ -129,7 +132,9 @@ checa(`maximo ${outro} · o teto e o maior inteiro que nao passa`, 2 * (tOutro +
 checa(`maximo 1 · o teto nao cai abaixo de ${PISO}`, tetoTemp_(TMAX, 1), PISO);
 checa('campo TEMP vazio continua vazio', tetoTemp_('', TMAX), '');
 checa('temporaria negativa digitada vira zero', tetoTemp_(-3, TMAX), 0);
-checa('sem maximo declarado nao ha teto', tetoTemp_(EFEITO, 0), EFEITO);
+checa('sem maximo declarado nao ha teto', tetoTemp_(EFEITO, ''), EFEITO);
+checa('maximo zero explicito zera a temporaria', tetoTemp_(EFEITO, 0), 0);
+checa('maximo zero na Integridade fica para a regra propria', tetoTemp_(EFEITO, 0, true), EFEITO);
 checa('texto que nao e numero nao e mexido', tetoTemp_('x', TMAX), 'x');
 
 // --- as perícias fixas do Caminho, 17/09/2026 ----------------------------
