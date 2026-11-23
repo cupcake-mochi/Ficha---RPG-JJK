@@ -49,8 +49,15 @@ fonte de regra foi tocado. As exceções são texto: a spec, o `decisoes-ficha.j
   dentro do teto de 2 × Classe, mantida na Liberação Máxima). O Peso nas Mãos dá 3d8, e a regressão ganhou as montagens
   com Toque que o livro escreve em prosa (Formas, Iori, Rika) e uma Liberação com Toque: 14 de 14.
 - `regressao-amaldicoada`, `regressao-invocacoes`, `regressao-familias-invocacao`: o modelo de peças ainda é
-  pré-R53 (sem pesos em degraus; as Formas Cura, Apoio, Onda e Efeito saíram). Precisa ser reescrito a partir do
-  `r53/catalogo.json` e rodado com LibreOffice.
+  pré-R53 (sem pesos em degraus; as Formas Cura, Apoio, Onda e Efeito saíram). **23/11:** a conta de carta
+  passou para o `regressao-r53-planilha.py`, sem LibreOffice. Gabarito: os casos do autor R53
+  (`r53/testes/casos.json`, menos os 12 que pedem catálogo próprio) e os 10 exemplos de montagem do livro, cada um
+  reproduzido antes pelo avaliador local. Motor: as fórmulas reais da `DADOS_R53` numa cópia descartável da
+  oficial, no Planilhas; a própria planilha escreve OK ou o que divergiu. Resultado: 94 de 94 na cópia da Ciclo e
+  22 de 22 (lote 3) na da Era, com contra-teste. A carta usa a variante "registro livre" do modelo, que dispensa
+  os avisos de tipo de TR; o gabarito da planilha segue a mesma. Evidência: `R53-PLANILHA-2026-11-23.json`.
+  Os três antigos ficam como estão, fora do conjunto: o que eles conferiam além da carta (desenho da
+  `INVOCAÇÕES`, as 8.190 chaves da `ANALISE`, autonomia das nove Famílias na `DADOS_INVOC`) não tem substituto.
 
 ## Ambiente (LibreOffice ausente neste PC)
 
