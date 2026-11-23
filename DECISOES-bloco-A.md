@@ -210,6 +210,8 @@ O catálogo ganhou o campo `_meta.versao`, que ele não tinha — sem ele a deci
 
 > **04/10/2026.** O carimbo virou `0.331 · 04/10`: a versão do projeto e a data do livro reconstruído, de onde o catálogo foi remontado (B33 e B36 do `PENDENCIAS.md`).
 
+> **25/10/2026.** Agora são duas versões. O jogador vê só a pública, `v1.0` (dona: `ficha-v01/versao_publica.py`), pedida pelo Mizuki em 07/10 e separada da interna em 25/10 ([VERSAO-PUBLICA](r53/diagnostico-android/VERSAO-PUBLICA-2026-10-25.md)). O carimbo interno da `DADOS!B1` e o `_meta.versao` do catálogo são a edição do livro: `R53` desde a publicação de 19/10. O `decisoes-ficha.json` registra as duas (`versao_publica` e `versao_corrente`), e o `conferir-decisoes.py` confere cada uma contra a dona dela.
+
 ## C3 · A proteção vira célula, e ela é uma escolha
 
 ```

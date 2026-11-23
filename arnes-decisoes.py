@@ -11,7 +11,7 @@ import json, os, shutil, subprocess, sys, tempfile
 AQUI = os.path.dirname(os.path.abspath(__file__))
 PRECISA = ["conferir-decisoes.py", "decisoes-ficha.json", "catalogo-projeto-m.json",
            "DECISOES-bloco-A.md", "PENDENCIAS.md", "manual.txt", "manual-temporario.md",
-           "capitulo-35-caminhos-e-trilhas.md"]
+           "capitulo-35-caminhos-e-trilhas.md", "ficha-v01/versao_publica.py"]
 
 def roda(pasta):
     r = subprocess.run([sys.executable, "conferir-decisoes.py"], cwd=pasta,
@@ -21,7 +21,8 @@ def roda(pasta):
 def copia():
     d = tempfile.mkdtemp(prefix="arnes-decisoes-")
     for f in PRECISA:
-        shutil.copy(os.path.join(AQUI, f), d)
+        os.makedirs(os.path.join(d, os.path.dirname(f)), exist_ok=True)
+        shutil.copy(os.path.join(AQUI, f), os.path.join(d, f))
     return d
 
 print("=" * 70)
@@ -124,6 +125,17 @@ def c1_oculto_e_no_menu(d):
     d["C1_evocador"]["caminho_oculto"] = "Evocador"
 perturba("C1 escondendo um Caminho que esta no menu", c1_oculto_e_no_menu,
          "menu + oculto = o catalogo inteiro")
+
+# 25/10/2026: a ficha mostra a versao publica (1.0) e guarda a edicao do livro (R53) no carimbo
+def c2_publica_divergente(d):
+    d["C2_carimbo"]["versao_publica"] = "2.0"
+perturba("C2 com versao publica diferente do gerador", c2_publica_divergente,
+         "a versao publica do JSON e a mesma")
+
+def c2_carimbo_sem_forma(d):
+    d["C2_carimbo"]["versao_corrente"] = "revisao nova"
+perturba("C2 com carimbo sem forma de versao", c2_carimbo_sem_forma,
+         "a versao do carimbo tem forma")
 
 print()
 print("=" * 70)

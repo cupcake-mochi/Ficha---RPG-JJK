@@ -203,7 +203,9 @@
  },
  "C2_carimbo": {
   "escolha": "o carimbo e a versao do projeto",
-  "versao_corrente": "1.0",
+  "versao_corrente": "R53",
+  "versao_publica": "1.0",
+  "duas_versoes_desde_25_10": "25/10/2026, a pedido do Mizuki (r53/diagnostico-android/VERSAO-PUBLICA-2026-10-25.md): a ficha mostra ao jogador só a versão pública, 'Ciclo Maldito · v1.0' em FICHA!H4 e '1.0' no número da CARTEIRA, e a dona dela é ficha-v01/versao_publica.py. A revisão técnica do catálogo, que é a edição do livro, continua no versao_corrente: é o _meta.versao do catalogo-projeto-m.json e o DADOS!B1, e passou de 1.0 a R53 na publicação de 19/10/2026 (b7eaa00).",
   "nome_e_versao_em_07_10": "07/10/2026, o Mizuki: 'a ficha ta sem o nome, que é ciclo maldito e pode por a versão como 1.0, isso vale pra ficha toda'. O sistema passa a se chamar Ciclo Maldito na ficha (o _meta.sistema do arquivo de dados, que a DADOS!F1 escreve e o cabeçalho de cada aba lê, e a lombada de cada aba), e a versão é a 1.0. Até 07/10 a ficha dizia Projeto M e v0.331 · 04/10; o livro por trás é o mesmo, o reconstruído de 04/10/2026.",
   "data_da_versao": "04/10/2026",
   "dona_da_versao": "o livro reconstruído do JJK---Project (LIVRO-COMPLETO.md, revisado em 04/10/2026, depois da v0.331); o hash está no manual-fonte.json",
