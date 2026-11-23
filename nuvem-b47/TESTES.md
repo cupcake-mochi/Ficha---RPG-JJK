@@ -1,7 +1,7 @@
 # Testes fora do smoke: pente fino · 20/11/2026
 
 Base main 78fc37d (depois da pilha de 19/11, merge 8c68939). Rodado no Windows com node 26 e Python 3.12 +
-`requirements.txt`. O smoke (`nuvem-b47/conferir.py --smoke`) segue verde: 160 OK. A última etapa dele, que passa os 380 `.js`/`.gs` numa linha de comando só, estoura o limite do Windows (WinError 206); rodada em lotes, passa. No ubuntu do CI isso não acontece. Regra usada: a expectativa só
+`requirements.txt`. O smoke (`nuvem-b47/conferir.py --smoke`) segue verde: 160 OK. A última etapa dele, que passa os 380 `.js`/`.gs` numa linha de comando só, estourava o limite do Windows (WinError 206). **Consertado em 23/11:** a lista vai pelo stdin, e o conferidor se reabre no modo UTF-8 e põe o Python dele no PATH dos testes `.js`; no Windows, `python nuvem-b47/conferir.py --smoke` dá 176 OK sem preparar nada. No ubuntu do CI isso não acontecia. Regra usada: a expectativa só
 mudou onde o código atual está certo pela regra vigente; o resto saiu como aposentado (o teste imprime
 `APOSENTADO` e sai com 0, o código antigo fica como registro). A planilha não mudou: nenhum `.gs`, gerador ou
 fonte de regra foi tocado. As exceções são texto: a spec, o `decisoes-ficha.json` e uma nota de diagnóstico.

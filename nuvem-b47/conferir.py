@@ -5,6 +5,7 @@ import ast
 import hashlib
 import importlib.metadata
 import json
+import os
 from pathlib import Path
 import shutil
 import subprocess
@@ -17,6 +18,13 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--smoke', action='store_true', help='Executa catálogo, progressão e sintaxe Python/JS/GS')
     args = parser.parse_args()
+    # Windows: sem o modo UTF-8, o Python lê e escreve em cp1252 e o empacotador quebra nos fontes.
+    # Reabre o conferidor no modo UTF-8, que vale também para os filhos (PYTHONUTF8).
+    if not sys.flags.utf8_mode:
+        os.environ['PYTHONUTF8'] = '1'
+        return subprocess.run([sys.executable, '-X', 'utf8', *sys.argv]).returncode
+    # Os testes .js que chamam python/python3 acham este mesmo Python, o do venv.
+    os.environ['PATH'] = os.path.dirname(sys.executable) + os.pathsep + os.environ.get('PATH', '')
     checks = []
 
     def check(name, ok, detail=''):
@@ -24,7 +32,7 @@ def main():
         print(('OK ' if ok else 'FALHA ') + name + (': ' + detail if detail else ''), flush=True)
 
     check('Python 3.10–3.12 (referência: 3.12)', (3, 10) <= sys.version_info[:2] <= (3, 12), sys.version.split()[0])
-    for line in (ROOT/'requirements.txt').read_text().splitlines():
+    for line in (ROOT/'requirements.txt').read_text(encoding='utf-8').splitlines():
         if not line or line.startswith('#'):
             continue
         name, expected = line.split('==')
@@ -44,7 +52,7 @@ def main():
     required += ['ficha-v01/'+s+'-do-livro.json' for s in ['equipamento', 'habilidades', 'invocacao', 'origens', 'tecnica']]
     for name in required:
         check('entrada ' + name, (ROOT/name).is_file())
-    manifest = json.loads((ROOT/'nuvem-b47/referencias.json').read_text())
+    manifest = json.loads((ROOT/'nuvem-b47/referencias.json').read_text(encoding='utf-8'))
     for item in manifest['arquivos']:
         path = ROOT/item['arquivo']
         check('referência ' + item['arquivo'], path.is_file() and hashlib.sha256(path.read_bytes()).hexdigest() == item['sha256'])
@@ -63,7 +71,7 @@ def main():
               packed.stderr.strip() or 'exit='+str(packed.returncode))
         if packed.returncode == 0:
             bundle = ROOT/'r53/saidas/pacote-script'
-            published = json.loads((bundle/'manifesto.json').read_text())['arquivos']
+            published = json.loads((bundle/'manifesto.json').read_text(encoding='utf-8'))['arquivos']
             expected = {'Ficha.gs', 'Invocacoes.gs', 'Analise.gs', 'Configuracao.gs',
                         'Origens.gs', 'EditorR53.gs', 'Codigo.gs', 'Salarios.gs', 'PaletaAndroid.gs',
                         'CuraRecebida.gs', 'Socorro.gs', 'AnaliseEstatica.gs'}
@@ -169,14 +177,17 @@ def main():
                 except (SyntaxError, OSError) as error:
                     check('sintaxe ' + name, False, str(error))
         check('fontes Python analisadas', py_count > 0, str(py_count))
-        script = "const fs=require('fs'),vm=require('vm'),m=require('module');for(const p of process.argv.slice(1)){const s=fs.readFileSync(p,'utf8');new vm.Script(p.endsWith('.gs')?s:m.wrap(s),{filename:p});}"
+        # A lista vai pelo stdin: na linha de comando, os ~380 caminhos estouram o
+        # limite do Windows (WinError 206, 32.767 caracteres).
+        script = "const fs=require('fs'),vm=require('vm'),m=require('module');for(const p of JSON.parse(fs.readFileSync(0,'utf8'))){const s=fs.readFileSync(p,'utf8');new vm.Script(p.endsWith('.gs')?s:m.wrap(s),{filename:p});}"
         js = [str(ROOT/name) for name in filter(None, files) if name.endswith(('.js', '.gs'))]
-        run = subprocess.run([node, '-e', script, *js], cwd=ROOT, capture_output=True, text=True, timeout=60)
+        run = subprocess.run([node, '-e', script], input=json.dumps(js), cwd=ROOT, capture_output=True,
+                             text=True, encoding='utf-8', timeout=60)
         check('sintaxe JS/GS sem executar serviços', run.returncode == 0, run.stderr.strip() or str(len(js))+' arquivos')
         for name in ['conferir-catalogo.py', 'conferir-progressao.py', 'conferir-kaori.py']:
             run = subprocess.run([sys.executable, name], cwd=ROOT, text=True, capture_output=True, timeout=120)
             (ROOT/'nuvem-b47/saidas').mkdir(parents=True, exist_ok=True)
-            (ROOT/'nuvem-b47/saidas'/f'{name}.log').write_text(run.stdout + run.stderr)
+            (ROOT/'nuvem-b47/saidas'/f'{name}.log').write_text(run.stdout + run.stderr, encoding='utf-8')
             check(name, run.returncode == 0, 'exit='+str(run.returncode))
 
     output = ROOT/'nuvem-b47/saidas'
@@ -185,7 +196,7 @@ def main():
               'escopo': 'smoke' if args.smoke else 'dependências e entradas',
               'testes': checks, 'complementares': optional,
               'aviso': 'Não é validação nativa, migração ou aprovação da redução.'}
-    (output/'diagnostico.json').write_text(json.dumps(report, ensure_ascii=False, indent=2)+'\n')
+    (output/'diagnostico.json').write_text(json.dumps(report, ensure_ascii=False, indent=2)+'\n', encoding='utf-8')
     return 0 if report['resultado'] == 'OK' else 1
 
 
