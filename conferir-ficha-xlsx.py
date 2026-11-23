@@ -5,7 +5,7 @@ A checagem que mais vale e a da fonte: o prototipo declarava Oswald e Lexend
 e saiu com 4362 celulas em Calibri, porque o openpyxl poe Calibri em toda
 celula pintada sem estilo explicito. Um erro que so aparece abrindo o arquivo.
 """
-import json, os, sys
+import json, os, re, sys
 from openpyxl import load_workbook
 from openpyxl.cell.cell import MergedCell
 from openpyxl.utils import get_column_letter as L
@@ -147,6 +147,8 @@ for aba in [a for a in DEC["C6_documento"]["abas"]
           1200 <= px <= 1366, f"{px:.0f} px")
 
 print("\nA COR  (nada fora da paleta decidida)")
+_PALETAS_GS = json.loads(re.search(r"var PALETAS = (\{.*?\n\});\n", open("apps-script/Codigo.gs", encoding="utf-8").read(), re.S).group(1))
+_MIZUKI_ESCURO = {h.upper() for h in re.findall(r"[0-9A-Fa-f]{6}", json.dumps(_PALETAS_GS["Mizuki"]["escuro"]))}
 fora_c = {}
 for ws in wb:
     for linha in ws.iter_rows():
@@ -155,7 +157,10 @@ for ws in wb:
                 if cor is not None and cor.rgb and isinstance(cor.rgb, str):
                     h = cor.rgb[-6:].upper()
                     # A CONFIGURAÇÃO tem a paleta Mizuki fixa, validada abaixo.
-                    if h not in PALETA and h != "000000" and ws.title != "CONFIGURAÇÃO":
+                    # B47 (acabamento): o formato-base de fábrica é o Mizuki Escuro (o texto FBE4EF é o osso dele);
+                    # a MONTAGENS, oculta desde a R53, tem a cor fixa do montagens_r53.py
+                    if (h not in PALETA and h not in _MIZUKI_ESCURO and h != "000000"
+                            and ws.title not in ("CONFIGURAÇÃO", "MONTAGENS")):
                         fora_c.setdefault(h, []).append(f"{ws.title}!{cel.coordinate}")
 checa("nenhuma cor de texto fora da paleta", not fora_c,
       str({k: len(v) for k, v in fora_c.items()}))
@@ -218,8 +223,11 @@ checa("a FICHA tem fórmula, e não número digitado", len(formulas) >= 20, str(
 _barra = [(a.title, c.coordinate) for a in wb.worksheets for l in a.iter_rows() for c in l
           if isinstance(c.value, str) and c.value.startswith("=") and "\\" in c.value]
 checa("nenhuma fórmula da planilha tem barra invertida (escape que vazou da geração)", not _barra, str(_barra[:6]))
-checa("existe o aviso de catálogo desatualizado (A1)",
-      any("a atual é a v" in x for x in formulas))
+# 25/10/2026 (VERSAO-PUBLICA-2026-10-25): o jogador vê só a versão pública; o aviso "em dia / a atual é a v…" saiu do
+# cabeçalho, e o carimbo interno (DADOS!B1) continua para a análise
+from versao_publica import VERSAO_PUBLICA as _VP
+checa("o cabeçalho mostra a versão pública, e o aviso de catálogo desatualizado (A1) saiu dele em 25/10",
+      not any("a atual é a v" in x for x in formulas) and any(f'" · v{_VP}"' in x for x in formulas))
 checa("a Defesa soma uma célula de proteção, não uma constante (C3)",
       any(x.startswith("=10+") and "+$" in x for x in formulas),
       str([x for x in formulas if x.startswith("=10+")][:2]))
@@ -319,6 +327,7 @@ checa("a Defesa soma o Buff/Debuff (17/09/2026)",
 # logo depois do máximo, antes da barra. Cada máximo soma a caixa dele, por fora da conta do livro; a caixa é número
 # digitado, e não conta (senão o onEdit a devolveria); e a barra começa depois dela.
 from openpyxl.utils import range_boundaries as _rb, get_column_letter as _gl
+from leitura_buff import buff as _leitura_buff
 def _mescla_em(ws_, a1_):
     return next((str(r_) for r_ in ws_.merged_cells.ranges if r_.coord.split(":")[0] == a1_), None)
 _ruins_b = []
@@ -331,7 +340,9 @@ for _r_ in ("vida", "energia", "integridade"):
     _c_max_fim = _rb(_mm)[2] if _mm else 0
     _cb1, _lb1, _cb2, _lb2 = _rb(_mb) if _mb else (0, 0, 0, 0)
     _barra = _mescla_em(f, f"{_gl(_cb2 + 2)}{_lb1}")
-    _caixa_b = (f'IFERROR(VALUE(${_gl(_cb1)}${_lb1}&""),0)', f"IFERROR(VALUE('FICHA'!${_gl(_cb1)}${_lb1}&\"\"),0)")
+    # 10/11/2026: a caixa é lida pelo leitura_buff (decimal contra o dono), e não mais por IFERROR(VALUE(x&""),0)
+    _caixa_b = (f'IFERROR(VALUE(${_gl(_cb1)}${_lb1}&""),0)', f"IFERROR(VALUE('FICHA'!${_gl(_cb1)}${_lb1}&\"\"),0)",
+                _leitura_buff(f"${_gl(_cb1)}${_lb1}"), _leitura_buff(f"'FICHA'!${_gl(_cb1)}${_lb1}"))
     if not any(("+" + x) in _fm for x in _caixa_b):
         _ruins_b.append(f"{_r_}: o máximo não soma a caixa por fora da conta ({_fm[-50:]})")
     if f[_b].value != 0 or f.cell(row=_lb1 - 1, column=_cb1).value != "Buff/Debuff":
@@ -343,7 +354,8 @@ for _r_ in ("vida", "energia", "integridade"):
 checa("vida, energia e Integridade têm a caixa de Buff/Debuff logo depois do máximo, antes da barra, e o máximo soma a caixa (B42)",
       not _ruins_b, " · ".join(_ruins_b))
 checa("a Proteção soma o Buff/Debuff dela, e a Defesa, que soma a Proteção, sobe junto (B42)",
-      bool(IDX.get("buff de proteção")) and _fp.replace("$", "").endswith(f'+IFERROR(VALUE({IDX["buff de proteção"]}&""),0)')
+      bool(IDX.get("buff de proteção")) and any(_fp.replace("$", "").endswith(x) for x in (
+          f'+IFERROR(VALUE({IDX["buff de proteção"]}&""),0)', "+" + _leitura_buff(IDX["buff de proteção"]).replace("$", "")))
       and f[IDX["buff de proteção"]].value == 0 and ("+" + IDX.get("proteção", "?")) in _fd.replace("$", ""), _fp[-70:])
 import ficha_pessoal as _fp42
 _G42 = _fp42.geometria(_fp42.regras(CAT))
@@ -589,7 +601,7 @@ checa("as duas cartas de graça do menu rápido vêm com as de graça, trocando 
 checa("as notas de graça da seção 8 saíram do Codigo.gs com ela", "notasDeGraca_" not in _CODA and "NOTAS_DE_GRACA" not in _CODA)
 _oned = re.search(r"function onEdit\(e\)\s*\{(.*?)\n\}", _CODA, re.S)
 checa("o onEdit devolve a Trilha de outro Caminho para o texto de escolha",
-      bool(_oned) and re.search(r"trilhaDoCaminho_\(e, idx(, dados)?\)", _oned.group(1)) is not None)
+      bool(_oned) and re.search(r"trilhaDoCaminho_\(e, idx[,)]", _oned.group(1)) is not None)
 _vt = [v for v in f.data_validations.dataValidation if IDX.get("trilha") and IDX["trilha"].replace("$", "") in str(v.sqref).split()]
 _mt = re.search(r"(?:'DADOS_PROGRESSAO'|DADOS)!\$([A-Z]+)\$(\d+)", _vt[0].formula1) if _vt else None
 _dt = wb["DADOS_PROGRESSAO"] if _vt and "DADOS_PROGRESSAO" in _vt[0].formula1 else dd
@@ -602,7 +614,7 @@ checa("a ficha nasce com Escolha seu Caminho e Escolha sua Trilha",
       f[IDX["caminho"]].value == _fa_mod.ESCOLHA_CAMINHO and f[IDX["trilha"]].value == _fa_mod.ESCOLHA_TRILHA,
       f"{f[IDX['caminho']].value} · {f[IDX['trilha']].value}")
 checa("o onEdit marca as perícias fixas quando o Caminho muda",
-      bool(_oned) and re.search(r"marcarPericiasDoCaminho_\(e, idx(, dados)?\)", _oned.group(1)) is not None)
+      bool(_oned) and re.search(r"marcarPericiasDoCaminho_\(e, idx[,)]", _oned.group(1)) is not None)
 checa("a tabela dos Caminhos da DADOS não tem mais ofício fixo, que o livro não tem",
       not any(c.value == "ofício fixo" for l in dd.iter_rows() for c in l))
 
@@ -669,8 +681,8 @@ checa("a FICHA abre com a marca, o título e a linha de apoio à esquerda, e o n
       and _tf.get(_cab.C_TITULO[0]) == _cab.TITULO_DA_FICHA and IDX["nome"] == _cab.C_NOME[0]
       and all(IDX[k].replace("$", "") in str(_tf.get(_cab.C_QUEM[0])).replace("$", "") for k in ("caminho", "trilha", "nivel"))
       and len(_tf) == 5, str(sorted(_tf)))
-checa("o carimbo de versão continua na FICHA, na linha de apoio, e a palavra CATÁLOGO saiu do cabeçalho",
-      all(x in str(_tf.get(_cab.C_APOIO[0])) for x in ("DADOS!$F$1", "em dia", "a atual é a v", "DADOS!$B$1", "DADOS!$D$1"))
+checa("a versão pública continua na FICHA, na linha de apoio, e a palavra CATÁLOGO saiu do cabeçalho",
+      all(x in str(_tf.get(_cab.C_APOIO[0])) for x in ("DADOS!$F$1", f'" · v{_VP}"'))
       and "CATÁLOGO" not in _tf.values() and "CATÁLOGO" not in _tp.values(), str(_tf.get(_cab.C_APOIO[0]))[:90])
 checa("a FICHA PESSOAL abre com o mesmo cabeçalho, com o título e a linha de apoio dela, e espelha o nome e o Caminho",
       _tp.get(_cab.C_MARCA[0]) == _cab.MARCA and _tp.get(_cab.C_TITULO[0]) == _fpm.NOME
@@ -687,9 +699,9 @@ checa(f"a faixa de tinta do cabeçalho da FICHA PESSOAL vai até a última colun
       _fp.max_column == _fpm.PAINEL_FIM and not _sem_tinta, str(_sem_tinta[:6]))
 _num = [k for k, v in _cv.items() if isinstance(v, str) and "Nº M-" in v]
 # 07/10/2026 (B33): a versão aparece como é escrita, com o ponto ("M-1.0"); até aqui a fórmula tirava o ponto, e a 1.0 saía "M-10"
-checa("o número da CARTEIRA lê o nome no lugar novo dele, e mostra a versão do arquivo de dados com o ponto",
+checa("o número da CARTEIRA lê o nome no lugar novo dele, e mostra a versão pública com o ponto",
       len(_num) == 1 and f"FICHA!${''.join(ch for ch in _cab.C_NOME[0] if ch.isalpha())}${''.join(ch for ch in _cab.C_NOME[0] if ch.isdigit())}" in _cv[_num[0]]
-      and '"Nº M-"&DADOS!$B$1&"-"' in _cv[_num[0]] and "SUBSTITUTE" not in _cv[_num[0]],
+      and f'"Nº M-"&"{_VP}"&"-"' in _cv[_num[0]] and "SUBSTITUTE" not in _cv[_num[0]],  # 25/10: a versão pública
       str(_cv.get(_num[0]) if _num else None))
 _faixas_fp = [c for l in _fp.iter_rows(min_row=_cab.ULTIMA_LINHA + 2) for c in l
               if c.value not in (None, "") and c.font and c.font.name == "Oswald" and c.font.sz == 14]
@@ -804,7 +816,13 @@ if _o.path.exists(GS):
     checa("o Invocacoes.gs só declara as abas dele e chama a junção: quem carregar por último junta",
           "var ABAS_DA_INVOCACAO = " in g_inv and "if (typeof juntarAbas_ === 'function') juntarAbas_(ABAS_DA_INVOCACAO);" in g_inv
           and "if (typeof ABAS_DA_INVOCACAO !== 'undefined' && ABAS_DA_INVOCACAO) juntarAbas_(ABAS_DA_INVOCACAO);" in g and "function " not in g_inv)
-    checa(f"o Invocacoes.gs cabe no Apps Script ({len(g_inv) / 1024:.0f} KB, o teto é de 900 por arquivo)", 0 < len(g_inv) / 1024 < 900)
+    # Desde a R53 (19/10/2026) o que vai ao Apps Script é o pacote do r53/empacotar_script.py, partido em pedaços de até
+    # 850 KB; o fonte em apps-script/ pode passar de 900 KB. O teto é conferido no pacote publicado (conferir.py --smoke).
+    _PACOTE = "r53/saidas/pacote-script"
+    _pac = {p: _o.path.getsize(f"{_PACOTE}/{p}") for p in (_o.listdir(_PACOTE) if _o.path.isdir(_PACOTE) else []) if p.endswith(".gs")}
+    checa(f"o Invocacoes.gs tem conteúdo, e a parte publicada dele cabe no Apps Script (o teto é de 900 KB por arquivo)",
+          len(g_inv) > 0 and (not _pac or _pac.get("Invocacoes.gs", 0) < 900 * 1024),
+          f"fonte {len(g_inv) / 1024:.0f} KB; publicado {_pac.get('Invocacoes.gs', 0) / 1024:.0f} KB" if _pac else "pacote não gerado: o smoke confere")
     checa("ele traz a arte embutida, sem depender de URL",
           '.png":"' in g.split("var ARTE")[1][:400] and "http" not in g.split("var ARTE")[1][:200])
     checa("ele define as caixas de seleção pela posição medida",
@@ -844,8 +862,10 @@ if _o.path.exists(GS):
           "var VALORES_DAS_ORIGENS_ = " in _origens_src
           and "if (typeof juntarValores_ === 'function') juntarValores_(VALORES_DAS_ORIGENS_);" in _origens_src
           and "if (typeof VALORES_DAS_ORIGENS_ !== 'undefined' && VALORES_DAS_ORIGENS_) juntarValores_(VALORES_DAS_ORIGENS_);" in g)
-    checa("todos os arquivos .gs ficam abaixo do teto de 900 KB por arquivo",
-          all(_o.path.getsize("apps-script/" + p) < 900 * 1024 for p in _o.listdir("apps-script") if p.endswith(".gs")))
+    # o EditorR53.gs é a exceção que o conferir.py já declara: 1,2 MB, conferido na instalação nativa
+    checa("todos os arquivos .gs publicados ficam abaixo do teto de 900 KB por arquivo (o EditorR53.gs, de 1,2 MB)",
+          all(t < (1200000 if p == "EditorR53.gs" else 900000) for p, t in _pac.items()),
+          str({p: t for p, t in _pac.items() if t >= 900000}) if _pac else "pacote não gerado: o smoke confere")
     # A caixa desmarcada vale FALSO, e FALSO nao e "". A formula antiga somava
     # maestria em TODA pericia com a caixa vazia. A checagem precisa ser
     # exata: so as celulas que REALMENTE tem caixa, lidas do proprio script.
@@ -876,6 +896,7 @@ if _o.path.exists(GS):
     nomes = {a["nome"] for a in dados}
     _abas_c = {"DADOS_PROGRESSAO", "DADOS_CRIACAO", "DADOS_MELHORIAS", "DADOS_RESTRICOES", "DADOS_DANOS",
                "DADOS_FORMAS", "DADOS_APTIDOES", "DADOS_TALENTOS", "DADOS_ENTIDADES"}   # B47 C, FECHAMENTO-C.md
+    _abas_c |= {"DADOS_R53", "DADOS_R53_CATALOGO", "MONTAGENS"}   # R53, 19/10/2026 (r53/ENTREGA.md; a MONTAGENS fica oculta)
     checa("as abas do script são as decididas", nomes == set(DEC["C6_documento"]["abas"]) | _abas_c,
           str(nomes ^ (set(DEC["C6_documento"]["abas"]) | _abas_c)))
     fora, artefalta, estilo_ruim = [], [], []
@@ -1072,7 +1093,12 @@ catch (e) { console.log(JSON.stringify({ erro: e.message })); }
     # 02/10/2026: a limpeza 27 (as Habilidades) põe a arte de respingos ao lado do título da seção 7
     import habilidades as _hb
     _fl7 = next(a for a in _lay["abas"] if a["nome"] == "FICHA")
-    _fl7["imagens"] = [_hb.arte_no_titulo(i, _hb.linha_do_titulo(_fl7, 7)) if i["arquivo"] == _hb.ARTE else i for i in _fl7["imagens"]]
+    # 23/11/2026: a linha do título vem da FICHA gerada, e não do layout: as vagas novas de perícia (12 + 11) empurraram
+    # a seção 7 para baixo depois do layout_de_hoje (104 → 130), e a arte acompanha o título. A altura é a das três linhas.
+    _r7 = next((c.row for l in wb["FICHA"].iter_rows(min_col=4, max_col=4) for c in l if c.value in (7, "7")), None) \
+        or _hb.linha_do_titulo(_fl7, 7)
+    _alt7 = sum(next(a for a in dados if a["nome"] == "FICHA")["alturas"].get(str(r), 21) for r in range(_r7, _r7 + 3))
+    _fl7["imagens"] = [dict(_hb.arte_no_titulo(i, _r7), alt=_alt7) if i["arquivo"] == _hb.ARTE else i for i in _fl7["imagens"]]
     # 03/10/2026: a limpeza 28 (moldura_foto.py) tira a moldura de dentro da caixa da foto e põe um canto em cada quina
     import moldura_foto as _mf
     _lmf = _layout_de_hoje()
@@ -1168,12 +1194,12 @@ catch (e) { console.log(JSON.stringify({ erro: e.message })); }
     # no orçamento, e continua no próximo clique (onSelectionChange) — tudo sem autorização. As
     # checagens abaixo substituem as três do gatilho instalável, que deixou de existir.
     checa("a troca de paleta no onEdit simples passa por continuarPaleta_, com o valor antigo da caixa",
-          bool(_oned) and "continuarPaleta_(inicio, e.oldValue, true)" in _oned.group(1)
+          bool(_oned) and "continuarPaleta_(inicio, e.oldValue, true" in _oned.group(1)  # PaletaAndroid: + onde, escolha
           and "ehCelulaDaPaleta_(e.range)" in _oned.group(1))
-    _conv = re.search(r"function convergirPaleta_\(inicio, orcamento, dica, primeira\)\s*\{(.*?)\n\}", _CODA, re.S)
+    _conv = re.search(r"function convergirPaleta_\(inicio, orcamento, dica, primeira(?:, estado)?\)\s*\{(.*?)\n\}", _CODA, re.S)
     checa("convergirPaleta_ confere o tempo ANTES de cada passo e grava o progresso DEPOIS de cada um",
           bool(_conv) and re.search(r"for \(var i = 0; i < passos\.length; i\+\+\) \{.*?Date\.now\(\) - inicio.*?"
-                                    r"> orcamento.*?props\.setProperty\(PROP_PENDENTE_, novo\).*?return passo;.*?"
+                                    r"> orcamento.*?return passo;.*?"  # PaletaAndroid (11/2026): o pendente é gravado antes do laço
                                     r"props\.setProperties\(\{ paleta_feito", _conv.group(1), re.S) is not None)
     checa("cada passo termina com SpreadsheetApp.flush(), pra o tempo dele não cair no passo seguinte",
           # 09/10/2026: entre o flush e o registro do passo entra a medida da gravação confirmada (a otimização das paletas)
@@ -1222,8 +1248,8 @@ console.log(JSON.stringify(vm.runInContext('ABAS.filter(function(s){return !s.oc
     _onsc2 = re.search(r"function onSelectionChange\(e\)\s*\{(.*?)\n\}", _CODA, re.S)
     checa("o clique leva a aba em que o jogador clicou pra frente da fila",
           bool(_onsc2) and "e && e.range" in _onsc2.group(1) and "onde ? onde.getSheet().getName() : null" in _CODA)
-    _cont2 = re.search(r"function continuarPaleta_\(inicio, dica, marcar, onde\)\s*\{(.*?)\n\}", _CODA, re.S)
-    _conv2 = re.search(r"function convergirPaleta_\(inicio, orcamento, dica, primeira\)\s*\{(.*?)\n\}", _CODA, re.S)
+    _cont2 = re.search(r"function continuarPaleta_\(inicio, dica, marcar, onde(?:, escolha)?\)\s*\{(.*?)\n\}", _CODA, re.S)
+    _conv2 = re.search(r"function convergirPaleta_\(inicio, orcamento, dica, primeira(?:, estado)?\)\s*\{(.*?)\n\}", _CODA, re.S)
     checa("a troca não mostra aviso nenhum ao jogador",
           bool(_cont2) and bool(_conv2) and "toast(" not in _cont2.group(1) and "toast(" not in _conv2.group(1))
     checa("o primeiro passo de uma chamada fresca sempre roda (um passo lento não fica parado pra sempre)",
@@ -1247,9 +1273,10 @@ console.log(JSON.stringify(vm.runInContext('ABAS.filter(function(s){return !s.oc
     # com o papel de nenhum tema. É o "trava depois de algumas tentativas" que o Mizuki descreveu, e
     # o próprio Mizuki suspeitou da causa. O LockService serializa. Desde 25/09/2026 ele mora em
     # continuarPaleta_, com tryLock(0): quem não pega volta na hora, e o pendente fica pro próximo clique.
-    _cont = re.search(r"function continuarPaleta_\(inicio, dica, marcar, onde\)\s*\{(.*?)\n\}", _CODA, re.S)
+    _cont = re.search(r"function continuarPaleta_\(inicio, dica, marcar, onde(?:, escolha)?\)\s*\{(.*?)\n\}", _CODA, re.S)
     checa("continuarPaleta_ usa LockService pra serializar trocas simultâneas",
-          bool(_cont) and "LockService.getDocumentLock()" in _cont.group(1)
+          # PaletaAndroid (11/2026): ScriptLock, para as edições de cartão (DocumentLock) não esperarem a pintura
+          bool(_cont) and ("LockService.getDocumentLock()" in _cont.group(1) or "LockService.getScriptLock()" in _cont.group(1))
           and "tryLock(0)" in _cont.group(1) and "releaseLock()" in _cont.group(1))
     checa("o lock embrulha a leitura do estado, o repaint E a escrita — a convergirPaleta_ inteira",
           bool(_cont) and re.search(r"tryLock\(0\).*convergirPaleta_\(.*releaseLock\(\)", _cont.group(1), re.S) is not None)
@@ -1532,7 +1559,8 @@ console.log(JSON.stringify(vm.runInContext('ABAS.filter(function(s){return !s.oc
                         _emb_ruim.append((a["nome"], cel.coordinate, str(_sv.get((cel.row, cel.column)))[:50]))
         _emb_ruim += [(a["nome"], v[0], v[1]) for v in a["vals"] if isinstance(v[2], str) and "__xludf" in v[2]]
     checa(f"as {_n_emb} fórmulas que o Sheets exportou embrulhadas saem com a função de dentro",
-          _n_emb > 0 and not _emb_ruim, str(_emb_ruim[:3]))
+          # 23/11/2026: a exportação atual não traz mais fórmula embrulhada (0); a guarda que fica é nada de __xludf no script
+          not _emb_ruim, str(_emb_ruim[:3]))
 
     # A largura, a altura, o texto com cara de número e o fundo de base: o que a volta pelo Sheets
     # mostrou em 15/09/2026. Exportada de novo, a ficha montada vinha com as colunas da INVOCAÇÃO, do
@@ -1615,6 +1643,12 @@ console.log(JSON.stringify(vm.runInContext('ABAS.filter(function(s){return !s.oc
     _cria = _cc.find("criarAba_(")
     _fim_cria = _cc.find("});", _cria) if _cria >= 0 else -1
     _monta = _cc.find("montarAba_(")
+    # 17/10/2026 (5d5cc31, retomar a criação lenta): o laço de criação saiu para o prepararAbas_, que o montar_ chama antes do primeiro
+    # montarAba_; a ordem cobrada é a mesma
+    _prep = _re.search(r"function prepararAbas_\(ss, rel\) \{(.*?)\n\}\n", g, _re.S)
+    if _cria < 0 and _prep and "abas.push(criarAba_(ss, spec, i + 1));" in _prep.group(1):
+        _cria = _cc.find("prepararAbas_(")
+        _fim_cria = _cria + len("prepararAbas_(") if _cria >= 0 else -1
     _fnc = _re.search(r"function criarAba_\(ss, spec, posicao\) \{(.*?)\n\}\n", g, _re.S)
     _fnc = _fnc.group(1) if _fnc else ""
     checa(f"{_cedo} fórmula(s) citam uma aba que nasce depois da delas, então a ordem da gravação importa",
@@ -1685,7 +1719,8 @@ checa("o pacto tem o menu das quatro formas do livro e o do que ele modifica, e 
 checa("a vaga de pacto conta o permanente e o pacto de restrição, e só eles (R43)",
       _tec45["pactos"]["ocupa_vaga"] == ["Permanente", "Pacto de restrição"])
 checa("a Melhoria Troca saiu do arquivo de dados e de todas as abas, e a De Novo é Pesada (R43)",
-      "Troca" not in CAT["melhorias"] and CAT["melhorias"]["De Novo"]["peso"] == "Pesada" and len(CAT["melhorias"]) == 68
+      # 23/11/2026: a contagem de 68 era do livro R43; a R53 tem 61, e o r53/catalogo.json é o dono dela
+      "Troca" not in CAT["melhorias"] and CAT["melhorias"]["De Novo"]["peso"] == "Pesada"
       and not any(v == "Troca" for v in _txt45.values()), str(len(CAT["melhorias"])))
 _notas45 = {a: [c.comment.text for l in wb[a].iter_rows() for c in l if c.comment] for a in ("FICHA AMALDIÇOADA", "INVOCAÇÕES", "FICHA PESSOAL")}
 checa("a nota da carga traz a regra nova: metade do deslocamento até o dobro, e parado acima dele (R43, item 158)",
@@ -1694,20 +1729,27 @@ checa("a nota das cicatrizes traz a escolha de Intimidação e Persuasão (R43, 
       any("vantagem em Intimidação e desvantagem em Persuasão" in t for t in _notas45["FICHA PESSOAL"])
       and not any("Não dá modificador" in t for t in _notas45["FICHA PESSOAL"]))
 checa("a nota das Restrições diz, nas duas abas, que a devolução paga Melhorias e nunca a Forma (R43, item 143)",
-      all(any("Restrição paga Melhorias, nunca a Forma" in t for t in _notas45[a]) for a in ("FICHA AMALDIÇOADA", "INVOCAÇÕES"))
+      # R53: a nota da INVOCAÇÕES foi reescrita ("As devoluções só recuperam gasto real nas Melhorias, nunca a base ou a Forma")
+      all(any("Restrição paga Melhorias, nunca a Forma" in t or "nas Melhorias, nunca a base ou a Forma" in t for t in _notas45[a])
+          for a in ("FICHA AMALDIÇOADA", "INVOCAÇÕES"))
       and not any("incluindo a Forma" in t for a in _notas45 for t in _notas45[a]))
 checa("a nota da Reação de Cobrir-se de Energia tira só a proteção passiva e cobra os 2 PE (R43, item 160)",
       any("Como Reação e 2 PE" in t and "só a proteção passiva" in t for t in _notas45["FICHA AMALDIÇOADA"])
       and not any("Você fica sem proteção até" in t for t in _notas45["FICHA AMALDIÇOADA"]))
 checa("a nota do retorno da invocação diz que a carga do talismã não abate o preço (R43, item 23)",
       any("A carga do talismã não abate este preço" in t for t in _notas45["INVOCAÇÕES"]))
-checa("as Formas de área dizem, no arquivo de dados, metade do resultado do dano no sucesso do TR (R43, item 14)",
-      all(CAT["formas"][f]["resolve"] == "TR; metade do resultado do dano no sucesso" for f in ("Explosão", "Aura", "Cone", "Linha")))
+# R53: a Forma registra ataque ou TR, e a metade no sucesso do TR virou regra geral do Conjurar ("Passar evita os efeitos
+# nocivos e recebe metade do resultado do dano")
+checa("as Formas de área resolvem por TR registrado, e o livro dá metade do resultado do dano no sucesso do TR (R43, item 14; R53)",
+      all("TR" in CAT["formas"][f]["resolve"] for f in ("Explosão", "Aura", "Cone", "Linha"))
+      and "recebe metade do resultado do dano" in open("manual.txt", encoding="utf-8").read())
 
 # 14/10/2026 (B46): o livro R51. As Origens refeitas (R45), o Morrendo (R50 e R51), o ofício compatível e a criação de
 # entidades (R44), a régua do pacto e a Cortina (R44). O que o livro tirou não pode voltar por uma geração de arquivo velho.
-checa("o arquivo de dados e o manual dizem de que livro saíram: o Ciclo Maldito R51",
-      "R51" in CAT["_meta"]["versao_dona"] and "R51" in json.load(open("manual-fonte.json", encoding="utf-8"))["livro"])
+# 19/10/2026: o livro é o R53, e a edição é o próprio carimbo interno do catálogo (C2)
+checa(f"o arquivo de dados e o manual dizem de que livro saíram: o Ciclo Maldito {CAT['_meta']['versao']}",
+      CAT["_meta"]["versao"] in CAT["_meta"]["versao_dona"]
+      and CAT["_meta"]["versao"] in json.load(open("manual-fonte.json", encoding="utf-8"))["livro"])
 import estado_do_personagem as _ep46
 _A = lambda a1: re.sub(r"^([A-Z]+)(\d+)$", r"$\1$\2", a1)
 _F46 = wb["FICHA"]
@@ -1757,9 +1799,12 @@ checa("cada pacto tem o menu do tamanho do ganho, com os quatro da régua e a Pr
 _iv46 = wb["INVOCAÇÕES"]
 _ofi46 = [c_ for l_ in _iv46.iter_rows() for c_ in l_ if c_.value == "OFÍCIO COMPATÍVEL"]
 _liv46 = json.load(open("ficha-v01/invocacao-do-livro.json", encoding="utf-8"))
-checa("as 12 fichas da INVOCAÇÕES têm o ofício compatível, e a Criação acompanha o nível até o fim da Classe (R44, itens 188 e 189)",
-      len(_ofi46) == 12 and any(a_["nome"] == "Criação" and a_["ate_o_fim_da_classe"] for a_ in _liv46["aquisicoes"])
-      and any("acompanha o seu nível até o último nível da Classe" in t for t in _notas45["INVOCAÇÕES"]), f"{len(_ofi46)} caixas")
+# 08/11/2026 (AQ01): a evolução da Criação segue o livro R66 ("As criadas não sobem de nível junto com você",
+# ficha-v01/aquisicao-criacao-r66.json), e não mais o R44 (acompanhava o nível até o fim da Classe)
+checa("as 12 fichas da INVOCAÇÕES têm o ofício compatível, e a criada conserva o nível de fabricação (R44, item 188; R66, AQ01)",
+      len(_ofi46) == 12 and any(a_["nome"] == "Criação" and not a_["acompanha"] and not a_["ate_o_fim_da_classe"] for a_ in _liv46["aquisicoes"])
+      and any("criada conserva o nível de fabricação" in t for t in _notas45["INVOCAÇÕES"])
+      and not any("acompanha o seu nível até o último nível da Classe" in t for t in _notas45["INVOCAÇÕES"]), f"{len(_ofi46)} caixas")
 checa("a Levanta, no arquivo de dados, encerra Morrendo abaixo do tratamento necessário (R50)",
       "encerra Morrendo mesmo abaixo do tratamento necessário" in CAT["melhorias"]["Levanta"]["efeito"])
 checa("o menu de Origem tem o Híbrido e os dois ramos da Restrição Celestial com o nome do livro, e nenhum Feto",
@@ -1790,8 +1835,9 @@ _cfg = load_workbook(ARQ)["CONFIGURAÇÃO"] if "CONFIGURAÇÃO" in wb.sheetnames
 _pal_cfg = json.loads(re.search(r"var PALETAS = (\{.*?\n\});\n", _CODA, re.S).group(1))["Mizuki"]["escuro"]
 _cores_cfg = {v.lstrip("#").upper() for v in _pal_cfg.values() if isinstance(v, str) and re.fullmatch(r"#?[A-Fa-f0-9]{6}", v)} | {"FFFFFF", "C2334D"}
 checa("a CONFIGURAÇÃO nasce visível, em Mizuki Escuro, com caixas desligadas e fora da troca de paleta",
-      bool(_cfg) and _cfg.sheet_state == "visible" and _cfg["B2"].value == "CONFIGURAÇÃO"
-      and all(_cfg[f"B{r}"].value is False for r in range(11, 41))
+      # pelo menos desde o .xlsx de 18/10 a aba tem os painéis lado a lado: o título está em C2 e as caixas de marcar se espalharam por ela
+      bool(_cfg) and _cfg.sheet_state == "visible" and "CONFIGURAÇÃO" in (_cfg["B2"].value, _cfg["C2"].value)
+      and any(c.value is False for c in _cfg._cells.values()) and not any(c.value is True for c in _cfg._cells.values())
       and all(c.font.color.rgb[-6:].upper() in _cores_cfg for c in _cfg._cells.values()
               if not isinstance(c, MergedCell) and c.font.color and c.font.color.type == "rgb")
       and "!spec.oculta && !spec.paleta_fixa" in _CODA)

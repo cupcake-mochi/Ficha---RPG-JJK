@@ -421,6 +421,11 @@
     "px": 3537,
     "porque": "a ficha deitada tem tres blocos de 480 px (a foto, os numeros e a mesa), que sao tambem as tres cartas de habilidade de cada fileira, da largura das cartas da FICHA AMALDIÇOADA; e o conjunto fica a esquerda, pedido dele (\"mantem o conjunto ali na esquerda com a lista grande de invocações\")",
     "preco": "nao cabe num notebook de 1366 px: a aba inteira aberta tem 3.537 px (o conjunto, 349; cada coluna de fichas, 1.552). O grupo de colunas fecha o conjunto e cada coluna de fichas, e a segunda nasce fechada: com ela fechada sao 1.985 px, e uma ficha sozinha pede zoom ou rolar para o lado. Ele viu no estudo que o conjunto aberto e uma coluna passavam da largura das outras abas, e fechou a grade de 2 x 6, que entrou em 07/10/2026"
+   },
+   "CONFIGURAÇÃO": {
+    "px": 15107,
+    "porque": "23/11/2026, o Mizuki: 'Acho q tudo bem 15.107, não vejo porque mexer'. A aba tem 238 colunas, com os painéis da configuração lado a lado (pelo menos desde o .xlsx de 18/10), e o teste ainda pedia que ela coubesse em 1366 px",
+    "preco": "nao cabe num notebook nem num monitor de 1920 px: cada painel pede rolar para o lado"
    }
   },
   "abas_acrescentadas_em_06_10": {
