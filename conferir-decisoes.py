@@ -189,8 +189,15 @@ checa("o C1 registra o Incursor no menu",
 c2 = DEC["C2_carimbo"]
 # 04/10/2026: o carimbo e a versao do projeto e a data do livro reconstruido, "0.331 · 04/10"
 _v = re.fullmatch(r"(\d+)\.(\d+)(?: · (\d{2})/(\d{2}))?", c2["versao_corrente"])
-checa("a versao do carimbo tem forma de versao do projeto, com a data do livro quando ele e o reconstruido",
-      bool(_v) and (not _v.group(3) or c2["data_da_versao"].startswith(f"{_v.group(3)}/{_v.group(4)}/")), c2["versao_corrente"])
+# 19/10/2026: desde a R53 o carimbo interno e a edicao do livro ("R53")
+_r = re.fullmatch(r"R\d+", c2["versao_corrente"])
+checa("a versao do carimbo tem forma de versao do projeto (ou de edicao do livro, R53 em diante), com a data do livro quando ele e o reconstruido",
+      bool(_r) or (bool(_v) and (not _v.group(3) or c2["data_da_versao"].startswith(f"{_v.group(3)}/{_v.group(4)}/"))), c2["versao_corrente"])
+# 25/10/2026: o jogador ve so a versao publica; a dona dela e o ficha-v01/versao_publica.py
+_vp = re.search(r'VERSAO_PUBLICA\s*=\s*"([^"]+)"', le('ficha-v01/versao_publica.py'))
+checa("a versao publica do JSON e a mesma do ficha-v01/versao_publica.py",
+      bool(_vp) and c2.get("versao_publica") == _vp.group(1),
+      f"JSON = {c2.get('versao_publica')!r}, versao_publica.py = {_vp.group(1) if _vp else None!r}")
 checa("o catalogo carrega a versao que a ficha carimba",
       CAT["_meta"].get("versao") == c2["versao_corrente"],
       f"_meta.versao = {CAT['_meta'].get('versao')!r}, carimbo = {c2['versao_corrente']!r}")
