@@ -46,8 +46,8 @@ fonte de regra foi tocado. As exceções são texto: a spec, o `decisoes-ficha.j
 
 - ~~`regressao-exemplos`~~ **consertado em 23/11:** o `conferir_feitico.py` procurava o Corpo a Corpo embutido,
   que saiu na R53, e nunca dava a devolução Leve do Toque. Agora lê o `devolucao_toque` do catálogo (fora das vagas,
-  dentro do teto de 2 × Classe, nunca na Máxima). O Peso nas Mãos dá 3d8, e a regressão ganhou as montagens com Toque
-  que o livro escreve em prosa (Formas, Iori, Rika) e a da Máxima: 14 de 14.
+  dentro do teto de 2 × Classe, mantida na Liberação Máxima). O Peso nas Mãos dá 3d8, e a regressão ganhou as montagens
+  com Toque que o livro escreve em prosa (Formas, Iori, Rika) e uma Liberação com Toque: 14 de 14.
 - `regressao-amaldicoada`, `regressao-invocacoes`, `regressao-familias-invocacao`: o modelo de peças ainda é
   pré-R53 (sem pesos em degraus; as Formas Cura, Apoio, Onda e Efeito saíram). Precisa ser reescrito a partir do
   `r53/catalogo.json` e rodado com LibreOffice.

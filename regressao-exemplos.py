@@ -26,12 +26,12 @@ for e in TEC["feiticos_prontos"]:
         falhas += 1
         print(f"  [ERRO] {e['nome']}: {k} nao esta no catalogo")
 # 23/11/2026: a devolução Leve do Toque (R53, "Toque, Aura e proximidade"). Montagens que o livro escreve em
-# prosa, fora do tecnica-do-livro.json, e a regra da Máxima, que tira a devolução do Toque.
+# prosa, fora do tecnica-do-livro.json, e a Liberação Máxima, que mantém a devolução: só a Técnica Máxima a perde.
 TOQUE = [
     ("Toque + Precisão, Classe 3", 3, ["Precisão"], [], False, 9, "9 − 2 + 2 = 9d8 de dano (Formas, o exemplo da tabela)"),
     ("Iori, Toque + Prende", 1, ["Prende"], [], False, 3, "A conta é 3 − 1 + 1 = 3"),
     ("Rika, Toque + Reação", 2, ["Reação"], ["Tempo"], False, 5, "O saldo fica 6 − 2 + 1 = 5"),
-    ("Máxima com Toque", 3, ["Precisão"], [], True, 10, "a Máxima: Toque não concede sua devolução automática (9 − 2 + 3)"),
+    ("Liberação com Toque", 3, ["Precisão"], [], True, 12, "a regra: devolução dentro dos limites comuns, + Classe (9 − 2 + 2 + 3)"),
 ]
 for nome, c, mel, livres, lib, esperado, fonte in TOQUE:
     r = conferir({"classe": c, "familias_livres": livres, "familias_fechadas": [], "melhorias": mel,

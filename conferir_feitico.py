@@ -66,10 +66,11 @@ def conferir(f):
     devolvido = sum(devolucao(RES[r]["devolve"], c) for r in f["restricoes"]
                     if r not in f.get("obrigadas_pelo_selo", []))
     # R53 (Toque, Aura e proximidade): Toque concede devolução Leve fora das vagas de Restrição, dentro
-    # do teto de 2 x Classe; Aura não devolve. A Liberação Máxima não aceita devolução (o Toque perde a dele),
-    # e a ficha que só afeta o próprio conjurador também fica sem ela ("so_em_si").
+    # do teto de 2 x Classe; Aura não devolve. A ficha que só afeta o próprio conjurador fica sem ela ("so_em_si").
+    # A Liberação Máxima mantém a devolução ("dentro dos limites comuns"); quem a perde é a Técnica Máxima,
+    # que tem tabela própria e não passa por este conferidor.
     dev_forma = f.get("forma") and CAT["formas"][f["forma"]].get("devolucao_toque")
-    if dev_forma and not f.get("liberacao_maxima") and not f.get("so_em_si"):
+    if dev_forma and not f.get("so_em_si"):
         devolvido += devolucao(dev_forma, c)
     teto_dev = 2 * c                                          # regra 4
     if devolvido > teto_dev:
