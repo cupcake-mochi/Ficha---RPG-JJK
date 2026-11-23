@@ -65,9 +65,13 @@ def conferir(f):
     # nota: Restricao que o Selo ja obriga nao devolve ponto
     devolvido = sum(devolucao(RES[r]["devolve"], c) for r in f["restricoes"]
                     if r not in f.get("obrigadas_pelo_selo", []))
-    # Toque e Aura já trazem o Corpo a Corpo, que devolve o valor Médio (livro reconstruído, Formas de ataque)
-    if f.get("forma") and CAT["formas"][f["forma"]].get("embutido"):
-        devolvido += devolucao(RES["Corpo a Corpo"]["devolve"], c)
+    # R53 (Toque, Aura e proximidade): Toque concede devolução Leve fora das vagas de Restrição, dentro
+    # do teto de 2 x Classe; Aura não devolve. A ficha que só afeta o próprio conjurador fica sem ela ("so_em_si").
+    # A Liberação Máxima mantém a devolução ("dentro dos limites comuns"); quem a perde é a Técnica Máxima,
+    # que tem tabela própria e não passa por este conferidor.
+    dev_forma = f.get("forma") and CAT["formas"][f["forma"]].get("devolucao_toque")
+    if dev_forma and not f.get("so_em_si"):
+        devolvido += devolucao(dev_forma, c)
     teto_dev = 2 * c                                          # regra 4
     if devolvido > teto_dev:
         devolvido = teto_dev

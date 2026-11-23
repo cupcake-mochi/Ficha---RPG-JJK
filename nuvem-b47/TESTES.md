@@ -44,8 +44,10 @@ fonte de regra foi tocado. As exceções são texto: a spec, o `decisoes-ficha.j
 
 ## Falha real (não é teste velho)
 
-- `regressao-exemplos`: o `conferir_feitico.py` não aplica a devolução Leve do Toque (R53). O Peso nas Mãos dá
-  2d8; o livro diz 3d8. O conserto é no conferidor, não no teste.
+- ~~`regressao-exemplos`~~ **consertado em 23/11:** o `conferir_feitico.py` procurava o Corpo a Corpo embutido,
+  que saiu na R53, e nunca dava a devolução Leve do Toque. Agora lê o `devolucao_toque` do catálogo (fora das vagas,
+  dentro do teto de 2 × Classe, mantida na Liberação Máxima). O Peso nas Mãos dá 3d8, e a regressão ganhou as montagens
+  com Toque que o livro escreve em prosa (Formas, Iori, Rika) e uma Liberação com Toque: 14 de 14.
 - `regressao-amaldicoada`, `regressao-invocacoes`, `regressao-familias-invocacao`: o modelo de peças ainda é
   pré-R53 (sem pesos em degraus; as Formas Cura, Apoio, Onda e Efeito saíram). Precisa ser reescrito a partir do
   `r53/catalogo.json` e rodado com LibreOffice.
