@@ -259,6 +259,20 @@ function suite(fonte) {
   t('clique confere', () => assert.equal(s.c.analiseNaSelecao_(ev(s, 'FICHA', 'C9', '', { r53Inicio_: 0 })), true));
   t('clique: marca e apaga o aviso', () => { assert.equal(chave(s, 'analise.estado'), 'desatualizada'); assert.equal(s.props.m.get('analise_estado'), 'desatualizada'); assert.equal(s.props.m.has('analise_depois'), false); assert.equal(s.cart.getRange('AH4').getValue(), 'Bot: desatualizada · marque ao lado'); });
   t('clique: marca gravada antes da propriedade', () => { const q = s.p.log.seq, ip = q.lastIndexOf('p:analise_estado'), iw = q.lastIndexOf('w:ANALISE!B7003', ip); assert.ok(iw >= 0 && q.slice(iw, ip).indexOf('flush') >= 0); });
+  // Cliques seguidos: o primeiro põe a hora no aviso; os outros saem até 40 s depois. Se ele morreu, um clique refaz.
+  copia();
+  ed = ev(s, 'FICHA', 'D11', 'Vanguarda', { r53Inicio_: 0 }); s.c.analiseNaEdicao_(ed); s.clock.t = 9000; s.c.analiseDepoisDaEdicao_(ed);
+  s.clock.t = 1000; k = 0; let segundo = null;
+  const sincBoa = s.c.analiseSincronizar_;
+  s.c.analiseSincronizar_ = (p) => { if (++k === 1) { s.clock.t = 1500; segundo = s.c.analiseNaSelecao_(ev(s, 'FICHA', 'C9', '', { r53Inicio_: 1400 })); throw new Error('tempo'); } return sincBoa(p); };
+  s.c.analiseNaSelecao_(ev(s, 'FICHA', 'C9', '', { r53Inicio_: 900 }));
+  t('clique seguido: o segundo não repete', () => { assert.equal(segundo, false); assert.equal(k, 1); });
+  t('clique seguido: o aviso diz quando começou', () => assert.equal(s.props.m.get('analise_depois'), 'd1000'));
+  s.clock.t = 40999;
+  t('clique morto: ainda espera', () => { assert.equal(s.c.analiseNaSelecao_(ev(s, 'FICHA', 'C9', '', { r53Inicio_: 40900 })), false); assert.equal(k, 1); });
+  s.clock.t = 41000;
+  t('clique morto: outro refaz', () => { assert.equal(s.c.analiseNaSelecao_(ev(s, 'FICHA', 'C9', '', { r53Inicio_: 40900 })), true); assert.equal(k, 2); assert.equal(chave(s, 'analise.estado'), 'desatualizada'); assert.equal(s.props.m.has('analise_depois'), false); });
+  s.c.analiseSincronizar_ = sincBoa;
   // Sem o clique (Android?): a próxima edição leve confere, e o clique seguinte só apaga o aviso.
   copia();
   ed = ev(s, 'FICHA', 'D11', 'Vanguarda', { r53Inicio_: 0 }); s.c.analiseNaEdicao_(ed); s.clock.t = 9000; s.c.analiseDepoisDaEdicao_(ed);
@@ -540,7 +554,10 @@ for (const [nome, o, esperado] of [['nada pendente', {}, ['clique']], ['paleta p
     ['cópia: limite curto', 'limiteDepois: 4000,', 'limiteDepois: 2000,'],
     ['cópia: limite de 24/11', 'limiteDepois: 4000,', 'limiteDepois: 12000,'],
     ['sem aviso pro clique', "props.setProperty(ANALISE_EST_.propDepois, '1');", ''],
-    ['clique sem olhar o aviso', 'if (!props.getProperty(C.propDepois)) return false;', ''],
+    ['clique sem olhar o aviso', 'if (!aviso) return false;', "aviso = aviso || '1';"],
+    ['clique repetido', '< C.esperaClique) return false;', '< 0) return false;'],
+    ['clique sem dono', "    props.setProperty(C.propDepois, 'd' + Date.now());\n", ''],
+    ['clique morto trava', ' && Date.now() - Number(aviso.slice(1)) < C.esperaClique) return false;', ') return false;'],
     ['clique não apaga aviso velho', 'if (props.getProperty(C.prop)) { props.deleteProperty(C.propDepois); return false; }', ''],
     ['clique sem limite', 'Date.now() - e.r53Inicio_ > C.limiteSelecao) return false;', 'false) return false;'],
     ['clique sem gravar a marca', 'analiseVelha_(e, props, analiseSincronizar_(props), false, true);', 'analiseVelha_(e, props, analiseSincronizar_(props), false);'],

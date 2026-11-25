@@ -251,6 +251,11 @@ vezes (30,6, 30,5, 30,6 s), sem gravar o Caminho. Vale para quem copia a ficha �
   (`r53/diagnostico-android/preparar_analise_depois.js` nas oficiais; o `r53/empacotar_script.py` já monta assim).
 - No fim: `flush` (a automação fica gravada), e a conferência só começa se o onEdit ainda não passou de
   `limiteDepois` (12 s). Senão fica para a próxima edição, que confere de novo porque a propriedade continua vazia.
+- **25/11/2026:** `limiteDepois` caiu para 4 s. Numa cópia nova da oficial o Google esperou 15 s antes do onEdit, e o
+  Caminho passou dos 30 s no meio da conferência. Edição pesada deixa o aviso `analise_depois`, e o próximo clique
+  confere (`analiseNaSelecao_`, 30 s próprios) ou a próxima edição leve. O clique que começa troca o aviso pela hora
+  dele, e os outros não repetem por 40 s: sem isso, seis cliques seguidos deram três conferências
+  juntas, de 23 a 26 s; com isso, uma de 16,8 s, e os outros cliques saem em 3 a 4 s.
 - A conferência lê só as duas últimas linhas da grade da ANALISE (onde as linhas de estado ficam na Ciclo e na Era,
   18.501 e 18.502) e cai para a coluna A inteira se não estiverem lá. A marca vai para a planilha antes da propriedade.
 
