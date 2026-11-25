@@ -94,6 +94,7 @@ function verificarPacoteR53() {
  if(opening)return r53Modulo_().onSelectionChange(e);
  if(pending && typeof r53PaletaLeve_==='function')r53PaletaLeve_().continuar(e);
  else if(pending)return r53Modulo_().onSelectionChange(e);
+ if(!pending&&typeof analiseNaSelecao_==="function")analiseNaSelecao_(e);
 }
 '''
  bootstrap+=(folder/'Caminho.gs').read_text()
