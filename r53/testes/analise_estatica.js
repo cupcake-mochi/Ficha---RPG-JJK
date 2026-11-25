@@ -6,6 +6,7 @@ const fs = require('fs'), path = require('path'), vm = require('vm'), assert = r
 const RAIZ = path.resolve(__dirname, '..', '..');
 const FONTE = fs.readFileSync(path.join(RAIZ, 'apps-script/AnaliseEstatica.gs'), 'utf8');
 const prep = require(path.join(RAIZ, 'r53/diagnostico-android/preparar_analise_estatica.js'));
+const depois = require(path.join(RAIZ, 'r53/diagnostico-android/preparar_analise_depois.js'));
 
 // ---------- planilha falsa ----------
 // Fórmula "=D(k)" vale dados[k] na hora da leitura; copyTo com contentsOnly troca pela leitura (como o Sheets).
@@ -192,16 +193,72 @@ function suite(fonte) {
   s.c.exportarParaOBot();
   t('a escrita à mão não virou modelo', () => assert.equal(chave(s, 'chave.7'), 'v7'));
 
-  // 6. Cópia da ficha: sem propriedades, lê o estado da ANALISE uma vez.
-  s.props.m.clear();
-  s.c.analiseNaEdicao_(ev(s, 'FICHA', 'B5', '1'));
-  t('cópia em dia vira desatualizada', () => { assert.equal(s.props.m.get('analise_estado'), 'desatualizada'); assert.equal(chave(s, 'analise.estado'), 'desatualizada'); });
+  // 6. Cópia da ficha: sem propriedades. Antes da automação a edição não toca na planilha; a conferência (o estado da
+  // ANALISE, uma leitura) fica para o fim dela.
+  const flushBom = s.c.SpreadsheetApp.flush;
+  const copia = () => { s.props.m.clear(); s.c.exportarParaOBot(); s.props.m.clear(); };
+  const parado = f => { const l = s.p.log, x = [l.leituras, l.escritas.length, l.flush]; f(); assert.deepEqual([l.leituras, l.escritas.length, l.flush], x); };
+  copia();
+  let ed = ev(s, 'FICHA', 'B5', '1');
+  t('cópia: nada na planilha antes da automação', () => parado(() => assert.equal(s.c.analiseNaEdicao_(ed), false)));
+  t('cópia: ainda sem a propriedade', () => { assert.equal(s.props.m.size, 0); assert.equal(chave(s, 'analise.estado'), 'em_dia'); });
+  s.p.log.seq.length = 0; lidas = s.p.log.leituras;
+  s.c.analiseDepoisDaEdicao_(ed);
+  t('cópia: uma leitura no fim', () => assert.equal(s.p.log.leituras - lidas, 1));
+  t('cópia: automação gravada antes da conferência', () => assert.equal(s.p.log.seq[0], 'flush'));
+  t('cópia em dia vira desatualizada', () => { assert.equal(s.props.m.get('analise_estado'), 'desatualizada'); assert.equal(chave(s, 'analise.estado'), 'desatualizada'); assert.equal(s.cart.getRange('AH4').getValue(), 'Bot: desatualizada · marque ao lado'); });
+  t('cópia: marca gravada antes da propriedade', () => { const q = s.p.log.seq, ip = q.lastIndexOf('p:analise_estado'); for (const w of ['w:ANALISE!B7003', 'w:CARTEIRA!AH4']) { const iw = q.lastIndexOf(w, ip); assert.ok(iw >= 0 && q.slice(iw, ip).indexOf('flush') >= 0, w); } });
   t('cópia reconhece a caixa', () => assert.equal(s.props.m.get('analise_caixa'), '1'));
+  t('cópia: linhas guardadas', () => assert.deepEqual(JSON.parse(s.props.m.get('analise_linhas')), { estado: 7003, data: 7004 }));
+  t('cópia: conferência só uma vez por edição', () => parado(() => s.c.analiseDepoisDaEdicao_(ed)));
+  ed = ev(s, 'FICHA', 'B6', '1');
+  t('cópia: a edição seguinte não confere', () => parado(() => { s.c.analiseNaEdicao_(ed); s.c.analiseDepoisDaEdicao_(ed); }));
+  t('cópia: exporta sem a linha da versão guardada', () => { s.clock.t = 0; s.c.analiseNaEdicao_(ev(s, 'CARTEIRA', 'AT4', 'TRUE', { r53Inicio_: 0 })); s.c.analiseNaEdicao_(ev(s, 'CARTEIRA', 'AT4', 'TRUE', { r53Inicio_: 0 })); assert.equal(chave(s, 'analise.estado'), 'em_dia'); assert.equal(chave(s, 'formato.versao'), '13'); });
+  // O tempo acaba: sem chegar na conferência, a próxima edição confere; no meio da marca, a próxima marca.
+  copia();
+  s.c.analiseNaEdicao_(ev(s, 'FICHA', 'B5', '1'));
+  ed = ev(s, 'FICHA', 'B6', '1'); s.c.analiseNaEdicao_(ed); s.c.analiseDepoisDaEdicao_(ed);
+  t('morreu antes: a próxima confere', () => assert.equal(chave(s, 'analise.estado'), 'desatualizada'));
+  copia();
+  let k = 0; s.c.SpreadsheetApp.flush = () => { if (++k === 2) throw new Error('tempo'); };
+  ed = ev(s, 'FICHA', 'B5', '1'); s.c.analiseNaEdicao_(ed); s.c.analiseDepoisDaEdicao_(ed);
+  s.c.SpreadsheetApp.flush = flushBom;
+  t('morreu na marca: a propriedade não diz desatualizada', () => { assert.equal(k, 2); assert.equal(s.props.m.get('analise_estado'), 'em_dia'); });
+  s.an.getRange('B7003').setValue('em_dia'); // a escrita na fila se perdeu com o tempo
+  s.c.analiseNaEdicao_(ev(s, 'FICHA', 'B6', '1'));
+  t('morreu na marca: a próxima edição marca', () => assert.equal(chave(s, 'analise.estado'), 'desatualizada'));
+  // Passou do limiteDepois: grava a automação e deixa a conferência para a próxima edição (medido em 25/11).
+  copia();
+  s.clock.t = 12000; ed = ev(s, 'FICHA', 'B5', '1', { r53Inicio_: 0 }); s.c.analiseNaEdicao_(ed);
+  lidas = s.p.log.leituras; antes = s.p.log.escritas.length; let fl = s.p.log.flush;
+  s.c.analiseDepoisDaEdicao_(ed);
+  t('sem tempo: só o flush', () => { assert.equal(s.p.log.flush - fl, 1); assert.equal(s.p.log.leituras, lidas); assert.equal(s.p.log.escritas.length, antes); assert.equal(s.props.m.get('analise_estado'), undefined); assert.equal(chave(s, 'analise.estado'), 'em_dia'); });
+  s.clock.t = 10000; ed = ev(s, 'FICHA', 'B6', '1', { r53Inicio_: 0 }); s.c.analiseNaEdicao_(ed); s.c.analiseDepoisDaEdicao_(ed);
+  t('com tempo: a próxima confere', () => { assert.equal(chave(s, 'analise.estado'), 'desatualizada'); assert.equal(s.props.m.get('analise_estado'), 'desatualizada'); });
+  // O que a própria ANALISE trata não espera: a coluna B, a caixa. Na aba de modelos, nada.
+  copia();
+  t('cópia: coluna B tratada na hora', () => { assert.equal(s.c.analiseNaEdicao_(ev(s, 'ANALISE', 'B10', 'x')), true); assert.equal(chave(s, 'analise.estado'), 'desatualizada'); });
+  copia();
+  ed = ev(s, 'ANALISE_MODELOS', 'A10', 'x');
+  t('cópia: modelos não conferem', () => parado(() => { assert.equal(s.c.analiseNaEdicao_(ed), false); s.c.analiseDepoisDaEdicao_(ed); }));
+  ed = ev(s, 'CARTEIRA', 'AT4', 'TRUE', { r53Inicio_: 0 }); s.clock.t = 0;
+  t('cópia: caixa tratada na hora', () => { assert.equal(s.c.analiseNaEdicao_(ed), true); assert.equal(ed.r53AnaliseDepois_, undefined); });
+  // As linhas de estado fora do fim da grade: procura na coluna A inteira e escreve na linha certa.
+  copia();
+  s.an.insertRowsAfter(7004, 3);
+  s.an.getRange(7005, 1, 1, 2).setValues([['chave.nova', 'x']]);
+  ed = ev(s, 'FICHA', 'B5', '1'); s.c.analiseNaEdicao_(ed); s.c.analiseDepoisDaEdicao_(ed);
+  t('cópia: estado fora do fim da grade', () => { assert.equal(chave(s, 'analise.estado'), 'desatualizada'); assert.equal(chave(s, 'chave.nova'), 'x'); assert.equal(s.an.getRange('B7006').getValue(), ''); });
+  // Cópia no meio de uma exportação: igual a antes, sem marca nova.
+  s.props.m.clear(); s.an.getRange('B7003').setValue('exportando'); antes = s.p.log.escritas.length;
+  ed = ev(s, 'FICHA', 'B5', '1'); s.c.analiseNaEdicao_(ed); s.c.analiseDepoisDaEdicao_(ed);
+  t('cópia exportando: nada escrito', () => { assert.equal(s.p.log.escritas.length, antes); assert.equal(s.props.m.get('analise_estado'), 'exportando'); });
+  t('sem evento: não quebra', () => { s.c.analiseDepoisDaEdicao_(); s.c.analiseDepoisDaEdicao_({}); });
 
   // 7. Ficha viva nunca exportada: a edição não escreve nada.
   s = cenario(fonte, 50);
-  antes = s.p.log.escritas.length;
-  t('viva: não tratada', () => assert.equal(s.c.analiseNaEdicao_(ev(s, 'FICHA', 'B5', '1')), false));
+  antes = s.p.log.escritas.length; ed = ev(s, 'FICHA', 'B5', '1');
+  t('viva: não tratada', () => { assert.equal(s.c.analiseNaEdicao_(ed), false); s.c.analiseDepoisDaEdicao_(ed); });
   t('viva: nada escrito', () => { assert.equal(s.p.log.escritas.length, antes); assert.equal(s.props.m.get('analise_estado'), 'viva'); });
   t('viva: ANALISE com fórmulas', () => assert.equal(formulasB(s), 49));
 
@@ -279,9 +336,11 @@ const emp = ler('r53/empacotar_script.py');
 um(emp, "'Socorro.gs','AnaliseEstatica.gs'])", 'pacote: fora do módulo');
 um(emp, "(OUT/'AnaliseEstatica.gs').write_text(", 'pacote: arquivo publicado');
 um(emp, 'guard+\'if(typeof analiseNaEdicao_==="function"&&analiseNaEdicao_(e))return;', 'pacote: gancho do onEdit');
+um(emp, 'analiseNaEdicao_(e))return;' + depois.ABRE + 'if(r53NivelRestaurar_(e)', 'pacote: abre a conferência no fim');
+um(emp, 'return r53Modulo_().onEdit(e);' + depois.FECHA, 'pacote: conferência no fim');
 um(emp, 'r53CuraMenu_();if(typeof analiseMenu_==="function")analiseMenu_();', 'pacote: menu');
 um(ler('nuvem-b47/conferir.py'), "'Socorro.gs', 'AnaliseEstatica.gs'}", 'conferir: pacote');
-total += 8;
+total += 10;
 
 // ---------- preparador das oficiais ----------
 const salario = 'function onEdit(e){return r53SalarioOnEdit_(e);}\nfunction r53OnEditOriginal_(e){if(e)e.r53Inicio_=Date.now();if(r53NivelRestaurar_(e))return;}\n' +
@@ -311,6 +370,37 @@ for (const [nome, src] of [['salário', salario], ['pacote', pacote], ['oficial'
 }
 assert.throws(() => prep.preparar('function onEdit(e){}'), /Guarda do onEdit/); total++;
 new vm.Script(prep.trecho()); new vm.Script(prep.trecho(true)); total += 2;
+
+// ---------- conferência no fim da edição ----------
+for (const [nome, src] of [['salário', salario], ['pacote', pacote], ['oficial', oficial], ['sem quebra no fim', oficial.trimEnd()], ['CRLF', oficial.replace(/\n/g, '\r\n')]]) {
+  const com = prep.preparar(src), out = depois.preparar(com);
+  assert.equal(out.length, com.length + depois.ABRE.length + depois.FECHA.length, nome + ': só o embrulho entrou');
+  assert.ok(out.indexOf(prep.GANCHO_EDIT + depois.ABRE + 'if(r53NivelRestaurar_') > 0, nome + ': o resto do onEdit no try');
+  assert.throws(() => depois.preparar(out), /já presente/, nome);
+  assert.equal(depois.reverter(out), com, nome + ': reverter');
+  total += 4;
+}
+assert.throws(() => depois.preparar(oficial), /ausente ou repetido/);
+assert.throws(() => depois.preparar(prep.preparar(oficial).replace('return r53SalarioOnEdit_(e);}', 'return r53SalarioOnEdit_(e);\n}')), /não acaba|não fecham/);
+assert.throws(() => depois.preparar(prep.preparar(oficial).replace('return r53SalarioOnEdit_(e);}', 'return r53SalarioOnEdit_(e);}function outra(){}')), /Outra função/);
+assert.throws(() => depois.reverter(prep.preparar(oficial)), /ausente ou repetida/);
+new vm.Script(depois.trecho()); new vm.Script(depois.trecho(true)); total += 6;
+// O onEdit preparado rodando: a conferência vem por último, também quando a automação falha ou um restaurador responde.
+for (const [nome, o] of Object.entries({ normal: {}, restaurador: { nivel: true }, falha: { falha: true }, caixa: { caixa: true }, antigo: { antigo: true } })) {
+  const ordem = [], c = {
+    analiseNaEdicao_: () => { ordem.push('antes'); return !!o.caixa; },
+    r53NivelRestaurar_: () => { ordem.push('nivel'); return !!o.nivel; },
+    r53ContinuarPaletaPendente_: () => 'paleta',
+    r53SalarioOnEdit_: () => { ordem.push('automação'); if (o.falha) throw new Error('quebrou'); return 'salário'; }
+  };
+  if (!o.antigo) c.analiseDepoisDaEdicao_ = () => { ordem.push('depois'); };
+  vm.createContext(c);
+  vm.runInContext(depois.preparar(prep.preparar(oficial)), c);
+  const roda = () => vm.runInContext('onEdit({})', c);
+  if (o.falha) assert.throws(roda, /quebrou/); else assert.equal(roda(), o.caixa ? undefined : o.nivel ? 'paleta' : 'salário', nome);
+  assert.deepEqual(ordem, { normal: ['antes', 'nivel', 'automação', 'depois'], restaurador: ['antes', 'nivel', 'depois'], falha: ['antes', 'nivel', 'automação', 'depois'], caixa: ['antes'], antigo: ['antes', 'nivel', 'automação'] }[nome], nome);
+  total += 2;
+}
 // O trecho do console aplica o mesmo que o preparar, num Monaco falso.
 (async () => {
   for (const desfazer of [false, true]) {
@@ -320,14 +410,20 @@ new vm.Script(prep.trecho()); new vm.Script(prep.trecho(true)); total += 2;
     const res = await vm.runInContext(prep.trecho(desfazer).replace(/^await /, ''), ctx);
     assert.ok(!/^ERRO/.test(res), res);
     assert.equal(modelo.v, desfazer ? oficial : prep.preparar(oficial));
-    total++;
+    const com = prep.preparar(oficial), m2 = { v: desfazer ? depois.preparar(com) : com, getValue() { return this.v; }, setValue(x) { this.v = x; } };
+    const ctx2 = { monaco: { editor: { getModels: () => [m2] } }, window: {}, crypto: require('crypto').webcrypto, TextEncoder };
+    vm.createContext(ctx2);
+    const res2 = await vm.runInContext(depois.trecho(desfazer).replace(/^await /, ''), ctx2);
+    assert.ok(!/^ERRO/.test(res2), res2);
+    assert.equal(m2.v, desfazer ? com : depois.preparar(com));
+    total += 2;
   }
 
   // ---------- defeitos plantados ----------
   const DEFEITOS = [
     ['sem congelar', 'faixa.copyTo(faixa, {contentsOnly: true});', ''],
     ['sem guardar o progresso', "props.setProperty(C.propProx, String(prox));", ''],
-    ['sem marcar desatualizada', "if (est === 'em_dia' || naB) analiseMarcar_(ss, null, props, 'desatualizada');", ''],
+    ['sem marcar desatualizada', "if (est === 'em_dia' || naB) analiseMarcar_(ss, null, props, 'desatualizada', null, null, gravar);", ''],
     ['marca a cada edição', "if (est === 'em_dia' || naB)", "if (est !== 'viva' || naB)"],
     ['sem juntar no menu', 'if (vazia || juntar) {', 'if (vazia) {'],
     ['modelos vazios não refeitos', 'var vazia = !lista.some(Boolean);', 'var vazia = !m;'],
@@ -342,9 +438,23 @@ new vm.Script(prep.trecho()); new vm.Script(prep.trecho(true)); total += 2;
     ['sem a versão 13', 'an.getRange(linhas.versao, 2).setValue("\'" + C.versao);', ''],
     ['caixa não desmarca', 'e.range.setValue(false);', ''],
     ['desmarcar não exporta', "if (v !== 'TRUE' && v !== 'FALSE') return true;", "if (v !== 'TRUE') return true;"],
-    ['edição no meio não recomeça', 'props.deleteProperty(C.propProx);\n      if (!naB)', 'if (!naB)'],
+    ['edição no meio não recomeça', 'props.deleteProperty(C.propProx);\n    if (!naB)', 'if (!naB)'],
     ['B não limpa', 'if (naB) r.getSheet().getRange(r.getRow(), 2, r.getNumRows(), 1).clearContent();', ''],
-    ['cópia sem sincronizar', "props.getProperty(C.prop) || analiseSincronizar_(props)", "props.getProperty(C.prop) || 'viva'"],
+    ['cópia sem sincronizar', "props.getProperty(ANALISE_EST_.prop) || analiseSincronizar_(props)", "props.getProperty(ANALISE_EST_.prop) || 'viva'"],
+    ['cópia confere antes da automação', 'if (!est && !naB) { e.r53AnaliseDepois_ = true; return false; }', ''],
+    ['cópia não confere no fim', 'e.r53AnaliseDepois_ = true; return false;', 'return false;'],
+    ['cópia confere duas vezes', 'e.r53AnaliseDepois_ = false;', ''],
+    ['cópia: coluna B espera', 'if (!est && !naB)', 'if (!est)'],
+    ['cópia: modelos conferem', 'if (nome === C.modelos) return false;', ''],
+    ['cópia: sem flush da automação', 'try {\n    SpreadsheetApp.flush();', 'try {'],
+    ['cópia: confere sem tempo', 'if (typeof e.r53Inicio_ === \'number\' && Date.now() - e.r53Inicio_ > ANALISE_EST_.limiteDepois) return;', ''],
+    ['cópia: limite antes do flush', 'SpreadsheetApp.flush();\n    if (typeof e.r53Inicio_ === \'number\' && Date.now() - e.r53Inicio_ > ANALISE_EST_.limiteDepois) return;', 'if (typeof e.r53Inicio_ === \'number\' && Date.now() - e.r53Inicio_ > ANALISE_EST_.limiteDepois) return;\n    SpreadsheetApp.flush();'],
+    ['cópia: limite curto', 'limiteDepois: 12000,', 'limiteDepois: 8000,'],
+    ['cópia: propriedade antes da marca', '  if (gravar) SpreadsheetApp.flush();\n', ''],
+    ['cópia: marca sem pedir gravação', '|| analiseSincronizar_(props), false, true);', '|| analiseSincronizar_(props), false);'],
+    ['cópia: não confere o fim da grade', "if (fim[0][0] === 'analise.estado' && fim[1][0] === 'analise.exportada_em') {", 'if (true) {'],
+    ['cópia: sempre a coluna inteira', "if (fim[0][0] === 'analise.estado' && fim[1][0] === 'analise.exportada_em') {", 'if (false) {'],
+    ['cópia: não guarda as linhas', 'if (linhas.estado && linhas.data) props.setProperty(C.propLinhas, JSON.stringify(linhas));', ''],
     ['modelos visíveis', 'if (!m.isSheetHidden()) m.hideSheet();', ''],
     ['caixa por cima', 'if (ocupada) {', 'if (false) {'],
     ['cópia não reconhece a caixa', "CHECKBOX) { props.setProperty(C.propCaixa, '1'); return; }", 'CHECKBOX) { return; }'],

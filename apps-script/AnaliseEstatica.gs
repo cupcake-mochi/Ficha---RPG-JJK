@@ -38,6 +38,10 @@ var ANALISE_EST_ = {
   // dois flush (~5 s e ~4 s) e as escritas do fim (~5 s). Por isso a caixa lê só as linhas de cada bloco (o total e as
   // fórmulas já feitas vêm das propriedades) e só escreve o estado na ANALISE quando ele muda.
   bloco: 6500, blocoCaixa: 4000, blocoMsPadrao: 12000, limiteCaixa: 16000, limiteMenu: 300000, limiteMontagem: 90000,
+  // A conferência da cópia nova no fim da edição só começa até 12 s depois do início do onEdit. Medido em 25/11 numa
+  // cópia recém-feita: ela custa de 5,6 a 11,7 s (leituras e marca), e o gatilho morreu com 28 s de script (a espera
+  // antes do script, de 3 a 10 s, nem sempre conta). 12 + 11,7 = 23,7 s, com folga para uma leitura mais lenta.
+  limiteDepois: 12000,
   versao: '13'
 };
 
@@ -67,6 +71,11 @@ function analiseExportarNaMontagem_() {
 /**
  * Gancho do onEdit, chamado antes de tudo. Devolve true quando a edição já foi tratada aqui
  * (a caixa da CARTEIRA, ou uma escrita na coluna B da ANALISE congelada).
+ *
+ * 24/11/2026: a cópia nova da ficha não traz as propriedades, e a primeira edição dela conferia a ANALISE aqui, antes
+ * da automação do jogador: 8,9 a 9,7 s de leituras e uma gravação que ainda encarecia a leitura seguinte. A primeira
+ * escolha do Caminho fechava em 19 a 31 s e podia morrer nos 30 s do gatilho sem gravar nada. Sem a propriedade, a
+ * conferência agora fica para o fim da edição (analiseDepoisDaEdicao_). Com a propriedade, tudo como antes.
  */
 function analiseNaEdicao_(e) {
   try {
@@ -75,25 +84,52 @@ function analiseNaEdicao_(e) {
     var C = ANALISE_EST_, r = e.range, nome = e.r53SalAba_ || r.getSheet().getName();
     if (nome === C.carteira && r.getRow() === C.linhaCaixa && r.getColumn() === C.colunaCaixa &&
         r.getNumRows() === 1 && r.getNumColumns() === 1) return analiseCaixa_(e);
-    var props = PropertiesService.getDocumentProperties();
-    var est = props.getProperty(C.prop) || analiseSincronizar_(props);
-    if (est === 'viva' || nome === C.modelos) return false;
-    var ss = e.source || SpreadsheetApp.getActive();
+    if (nome === C.modelos) return false;
+    var props = PropertiesService.getDocumentProperties(), est = props.getProperty(C.prop);
     // A coluna B congelada não recebe a conta de volta: ela é refeita na próxima exportação.
     var naB = nome === C.aba && r.getColumn() <= 2 && r.getLastColumn() >= 2;
-    if (naB) r.getSheet().getRange(r.getRow(), 2, r.getNumRows(), 1).clearContent();
-    if (est === 'exportando' && props.getProperty(C.propProx)) {
-      // Editou no meio: os blocos já congelados podem ter ficado velhos. A próxima exportação recomeça.
-      props.deleteProperty(C.propProx);
-      if (!naB) analiseTexto_(ss, props, 'exportando', 'recomeça');
-    }
-    // Na coluna B a marca é sempre regravada: a limpeza pode ter levado a própria célula do estado.
-    if (est === 'em_dia' || naB) analiseMarcar_(ss, null, props, 'desatualizada');
-    return naB;
+    if (!est && !naB) { e.r53AnaliseDepois_ = true; return false; }
+    return analiseVelha_(e, props, est || analiseSincronizar_(props), naB);
   } catch (err) {
     console.log('ANALISE estática: ' + err.message);
     return false;
   }
+}
+
+/**
+ * Gancho do fim do onEdit: a conferência que a cópia nova deixou para depois. O flush vem antes, para a automação já
+ * estar gravada se o tempo acabar aqui; sem a propriedade, a próxima edição confere de novo. Passado o limiteDepois,
+ * nem começa: fica para a próxima edição, em vez de morrer nos 30 s no meio das leituras.
+ */
+function analiseDepoisDaEdicao_(e) {
+  if (!e || !e.r53AnaliseDepois_) return;
+  e.r53AnaliseDepois_ = false;
+  try {
+    SpreadsheetApp.flush();
+    if (typeof e.r53Inicio_ === 'number' && Date.now() - e.r53Inicio_ > ANALISE_EST_.limiteDepois) return;
+    var props = PropertiesService.getDocumentProperties();
+    analiseVelha_(e, props, props.getProperty(ANALISE_EST_.prop) || analiseSincronizar_(props), false, true);
+  } catch (err) {
+    console.log('ANALISE estática, no fim da edição: ' + err.message);
+  }
+}
+
+/**
+ * A edição deixou a exportação velha: recomeça a que estava no meio e marca a que estava em dia. `gravar` é do fim da
+ * edição, perto dos 30 s: a propriedade só muda com a marca já na planilha, senão a próxima edição não marcaria.
+ */
+function analiseVelha_(e, props, est, naB, gravar) {
+  var C = ANALISE_EST_, r = e.range, ss = e.source || SpreadsheetApp.getActive();
+  if (est === 'viva') return false;
+  if (naB) r.getSheet().getRange(r.getRow(), 2, r.getNumRows(), 1).clearContent();
+  if (est === 'exportando' && props.getProperty(C.propProx)) {
+    // Editou no meio: os blocos já congelados podem ter ficado velhos. A próxima exportação recomeça.
+    props.deleteProperty(C.propProx);
+    if (!naB) analiseTexto_(ss, props, 'exportando', 'recomeça');
+  }
+  // Na coluna B a marca é sempre regravada: a limpeza pode ter levado a própria célula do estado.
+  if (est === 'em_dia' || naB) analiseMarcar_(ss, null, props, 'desatualizada', null, null, gravar);
+  return naB;
 }
 
 /**
@@ -286,15 +322,23 @@ function analiseLinhasExistentes_(an) {
 /**
  * Sem a propriedade (cópia da ficha, ou primeira edição depois de instalar): lê o estado na própria ANALISE uma vez.
  * Estado desconhecido vira desatualizada, que é o lado seguro: o bot pede exportação.
+ *
+ * As duas linhas de estado são as últimas da grade (o analiseLinhas_ as cria no fim), e o getMaxRows não custa leitura
+ * (1 ms medido): uma leitura no lugar de três. Se elas não estiverem lá, procura na coluna A inteira. A linha da
+ * versão só interessa à exportação, que a procura quando falta.
  */
 function analiseSincronizar_(props) {
   var C = ANALISE_EST_, ss = SpreadsheetApp.getActive(), an = ss.getSheetByName(C.aba), est = 'viva';
   if (an) {
-    var linhas = analiseLinhasExistentes_(an);
-    if (linhas.estado) {
-      est = String(an.getRange(linhas.estado, 2).getValue() || 'viva');
-      if (linhas.versao && linhas.data) props.setProperty(C.propLinhas, JSON.stringify(linhas));
+    var max = an.getMaxRows(), fim = an.getRange(max - 1, 1, 2, 2).getValues(), linhas;
+    if (fim[0][0] === 'analise.estado' && fim[1][0] === 'analise.exportada_em') {
+      linhas = {estado: max - 1, data: max};
+      est = String(fim[0][1] || 'viva');
+    } else {
+      linhas = analiseLinhasExistentes_(an);
+      if (linhas.estado) est = String(an.getRange(linhas.estado, 2).getValue() || 'viva');
     }
+    if (linhas.estado && linhas.data) props.setProperty(C.propLinhas, JSON.stringify(linhas));
   }
   if (C.estados.indexOf(est) < 0) est = 'desatualizada';
   var cart = ss.getSheetByName(C.carteira);
@@ -306,8 +350,8 @@ function analiseSincronizar_(props) {
   return est;
 }
 
-/** Grava o estado na ANALISE, na propriedade e no texto da CARTEIRA. */
-function analiseMarcar_(ss, an, props, estado, linhas, extra) {
+/** Grava o estado na ANALISE, no texto da CARTEIRA e na propriedade (com `gravar`, só depois do flush das duas). */
+function analiseMarcar_(ss, an, props, estado, linhas, extra, gravar) {
   var C = ANALISE_EST_;
   an = an || ss.getSheetByName(C.aba);
   if (!linhas) { try { linhas = JSON.parse(props.getProperty(C.propLinhas) || 'null'); } catch (err) { linhas = null; } }
@@ -320,8 +364,9 @@ function analiseMarcar_(ss, an, props, estado, linhas, extra) {
       an.getRange(linhas.data, 2).setValue("'" + Utilities.formatDate(quando, ss.getSpreadsheetTimeZone(), "yyyy-MM-dd'T'HH:mm:ss"));
     }
   }
-  props.setProperty(C.prop, estado);
   analiseTexto_(ss, props, estado, quando ? Utilities.formatDate(quando, ss.getSpreadsheetTimeZone(), 'dd/MM HH:mm') : extra);
+  if (gravar) SpreadsheetApp.flush();
+  props.setProperty(C.prop, estado);
 }
 
 function analiseTexto_(ss, props, estado, extra) {
