@@ -7,6 +7,7 @@ const RAIZ = path.resolve(__dirname, '..', '..');
 const FONTE = fs.readFileSync(path.join(RAIZ, 'apps-script/AnaliseEstatica.gs'), 'utf8');
 const prep = require(path.join(RAIZ, 'r53/diagnostico-android/preparar_analise_estatica.js'));
 const depois = require(path.join(RAIZ, 'r53/diagnostico-android/preparar_analise_depois.js'));
+const selecao = require(path.join(RAIZ, 'r53/diagnostico-android/preparar_analise_selecao.js'));
 
 // ---------- planilha falsa ----------
 // Fórmula "=D(k)" vale dados[k] na hora da leitura; copyTo com contentsOnly troca pela leitura (como o Sheets).
@@ -229,12 +230,51 @@ function suite(fonte) {
   t('morreu na marca: a próxima edição marca', () => assert.equal(chave(s, 'analise.estado'), 'desatualizada'));
   // Passou do limiteDepois: grava a automação e deixa a conferência para a próxima edição (medido em 25/11).
   copia();
-  s.clock.t = 12000; ed = ev(s, 'FICHA', 'B5', '1', { r53Inicio_: 0 }); s.c.analiseNaEdicao_(ed);
+  // 25/11, nas cópias das oficiais: o limite é o tempo do próprio onEdit (4 s); a edição pesada (Caminho, 8 a 10 s) deixa.
+  s.clock.t = 5000; ed = ev(s, 'FICHA', 'B5', '1', { r53Inicio_: 0 }); s.c.analiseNaEdicao_(ed);
   lidas = s.p.log.leituras; antes = s.p.log.escritas.length; let fl = s.p.log.flush;
   s.c.analiseDepoisDaEdicao_(ed);
   t('sem tempo: só o flush', () => { assert.equal(s.p.log.flush - fl, 1); assert.equal(s.p.log.leituras, lidas); assert.equal(s.p.log.escritas.length, antes); assert.equal(s.props.m.get('analise_estado'), undefined); assert.equal(chave(s, 'analise.estado'), 'em_dia'); });
-  s.clock.t = 10000; ed = ev(s, 'FICHA', 'B6', '1', { r53Inicio_: 0 }); s.c.analiseNaEdicao_(ed); s.c.analiseDepoisDaEdicao_(ed);
+  t('sem tempo: deixa o aviso pro clique', () => assert.equal(s.props.m.get('analise_depois'), '1'));
+  t('sem tempo: aviso depois do flush', () => { const q = s.p.log.seq; assert.ok(q.lastIndexOf('flush') < q.lastIndexOf('p:analise_depois')); });
+  s.clock.t = 3000; ed = ev(s, 'FICHA', 'B6', '1', { r53Inicio_: 0 }); s.c.analiseNaEdicao_(ed); s.c.analiseDepoisDaEdicao_(ed);
   t('com tempo: a próxima confere', () => { assert.equal(chave(s, 'analise.estado'), 'desatualizada'); assert.equal(s.props.m.get('analise_estado'), 'desatualizada'); });
+  // O clique (onSelectionChange): sem aviso, uma leitura de propriedade; com aviso e já conferida, apaga o aviso.
+  let sel = ev(s, 'FICHA', 'C9', '', { r53Inicio_: 0 }); s.clock.t = 1000;
+  t('clique: aviso velho apagado', () => parado(() => { assert.equal(s.c.analiseNaSelecao_(sel), false); assert.equal(s.props.m.has('analise_depois'), false); }));
+  leit = s.props.leituras;
+  t('clique sem aviso: uma leitura de propriedade', () => parado(() => { assert.equal(s.c.analiseNaSelecao_(sel), false); assert.equal(s.props.leituras - leit, 1); }));
+  t('clique sem evento: não quebra', () => { s.c.analiseNaSelecao_(); s.c.analiseNaSelecao_({}); });
+  // Edição pesada na cópia; o clique que ela mesma dispara roda junto e ainda não vê o aviso; o próximo confere.
+  copia();
+  ed = ev(s, 'FICHA', 'D11', 'Vanguarda', { r53Inicio_: 0 }); s.c.analiseNaEdicao_(ed);
+  s.clock.t = 500;
+  t('clique junto da edição: nada', () => parado(() => assert.equal(s.c.analiseNaSelecao_(ev(s, 'FICHA', 'D11', '', { r53Inicio_: 0 })), false)));
+  s.clock.t = 9000; s.c.analiseDepoisDaEdicao_(ed);
+  t('Caminho frio: deixa pro clique', () => { assert.equal(s.props.m.get('analise_depois'), '1'); assert.equal(chave(s, 'analise.estado'), 'em_dia'); });
+  s.clock.t = 7000;
+  t('clique tarde: não começa', () => parado(() => assert.equal(s.c.analiseNaSelecao_(ev(s, 'FICHA', 'C9', '', { r53Inicio_: 0 })), false)));
+  t('clique tarde: aviso fica', () => assert.equal(s.props.m.get('analise_depois'), '1'));
+  s.clock.t = 2000; s.p.log.seq.length = 0;
+  t('clique confere', () => assert.equal(s.c.analiseNaSelecao_(ev(s, 'FICHA', 'C9', '', { r53Inicio_: 0 })), true));
+  t('clique: marca e apaga o aviso', () => { assert.equal(chave(s, 'analise.estado'), 'desatualizada'); assert.equal(s.props.m.get('analise_estado'), 'desatualizada'); assert.equal(s.props.m.has('analise_depois'), false); assert.equal(s.cart.getRange('AH4').getValue(), 'Bot: desatualizada · marque ao lado'); });
+  t('clique: marca gravada antes da propriedade', () => { const q = s.p.log.seq, ip = q.lastIndexOf('p:analise_estado'), iw = q.lastIndexOf('w:ANALISE!B7003', ip); assert.ok(iw >= 0 && q.slice(iw, ip).indexOf('flush') >= 0); });
+  // Sem o clique (Android?): a próxima edição leve confere, e o clique seguinte só apaga o aviso.
+  copia();
+  ed = ev(s, 'FICHA', 'D11', 'Vanguarda', { r53Inicio_: 0 }); s.c.analiseNaEdicao_(ed); s.clock.t = 9000; s.c.analiseDepoisDaEdicao_(ed);
+  ed = ev(s, 'FICHA', 'AM26', '-1', { r53Inicio_: 0 }); s.clock.t = 0; s.c.analiseNaEdicao_(ed); s.clock.t = 1000; s.c.analiseDepoisDaEdicao_(ed);
+  t('sem clique: edição leve confere', () => { assert.equal(chave(s, 'analise.estado'), 'desatualizada'); assert.equal(s.props.m.get('analise_depois'), '1'); });
+  s.clock.t = 1000; s.c.analiseNaSelecao_(ev(s, 'FICHA', 'C9', '', { r53Inicio_: 0 }));
+  t('sem clique: o clique seguinte só apaga o aviso', () => assert.equal(s.props.m.has('analise_depois'), false));
+  // O tempo acaba no meio do clique: a propriedade fica em dia, e a próxima edição marca (como na edição).
+  copia();
+  ed = ev(s, 'FICHA', 'D11', 'Vanguarda', { r53Inicio_: 0 }); s.c.analiseNaEdicao_(ed); s.clock.t = 9000; s.c.analiseDepoisDaEdicao_(ed);
+  k = 0; s.c.SpreadsheetApp.flush = () => { if (++k === 1) throw new Error('tempo'); };
+  s.clock.t = 0; s.c.analiseNaSelecao_(ev(s, 'FICHA', 'C9', '', { r53Inicio_: 0 }));
+  s.c.SpreadsheetApp.flush = flushBom;
+  s.an.getRange('B7003').setValue('em_dia');
+  s.c.analiseNaEdicao_(ev(s, 'FICHA', 'B6', '1'));
+  t('clique morreu na marca: a próxima edição marca', () => assert.equal(chave(s, 'analise.estado'), 'desatualizada'));
   // O que a própria ANALISE trata não espera: a coluna B, a caixa. Na aba de modelos, nada.
   copia();
   t('cópia: coluna B tratada na hora', () => { assert.equal(s.c.analiseNaEdicao_(ev(s, 'ANALISE', 'B10', 'x')), true); assert.equal(chave(s, 'analise.estado'), 'desatualizada'); });
@@ -339,8 +379,9 @@ um(emp, 'guard+\'if(typeof analiseNaEdicao_==="function"&&analiseNaEdicao_(e))re
 um(emp, 'analiseNaEdicao_(e))return;' + depois.ABRE + 'if(r53NivelRestaurar_(e)', 'pacote: abre a conferência no fim');
 um(emp, 'return r53Modulo_().onEdit(e);' + depois.FECHA, 'pacote: conferência no fim');
 um(emp, 'r53CuraMenu_();if(typeof analiseMenu_==="function")analiseMenu_();', 'pacote: menu');
+um(emp, '\n else if(pending)return r53Modulo_().onSelectionChange(e);\n' + selecao.LINHA_SEL + '\n}\n', 'pacote: conferência no clique');
 um(ler('nuvem-b47/conferir.py'), "'Socorro.gs', 'AnaliseEstatica.gs'}", 'conferir: pacote');
-total += 10;
+total += 11;
 
 // ---------- preparador das oficiais ----------
 const salario = 'function onEdit(e){return r53SalarioOnEdit_(e);}\nfunction r53OnEditOriginal_(e){if(e)e.r53Inicio_=Date.now();if(r53NivelRestaurar_(e))return;}\n' +
@@ -401,6 +442,46 @@ for (const [nome, o] of Object.entries({ normal: {}, restaurador: { nivel: true 
   assert.deepEqual(ordem, { normal: ['antes', 'nivel', 'automação', 'depois'], restaurador: ['antes', 'nivel', 'depois'], falha: ['antes', 'nivel', 'automação', 'depois'], caixa: ['antes'], antigo: ['antes', 'nivel', 'automação'] }[nome], nome);
   total += 2;
 }
+// ---------- conferência no clique (25/11) ----------
+// Forma das oficiais (lida em 16/11) e forma do empacotar_script.py; nas duas a linha entra antes da chave do fim.
+const selOficial = 'function onEdit(e){if(e)e.r53Inicio_=Date.now();if(typeof analiseNaEdicao_==="function"&&analiseNaEdicao_(e))return;}\n' +
+  'function onSelectionChange(e) {\n if(e)e.r53Inicio_=Date.now();\n if(!e || !e.range)return;\n var pending=true;\n' +
+  " try {pending=!!PropertiesService.getDocumentProperties().getProperty('paleta_pendente');}catch(err){}\n" +
+  ' var opening=e.abrir;\n if(opening)return r53Modulo_().onSelectionChange(e);\n if(pending)r53PaletaLeve_().continuar(e);\n}\n' +
+  'function acabar(){return 1;}\n';
+const selPacote = selOficial.replace(' if(pending)r53PaletaLeve_().continuar(e);\n',
+  " if(pending && typeof r53PaletaLeve_==='function')r53PaletaLeve_().continuar(e);\n else if(pending)return r53Modulo_().onSelectionChange(e);\n");
+for (const [nome, src] of [['oficial', selOficial], ['pacote', selPacote], ['CRLF', selOficial.replace(/\n/g, '\r\n')], ['sem quebra no fim', selOficial.slice(0, selOficial.indexOf('function acabar'))]]) {
+  const out = selecao.preparar(src), nl = src.indexOf('\r\n') >= 0 ? '\r\n' : '\n';
+  assert.equal(out.length, src.length + nl.length + selecao.LINHA_SEL.length, nome + ': só a linha entrou');
+  assert.ok(out.indexOf(selecao.LINHA_SEL + nl + '}') > out.indexOf('function onSelectionChange'), nome + ': antes da chave do fim');
+  assert.throws(() => selecao.preparar(out), /já presente/, nome);
+  assert.equal(selecao.reverter(out), src, nome + ': reverter');
+  total += 4;
+}
+assert.throws(() => selecao.preparar('function onEdit(e){}\n'), /ausente ou repetido/);
+assert.throws(() => selecao.preparar(selOficial + selOficial.replace(/onEdit/g, 'x')), /ausente ou repetido/);
+assert.throws(() => selecao.preparar(selOficial.replace(' var pending=true;\n', '')), /pending/);
+assert.throws(() => selecao.reverter(selOficial), /ausente ou repetida/);
+new vm.Script(selecao.trecho()); new vm.Script(selecao.trecho(true)); total += 6;
+// O onSelectionChange preparado rodando: confere só sem paleta pendente e fora da navegação das invocações.
+for (const [nome, o, esperado] of [['nada pendente', {}, ['clique']], ['paleta pendente', { paleta: true }, ['paleta']],
+  ['navegação', { abrir: true }, ['módulo']], ['sem evento', { semEvento: true }, []], ['antigo', { antigo: true }, []]]) {
+  for (const src of [selOficial, selPacote]) {
+    const ordem = [], c = {
+      PropertiesService: { getDocumentProperties: () => ({ getProperty: () => (o.paleta ? '1' : null) }) },
+      r53Modulo_: () => ({ onSelectionChange: () => { ordem.push('módulo'); } }),
+      r53PaletaLeve_: () => ({ continuar: () => { ordem.push('paleta'); } }), Date
+    };
+    if (!o.antigo) c.analiseNaSelecao_ = () => { ordem.push('clique'); };
+    vm.createContext(c);
+    vm.runInContext(selecao.preparar(src), c);
+    c.ev = o.semEvento ? undefined : { range: {}, abrir: !!o.abrir };
+    vm.runInContext('onSelectionChange(ev)', c);
+    assert.deepEqual(ordem, esperado, nome);
+    total++;
+  }
+}
 // O trecho do console aplica o mesmo que o preparar, num Monaco falso.
 (async () => {
   for (const desfazer of [false, true]) {
@@ -416,7 +497,14 @@ for (const [nome, o] of Object.entries({ normal: {}, restaurador: { nivel: true 
     const res2 = await vm.runInContext(depois.trecho(desfazer).replace(/^await /, ''), ctx2);
     assert.ok(!/^ERRO/.test(res2), res2);
     assert.equal(m2.v, desfazer ? com : depois.preparar(com));
-    total += 2;
+    const m3 = { v: desfazer ? selecao.preparar(selOficial) : selOficial, getValue() { return this.v; }, setValue(x) { this.v = x; } };
+    const m3outro = { v: 'function onSelectionChange(e) {\n var pending=1;\n}\n', getValue() { return this.v; }, setValue() { throw new Error('mexeu no arquivo errado'); } };
+    const ctx3 = { monaco: { editor: { getModels: () => [m3outro, m3] } }, window: {}, crypto: require('crypto').webcrypto, TextEncoder };
+    vm.createContext(ctx3);
+    const res3 = await vm.runInContext(selecao.trecho(desfazer).replace(/^await /, ''), ctx3);
+    assert.ok(!/^ERRO/.test(res3), res3);
+    assert.equal(m3.v, desfazer ? selOficial : selecao.preparar(selOficial));
+    total += 3;
   }
 
   // ---------- defeitos plantados ----------
@@ -447,9 +535,16 @@ for (const [nome, o] of Object.entries({ normal: {}, restaurador: { nivel: true 
     ['cópia: coluna B espera', 'if (!est && !naB)', 'if (!est)'],
     ['cópia: modelos conferem', 'if (nome === C.modelos) return false;', ''],
     ['cópia: sem flush da automação', 'try {\n    SpreadsheetApp.flush();', 'try {'],
-    ['cópia: confere sem tempo', 'if (typeof e.r53Inicio_ === \'number\' && Date.now() - e.r53Inicio_ > ANALISE_EST_.limiteDepois) return;', ''],
-    ['cópia: limite antes do flush', 'SpreadsheetApp.flush();\n    if (typeof e.r53Inicio_ === \'number\' && Date.now() - e.r53Inicio_ > ANALISE_EST_.limiteDepois) return;', 'if (typeof e.r53Inicio_ === \'number\' && Date.now() - e.r53Inicio_ > ANALISE_EST_.limiteDepois) return;\n    SpreadsheetApp.flush();'],
-    ['cópia: limite curto', 'limiteDepois: 12000,', 'limiteDepois: 8000,'],
+    ['cópia: confere sem tempo', 'Date.now() - e.r53Inicio_ > ANALISE_EST_.limiteDepois) {', 'false) {'],
+    ['cópia: limite antes do flush', '  try {\n    SpreadsheetApp.flush();\n    var props', '  try {\n    if (typeof e.r53Inicio_ === \'number\' && Date.now() - e.r53Inicio_ > ANALISE_EST_.limiteDepois) return;\n    SpreadsheetApp.flush();\n    var props'],
+    ['cópia: limite curto', 'limiteDepois: 4000,', 'limiteDepois: 2000,'],
+    ['cópia: limite de 24/11', 'limiteDepois: 4000,', 'limiteDepois: 12000,'],
+    ['sem aviso pro clique', "props.setProperty(ANALISE_EST_.propDepois, '1');", ''],
+    ['clique sem olhar o aviso', 'if (!props.getProperty(C.propDepois)) return false;', ''],
+    ['clique não apaga aviso velho', 'if (props.getProperty(C.prop)) { props.deleteProperty(C.propDepois); return false; }', ''],
+    ['clique sem limite', 'Date.now() - e.r53Inicio_ > C.limiteSelecao) return false;', 'false) return false;'],
+    ['clique sem gravar a marca', 'analiseVelha_(e, props, analiseSincronizar_(props), false, true);', 'analiseVelha_(e, props, analiseSincronizar_(props), false);'],
+    ['clique não apaga o aviso no fim', '    props.deleteProperty(C.propDepois);\n    return true;', '    return true;'],
     ['cópia: propriedade antes da marca', '  if (gravar) SpreadsheetApp.flush();\n', ''],
     ['cópia: marca sem pedir gravação', '|| analiseSincronizar_(props), false, true);', '|| analiseSincronizar_(props), false);'],
     ['cópia: não confere o fim da grade', "if (fim[0][0] === 'analise.estado' && fim[1][0] === 'analise.exportada_em') {", 'if (true) {'],

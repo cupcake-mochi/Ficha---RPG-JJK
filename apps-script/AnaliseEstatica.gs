@@ -38,10 +38,16 @@ var ANALISE_EST_ = {
   // dois flush (~5 s e ~4 s) e as escritas do fim (~5 s). Por isso a caixa lê só as linhas de cada bloco (o total e as
   // fórmulas já feitas vêm das propriedades) e só escreve o estado na ANALISE quando ele muda.
   bloco: 6500, blocoCaixa: 4000, blocoMsPadrao: 12000, limiteCaixa: 16000, limiteMenu: 300000, limiteMontagem: 90000,
-  // A conferência da cópia nova no fim da edição só começa até 12 s depois do início do onEdit. Medido em 25/11 numa
-  // cópia recém-feita: ela custa de 5,6 a 11,7 s (leituras e marca), e o gatilho morreu com 28 s de script (a espera
-  // antes do script, de 3 a 10 s, nem sempre conta). 12 + 11,7 = 23,7 s, com folga para uma leitura mais lenta.
-  limiteDepois: 12000,
+  // A conferência da cópia nova no fim da edição só começa se o onEdit gastou até 4 s. Ela custa de 5,6 a 11,7 s
+  // (leituras e marca). 24/11: com 12 s de limite, nenhum estouro em 6 edições. 25/11, cópias novas das oficiais: o
+  // Caminho frio gastou 8 a 10 s no onEdit, mas o Google esperou de 6 a 15 s antes dele, e uma das três morreu nos 30 s
+  // no meio da conferência. Essa espera não aparece aqui; o tempo do próprio onEdit aparece, e ele também cresce quando
+  // a ficha está fria (célula livre: 7,3 s na primeira edição, 0,2 s depois). Edição pesada deixa a conferência para o
+  // próximo clique (analiseNaSelecao_) ou para a próxima edição leve.
+  limiteDepois: 4000,
+  // O clique que faz a conferência deixada pela edição (onSelectionChange, 30 s próprios). Medido em 25/11: um clique
+  // leva de 1,6 a 5,9 s de script. Só começa até 6 s depois do início dele: 6 + 11,7 = 17,7 s, longe dos 30 s.
+  propDepois: 'analise_depois', limiteSelecao: 6000,
   versao: '13'
 };
 
@@ -99,18 +105,43 @@ function analiseNaEdicao_(e) {
 /**
  * Gancho do fim do onEdit: a conferência que a cópia nova deixou para depois. O flush vem antes, para a automação já
  * estar gravada se o tempo acabar aqui; sem a propriedade, a próxima edição confere de novo. Passado o limiteDepois,
- * nem começa: fica para a próxima edição, em vez de morrer nos 30 s no meio das leituras.
+ * nem começa: deixa o aviso (propDepois) para o próximo clique e, sem ele, a próxima edição confere de novo.
  */
 function analiseDepoisDaEdicao_(e) {
   if (!e || !e.r53AnaliseDepois_) return;
   e.r53AnaliseDepois_ = false;
   try {
     SpreadsheetApp.flush();
-    if (typeof e.r53Inicio_ === 'number' && Date.now() - e.r53Inicio_ > ANALISE_EST_.limiteDepois) return;
     var props = PropertiesService.getDocumentProperties();
+    if (typeof e.r53Inicio_ === 'number' && Date.now() - e.r53Inicio_ > ANALISE_EST_.limiteDepois) {
+      props.setProperty(ANALISE_EST_.propDepois, '1');
+      return;
+    }
     analiseVelha_(e, props, props.getProperty(ANALISE_EST_.prop) || analiseSincronizar_(props), false, true);
   } catch (err) {
     console.log('ANALISE estática, no fim da edição: ' + err.message);
+  }
+}
+
+/**
+ * Gancho do onSelectionChange (25/11/2026): a conferência que uma edição pesada da cópia nova deixou (propDepois).
+ * O aviso só nasce no fim do onEdit, depois do flush: o clique que a própria edição dispara, ao mesmo tempo que ela,
+ * ainda não o vê. Sem aviso, uma leitura de propriedade e nada mais (roda a cada clique). Com a conferência já feita
+ * por outra edição, apaga o aviso. O Android talvez não rode este gatilho: lá a próxima edição leve confere.
+ */
+function analiseNaSelecao_(e) {
+  try {
+    var C = ANALISE_EST_, props = PropertiesService.getDocumentProperties();
+    if (!props.getProperty(C.propDepois)) return false;
+    if (props.getProperty(C.prop)) { props.deleteProperty(C.propDepois); return false; }
+    e = e || {};
+    if (typeof e.r53Inicio_ === 'number' && Date.now() - e.r53Inicio_ > C.limiteSelecao) return false;
+    analiseVelha_(e, props, analiseSincronizar_(props), false, true);
+    props.deleteProperty(C.propDepois);
+    return true;
+  } catch (err) {
+    console.log('ANALISE estática, no clique: ' + err.message);
+    return false;
   }
 }
 
