@@ -236,3 +236,62 @@ Testados na cópia (só nela, não no git nem nas oficiais):
 Com os dois: 13,2, 12,4, 14,4 e 12,4 s (código 7,4 s; o `r53Editar_` caiu para 0,26 s e o buraco de 4,3 s sumiu).
 O nome continuou gravado, chegou à FICHA PESSOAL e a ANALISE foi marcada `desatualizada`. Hashes na cópia:
 EditorR53 `676337f165f7` → `addf731166ea`, Codigo do pacote `57a8398fa8c5` → `fc43e080e87c`.
+
+## Primeira edição de uma cópia (24 e 25/11)
+
+**O problema.** As propriedades do documento não vão junto quando alguém copia a ficha. Na primeira edição da cópia,
+o `analiseNaEdicao_` não achava `analise_estado` e conferia a ANALISE antes da automação do jogador: 4 leituras e a
+marca, de 8,9 a 9,7 s. Escolher o Caminho numa cópia nova da Ciclo fechava em 19,5 a 24,1 s e morreu nos 30 s em 3 de 9
+vezes (30,6, 30,5, 30,6 s), sem gravar o Caminho. Vale para quem copia a ficha à mão, não só pelo bot.
+
+**O que mudou.**
+
+- Sem a propriedade, o `analiseNaEdicao_` só marca o evento (`e.r53AnaliseDepois_`) e deixa a automação rodar primeiro.
+- O onEdit de entrada roda o resto dentro de um `try`, e o `finally` chama o `analiseDepoisDaEdicao_`
+  (`r53/diagnostico-android/preparar_analise_depois.js` nas oficiais; o `r53/empacotar_script.py` já monta assim).
+- No fim: `flush` (a automação fica gravada), e a conferência só começa se o onEdit ainda não passou de
+  `limiteDepois` (12 s). Senão fica para a próxima edição, que confere de novo porque a propriedade continua vazia.
+- A conferência lê só as duas últimas linhas da grade da ANALISE (onde as linhas de estado ficam na Ciclo e na Era,
+  18.501 e 18.502) e cai para a coluna A inteira se não estiverem lá. A marca vai para a planilha antes da propriedade.
+
+**As alternativas medidas** (cópias descartáveis da Ciclo, Vanguarda como primeira edição, tempos do registro do Apps Script):
+
+| saída | como | resultado | por que ficou ou saiu |
+|---|---|---|---|
+| como era | conferir antes de tudo | 19,5 a 24,1 s; 3 estouros em 9 | o Caminho espera ~9 s de leituras |
+| b: ler antes, escrever no fim | as leituras antes do Caminho, só a escrita no fim | 30,65 s, tempo limite (1 de 1) | ler antes custou 6,7 s, o Caminho atrasou junto. Saiu |
+| a: tudo no fim | conferência inteira depois do `flush` | 29,1 e 29,4 s (24/11), concluídas | o Caminho grava cedo, mas a conferência no fim custa 5,6 a 11,7 s e passa perto do corte |
+| a + limite (ficou) | igual, mas só começa até 12 s | 16,0 a 23,2 s de script, nenhum estouro em 6 edições | quando falta tempo, pula e a próxima edição confere |
+| constantes sem ler | escrever no lugar de sempre, às cegas | não medida | cópia de versão velha teria as linhas em outro lugar: escreveria na célula errada. Saiu |
+
+Medições do final (25/11, com o medidor `MEDIR_` só nas cópias):
+
+| cópia | edição | 1ª leitura | script | registro | conferência |
+|---|---|---|---|---|---|
+| PC 2 | Vanguarda | 10,3 s | 19,2 s | 21,6 s | pulada (19,1 s no fim) |
+| PC 2 | Trilha Estocada (2ª) | 3,7 s | 23,2 s | 25,7 s | feita, 11,7 s |
+| PC 3 | caixa de treino (1ª) | 6,8 s | 19,8 s | 21,9 s | feita, 10,6 s |
+| PC 3 | Vanguarda (2ª) | 5,2 s | 13,4 s | 15,4 s | não precisa |
+| como no Android (sem onOpen) | Vanguarda | 1,5 s | 16,0 s | 25,4 s | feita, 5,6 s |
+
+Em todas: Vanguarda gravada com Acrobacia e Percepção treinadas, `analise.estado = desatualizada` e o texto da AH4.
+Sem o limite, a PC 2 teria ido a ~30 s de script. Na cópia da variante b, que morreu no `flush` final, as perícias
+e a marca também ficaram gravadas.
+
+**O corte dos 30 s.** O registro mostra a duração desde que o gatilho entrou na fila. A cópia da variante b morreu com
+28 s de script (30,65 s no registro); outra concluiu com 31,7 s no registro e 22,1 s de script, porque 10 s foram de
+espera antes do script. A espera antes do script nem sempre conta, e o corte já não era exato em 18/11. Por isso o
+limite conta do começo do onEdit (`e.r53Inicio_`), com folga: 12 + 11,7 = 23,7 s.
+
+**Buracos.**
+
+- Ficha que recebe uma edição só e nunca mais: se a conferência foi pulada, a ANALISE segue dizendo `em_dia` com a
+  exportação da oficial. Qualquer edição seguinte marca. A exportação pela caixa ou pelo menu também acerta.
+- Não medido: celular de verdade, a Era com o código novo (só a posição das linhas de estado foi conferida), o nome
+  como primeira edição (mesmo caminho da caixa de treino).
+- O aviso "Inválido" na D11, visto uma vez em 24/11, não voltou em 4 cópias novas.
+
+**Nas oficiais** (com o Mizuki no PC e backup, depois do ok): trocar o `AnaliseEstatica` pelo de
+`apps-script/AnaliseEstatica.gs` e rodar no console, com o Codigo aberto, o trecho de
+`node r53/diagnostico-android/preparar_analise_depois.js`. Ele recusa se o gancho do `preparar_analise_estatica.js` não
+estiver lá. Para desfazer: `--reverter`.

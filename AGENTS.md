@@ -47,7 +47,9 @@ caixa da CARTEIRA AT4 (o celular não tem menu) e no fim do `construir()`. A pri
 
 - Ganchos no Codigo de entrada do pacote (`r53/empacotar_script.py`), não no `apps-script/Codigo.gs`.
 - Fórmula nova na ANALISE: escreva na coluna B e rode o menu Bot, que junta aos modelos.
-- Teste: `r53/testes/analise_estatica.js` (24 defeitos plantados).
+- Teste: `r53/testes/analise_estatica.js` (43 defeitos plantados).
+- Cópia nova (sem propriedades): a conferência vai para o fim do onEdit (`analiseDepoisDaEdicao_`, embrulho de
+  `preparar_analise_depois.js`) e só começa até `limiteDepois` (12 s). Medição na seção "Primeira edição de uma cópia".
 - Com a ANALISE viva, cada leitura da planilha custa 2 a 3 s, do tamanho que for: a caixa lê uma vez só. Escrita
   pendente se perde quando o tempo acaba: `flush` antes de guardar propriedade que aponte para ela. Prova na Era no documento.
 - Oficiais: só depois do bot ler o formato 13, com o Mizuki no PC e backup (roteiro no documento).
