@@ -9,6 +9,34 @@ Estes são os **dois modelos oficiais**, confirmados expressamente pelo usuário
 
 A antiga `1u0zWQ…`, a C, a candidata A `1427…` e as cópias de ensaio são referências históricas. Não substituir estes dois endereços pelos links de publicações antigas. A ficha do amigo usada para diagnóstico não integra este par e não foi alterada.
 
+## Conferência da ANALISE no fim da edição (PR #150) nas oficiais · 25/11/2026
+
+Aval do Mizuki no chat ("AI podemos seguir com o plano, to no pc"; o plano trazia a instalação, com backup e ele no PC).
+Base: main `03ba940`.
+
+- **Antes.** Os 11 arquivos das duas oficiais lidos no editor e iguais entre si (Codigo `d7031a736b37`, AnaliseEstatica
+  `4543892d3cd9`). Hash = sha256 do texto sem `\r`, 12 primeiros dígitos. Sem bibliotecas; só o serviço Sheets.
+- **Backup**, pela página de cópia de cada oficial (leva o projeto junto): "BACKUP antes da PR150 25-11-2026 · Ciclo
+  Maldito" (`1bKigBY9…`) e "… · Era da Revolução" (`1mKfamGw…`). Os 11 arquivos dos dois backups relidos: todos os antigos.
+- **O que entrou**, nas duas: AnaliseEstatica `a814cc0881d8` (o texto do repositório) e, no Codigo, o trecho de
+  `r53/diagnostico-android/preparar_analise_depois.js` (`d7031a736b37` → `f1966232c178`). Células: nada.
+- **Depois.** Salvo, recarregado e relido nas duas, e de novo no fim da rodada: só esses dois arquivos mudaram. Nenhuma
+  edição nem erro no registro de execuções das oficiais depois da instalação.
+
+Para voltar: `preparar_analise_depois.js --reverter` no Codigo e o AnaliseEstatica do backup.
+
+Medido em três cópias novas com o código instalado (Brave no PC, Vanguarda como primeira edição):
+
+| cópia | script | nosso onEdit | resultado |
+|---|---:|---:|---|
+| Ciclo 1 | 30,6 s | 8,1 s | tempo limite, depois do Caminho gravado |
+| Ciclo 2 | 29,3 s | 10,0 s | concluído |
+| Era | 25,1 s | 8,8 s | concluído |
+
+Nas três ficaram Acrobacia e Percepção treinadas, as cartas da Vanguarda e o "desatualizada" na CARTEIRA; na Ciclo 1 a
+conferência que morreu parece ter sido refeita pela edição seguinte (26,9 s; sem medidor). **O `limiteDepois` não basta:** ele conta do começo do
+onEdit e não vê os 6 a 15 s que o Google gasta antes. O Caminho fica gravado, mas a execução ainda pode bater nos 30 s.
+
 ## Avisos de funções (PR #141) nas oficiais · 20/11/2026
 
 Pedido do Mizuki no chat: "pode levar pras oficiais". Base: main `a3cefc1`, que já tem a #141 (avisos de funções)
