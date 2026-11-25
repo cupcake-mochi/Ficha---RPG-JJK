@@ -9,6 +9,34 @@ Estes são os **dois modelos oficiais**, confirmados expressamente pelo usuário
 
 A antiga `1u0zWQ…`, a C, a candidata A `1427…` e as cópias de ensaio são referências históricas. Não substituir estes dois endereços pelos links de publicações antigas. A ficha do amigo usada para diagnóstico não integra este par e não foi alterada.
 
+## Conferência da ANALISE no próximo clique (PR #152) nas oficiais · 25/11/2026
+
+Aval do Mizuki no chat ("Prontinho, pode seguir … to no pc", depois do PR #152 mesclado como `82ca1f6`).
+
+- **Antes.** Os 11 arquivos das duas oficiais lidos no editor: os da PR #150 (Codigo `f1966232c178`, AnaliseEstatica
+  `a814cc0881d8`), iguais entre si.
+- **Backup**, pela página de cópia de cada oficial: "BACKUP antes da PR152 25-11-2026 · Ciclo Maldito" (`1V0Cyuz_…`) e
+  "… · Era da Revolução" (`1A0KPK5h…`). Script dos dois relido: os 11 arquivos antigos.
+- **O que entrou**, nas duas: AnaliseEstatica `c36a2ffc1d2e` (o texto do repositório) e, no Codigo, o trecho de
+  `r53/diagnostico-android/preparar_analise_selecao.js` (`f1966232c178` → `aa2eba0abcdb`). Células: nada.
+- **Depois.** Salvo, recarregado e relido nas duas: só esses dois arquivos mudaram. Lista completa, na ordem do editor:
+  `948bd0b51a61 aa2eba0abcdb b5dfcd181c3c f23329f99dc3 57d66d9cb7b5 650d9336aba9 848e878b4a2a b5dfcd181c3c a5a0e83def3c
+  aaaa74f32b0c c36a2ffc1d2e`. Nenhuma execução nas oficiais depois da instalação.
+
+Para voltar: `preparar_analise_selecao.js --reverter` no Codigo e o AnaliseEstatica do backup.
+
+Medido numa cópia nova de cada oficial (os mesmos 11 hashes; Brave no PC; Vanguarda como primeira edição, um clique numa
+célula vazia, depois ± −1 na vida):
+
+| cópia | Caminho (script / nosso) | clique que conferiu | ± (script / nosso) |
+|---|---:|---:|---:|
+| Ciclo `1ODseTjY…` | 15,4 s / — | 12,0 s | 10,6 s / — |
+| Era `14gE8dmQ…` | 20,9 s / 7,4 s | 16,3 s | 15,9 s / 7,8 s |
+
+Antes (PR #150, mesmo roteiro): Caminho 30,6 (tempo limite) · 29,3 · 25,1 s. Nas duas o Caminho ficou gravado (vida
+13/13 e 53/53, depois −1); na Era, "Bot: desatualizada" na CARTEIRA depois do clique. Não medido: celular (lá o
+`onSelectionChange` talvez não rode, e quem confere é a próxima edição leve).
+
 ## Conferência da ANALISE no fim da edição (PR #150) nas oficiais · 25/11/2026
 
 Aval do Mizuki no chat ("AI podemos seguir com o plano, to no pc"; o plano trazia a instalação, com backup e ele no PC).
