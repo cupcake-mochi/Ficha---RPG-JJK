@@ -47,7 +47,9 @@ var ANALISE_EST_ = {
   limiteDepois: 4000,
   // O clique que faz a conferência deixada pela edição (onSelectionChange, 30 s próprios). Medido em 25/11: um clique
   // leva de 1,6 a 5,9 s de script. Só começa até 6 s depois do início dele: 6 + 11,7 = 17,7 s, longe dos 30 s.
-  propDepois: 'analise_depois', limiteSelecao: 6000,
+  // O clique que começa põe a hora no aviso, e os outros cliques não repetem a conferência por 40 s (a execução morre nos
+  // 30 s). Medido em 25/11, sem isso: seis cliques seguidos numa cópia nova deram três conferências juntas, de 23 a 26 s.
+  propDepois: 'analise_depois', limiteSelecao: 6000, esperaClique: 40000,
   versao: '13'
 };
 
@@ -127,15 +129,19 @@ function analiseDepoisDaEdicao_(e) {
  * Gancho do onSelectionChange (25/11/2026): a conferência que uma edição pesada da cópia nova deixou (propDepois).
  * O aviso só nasce no fim do onEdit, depois do flush: o clique que a própria edição dispara, ao mesmo tempo que ela,
  * ainda não o vê. Sem aviso, uma leitura de propriedade e nada mais (roda a cada clique). Com a conferência já feita
- * por outra edição, apaga o aviso. O Android talvez não rode este gatilho: lá a próxima edição leve confere.
+ * por outra edição, apaga o aviso. Com outro clique já conferindo, sai. O Android talvez não rode este gatilho: lá a
+ * próxima edição leve confere.
  */
 function analiseNaSelecao_(e) {
   try {
     var C = ANALISE_EST_, props = PropertiesService.getDocumentProperties();
-    if (!props.getProperty(C.propDepois)) return false;
+    var aviso = props.getProperty(C.propDepois);
+    if (!aviso) return false;
     if (props.getProperty(C.prop)) { props.deleteProperty(C.propDepois); return false; }
     e = e || {};
     if (typeof e.r53Inicio_ === 'number' && Date.now() - e.r53Inicio_ > C.limiteSelecao) return false;
+    if (aviso.charAt(0) === 'd' && Date.now() - Number(aviso.slice(1)) < C.esperaClique) return false;
+    props.setProperty(C.propDepois, 'd' + Date.now());
     analiseVelha_(e, props, analiseSincronizar_(props), false, true);
     props.deleteProperty(C.propDepois);
     return true;
