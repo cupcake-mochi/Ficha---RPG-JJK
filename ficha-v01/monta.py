@@ -465,6 +465,8 @@ for _sufixo, _dados in (('plano', _REPERTORIO_PLANO), ('notas', _REPERTORIO_NOTA
     with open(os.path.join(AQUI, '..', 'r53', 'diagnostico-android', 'repertorio_trilha_'+_sufixo+'.json'), 'w', encoding='utf-8') as _f:
         json.dump(_dados, _f, ensure_ascii=False, indent=2)
         _f.write('\n')
+# 26/11/2026 (etapa 4): as três abas da montagem R53 saem, depois do último passo que ainda escreve nelas
+print(f"as abas R53 que sairam da ficha: {', '.join(montagens_r53.retira(LAYOUT, _R53))}")
 if '--plano-tempo-feiticos' in sys.argv:
     _destino = sys.argv[sys.argv.index('--plano-tempo-feiticos')+1]
     with open(_destino, 'w', encoding='utf-8') as _f:

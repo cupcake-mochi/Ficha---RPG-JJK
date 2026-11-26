@@ -43,7 +43,8 @@ for(const g of cfg.contextos){
 for(const [aba,cell] of [['CARTEIRA','A1'],['INVOCAÇÕES','A1'],['CONFIGURAÇÃO','A1']]){
  props.delete('r53_amparo_direto');box.R53_REF_CACHE_={};io.length=0;
  eq(box.r53Editar_({source:ss,range:ss.getSheetByName(aba).getRange(cell)}),false);
- eq(io,['read:'+cfg.amparo.aba]);eq(JSON.parse(props.get('r53_amparo_direto')),Array(13).fill('Normal'));
+ // 26/11/2026 (etapa 4): sem cartão no editor, a edição sai antes de ler o Amparo (a DADOS_R53_CATALOGO saiu da ficha)
+ eq(io,[]);eq(props.has('r53_amparo_direto'),false);
 }
 // 26/11/2026 (etapa 4 da versão rápida): daqui pra baixo APOSENTADO. O resto conferia a edição dos cartões das entidades no
 // editor R53 (Classe, pontos, Amparo/Família, Máxima). Os cartões das invocações viraram de preencher e o editor ficou sem

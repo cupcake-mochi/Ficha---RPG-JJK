@@ -29,7 +29,9 @@ const historico = require('../diagnostico-android/preparar_descanso_origens').re
 const fontes = require(path.join(raiz, 'medidas/carregar-ficha.js')).fontes() + '\n' + codigo;
 const leve = transformarModulo(fontes + '\nreturn {construir: construir, continuar: continuar, acabar: acabar, onEdit: onEdit, abas: function () { return ABAS; }, sobras: function () { return SOBRAS_; }};', []);
 // 26/11/2026 (etapa 4): o editor R53 ficou vazio, e as tabelas dele deixaram de ser grandes o bastante pro corte (sobram 11)
-ok(leve.cortados.length >= 11 && leve.travas === 3, 'corte: ' + leve.cortados.length + ' tabelas, ' + leve.travas + ' travas');
+// Depois, na mesma etapa, a MONTAGENS, a DADOS_R53 e a DADOS_R53_CATALOGO saíram da ficha, com as três tabelas de aba e os
+// três fragmentos de valores delas: sobram 5
+ok(leve.cortados.length >= 5 && leve.travas === 3, 'corte: ' + leve.cortados.length + ' tabelas, ' + leve.travas + ' travas');
 const box = { console: { log() {} } }; vm.createContext(box);
 const mod = vm.runInContext('(function(){' + leve.code + '\n})', box)();
 const nomes = mod.abas().map(a => a.nome);

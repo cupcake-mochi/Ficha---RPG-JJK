@@ -210,7 +210,7 @@ var VALORES_R53_ANALISE_2_ = [
       [16553,3,"",0],[16553,4,"entrada",0],[16554,1,"r53.entidade.10.liberacao.2.classe",0],[16554,2,"",0],[16554,3,"",0],[16554,4,"entrada",0],[16555,1,"r53.entidade.10.liberacao.2.modalidade",0],[16555,2,"",0],[16555,3,"",0],[16555,4,"entrada",0],[16556,1,"r53.entidade.10.liberacao.2.forma",0],[16556,2,"",0],[16556,3,"",0],[16556,4,"entrada",0],[16557,1,"r53.entidade.10.liberacao.2.dano",0],[16557,2,"",0],[16557,3,"",0],[16557,4,"entrada",0],[16558,1,"r53.entidade.10.liberacao.2.cura",0],[16558,2,"",0],[16558,3,"",0],[16558,4,"entrada",0],[16559,1,"r53.entidade.10.liberacao.2.vt",0],[16559,2,"",0],[16559,3,"",0],[16559,4,"entrada",0],[16560,1,"r53.entidade.10.liberacao.2.p_dano",0],[16560,2,"",0],[16560,3,"",0],[16560,4,"entrada",0],[16561,1,"r53.entidade.10.liberacao.2.p_cura",0],[16561,2,"",0],[16561,3,"",0],[16561,4,"entrada",0],[16562,1,"r53.entidade.10.liberacao.2.p_vt",0],[16562,2,"",0],[16562,3,"",0],[16562,4,"entrada",0],[16563,1,"r53.entidade.10.liberacao.2.controle",0],[16563,2,"",0],[16563,3,"",0],[16563,4,"entrada",0],[16564,1,"r53.entidade.10.liberacao.2.dest_dano",0],[16564,2,"",0],[16564,3,"",0],[16564,4,"entrada",0],[16565,1,"r53.entidade.10.liberacao.2.dest_cura",0],[16565,2,"",0],[16565,3,"",0],[16565,4,"entrada",0],[16566,1,"r53.entidade.10.liberacao.2.dest_vt",0],[16566,2,"",0],[16566,3,"",0],[16566,4,"entrada",0],[16567,1,"r53.entidade.10.liberacao.2.res_dano",0],[16567,2,"",0],[16567,3,"",0],[16567,4,"entrada",0]
     ],
     "notas":[],
-    "geracao":"77b66d16ec24eacd",
+    "geracao":"19b9d95922a5229e",
     "arquivo":"R53Analise2.gs"
   }
 ];

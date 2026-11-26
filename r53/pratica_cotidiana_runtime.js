@@ -55,6 +55,11 @@ function gerar(deltas, tempo=deltas===undefined?require('./diagnostico-android/t
  rajada=rajada.filter(d=>!pessoal(d.r));
  deltas=deltas.filter(d=>!(d.aba==='DADOS_R53'&&pessoal(d.r)));
  tempo=tempo.filter(d=>!(d.aba==='DADOS_R53'&&pessoal(d.r)));
+ // 26/11/2026 (etapa 4): as invocações também viraram de preencher e a DADOS_R53 saiu da ficha. Os planos guardados
+ // ainda anotam linhas dela (valem para as oficiais, que têm a aba); aqui nada dela é reposto
+ rajada=rajada.filter(d=>d.aba!=='DADOS_R53');
+ deltas=deltas.filter(d=>d.aba!=='DADOS_R53');
+ tempo=tempo.filter(d=>d.aba!=='DADOS_R53');
  const efeitos=tempo.filter(d=>d.aba==='DADOS_R53');
  const classeZero=deltas.filter(d=>d.aba==='DADOS_R53');
  const payload=comprimir(dados(deltas,efeitos));

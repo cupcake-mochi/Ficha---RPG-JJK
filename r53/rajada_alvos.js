@@ -14,6 +14,8 @@ const linhas = [];
 
 // 26/11/2026 (etapa 3): linhasAlvo deixa quem chama pular as linhas do personagem, que ficaram sem montagem
 function formulas(pasta = path.join(__dirname, '../apps-script'), colunasAlvo = colunas, linhasAlvo = linhas) {
+  // 26/11/2026 (etapa 4): sem linha com montagem, a DADOS_R53 saiu da ficha e o R53Dados.gs não é mais gerado
+  if (!linhasAlvo.length) return [];
   const fontes = fs.readdirSync(pasta).filter(n => /^R53Dados\d+\.gs$/.test(n));
   const alvos = new Map();
   for (const nome of fontes) {

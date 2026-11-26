@@ -451,6 +451,32 @@ def exporta_versoes(tr):
     return out
 
 
+def retira(layout,tr):
+    """26/11/2026 (etapa 4, "Tirar as 3 agora"): sem cartão pesado, a MONTAGENS, a DADOS_R53 e a DADOS_R53_CATALOGO
+    saem da ficha. Roda depois de todos os passos que ainda escrevem nelas e para a geração se alguma aba que fica,
+    ou um menu dela, ainda citar uma das três. A R53_EVENTOS fica: é o espelho que o Caminho lê."""
+    if pesados(tr):raise ValueError('Ainda há cartão R53 pesado: as abas da montagem não podem sair')
+    fora=[EDITOR,DADOS,CATALOGO]
+    def cita(texto):
+        if not isinstance(texto,str):return []
+        limpo=re.sub(r'"[^"]*"','""',texto)
+        return [n for n in fora if re.search(r"(?:'%s'|(?<![\wÀ-ÿ])%s)!"%(re.escape(n),re.escape(n)),limpo)]
+    saem=[a['nome'] for a in layout['abas'] if a['nome'] in fora]
+    layout['abas']=[a for a in layout['abas'] if a['nome'] not in fora]
+    orfas=[]
+    for a in layout['abas']:
+        for cel in a['celulas']:
+            if isinstance(cel[1],str) and cel[1].startswith('=') and cita(cel[1]):orfas.append(f"{a['nome']}!{cel[0]} cita {cita(cel[1])}")
+        for menu in a.get('menus',[]):
+            if cita('='+str(menu.get('formula',''))):orfas.append(f"{a['nome']}!{menu.get('onde')}: o menu cita {cita('='+str(menu.get('formula','')))}")
+        textos=lambda v:[v] if isinstance(v,str) else [t for x in (v.values() if isinstance(v,dict) else v) for t in textos(x)] if isinstance(v,(dict,list)) else []
+        for regra in a.get('condicional',[]):
+            if any(cita('='+t) for t in textos(regra)):orfas.append(f"{a['nome']}: formatação condicional cita uma aba que saiu")
+    if orfas:raise SystemExit('a ficha ainda depende de uma aba R53 que saiu: '+'; '.join(orfas[:5]))
+    tr['abas']=[]
+    return saem
+
+
 def finaliza(tr):
     """Acompanha a transformação final, sem deslocar o editor de versões."""
     import extensoes_custom as ex
