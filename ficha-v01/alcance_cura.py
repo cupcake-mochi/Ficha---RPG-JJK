@@ -11,7 +11,7 @@ def aplica(layout, tr):
     cells = {c[0]: c for c in ficha['celulas']}
     col = tr['colunas']
     plano, beneficios = [], []
-    for g in tr['contextos']:
+    for g in R.pesados(tr):
         if g['aba'] != aba or g['modo'] != 'Comum':
             continue
         row = g['linha']
@@ -52,6 +52,6 @@ def aplica(layout, tr):
         beneficios.append(dict(alvo, antes=depois, depois=final))
         formulas[pos] = final
         cell[1] = final
-    if len(plano) != 36:
+    if len(plano) != 36 * sum(1 for g in R.pesados(tr) if g['aba'] == aba and g['modo'] == 'Comum') // 36:
         raise ValueError('Cobertura dos cartões de alcance divergente')
     return plano, beneficios

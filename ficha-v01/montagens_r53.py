@@ -117,8 +117,18 @@ def contextos(fam,inv):
     return out
 
 
+def pesados(tr):
+    """Os contextos que ainda usam a montagem R53. 26/11/2026 (etapa 3 da versão rápida): os cartões do personagem
+    (aba FICHA AMALDIÇOADA) viraram de preencher e ficam 'leves': continuam na lista, nas mesmas linhas da DADOS_R53 e
+    nos mesmos blocos da MONTAGENS (nenhum endereço anda), mas sem fórmula, sem editor e sem tocar no cartão. As chaves
+    r53.* deles continuam na ANALISE, vazias, para o bot achar a exportação completa."""
+    return [g for g in tr['contextos'] if not g.get('leve')]
+
+
 def aplica(layout,fam,inv,personagem):
     ctx=contextos(fam,inv)
+    for g in ctx:
+        if g['aba']=='FICHA AMALDIÇOADA':g['leve']=True
     abas={a['nome']:a for a in layout['abas']}
     if any(n in abas for n in [EDITOR,DADOS,CATALOGO]):raise ValueError('R53 já aplicada')
     cells={n:{v[0]:v for v in a['celulas']} for n,a in abas.items()}
@@ -141,6 +151,10 @@ def aplica(layout,fam,inv,personagem):
     for a in [editor,dados,catalogo]:
         layout['abas'].append(a);abas[a['nome']]=a;cells[a['nome']]={}
     tr=dict(contextos=ctx,antes={},depois={},entradas=[],formulas={},editor_campos=CAMPOS)
+    # 26/11/2026 (etapa 3): a linha das Famílias da FICHA AMALDIÇOADA. Sem cartão R53 do personagem, é a única
+    # edição dessa aba que muda o Amparo: o r53Editar_ só sincroniza quando a edição toca nela
+    cf=[c for par in fam['G']['cols_fam'] for c in par]
+    tr['familias_am']=[min(cf,key=lambda x:(len(x),x))+str(fam['G']['familias']),max(cf,key=lambda x:(len(x),x))+str(fam['G']['familias']+1)]
     def put(nome,a1,value,style=None):
         old=cells[nome].get(a1)
         if nome not in [EDITOR,DADOS,CATALOGO] and (old[1] if old else None)!=value:
@@ -229,6 +243,9 @@ def aplica(layout,fam,inv,personagem):
            'migracao':'"Revisão necessária,Revisado"'}
     tr['menus_editor']=menus
     for g in ctx:
+        if g.get('leve'):
+            tr['formulas'][g['id']]={};put(DADOS,col['id']+str(g['linha']),g['id'])
+            continue
         row=g['linha'];start=g['editor'];ncol=len(g['classes']);cel=g['cel'];aba=g['aba']
         nome=ref(aba,cel['nome']);classes=g['classes']
         box(start,1,'='+json.dumps(g['id']+' · ',ensure_ascii=False)+'&'+nome,'secao','H'+str(start))
@@ -371,6 +388,14 @@ def exporta(tr):
     out=[['r53.montagem.esquema','2','','cabeçalho'],['r53.entrada.campos',json.dumps(M.INPUTS,ensure_ascii=False),'','cabeçalho']]
     for g in tr['contextos']:
         prefix='r53.'+g['id'];row=g['linha'];cols=tr['colunas']
+        if g.get('leve'):
+            for key in ['classe','modalidade','forma','dano','cura','vt','p_dano','p_cura','p_vt','controle',
+                        'dest_dano','dest_cura','dest_vt','res_dano','tr_dano','tr_controle','dependencias','execucao','origem_permissao',
+                        'orcamento','base_funcoes','custo_forma','melhorias_pagas','devolucao','saldo','dano_d8','cura_d8',
+                        'vida_temporaria','sem_uso','pe','cd_normal','cd_controle','funcao','avisos']:
+                out.append([prefix+'.'+key,'','','aviso' if key=='avisos' else 'entrada' if key in M.INPUTS else 'resultado'])
+            out.append([prefix+'.entrada','','','entrada'])
+            continue
         for key in ['classe','modalidade','forma','dano','cura','vt','p_dano','p_cura','p_vt','controle',
                     'dest_dano','dest_cura','dest_vt','res_dano','tr_dano','tr_controle','dependencias','execucao','origem_permissao',
                     'orcamento','base_funcoes','custo_forma','melhorias_pagas','devolucao','saldo','dano_d8','cura_d8',
@@ -411,6 +436,9 @@ def exporta_versoes(tr):
     quoted=json_celula('item','texto')
     item=f'IF(ISLOGICAL(item),IF(item,"true","false"),IF(ISNUMBER(item),{json_numero("item")},{quoted}))'
     for g in tr['contextos']:
+        if g.get('leve'):
+            out+=[[f'r53.{g["id"]}.versao.{classe if classe is not None else "maxima"}','','','entrada'] for classe in g['classes']]
+            continue
         for c,classe in enumerate(g['classes'],2):
             header=ref(EDITOR,L(c)+str(g['editor']+1))
             faixa=ref(EDITOR,L(c)+str(g['campos'][CAMPOS[0][0]])+':'+L(c)+str(g['campos'][CAMPOS[-1][0]]))
@@ -430,10 +458,12 @@ def finaliza(tr):
         return value
     for g in tr['contextos']:
         g['cel']=celulas(g['cel'],g['aba'])
+        if g.get('leve'):continue
         g['funcao']=ex.coord(g['aba'],g['funcao'])
         if 'linha_funcao' in g:g['linha_funcao']=ex.linha(g['aba'],g['linha_funcao'])
         tr['formulas'][g['id']]={ex.coord(g['aba'],a):ex.formula(v,g['aba']) for a,v in tr['formulas'][g['id']].items()}
     for key in ['antes','depois']:
         tr[key]={aba:{ex.coord(aba,a1):ex.formula(v,aba) for a1,v in reg.items()} for aba,reg in tr[key].items()}
+    if tr.get('familias_am'):tr['familias_am']=[ex.coord('FICHA AMALDIÇOADA',a) for a in tr['familias_am']]
     tr['apresentacao_final']=True
     return tr

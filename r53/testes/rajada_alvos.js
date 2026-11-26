@@ -10,13 +10,14 @@ const {norm} = require('../diagnostico-android/preparar_pratica_cotidiana');
 const {formulas} = require('../rajada_alvos');
 const rt = require('../pratica_cotidiana_runtime');
 
+// 26/11/2026 (etapa 3): só as linhas das invocações (47 a 250) têm montagem; 204 linhas × 4 colunas
 const alvos = formulas();
-assert.equal(alvos.length, 1004);
-assert.equal(new Set(alvos.map(d => d.r + ':' + d.c)).size, 1004);
+assert.equal(alvos.length, 816);
+assert.equal(new Set(alvos.map(d => d.r + ':' + d.c)).size, 816);
 assert.ok(alvos.every(d => d.r !== 251 && d.aba === 'DADOS_R53'));
 
 const alvosRecuperacao = formulas(undefined, rt.colunasMontagem);
-assert.equal(alvosRecuperacao.length, 1255);
+assert.equal(alvosRecuperacao.length, 1020);
 let loads = 0;
 const ctx = vm.createContext({
   Utilities: {
@@ -53,10 +54,10 @@ function editar(aba, r, c, rr = r, cc = c) {
 }
 assert.equal(editar('FICHA', 2, 89), false);
 assert.equal(loads, 0);
-assert.equal(editar('DADOS_R53', 2, 89, 250, 181), false);
+assert.equal(editar('DADOS_R53', 47, 89, 250, 181), false);
 const legados = rt.dados(undefined, require('../diagnostico-android/tempo_feiticos_plano.json')
   .filter(d => d.aba === 'DADOS_R53')).filter(([aba, r, c]) =>
-  aba === 'DADOS_R53' && r >= 2 && r <= 250 && c >= 89 && c <= 181);
+  aba === 'DADOS_R53' && r >= 47 && r <= 250 && c >= 89 && c <= 181);
 const esperados = new Set([
   ...alvosRecuperacao.filter(d => d.r <= 250).map(d => d.r + ':' + d.c),
   ...legados.map(([, r, c]) => r + ':' + c),
@@ -66,9 +67,9 @@ for (const d of alvosRecuperacao.filter(d => d.r <= 250)) {
   assert.equal(writes.get(d.r + ':' + d.c), formulaLocal(d.depois, 'pt_BR'));
 }
 assert.equal(loads, 2);
-assert.equal(editar('DADOS_R53', 2, 104), true);
+assert.equal(editar('DADOS_R53', 47, 104), true);
 assert.equal(writes.size, 1);
-assert.equal(writes.get('2:104'), formulaLocal(alvosRecuperacao.find(d => d.r === 2 && d.c === 104).depois, 'pt_BR'));
+assert.equal(writes.get('47:104'), formulaLocal(alvosRecuperacao.find(d => d.r === 47 && d.c === 104).depois, 'pt_BR'));
 assert.equal(editar('DADOS_R53', 251, 89), false);
 assert.equal(writes.size, 0);
 for (const d of alvosRecuperacao.filter(d => d.r > 250)) {
@@ -86,8 +87,8 @@ if (process.argv[2]) {
       ...d, sheetId: 40, value: formulaLocal(d.depois, locale),
     }))};
     const plano = p.prepararCelulas(snapshot);
-    assert.equal(plano.pedidos.length, 1004);
-    assert.equal(plano.reverter(plano.final).length, 1004);
+    assert.equal(plano.pedidos.length, 816);
+    assert.equal(plano.reverter(plano.final).length, 816);
     for (const [i, q] of plano.pedidos.entries()) {
       const d = alvos[i];
       assert.notEqual(snapshot.cells[i].value, formulaLocal(d.depois, locale));

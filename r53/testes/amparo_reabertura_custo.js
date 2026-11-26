@@ -53,7 +53,9 @@ function montar() {
   ss.getSheetByName(cfg.amparo.aba).getRange(cfg.amparo.faixa).setValues([Array(13).fill('Normal')]);
 
   // 36 dos 45 cartões pessoais com Cura e PV temporários ativos, como um personagem jogado há tempo.
-  const pessoais = cfg.contextos.filter(g => g.entidade === null || typeof g.entidade === 'undefined');
+  // 26/11/2026 (etapa 3 da versão rápida): os cartões do personagem saíram da montagem R53. Os casos 1, 2 e 4 passam a
+  // usar a segunda entidade (família 2 da faixa do Amparo), que segue pelo mesmo caminho de fechar e reabrir
+  const pessoais = cfg.contextos.filter(g => g.entidade === 1);
   const preenchidos = pessoais.slice(0, 36), classe = new Map();
   for (const g of preenchidos) {
     const cl = g.classes[0] === null ? 8 : g.classes[g.classes.length - 1];
@@ -96,7 +98,7 @@ function montar() {
 }
 
 // familia: 0 é a pessoal, 1 a primeira entidade (a coluna seguinte na faixa do Amparo).
-function trocar(M, valor, familia = 0) {
+function trocar(M, valor, familia = 2) {
   M.ss.getSheetByName(M.cfg.amparo.aba).getRange(M.cfg.amparo.faixa.split(':')[0]).offset(0, familia).setValue(valor);
   M.A.reset(); M.A.ctx.R53_REF_CACHE_ = {};
   M.A.ctx.r53SincronizarFamilias_(M.ss);

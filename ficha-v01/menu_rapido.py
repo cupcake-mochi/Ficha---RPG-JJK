@@ -93,13 +93,25 @@ def trocas(layout, tr, r0=None, guarda=frozenset()):
     cF = D.prox
     mf = lambda k, n: f"${fa.L(cF + k)}{n}"
     campos = ["classe", "nome", "pe", "forma", "resolve", "como"]
+    # 26/11/2026 (etapa 3 da versão rápida, pedido do Mizuki: "o menu rapido apresentar pelo menos o basico, como alcance,
+    # area, custo"): a caixa da Forma mostra a área e o alcance, e a descrição abre com o dano e a ação. As colunas da
+    # tabela continuam seis, nos mesmos nomes
+    def mostra(c, x):
+        """o que o menu mostra no campo c; x(k) é a célula da conta de feitiço na coluna k"""
+        if c == "forma":
+            return f'{x("forma")}&IF({x("alcance")}<>""," · "&{x("alcance")},"")'
+        if c == "como":
+            return (f'IF({x("dano")}<>"","Dano "&{x("dano")}&" · ","")&{x("acao")}'
+                    f'&IF({x("como")}<>"",CHAR(10)&{x("como")},"")')
+        return x(c)
     D.tabela("menu_feiticos", ["menu: feitiço", "lugar na conta"] + [f"menu: {k}" for k in campos],
              [[k + 1, (lambda n, k=k: f"=IFERROR(MATCH({k + 1},{FEIT('ordem')},0),0)")] +
-              [(lambda n, c=c: f'=IF({mf(1, n)}=0,"",INDEX({FEIT(c)},{mf(1, n)}))') for c in campos]
+              [(lambda n, c=c: f'=IF({mf(1, n)}=0,"",' + mostra(c, lambda k_: f"INDEX({FEIT(k_)},{mf(1, n)})") + ")") for c in campos]
               for k in range(CAP["feiticos"])])
     cL = D.prox
     D.tabela("menu_libs", ["menu: liberação"] + [f"menu da liberação: {k}" for k in campos],
-             [[i + 1] + [f'=IF({lin_lib("tem", i)}=0,"",{lin_lib(c, i)})' for c in campos] for i in range(fa.N_LIB)])
+             [[i + 1] + [f'=IF({lin_lib("tem", i)}=0,"",' + mostra(c, lambda k_, i=i: lin_lib(k_, i)) + ")" for c in campos]
+              for i in range(fa.N_LIB)])
     # a Técnica Máxima e o Domínio, em carta larga
     dom, maxc = R["dominio"], tr["H"]["maior classe"].replace(DA, "")
     deg = tr["H"]["degrau do domínio"].replace(DA, "")

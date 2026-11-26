@@ -34,7 +34,7 @@ def aplica(layout, tr):
         plano.append(delta)
         cell[1] = depois
 
-    for g in tr['contextos']:
+    for g in R.pesados(tr):
         if g['aba'] != aba or g['modo'] != 'Comum':
             continue
         row = g['linha']
@@ -90,6 +90,6 @@ def aplica(layout, tr):
             f'{acao}&" · "&precoexec)),{acao}&" · "&precoexec))'
         )
         mudar(aba, pos, antes[:i]+','+momento+antes[j:], g['id'])
-    if len(plano) != 108:
+    if len(plano) != 108 * sum(1 for g in R.pesados(tr) if g['aba'] == aba and g['modo'] == 'Comum') // 36:
         raise ValueError('Cobertura dos cartões de Tempo divergente')
     return plano

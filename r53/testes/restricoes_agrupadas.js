@@ -1,4 +1,5 @@
 'use strict';
+// 26/11/2026 (etapa 3 da versão rápida): só as linhas das invocações (47 a 250) têm montagem na DADOS_R53
 
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
@@ -11,7 +12,7 @@ const {norm} = require('../diagnostico-android/preparar_pratica_cotidiana');
 const {gerar} = require('../pratica_cotidiana_runtime');
 
 const alvos = p.formulas();
-assert.equal(alvos.length, 753);
+assert.equal(alvos.length, 612);
 assert.deepEqual([...new Set(alvos.map(d => d.c))], [89, 94, 104]);
 assert.ok(alvos.every(d => d.aba === 'DADOS_R53' && d.r !== 251));
 assert.throws(() => p.prepararCodigo('outro projeto'), /PR79/);
