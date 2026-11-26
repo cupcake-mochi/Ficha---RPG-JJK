@@ -1,7 +1,9 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),z=require('node:zlib');
 function gerar(){
- const dados={valores:require('./diagnostico-android/nivel_obtido_valores.json'),notas:require('./diagnostico-android/nivel_obtido_notas.json'),validacoes:require('./diagnostico-android/nivel_obtido_validacoes.json'),suporte:require('./diagnostico-android/nivel_obtido_suporte.json')};
+ // 26/11/2026 (etapa 4): os remendos guardam as linhas antigas da INVOCAÇÕES; o remapa leva pras linhas novas
+ const L=require('./remapa_etapa4').lista;
+ const dados={valores:L(require('./diagnostico-android/nivel_obtido_valores.json')),notas:L(require('./diagnostico-android/nivel_obtido_notas.json')),validacoes:L(require('./diagnostico-android/nivel_obtido_validacoes.json')),suporte:L(require('./diagnostico-android/nivel_obtido_suporte.json'))};
  const gzip=z.gzipSync(JSON.stringify(dados));gzip[9]=3;
  return `// GERADO por r53/nivel_obtido_runtime.js. AQ02: entradas preservadas.
 var R53_NIVEL_OBTIDO_CACHE_;

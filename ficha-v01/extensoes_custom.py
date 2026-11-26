@@ -10,9 +10,13 @@ from openpyxl.formula import Tokenizer
 from openpyxl.utils.cell import coordinate_to_tuple, get_column_letter as L
 from referencias_origem import mover as mover_origem
 
+import ficha_invocacoes as _iv
+
+# 26/11/2026 (etapa 4 da versão rápida): a ficha da invocação cresceu com a lista de perícias; o passo entre as fileiras
+# sai do ficha_invocacoes (era 198 fixo). A inserção continua na linha 43 de cada ficha (52 na primeira)
 INSERCOES = {'FICHA': [(92, 13), (103, 13)],
              'FICHA AMALDIÇOADA': [(39, 13)],
-             'INVOCAÇÕES': [(52 + 198*i, 13) for i in range(6)]}
+             'INVOCAÇÕES': [(_iv.L0 + 43 + _iv.PASSO_LIN*i, 13) for i in range(_iv.N_FILEIRAS)]}
 ORDEM = [0, 1, 5, 6, 7, 8, 2, 3, 4]
 
 

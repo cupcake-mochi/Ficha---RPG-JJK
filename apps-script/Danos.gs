@@ -31,7 +31,7 @@ var ABAS_DOS_DANOS = [
     "paleta_fixa":true,
     "caixas":[],
     "depois":"GLOSSÁRIO",
-    "geracao":"2d82a640f69a788c",
+    "geracao":"19b9d95922a5229e",
     "arquivo":"Danos.gs"
   }
 ];

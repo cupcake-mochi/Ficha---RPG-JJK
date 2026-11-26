@@ -1,7 +1,9 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),z=require('node:zlib');
 function gerar(){
- const dados={valores:require('./diagnostico-android/criacao_nivel_fixo_plano.json'),notas:require('./diagnostico-android/criacao_nivel_fixo_notas.json'),suporte:require('./diagnostico-android/criacao_nivel_fixo_suporte.json')};
+ // 26/11/2026 (etapa 4): os remendos guardam as linhas antigas da INVOCAÇÕES; o remapa leva pras linhas novas
+ const L=require('./remapa_etapa4').lista;
+ const dados={valores:L(require('./diagnostico-android/criacao_nivel_fixo_plano.json')),notas:L(require('./diagnostico-android/criacao_nivel_fixo_notas.json')),suporte:L(require('./diagnostico-android/criacao_nivel_fixo_suporte.json'))};
  const gzip=z.gzipSync(JSON.stringify(dados));gzip[9]=3;
  return `// GERADO por r53/criacao_nivel_fixo_runtime.js. Nível fabricado, sem alterar entradas.
 var R53_CRIACAO_CACHE_;

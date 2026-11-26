@@ -5,7 +5,8 @@
 // por dentro: 4,4 s no r53Editar_ relendo o Amparo (DADOS_R53_CATALOGO!X10:AJ10) e 4,3 s de espera depois do
 // salarioEditar_, que no modo fórmula só travava e dava flush. Sem os dois, 12,4 a 14,4 s.
 //
-// Confere: (A) o portador não lê o Amparo, e outra edição da CARTEIRA fora dos cartões ainda lê; (B) no modo fórmula
+// Confere: (A) o portador não lê o Amparo, e outra edição da CARTEIRA fora dos cartões ainda lê (26/11/2026, etapa 4: com o
+// editor R53 vazio e a DADOS_R53_CATALOGO fora da ficha, nenhuma edição lê mais o Amparo); (B) no modo fórmula
 // o portador não trava nem dá flush no salário, e fora do modo fórmula ainda trava.
 //
 // Uso: node r53/testes/portador_rapido.js [EditorR53.gs] [Salarios.gs]
@@ -36,12 +37,12 @@ const ok = (c, m) => { console.log((c ? 'ok   ' : 'FALHA ') + m); if (!c) falhas
   ok(editar(9, 15, 'Nome novo') === false && !leuAmparo(), 'portador (O9): não relê o Amparo');
   const fora = [[18, 37], [22, 37], [30, 3], [40, 20]].find(([r, c]) => livre(r, c) && !(r >= 9 && r <= 12 && c >= 15 && c <= 34));
   ok(!!fora, 'achou uma célula da CARTEIRA fora dos cartões e do portador');
-  if (fora) ok(editar(fora[0], fora[1], 'x') === false && leuAmparo(), 'outra célula da CARTEIRA (' + fora + '): ainda relê o Amparo');
+  if (fora) ok(editar(fora[0], fora[1], 'x') === false && !leuAmparo(), 'outra célula da CARTEIRA (' + fora + '): etapa 4, sem cartão no editor, não relê o Amparo');
   // Com a marca do atalho livre (Trilha ou Caminho mudou), o portador sincroniza: o r53LivreConferido_ apaga a marca.
   vm.runInContext("var R53_LIVRE_PROP_='r53_amparo_sujo';", A.ctx);
   ok(editar(9, 15, 'Nome novo') === false && !leuAmparo(), 'portador sem a marca do Amparo sujo: não relê');
   A.props.r53_amparo_sujo = '1';
-  ok(editar(9, 15, 'Nome novo') === false && leuAmparo(), 'portador com a marca do Amparo sujo: relê, como antes');
+  ok(editar(9, 15, 'Nome novo') === false && !leuAmparo(), 'portador com a marca do Amparo sujo: etapa 4, sem cartão no editor, também não relê');
   delete A.props.r53_amparo_sujo;
 }
 

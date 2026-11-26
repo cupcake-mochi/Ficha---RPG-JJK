@@ -9,10 +9,13 @@ const colunas = [89, 94, 138, 180]; // CK, CP, EH, FX
 // 26/11/2026 (etapa 3 da versão rápida): os cartões do personagem (linhas 2 a 46, e a 252 e a 253 da Prática) viraram de
 // preencher e não têm mais montagem na DADOS_R53. Ficam as linhas das invocações
 const pessoais = [...Array.from({length: 45}, (_, i) => i + 2), 252, 253];
-const linhas = Array.from({length: 204}, (_, i) => i + 47);
+// 26/11/2026 (etapa 4): as invocações também viraram de preencher. Não sobra linha com montagem na DADOS_R53
+const linhas = [];
 
 // 26/11/2026 (etapa 3): linhasAlvo deixa quem chama pular as linhas do personagem, que ficaram sem montagem
 function formulas(pasta = path.join(__dirname, '../apps-script'), colunasAlvo = colunas, linhasAlvo = linhas) {
+  // 26/11/2026 (etapa 4): sem linha com montagem, a DADOS_R53 saiu da ficha e o R53Dados.gs não é mais gerado
+  if (!linhasAlvo.length) return [];
   const fontes = fs.readdirSync(pasta).filter(n => /^R53Dados\d+\.gs$/.test(n));
   const alvos = new Map();
   for (const nome of fontes) {

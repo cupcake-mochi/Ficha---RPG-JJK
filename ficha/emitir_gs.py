@@ -453,9 +453,9 @@ SEPARADAS = {"Invocacoes.gs": ("ABAS_DA_INVOCACAO", ("INVOCAÇÕES", "DADOS_INVO
              "AptidoesPersonagem.gs": ("ABAS_PERSONAGEM_APTIDOES", ("DADOS_APTIDOES",)),
              "TalentosPersonagem.gs": ("ABAS_PERSONAGEM_TALENTOS", ("DADOS_TALENTOS",))}
 SEPARADAS['Entidades.gs'] = ('ABAS_DAS_ENTIDADES', ('DADOS_ENTIDADES',))
-SEPARADAS.update({'R53Dados.gs':('ABAS_R53_DADOS_',('DADOS_R53',)),
-                  'R53Catalogo.gs':('ABAS_R53_CATALOGO_',('DADOS_R53_CATALOGO',)),
-                  'R53Montagens.gs':('ABAS_R53_MONTAGENS_',('MONTAGENS',))})
+# 26/11/2026 (etapa 4): a DADOS_R53, a DADOS_R53_CATALOGO e a MONTAGENS saíram da ficha. Os arquivos delas, se ainda
+# estiverem na pasta como saída gerada, são retirados no fim do escrever().
+SEPARADAS_RETIRADAS = ('R53Dados.gs', 'R53Catalogo.gs', 'R53Montagens.gs')
 COMPLEMENTOS = {"Origens.gs": "VALORES_DAS_ORIGENS_",
                 "AnaliseFontes.gs": "FONTES_DA_ANALISE_",
                 "Pessoal.gs": "VALORES_CUSTOM_",
@@ -845,5 +845,10 @@ def escrever(wb, ordem, caixas=None, imgs=None, arte_dir=None, limpa=None, extra
     for arq in COMPLEMENTOS:
         path = os.path.join(os.path.dirname(SAIDA), arq)
         if arq not in complementos and arq not in fora and os.path.exists(path):
+            os.remove(path)
+    for arq in SEPARADAS_RETIRADAS:
+        path = os.path.join(os.path.dirname(SAIDA), arq)
+        if arq not in fora and arq not in complementos and os.path.exists(path) and \
+                open(path, encoding="utf-8").read(40).startswith("// GERADO POR ficha/emitir_gs.py"):
             os.remove(path)
     return SAIDA, celulas, len(arte)

@@ -205,6 +205,9 @@ function r53SincronizarFamilias_(ss) {
 }
 function r53Editar_(e) {
  R53_REF_CACHE_={};if(typeof R53_EDITOR_==='undefined'||R53_EDITOR_.esquema!==3||!e||!e.range)return false;
+ // 26/11/2026 (etapa 4): todo cartão é de preencher e a MONTAGENS, a DADOS_R53 e a DADOS_R53_CATALOGO saíram da ficha.
+ // Sem cartão no editor não há o que sincronizar, e o Amparo (DADOS_R53_CATALOGO) não existe mais para ser lido.
+ if(!R53_EDITOR_.contextos.length)return false;
  var range=e.range,owner=range.getSheet().getName(),ss=e.source||SpreadsheetApp.getActive();
  // Quem escreve na MONTAGENS muda versões que podem estar guardadas (r53LerVersao_).
  if(owner===R53_EDITOR_.storage){PropertiesService.getDocumentProperties().deleteProperty(R53_VERSOES_PROP_);return false;}

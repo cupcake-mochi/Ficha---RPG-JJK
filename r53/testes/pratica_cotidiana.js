@@ -1,4 +1,5 @@
 'use strict';
+// 26/11/2026 (etapa 4 da versão rápida): nenhuma linha tem mais montagem na DADOS_R53 (as invocações também saíram)
 const fs=require('node:fs'),vm=require('node:vm'),z=require('node:zlib'),assert=require('node:assert/strict'),crypto=require('node:crypto');
 const p=require('../diagnostico-android/preparar_pratica_cotidiana'),rt=require('../pratica_cotidiana_runtime'),{formulaLocal}=require('../diagnostico-android/preparar_pilha_5156');
 let checks=0;const t=f=>{f();checks++;},clone=x=>JSON.parse(JSON.stringify(x));
@@ -7,7 +8,7 @@ const c={};vm.runInNewContext(require('../../medidas/carregar-ficha').fontes(),c
 // classe0.7), viraram cartões de preencher e saíram do editor R53. Ficam só as 204 entidades das invocações. A parte
 // que refazia o histórico dos cartões do personagem (reverterEditor + hash) foi aposentada; o cartão novo é conferido
 // em cartao_preencher.js. O resto (dados da Prática, restauração em VM, atalho) continua valendo.
-const editor=c.R53_EDITOR_;t(()=>assert.equal(editor.contextos.length,204));
+const editor=c.R53_EDITOR_;t(()=>assert.equal(editor.contextos.length,0));
 t(()=>assert(Array.from(editor.contextos,g=>g.id).every(id=>id.startsWith('entidade.'))));
 /* aposentado em 26/11/2026 (ver nota acima):
 const conjuracao=require('../diagnostico-android/preparar_conjuracao_integridade');
@@ -45,8 +46,12 @@ let r67Conferidas=0;
 // nas chaves da ANALISE pro bot (18410–18481) saem da comparação literal. A contagem fixa avisa se a área crescer.
 const PRATICA_LEVE=[['FICHA AMALDIÇOADA',565,567],['DADOS_R53',252,253],['MONTAGENS',9467,9541],['ANALISE',18410,18481]];
 const naPraticaLeve=x=>{const r=+x.a1.replace(/^[A-Z]+/,'');return PRATICA_LEVE.some(([a,r1,r2])=>a===x.aba&&r1<=r&&r<=r2);};
-let leves=0;
+let leves=0,saiu=0;
+// Etapa 4 (26/11/2026): a MONTAGENS e a DADOS_R53 saíram da ficha. As células do plano nelas (que vale para as oficiais,
+// que ainda têm as duas abas) não têm onde ser conferidas no modelo novo; a contagem fixa avisa se o plano mudar.
+const SAIU=new Set(['MONTAGENS','DADOS_R53','DADOS_R53_CATALOGO']);
 for(const x of p.p.cells){
+ if(SAIU.has(x.aba)){saiu++;continue;}
  if(naPraticaLeve(x)){leves++;continue;}
  const delta=posterior.get(x.aba+'!'+x.a1);
  if(delta)t(()=>assert.equal(delta.antes,x.depois));
@@ -59,10 +64,11 @@ for(const x of p.p.cells){
  }
  t(()=>assert.equal(p.norm(v(x.aba,x.a1)),p.norm(esperado),x.aba+'!'+x.a1));
 }
-t(()=>assert.equal(r67Conferidas,0));t(()=>assert.equal(leves,839));
+t(()=>assert.equal(r67Conferidas,0));t(()=>assert.equal(leves,327));t(()=>assert.equal(saiu,512));
 // Defeito plantado (aposentado na etapa 3: a linha 252 não tem mais a conta montada):
 // t(()=>assert.notEqual(semMaxima(v('DADOS_R53','DG252').replace('(2*C252)','(3*C252)'),'252'),semMaxima(p.p.cells.find(x=>x.aba==='DADOS_R53'&&x.a1==='DG252').depois,'252')));
-t(()=>assert.equal(v('DADOS_R53','A251'),'r53.editor.gid'));
+// Etapa 4: a DADOS_R53 (com o r53.editor.gid da A251) saiu da ficha
+for(const n of SAIU)t(()=>assert(!indexes.has(n),n+' devia ter saído da ficha'));
 for(const g of editor.contextos.slice(249)){
  t(()=>assert.deepEqual(Object.keys(g.formulas).sort(),[g.cel.dano,g.cel.alcance].sort()));
  for(const [pos,formula]of Object.entries(g.formulas))t(()=>assert.equal(p.norm(v(g.aba,pos)),p.norm(formula)));
@@ -117,11 +123,12 @@ t(()=>assert.deepEqual(writes.map(w=>[w.r,w.c,w.h,w.w]),[[134,2,3,1]]));
 for(const ev of [[251,1,252,3],[252,1,253,183],[41,181,45,183],[41,182],[2,160,3,161]]){
  writes=[];t(()=>assert.equal(b.r53PraticaRestaurar_(event('DADOS_R53',...ev)),false));t(()=>assert.equal(writes.length,0,'DADOS_R53 '+ev));
 }
-for(const a1 of ['FY41','FD2','CZ252','CZ253'])t(()=>assert.equal(v('DADOS_R53',a1),null,'DADOS_R53!'+a1+' devia estar vazia'));
+// Etapa 4: a DADOS_R53 inteira saiu (conferido acima)
 const addr=rt.dados().find(x=>x[0]==='ANALISE'&&x[2]===3&&typeof x[3]==='string'&&x[3].startsWith("'"));writes=[];b.r53PraticaRestaurar_(event('ANALISE',addr[1],3));t(()=>assert.equal(writes[0].x[0][0].rich,"'"+addr[3]));
 const zero=rt.dados().find(x=>x[0]==='ANALISE'&&x[2]===2&&x[3]==='0');writes=[];b.r53PraticaRestaurar_(event('ANALISE',zero[1],2));t(()=>assert.equal(writes[0].x[0][0].rich,"'0"));
-t(()=>assert.equal(loads,2));t(()=>assert.equal(rt.gerar(),fs.readFileSync('apps-script/PraticaCotidiana.gs','utf8')));
+// etapa 4: sem montagem, só o pacote da ANALISE é descompactado
+t(()=>assert.equal(loads,1,"cargas: "+loads));t(()=>assert.equal(rt.gerar(),fs.readFileSync('apps-script/PraticaCotidiana.gs','utf8')));
 // Optional full historical model comparison, using a private baseline without publishing it.
 if(process.argv[2]){const old=JSON.parse(fs.readFileSync(process.argv[2]));for(const a of old){const cur=c.ABAS.find(b=>b.nome===a.nome),allowed=new Set(p.p.cells.filter(x=>x.aba===a.nome).map(x=>x.a1));for(const cell of a.vals){const a1=col(cell[1])+cell[0];if(!allowed.has(a1)&&!montagemAtual.has(a.nome+'!'+a1))t(()=>assert.equal(v(a.nome,a1),a.nome==='ANALISE'&&cell[1]===2&&cell[2]==="'0"?'0':cell[2],a.nome+'!'+a1));}}}
 function col(n){let s='';for(;n;n=Math.floor((n-1)/26))s=String.fromCharCode(65+(n-1)%26)+s;return s;}
-console.log(JSON.stringify({resultado:'OK',verificacoes:checks,contextosEntidades:204,celulasLevesForaDaComparacao:839,escopo:'estrutura, transporte e restauração em VM; Google separado'}));
+console.log(JSON.stringify({resultado:'OK',verificacoes:checks,contextosEntidades:editor.contextos.length,celulasLevesForaDaComparacao:leves,celulasDeAbasQueSairam:saiu,escopo:'estrutura, transporte e restauração em VM; Google separado'}));

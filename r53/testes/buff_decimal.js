@@ -5,7 +5,8 @@ const path = require('node:path');
 const { ler, expandir } = require('./expansao_domada_modelo');
 const p = require('../diagnostico-android/preparar_buff_decimal');
 const { formulaLocal } = require('../diagnostico-android/preparar_pilha_5156');
-const delta = require('../diagnostico-android/buff_decimal_delta.json');
+// 26/11/2026 (etapa 4): as linhas da INVOCAÇÕES do delta passam pela régua nova antes de comparar com o modelo.
+const delta = require('../remapa_etapa4').lista(require('../diagnostico-android/buff_decimal_delta.json'));
 
 // O plano: 206 fórmulas, só a troca do leitor, nas abas esperadas.
 const porAba = {};

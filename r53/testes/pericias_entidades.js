@@ -41,7 +41,10 @@ for (const locale of ['pt_BR', 'en_US']) {
 const modelo = ler('apps-script');
 const invocacoes = expandir(modelo.find(a => a.nome === 'DADOS_INVOC'));
 const notas = new Map(modelo.find(a => a.nome === 'INVOCAÇÕES').notas);
-for (const d of delta) {
+// 26/11/2026 (etapa 4 da versão rápida): a comparação com o gerador ficou APOSENTADA. As perícias da invocação viraram a
+// lista inteira com a caixinha Treinada (sai o jeito dos 4 a 7 menus que este remendo das oficiais conferia); quem confere
+// a lista nova é o cartao_preencher_invocacao.js. O remendo continua valendo pras oficiais (a parte de cima).
+if (false) for (const d of delta) {
   const { r, c } = coordenadas({ addr: d.a1 });
   const atual = d.campo === 'nota' ? notas.get(d.a1) : invocacoes.get(r + ':' + c);
   assert.equal(atual, d.depois, 'Geração e plano divergem em ' + chave(d));

@@ -19,15 +19,18 @@ for(const locale of ['pt_BR','en_US']){
  const event=(r,rr,col,cc,name='DADOS_INVOC')=>({range:{getRow:()=>r,getLastRow:()=>rr,getColumn:()=>col,getLastColumn:()=>cc,getSheet:()=>({getName:()=>name,getParent:()=>({getSpreadsheetLocale:()=>locale}),getRange:(r,c)=>({setValues:rows=>rows.forEach((row,i)=>writes.push([r+i,c,row[0]]))})})}});
  for(const [r,rr,col,cc,n]of [[2,13,112,112,12],[2,3,111,113,6],[12,13,111,113,6],[2,3,214,216,6],[12,13,270,271,4],[2,13,215,215,12],[2,13,271,271,12]]){
   writes.length=0;assert.equal(c.r53NivelRestaurar_(event(r,rr,col,cc)),true);assert.equal(writes.length,n);
-  for(const d of p.plano().filter(d=>d.r>=r&&d.r<=rr&&d.c>=col&&d.c<=cc))assert.ok(writes.some(x=>x[0]===d.r&&x[1]===d.c&&x[2]===local(d.depois)));
+  // 26/11/2026 (etapa 4): o runtime grava as fórmulas já com as linhas novas da INVOCAÇÕES (remapa_etapa4)
+  for(const d of p.plano().filter(d=>d.r>=r&&d.r<=rr&&d.c>=col&&d.c<=cc))assert.ok(writes.some(x=>x[0]===d.r&&x[1]===d.c&&x[2]===local(require('../remapa_etapa4').item(d).depois)));
  }
  writes.length=0;assert.equal(c.r53NivelRestaurar_(event(2,3,110,113)),false);assert.equal(writes.length,6);
  writes.length=0;assert.equal(c.r53NivelRestaurar_(event(2,13,112,112,'INVOCAÇÕES')),false);assert.equal(writes.length,0);
  writes.length=0;assert.equal(c.r53NivelRestaurar_(event(2,13,171,171)),false);assert.equal(writes.length,0,'FO permanece no controlador da PR89');
- const fixture=()=>[{nome:'DADOS_INVOC',vals:p.plano().map(d=>[d.r,d.c,d.antes,7])},{nome:'INVOCAÇÕES',vals:[],dv:[],notas:p.notas().map(d=>[d.a1,d.antes])}];
- const tabs=fixture();c.r53AjustarNivel_(tabs);for(const d of p.plano())assert.equal(tabs[0].vals.find(v=>v[0]===d.r&&v[1]===d.c)[2],d.depois);
+ // 26/11/2026 (etapa 4): o código instalado pelo construir() recebe os remendos com as linhas novas da INVOCAÇÕES
+ const N=require('../remapa_etapa4');
+ const fixture=()=>[{nome:'DADOS_INVOC',vals:N.lista(p.plano()).map(d=>[d.r,d.c,d.antes,7])},{nome:'INVOCAÇÕES',vals:[],dv:[],notas:N.lista(p.notas()).map(d=>[d.a1,d.antes])}];
+ const tabs=fixture();c.r53AjustarNivel_(tabs);for(const d of N.lista(p.plano()))assert.equal(tabs[0].vals.find(v=>v[0]===d.r&&v[1]===d.c)[2],d.depois);
  assert.equal(tabs[1].dv.length,12);const once=JSON.stringify(tabs);c.r53AjustarNivel_(tabs);assert.equal(JSON.stringify(tabs),once);
- for(const mutate of [a=>a[0].vals[0][2]='divergente',a=>a[0].vals.push(a[0].vals[0]),a=>a[1].notas[1][1]='divergente',a=>a[1].dv.push([p.validacoes()[11].a1,'"outro menu"'])]){
+ for(const mutate of [a=>a[0].vals[0][2]='divergente',a=>a[0].vals.push(a[0].vals[0]),a=>a[1].notas[1][1]='divergente',a=>a[1].dv.push([N.lista(p.validacoes())[11].a1,'"outro menu"'])]){
   const bad=fixture();mutate(bad);const before=JSON.stringify(bad);assert.throws(()=>c.r53AjustarNivel_(bad));assert.equal(JSON.stringify(bad),before,'Recusa atômica');
  }
 }

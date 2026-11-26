@@ -38,6 +38,8 @@ def fatiar_linhas(vals,limite=LIMITE):
 def suplementos(layout):
  tabs={a['nome']:a for a in layout['abas']};out={}
  for kind,name in ABAS.items():
+  # 26/11/2026 (etapa 4): a DADOS_R53, a DADOS_R53_CATALOGO e a MONTAGENS saíram da ficha
+  if name not in tabs:continue
   a=tabs[name]
   for i,(r1,r2,_) in enumerate(fatiar_linhas(valores_transporte(a)),1):out[f'R53{kind}{i}.gs']=(name,1,a['colunas'],r1,r2)
  a=tabs['ANALISE'];rows={coordinate_to_tuple(c[0])[0] for c in a['celulas'] if c[0].startswith('A') and isinstance(c[1],str) and c[1].startswith('r53.')}

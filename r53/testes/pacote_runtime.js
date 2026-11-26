@@ -1,5 +1,5 @@
 'use strict';
-// 26/11/2026 (etapa 3 da versão rápida): só as 204 entidades ficam no editor R53; os 47 cartões do personagem saíram
+// 26/11/2026 (etapa 4): o editor R53 ficou vazio (as invocações também saíram). Etapa 3: só as 204 entidades ficavam no editor R53; os 47 cartões do personagem saíram
 const fs=require('fs'),path=require('path'),vm=require('vm'),z=require('zlib'),crypto=require('crypto'),assert=require('assert');
 const root=path.resolve(__dirname,'../..'),out=path.join(root,'r53/saidas/pacote-script');
 const m=JSON.parse(fs.readFileSync(path.join(out,'manifesto.json')));
@@ -11,10 +11,10 @@ let bundle=context();for(const name of Object.keys(m.arquivos))vm.runInContext(f
 // Prova de autonomia antes de carregar qualquer arquivo legado.
 let standalone=vm.runInContext('r53Modulo_().__estado()',bundle);
 assert.strictEqual(hash(standalone.abas),expected);assert.strictEqual(standalone.geracao,gen);
-assert.deepStrictEqual(Array.from(standalone.sobras),[]);assert.strictEqual(standalone.editor.contextos.length,204);
+assert.deepStrictEqual(Array.from(standalone.sobras),[]);assert.strictEqual(standalone.editor.contextos.length,0);
 for(const name of m.geracao_arquivos.filter(n=>!m.arquivos[n]))vm.runInContext(fs.readFileSync(path.join(root,'apps-script',name),'utf8'),bundle);
 let state=vm.runInContext('r53Modulo_().__estado()',bundle);
-assert.strictEqual(hash(state.abas),expected);assert.strictEqual(state.geracao,gen);assert.deepStrictEqual(Array.from(state.sobras),[]);assert.strictEqual(state.editor.contextos.length,204);
+assert.strictEqual(hash(state.abas),expected);assert.strictEqual(state.geracao,gen);assert.deepStrictEqual(Array.from(state.sobras),[]);assert.strictEqual(state.editor.contextos.length,0);
 for(const name of m.entradas_publicas)assert.strictEqual(vm.runInContext('typeof '+name,bundle),'function');
 assert.strictEqual(vm.runInContext('r53Modulo_()===r53Modulo_()',bundle),true);
 // Um clique comum não carrega as tabelas; os dois comportamentos originais

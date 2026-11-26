@@ -5,7 +5,11 @@ const {criaSheets}=require('../../medidas/sheets-de-mentira'),{fontes}=require('
 const logs=[],{ctx,ss}=criaSheets(fontes(),fs.readFileSync('apps-script/Codigo.gs','utf8'),{console:{log:s=>logs.push(s)}});
 for(const s of ctx.ABAS){const a=ss.insertSheet(s.nome);if(s.cols>26)a.insertColumnsAfter(26,s.cols-26);if(s.rows>1000)a.insertRowsAfter(1000,s.rows-1000);}
 for(const n of ['MONTAGENS','DADOS_R53'])if(!ss.getSheetByName(n))ss.insertSheet(n);
-vm.runInContext(fs.readFileSync('r53/atalho_livre.gs','utf8'),ctx);
+// 26/11/2026 (etapa 4): o atalho_livre.gs é o das oficiais (linhas antigas da INVOCAÇÕES) e só vai ser regerado na etapa 6;
+// aqui ele roda contra o modelo novo, então as âncoras TEMP das invocações passam pela régua nova (o atalho_livre.js já faz isso).
+const {linha:linhaNova}=require('../remapa_etapa4');
+const atalhoGs=fs.readFileSync('r53/atalho_livre.gs','utf8').replace(/^(var R53_LIVRE_TEMP_INVOC_=)(.*);$/m,(m,v,j)=>v+JSON.stringify(JSON.parse(j).map(([r,c,r2,c2])=>[linhaNova(r),c,linhaNova(r2),c2]))+';');
+vm.runInContext(atalhoGs,ctx);
 ctx.r53LivreValido_=()=>true;
 let checks=0;const eq=(a,b)=>{assert.deepEqual(a,b);checks++;};
 const ficha=ss.getSheetByName('FICHA'),inv=ss.getSheetByName('INVOCAÇÕES');
@@ -119,7 +123,7 @@ for(const a of [0,5,20,''])for(const m of [0,20])for(const t of [0,3])for(const 
 }
 const engine=fs.readFileSync('r53/recursos_delta.gs','utf8'),codigo=fs.readFileSync('apps-script/Codigo.gs','utf8');
 eq(codigo.split(engine).length,2);
-const gs=fs.readFileSync('r53/atalho_livre.gs','utf8');eq(gs.split(engine.replace('function r53DeltaExecutar_(', 'function r53LivreDeltaExecutar_(')).length,2);
+const gs=atalhoGs;eq(gs.split(engine.replace('function r53DeltaExecutar_(', 'function r53LivreDeltaExecutar_(')).length,2);
 const g=require('../atalho_livre'),pega=n=>JSON.parse(gs.match(new RegExp('^var '+n+'=(.*);$','m'))[1]);
 eq(g.fonte(pega('R53_LIVRE_'),...pega('R53_LIVRE_HASHES_'),pega('R53_LIVRE_GATILHOS_'),pega('R53_LIVRE_MARCAS_'),{caixas:pega('R53_LIVRE_DELTA_'),passo:gs.match(/function r53LivrePasso_\([\s\S]*?\n}/)[0]}),gs);
 console.log(JSON.stringify({resultado:'OK',verificacoes:checks,rotas:casos.length,escopo:'onEdit completo e dispatcher rápido simulados; não nativo'}));

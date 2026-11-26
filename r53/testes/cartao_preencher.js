@@ -34,9 +34,9 @@ const caixinha = a1 => { const [r, k] = rc(a1); return FA.caixas.some(([cc, rr, 
 let n = 0;
 const ok = (cond, msg) => { assert.ok(cond, msg); n++; };
 
-// 1. o personagem saiu da montagem: no editor R53 só ficam as entidades
+// 1. o personagem saiu da montagem (etapa 3), e as invocações também (etapa 4): o editor R53 ficou vazio
 ok(Array.from(c.R53_EDITOR_.contextos, g => g.id).every(id => id.startsWith('entidade.')), 'sobrou cartão do personagem no editor R53');
-ok(c.R53_EDITOR_.contextos.length === 204, 'o editor R53 devia ter as 204 entidades');
+ok(c.R53_EDITOR_.contextos.length === 0, 'o editor R53 devia estar vazio');
 
 // 2. a conta leve: linha 2 a 37 são os feitiços, 38 a 40 as Liberações
 for (let r = 2; r <= 40; r++) {

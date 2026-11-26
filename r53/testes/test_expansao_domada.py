@@ -8,7 +8,10 @@ import expansao_domada as E
 class ExpansaoDomada(unittest.TestCase):
     def test_formulas_e_limites_do_contrato(self):
         for row in range(2, 14):
-            formulas = E.formulas(row, [f"'INVOCAÇÕES'!P{n}" for n in range(1, 9)], '$BN$2:$BN$6')
+            nomes = [f"'INVOCAÇÕES'!P{n}" for n in range(1, 9)]
+            formulas = E.formulas(row, nomes, '$BN$2:$BN$6')
+            # 26/11/2026 (etapa 4): o cartão é de preencher; a contagem soma as oito caixas de nome (era a DADOS_R53)
+            caixas = '(' + '+'.join(f'N(LEN({n}&"")>0)' for n in nomes) + ')'
             self.assertEqual(set(formulas), {'IE', 'JH', 'JJ'})
             for formula in formulas.values():
                 quoted, balance = False, 0
@@ -28,7 +31,8 @@ class ExpansaoDomada(unittest.TestCase):
             self.assertIn('tipo custom: conferir permissão', formulas['JJ'])
             self.assertIn(f'6*$FP{row}&"/"&7*$FP{row}', formulas['JH'])
             for campo in ('IE', 'JJ'):
-                self.assertIn(E.contagem(row), formulas[campo])
+                self.assertIn(caixas, formulas[campo])
+                self.assertNotIn('DADOS_R53', formulas[campo])
                 self.assertNotIn('"?*"', formulas[campo])
 
     def test_delta_contagem_restrito(self):
@@ -38,8 +42,10 @@ class ExpansaoDomada(unittest.TestCase):
             deltas = E.plano_contagem(plano, anterior)
             self.assertEqual(len(deltas), 24)
             for d in deltas:
-                self.assertEqual(d['antes'].replace(E.contagem(d['r'], anterior), E.contagem(d['r'])), d['depois'])
-                self.assertIn('LEN(FILTER(', d['depois'])
+                # 26/11/2026 (etapa 4): o "depois" conta as caixas de nome; o "antes" segue o critério antigo
+                caixas = '(' + '+'.join(f'N(LEN(P{i}&"")>0)' for i in range(8)) + ')'
+                self.assertEqual(d['antes'].replace(E.contagem(d['r'], anterior), caixas), d['depois'])
+                self.assertNotIn('DADOS_R53', d['depois'])
         with self.assertRaises(ValueError):
             E.plano_contagem(plano[:-1])
         with self.assertRaises(ValueError):
