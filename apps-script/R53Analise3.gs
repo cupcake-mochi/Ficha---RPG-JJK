@@ -253,7 +253,7 @@ var VALORES_R53_ANALISE_3_ = [
       [17289,2,"=IF('MONTAGENS'!F2135,\"[\"&IF('MONTAGENS'!F2134=INT('MONTAGENS'!F2134),TEXT('MONTAGENS'!F2134,\"0\"),SUBSTITUTE(TEXT('MONTAGENS'!F2134,\"0.###############\"),\",\",\".\"))&\",\"&TEXTJOIN(\",\",FALSE,MAP('MONTAGENS'!F2135:F2167,LAMBDA(item,IF(ISLOGICAL(item),IF(item,\"true\",\"false\"),IF(ISNUMBER(item),IF(item=INT(item),TEXT(item,\"0\"),SUBSTITUTE(TEXT(item,\"0.###############\"),\",\",\".\")),CHAR(34)&SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(item&\"\",CHAR(92),CHAR(92)&CHAR(92)),CHAR(34),CHAR(92)&CHAR(34)),CHAR(10),CHAR(92)&\"n\"),CHAR(13),CHAR(92)&\"r\"),CHAR(9),CHAR(92)&\"t\")&CHAR(34))))))&\"]\",\"\")",0],[17289,3,"=\"'MONTAGENS'!F2134\"",0],[17289,4,"entrada",0]
     ],
     "notas":[],
-    "geracao":"02992f266a7fed4c",
+    "geracao":"2d82a640f69a788c",
     "arquivo":"R53Analise3.gs"
   }
 ];

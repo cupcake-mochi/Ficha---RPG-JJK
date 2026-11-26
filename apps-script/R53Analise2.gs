@@ -234,7 +234,7 @@ var VALORES_R53_ANALISE_2_ = [
       [14572,4,"entrada",0],[14573,1,"r53.entidade.11.esp.5.tr_dano",0],[14573,2,"='DADOS_R53'!AW183&\"\"",0],[14573,3,"=\"'DADOS_R53'!AW183\"",0],[14573,4,"entrada",0],[14574,1,"r53.entidade.11.esp.5.tr_controle",0],[14574,2,"='DADOS_R53'!AX183&\"\"",0],[14574,3,"=\"'DADOS_R53'!AX183\"",0],[14574,4,"entrada",0],[14575,1,"r53.entidade.11.esp.5.dependencias",0],[14575,2,"='DADOS_R53'!AD183&\"\"",0],[14575,3,"=\"'DADOS_R53'!AD183\"",0],[14575,4,"entrada",0],[14576,1,"r53.entidade.11.esp.5.execucao",0],[14576,2,"='DADOS_R53'!AE183&\"\"",0],[14576,3,"=\"'DADOS_R53'!AE183\"",0],[14576,4,"entrada",0],[14577,1,"r53.entidade.11.esp.5.origem_permissao",0],[14577,2,"='DADOS_R53'!AJ183&\"\"",0],[14577,3,"=\"'DADOS_R53'!AJ183\"",0],[14577,4,"entrada",0],[14578,1,"r53.entidade.11.esp.5.orcamento",0],[14578,2,"='DADOS_R53'!BL183&\"\"",0],[14578,3,"=\"'DADOS_R53'!BL183\"",0],[14578,4,"resultado",0],[14579,1,"r53.entidade.11.esp.5.base_funcoes",0],[14579,2,"='DADOS_R53'!CV183&\"\"",0],[14579,3,"=\"'DADOS_R53'!CV183\"",0],[14579,4,"resultado",0],[14580,1,"r53.entidade.11.esp.5.custo_forma",0],[14580,2,"='DADOS_R53'!CW183&\"\"",0],[14580,3,"=\"'DADOS_R53'!CW183\"",0],[14580,4,"resultado",0],[14581,1,"r53.entidade.11.esp.5.melhorias_pagas",0],[14581,2,"='DADOS_R53'!CX183&\"\"",0],[14581,3,"=\"'DADOS_R53'!CX183\"",0],[14581,4,"resultado",0]
     ],
     "notas":[],
-    "geracao":"02992f266a7fed4c",
+    "geracao":"2d82a640f69a788c",
     "arquivo":"R53Analise2.gs"
   }
 ];

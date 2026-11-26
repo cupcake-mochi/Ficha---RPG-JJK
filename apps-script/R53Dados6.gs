@@ -337,7 +337,7 @@ var VALORES_R53_DADOS_6_ = [
       [137,183,"=TEXTJOIN(\" · \",TRUE,TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$137<>0,'DADOS_R53'!$AS$137<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$5141:$I$5141,1,MATCH('DADOS_R53'!$C$137,'MONTAGENS'!$B$5136:$I$5136,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AP178),'INVOCAÇÕES'!AP178>0))),IF(NOT('DADOS_R53'!$AS$137<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$137<>0,'DADOS_R53'!$AS$137<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$5143:$I$5143,1,MATCH('DADOS_R53'!$C$137,'MONTAGENS'!$B$5136:$I$5136,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AQ178),'INVOCAÇÕES'!AQ178>0))),IF(NOT('DADOS_R53'!$AS$137<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\")),'DADOS_INVOC'!$DD$23)",0]
     ],
     "notas":[],
-    "geracao":"02992f266a7fed4c",
+    "geracao":"2d82a640f69a788c",
     "arquivo":"R53Dados6.gs"
   }
 ];

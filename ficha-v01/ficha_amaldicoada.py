@@ -136,6 +136,10 @@ FORMA_INICIAL = "Projétil"
 # as mesmas cinco que a conta montada escrevia; o alcance é um menu com a escada de alcance do livro
 ESCADA_ALCANCE = "@escada_alcance"
 ACOES_DO_FEITICO = ("Padrão", "Bônus", "Reação", "Rodada inteira", "Padrão +1 turno", "Bônus +1 turno", "Rodada +1 turno")
+# 26/11/2026: o menu de peso ao lado de cada Melhoria e Restrição do cartão de preencher. A ordem das Melhorias é a das
+# colunas da tabela de preços da Classe (Leve, Média, Pesada e as três com o desconto de Família Livre)
+PESOS_MELHORIA = ("Leve", "Média", "Pesada", "Leve · Livre", "Média · Livre", "Pesada · Livre")
+PESOS_RESTRICAO = ("Leve", "Média")
 NEUTRA, LIVRE, FECHADA = "Neutra", "Livre", "Fechada"
 # 10/10/2026 (B45): as formas de pacto que ocupam vaga saem do tecnica-do-livro.json (o permanente e o de restrição);
 # só o permanente precisa da vaga: o de restrição, "com permissão do mestre, pode existir mesmo sem vaga"
@@ -804,10 +808,15 @@ def trocas(layout, CAT=None, TEC=None):
         o["tem"] = f'=IF({P("nome")}<>"",1,0)'
         o["lf"] = f"=IFERROR(MATCH({forma},{forma_col(0)},0),0)"
         o["k0"], o["x0"] = "=" + da_forma(3), "=" + da_forma(4)
+        # 26/11/2026 (pedido dele): ao lado de cada peça o jogador escolhe o peso num menu, e a ficha tira o preço (ou a
+        # devolução) da tabela da Classe. O nome fica livre: peça custom ou nome escrito diferente não dá erro
         for i in range(1, N_MEL + 1):
-            o[f"k{i}"] = f"=N({_A(cel['preco'][i - 1], AM)})"          # o preço que o jogador escreveu
+            peso = _A(cel['preco'][i - 1], AM)
+            o[f"k{i}"] = "=" + "".join(f'IF({peso}="{p}",INDEX({PRECOS},{Cc},{j}),' for j, p in enumerate(PESOS_MELHORIA, 1)) + \
+                "0" + ")" * len(PESOS_MELHORIA)
         for i in range(1, N_RES + 1):
-            o[f"c{i}"] = f"=N({_A(cel['dev'][i - 1], AM)})"            # o que a Restrição devolve, escrito por ele
+            peso = _A(cel['dev'][i - 1], AM)
+            o[f"c{i}"] = f'=IF({peso}="Leve",ROUNDUP({Cc}/2,0),IF({peso}="Média",{Cc},0))'
         o["emb"], o["tp"], o["tr"] = "=" + da_forma(5), "=" + da_forma(6), "=" + da_forma(8)
         o["lg"] = f"=IF({_A(cel['ines'], AM)}=TRUE,1,0)"               # a caixinha Inescapável
         o["mr"] = f"=IF({_A(cel['cert'], AM)}=TRUE,1,0)"               # a caixinha Certeiro
@@ -849,8 +858,8 @@ def trocas(layout, CAT=None, TEC=None):
         avisos = [
             _se(f'{P("dv0")}>2*{Cc}', f'"A devolução parou no teto de "&2*{Cc}'),
             _se(f'{P("perde")}>0', f'"Devolução perdida: "&{P("perde")}&IF({P("perde")}>1," pontos"," ponto")&" sem Melhoria para pagar"'),
-            _se(f'{P("ct")}>0', f'{P("ct")}&IF({P("ct")}>1," Melhorias sem preço"," Melhoria sem preço")'),
-            _se(f'{P("ptr")}>0', f'{P("ptr")}&IF({P("ptr")}>1," Restrições sem devolução"," Restrição sem devolução")'),
+            _se(f'{P("ct")}>0', f'{P("ct")}&IF({P("ct")}>1," Melhorias sem peso"," Melhoria sem peso")'),
+            _se(f'{P("ptr")}>0', f'{P("ptr")}&IF({P("ptr")}>1," Restrições sem peso"," Restrição sem peso")'),
         ]
         o["avisos"] = f'=IF({P("tem")}=0,"",TEXTJOIN(" · ",TRUE,{",".join(avisos)}))'
         o["na"] = "=" + conta_txt(P("avisos"))
@@ -1101,10 +1110,10 @@ def _cols_dos_saltos():
 NOTAS = {
     "nome_feitico": "Dê um nome ao feitiço: a ficha só calcula a carta e só conta o espaço de feitiço de quem tem nome.",
     "classe": "A Classe do feitiço. Ela define os pontos (3 × Classe), o PE e quantas Melhorias cabem.",
-    "melhorias": "Escreva uma Melhoria por caixa e o preço dela ao lado. As Classes 1 e 2 aceitam 2 Melhorias, a 3 e a 4 "
+    "melhorias": "Escreva uma Melhoria por caixa e escolha o peso dela ao lado. As Classes 1 e 2 aceitam 2 Melhorias, a 3 e a 4 "
                  "aceitam 3, e da 5 em diante 4: a linha LIMITE mostra quantas cabem. A Forma não conta no limite. Família "
                  "Livre sai metade da Classe mais barata, e Família Fechada não entra.",
-    "restricoes": "Até duas, uma por caixa, com o que ela devolve ao lado. Restrição paga Melhorias, nunca a Forma: o que "
+    "restricoes": "Até duas, uma por caixa, com o peso ao lado. Restrição paga Melhorias, nunca a Forma: o que "
                   "passar do gasto em Melhorias some.",
     # 26/11/2026 (etapa 3 da versão rápida): as caixas do cartão de preencher
     "dano_feitico": "Escreva o dano, a cura ou os PV temporários do feitiço, por exemplo 4d8. A CONTA mostra quantos pontos "
@@ -1113,14 +1122,15 @@ NOTAS = {
             "inteira, e Carregar soma um turno).",
     "alcance_feitico": "O alcance do feitiço. Em branco, vale o alcance base da Forma na Classe, que aparece na CONTA. Longe e "
                        "Muito Longe sobem degraus na escada.",
-    "preco": "O preço da Melhoria em pontos, na tabela PREÇOS DA acima: Leve, Média ou Pesada, na Classe do feitiço.",
-    "devolve": "Quantos pontos a Restrição devolve: a Leve devolve metade da Classe (para cima), a Média devolve a Classe. A "
+    "preco": "O peso da Melhoria: Leve, Média ou Pesada (com · Livre quando ela é de uma Família Livre). A ficha tira o "
+             "preço da tabela da Classe do feitiço.",
+    "devolve": "O peso da Restrição: a Leve devolve metade da Classe (para cima), a Média devolve a Classe. A "
                "devolução para em 2 × Classe.",
     "conta": "3 × Classe, menos o preço da Forma e das Melhorias, mais a devolução das Restrições (e mais a Classe, na "
              "Liberação Máxima). O que sobra são os pontos do feitiço: cada um vira 1d8 de dano, 1d8 de cura ou 3 PV "
              "temporários. O teto é 4 × Classe dados.",
     "marcas": "Marque Inescapável ou Certeiro quando o feitiço tiver essa Melhoria (escreva ela também numa caixa de Melhoria, "
-              "com o preço). Inescapável resolve Automático e não aceita outra peça; Certeiro resolve TR para metade.",
+              "com o peso). Inescapável resolve Automático e não aceita outra peça; Certeiro resolve TR para metade.",
     "ampliar": "O mesmo feitiço lançado numa Classe maior, até a maior que o nível liberou. A conta inteira é refeita com os "
                "números da Classe nova.",
     "nome_tecnica": "Vem da CARTEIRA: o nome da técnica é escrito no campo TÉCNICA DECLARADA de lá. Escrever aqui não "
@@ -1314,6 +1324,10 @@ def _carta_de_feitico(f, tr, r0, c0, i, lib, com_nota):
     # troca a marca ESCADA_ALCANCE pela faixa dela
     f.menu(cel["acao"], '"' + ",".join(ACOES_DO_FEITICO) + '"')
     f.menu(cel["alcance"], ESCADA_ALCANCE)
+    for k in range(N_MEL):
+        f.menu(cel["preco"][k], '"' + ",".join(PESOS_MELHORIA) + '"')
+    for k in range(N_RES):
+        f.menu(cel["dev"][k], '"' + ",".join(PESOS_RESTRICAO) + '"')
 
 
 def aba(layout, tr):

@@ -359,7 +359,7 @@ var VALORES_R53_ANALISE_4_ = [
       [17992,2,"=IF('MONTAGENS'!G6391,\"[\"&IF('MONTAGENS'!G6390=INT('MONTAGENS'!G6390),TEXT('MONTAGENS'!G6390,\"0\"),SUBSTITUTE(TEXT('MONTAGENS'!G6390,\"0.###############\"),\",\",\".\"))&\",\"&TEXTJOIN(\",\",FALSE,MAP('MONTAGENS'!G6391:G6423,LAMBDA(item,IF(ISLOGICAL(item),IF(item,\"true\",\"false\"),IF(ISNUMBER(item),IF(item=INT(item),TEXT(item,\"0\"),SUBSTITUTE(TEXT(item,\"0.###############\"),\",\",\".\")),CHAR(34)&SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(item&\"\",CHAR(92),CHAR(92)&CHAR(92)),CHAR(34),CHAR(92)&CHAR(34)),CHAR(10),CHAR(92)&\"n\"),CHAR(13),CHAR(92)&\"r\"),CHAR(9),CHAR(92)&\"t\")&CHAR(34))))))&\"]\",\"\")",0],[17992,3,"=\"'MONTAGENS'!G6390\"",0],[17992,4,"entrada",0],[17993,1,"r53.entidade.10.esp.5.versao.7",0],[17993,2,"=IF('MONTAGENS'!H6391,\"[\"&IF('MONTAGENS'!H6390=INT('MONTAGENS'!H6390),TEXT('MONTAGENS'!H6390,\"0\"),SUBSTITUTE(TEXT('MONTAGENS'!H6390,\"0.###############\"),\",\",\".\"))&\",\"&TEXTJOIN(\",\",FALSE,MAP('MONTAGENS'!H6391:H6423,LAMBDA(item,IF(ISLOGICAL(item),IF(item,\"true\",\"false\"),IF(ISNUMBER(item),IF(item=INT(item),TEXT(item,\"0\"),SUBSTITUTE(TEXT(item,\"0.###############\"),\",\",\".\")),CHAR(34)&SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(item&\"\",CHAR(92),CHAR(92)&CHAR(92)),CHAR(34),CHAR(92)&CHAR(34)),CHAR(10),CHAR(92)&\"n\"),CHAR(13),CHAR(92)&\"r\"),CHAR(9),CHAR(92)&\"t\")&CHAR(34))))))&\"]\",\"\")",0],[17993,3,"=\"'MONTAGENS'!H6390\"",0],[17993,4,"entrada",0]
     ],
     "notas":[],
-    "geracao":"02992f266a7fed4c",
+    "geracao":"2d82a640f69a788c",
     "arquivo":"R53Analise4.gs"
   }
 ];

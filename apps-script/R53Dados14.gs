@@ -178,7 +178,7 @@ var VALORES_R53_DADOS_14_ = [
       [250,182,"=\"\"",0],[250,183,"=TEXTJOIN(\" · \",TRUE,IF(AND('DADOS_INVOC'!DF13=\"Maldição domada\",'DADOS_INVOC'!FO13>=17),\"\",\"Trunfo exige maldição domada com técnica própria e nível de aquisição\"),IF(AND(NOT('DADOS_R53'!$AS$250<>\"Fechada\"),'INVOCAÇÕES'!AD1382=TRUE),\"Amparo Fechada: função de cura salva indisponível\",\"\"),IF(AND(NOT('DADOS_R53'!$AS$250<>\"Fechada\"),'INVOCAÇÕES'!AE1382=TRUE),\"Amparo Fechada: função de vida temporária salva indisponível\",\"\"))",0],[251,1,"r53.editor.gid",0],[251,2,0,0],[252,1,"classe0.6",0],[253,1,"classe0.7",0]
     ],
     "notas":[],
-    "geracao":"02992f266a7fed4c",
+    "geracao":"2d82a640f69a788c",
     "arquivo":"R53Dados14.gs"
   }
 ];

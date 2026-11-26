@@ -332,7 +332,7 @@ var VALORES_R53_DADOS_8_ = [
       [167,182,"=\"\"",0],[167,183,"=TEXTJOIN(\" · \",TRUE,IF(AND(NOT(FALSE),'INVOCAÇÕES'!AD803=TRUE),\"Função indisponível nesta modalidade: cura\",\"\"),IF(AND(NOT(FALSE),'INVOCAÇÕES'!AE803=TRUE),\"Função indisponível nesta modalidade: vida temporária\",\"\"))",0]
     ],
     "notas":[],
-    "geracao":"02992f266a7fed4c",
+    "geracao":"2d82a640f69a788c",
     "arquivo":"R53Dados8.gs"
   }
 ];

@@ -223,7 +223,7 @@ var VALORES_R53_ANALISE_1_ = [
       [11688,2,"=IF('DADOS_R53'!B100<>\"\",\"[\"&TEXTJOIN(\",\",FALSE,MAP('DADOS_R53'!A100:AX100,LAMBDA(item,IF(ISLOGICAL(item),IF(item,\"true\",\"false\"),IF(ISNUMBER(item),IF(item=INT(item),TEXT(item,\"0\"),SUBSTITUTE(TEXT(item,\"0.###############\"),\",\",\".\")),CHAR(34)&SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(item&\"\",CHAR(92),CHAR(92)&CHAR(92)),CHAR(34),CHAR(92)&CHAR(34)),CHAR(10),CHAR(92)&\"n\"),CHAR(13),CHAR(92)&\"r\"),CHAR(9),CHAR(92)&\"t\")&CHAR(34))))))&\"]\",\"\")",0],[11688,3,"=\"'DADOS_R53'!A100:AX100\"",0],[11688,4,"entrada",0],[11689,1,"r53.entidade.5.esp.2.classe",0],[11689,2,"='DADOS_R53'!C101&\"\"",0],[11689,3,"=\"'DADOS_R53'!C101\"",0],[11689,4,"entrada",0],[11690,1,"r53.entidade.5.esp.2.modalidade",0],[11690,2,"='DADOS_R53'!D101&\"\"",0],[11690,3,"=\"'DADOS_R53'!D101\"",0],[11690,4,"entrada",0],[11691,1,"r53.entidade.5.esp.2.forma",0],[11691,2,"='DADOS_R53'!G101&\"\"",0],[11691,3,"=\"'DADOS_R53'!G101\"",0],[11691,4,"entrada",0],[11692,1,"r53.entidade.5.esp.2.dano",0],[11692,2,"='DADOS_R53'!H101&\"\"",0],[11692,3,"=\"'DADOS_R53'!H101\"",0],[11692,4,"entrada",0],[11693,1,"r53.entidade.5.esp.2.cura",0],[11693,2,"='DADOS_R53'!I101&\"\"",0],[11693,3,"=\"'DADOS_R53'!I101\"",0],[11693,4,"entrada",0],[11694,1,"r53.entidade.5.esp.2.vt",0],[11694,2,"='DADOS_R53'!J101&\"\"",0],[11694,3,"=\"'DADOS_R53'!J101\"",0],[11694,4,"entrada",0]
     ],
     "notas":[],
-    "geracao":"02992f266a7fed4c",
+    "geracao":"2d82a640f69a788c",
     "arquivo":"R53Analise1.gs"
   }
 ];

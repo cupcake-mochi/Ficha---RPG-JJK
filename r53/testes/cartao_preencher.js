@@ -54,6 +54,18 @@ for (let r = 2; r <= 40; r++) {
   ok(/^"Padrão,Bônus,Reação,Rodada inteira,/.test(menus.get(acao) || ''), 'o menu da ação em ' + acao);
   ok(menus.get(alcance) === "'DADOS_FORMAS'!$GH$2:$GH$7", 'o menu do alcance em ' + alcance);
   ok(am('alcance', r).includes('$GX' + r + ','), 'em branco, o alcance não cai no alcance base, linha ' + r);
+  // 26/11/2026: o peso da peça vem de um menu, e o preço (ou a devolução) sai da tabela da Classe; o nome é livre
+  for (let i = 1; i <= 4; i++) {
+    const f = am('k' + i, r), a1 = naFicha(f);
+    ok(menus.get(a1) === '"Leve,Média,Pesada,Leve · Livre,Média · Livre,Pesada · Livre"', 'o menu de peso da Melhoria ' + i + ', linha ' + r);
+    ok(/IF\('FICHA AMALDIÇOADA'!\$[A-Z]+\$\d+="Pesada · Livre",INDEX\(/.test(f), 'o preço da Melhoria ' + i + ' não sai da tabela, linha ' + r);
+  }
+  for (let i = 1; i <= 2; i++) {
+    const f = am('c' + i, r);
+    ok(menus.get(naFicha(f)) === '"Leve,Média"', 'o menu de peso da Restrição ' + i + ', linha ' + r);
+    ok(f.includes('="Leve",ROUNDUP(') && f.includes('="Média",'), 'a devolução da Restrição ' + i + ', linha ' + r);
+  }
+  ok(!/(Melhoria|Restrição) não cadastrada/.test(am('erros', r)), 'o nome da peça ainda é conferido no catálogo, linha ' + r);
 }
 // a Liberação começa em Rodada inteira; o feitiço, em Padrão
 ok(valor(FA, naFicha(am('acao', 2))) === 'Padrão', 'a ação do feitiço 1');

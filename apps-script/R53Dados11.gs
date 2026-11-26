@@ -338,7 +338,7 @@ var VALORES_R53_DADOS_11_ = [
       [212,183,"=TEXTJOIN(\" · \",TRUE,IF(AND('DADOS_INVOC'!DF4=\"Maldição domada\",'DADOS_INVOC'!FO4>=20),\"\",\"Trunfo exige maldição domada com técnica própria e nível de aquisição\"),IF(AND(NOT(FALSE),OR(IFERROR(INDEX('MONTAGENS'!$B$7991:$F$7991,1,MATCH('DADOS_R53'!$C$212,'MONTAGENS'!$B$7986:$F$7986,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!Q670),'INVOCAÇÕES'!Q670>0))),\"Função indisponível nesta modalidade: cura\",\"\"),IF(AND(NOT('DADOS_R53'!$AS$212<>\"Fechada\"),OR(IFERROR(INDEX('MONTAGENS'!$B$7993:$F$7993,1,MATCH('DADOS_R53'!$C$212,'MONTAGENS'!$B$7986:$F$7986,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!R670),'INVOCAÇÕES'!R670>0))),\"Amparo Fechada: função de vida temporária salva indisponível\",\"\"))",0]
     ],
     "notas":[],
-    "geracao":"02992f266a7fed4c",
+    "geracao":"2d82a640f69a788c",
     "arquivo":"R53Dados11.gs"
   }
 ];

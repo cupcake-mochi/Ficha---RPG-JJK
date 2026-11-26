@@ -338,7 +338,7 @@ var VALORES_R53_DADOS_9_ = [
       [182,183,"=TEXTJOIN(\" · \",TRUE,IF(AND(NOT('DADOS_R53'!$AS$182<>\"Fechada\"),OR(IFERROR(INDEX('MONTAGENS'!$B$6851:$H$6851,1,MATCH('DADOS_R53'!$C$182,'MONTAGENS'!$B$6846:$H$6846,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AP1034),'INVOCAÇÕES'!AP1034>0))),\"Amparo Fechada: função de cura salva indisponível\",\"\"),IF(AND(NOT('DADOS_R53'!$AS$182<>\"Fechada\"),OR(IFERROR(INDEX('MONTAGENS'!$B$6853:$H$6853,1,MATCH('DADOS_R53'!$C$182,'MONTAGENS'!$B$6846:$H$6846,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AQ1034),'INVOCAÇÕES'!AQ1034>0))),\"Amparo Fechada: função de vida temporária salva indisponível\",\"\"))",0]
     ],
     "notas":[],
-    "geracao":"02992f266a7fed4c",
+    "geracao":"2d82a640f69a788c",
     "arquivo":"R53Dados9.gs"
   }
 ];
