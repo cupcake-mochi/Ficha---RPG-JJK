@@ -16,7 +16,17 @@ const rc = a1 => { const m = /^([A-Z]+)(\d+)$/.exec(a1); return [+m[2], col(m[1]
 const valor = (a, a1) => { const [r, k] = rc(a1); const v = a.vals.find(x => x[0] === r && x[1] === k); return v ? v[2] : undefined; };
 const cab = {};
 for (const v of AM.vals) if (v[0] === 1 && v[2]) cab[v[2]] = v[1];
-const am = (k, r) => { const v = AM.vals.find(x => x[0] === r && x[1] === cab[k]); return v ? String(v[2]) : ''; };
+// A DADOS_AM grava a fórmula só na 1ª linha do bloco e o `abaixo` ([r1, c1, r2, c2]) copia pra baixo, como o Google faz
+// ao colar: o número da linha sem `$` anda junto. Aqui a cópia é refeita do mesmo jeito.
+const desce = (f, d) => String(f).replace(/('[^']*'!|[A-Za-z_]+!)?(\$?)([A-Z]{1,3})(\$?)(\d+)\b/g,
+  (m, aba, sc, l, sr, n) => (aba || '') + sc + l + sr + (sr ? n : String(+n + d)));
+const am = (k, r) => {
+  const k2 = cab[k], v = AM.vals.find(x => x[0] === r && x[1] === k2);
+  if (v) return String(v[2]);
+  const b = (AM.abaixo || []).find(([r1, c1, r2, c2]) => r1 < r && r <= r2 && c1 <= k2 && k2 <= c2);
+  const topo = b && AM.vals.find(x => x[0] === b[0] && x[1] === k2);
+  return topo ? desce(topo[2], r - b[0]) : '';
+};
 const naFicha = f => { const m = /'FICHA AMALDIÇOADA'!\$([A-Z]+)\$(\d+)/.exec(f); return m && m[1] + m[2]; };
 const menus = new Map();
 for (const [onde, f] of FA.dv) for (const parte of String(onde).split(' ')) menus.set(parte.split(':')[0], f);
@@ -57,7 +67,10 @@ for (const v of AM.vals) if (v[1] === cab['caixa calculada'] && v[0] > 1) {
   calc[v[2]] = f ? String(f[2]) : '';
 }
 const rotulos = {};
-for (const v of FA.vals) if (['DANO', 'CURA', 'PV TEMP.', 'SEM DANO'].includes(v[2]) && v[0] > 300) rotulos[v[2]] = v;
+// "DANO" também é cabeçalho de outros cartões (linhas 322 e 565): vale só o rótulo com caixinha logo embaixo.
+const letraDe = k => String.fromCharCode(64 + k);
+for (const v of FA.vals) if (['DANO', 'CURA', 'PV TEMP.', 'SEM DANO'].includes(v[2]) && v[0] > 300 &&
+  caixinha(letraDe(v[1]) + (v[0] + 1))) rotulos[v[2]] = v;
 ok(Object.keys(rotulos).length === 4, 'o cartão da Máxima sem as quatro funções');
 for (const [rot, [r, k]] of Object.entries(rotulos)) {
   const letra = String.fromCharCode(64 + k), caixa = letra + (r + 1), mostra = letra + (r + 2);

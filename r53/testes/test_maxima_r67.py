@@ -167,8 +167,40 @@ def falhas_conta(formula):
     return falhas
 
 
+def falhas_conta_leve(montagem, kv, hm38, hm37):
+    """Etapa 3 da versão rápida (26/11/2026): o cartão da Máxima virou de preencher. A caixa MONTAGEM (R356) só aponta
+    para a DADOS_AM (KV42), que mostra "usados de total": HM38 (o preço das Melhorias escritas nas caixas da linha 359)
+    de HM37 (os pontos de montagem do nível). A regra da R67 continua: os pontos pagam só as Melhorias, então HM38 não
+    pode somar Forma, base nem devolução."""
+    falhas = []
+    if montagem != '=DADOS_AM!$KV$42':
+        falhas.append('a caixa MONTAGEM não aponta para DADOS_AM!KV42: ' + montagem)
+    for trecho in ('DADOS_AM!$HM$38&" de "&DADOS_AM!$HM$37', 'marque uma função'):
+        if trecho not in kv:
+            falhas.append(f'KV42 sem {trecho!r}')
+    if 'DADOS_MELHORIAS' not in hm38:
+        falhas.append('HM38 não soma as Melhorias')
+    for trecho in ('DADOS_FORMAS', 'CEILING(', '− base', '− Forma', 'devolução'):
+        if trecho in hm38:
+            falhas.append(f'HM38 ainda tem {trecho!r}')
+    if '$DH$2:$DJ$4,3' not in hm37:
+        falhas.append('HM37 não lê os pontos de montagem do nível')
+    return falhas
+
+
+def conta_leve():
+    """Como o gerador escreveu: R356 em R53Cartoes1.gs; KV42, HM38 e HM37 da DADOS_AM em Ficha.gs."""
+    import json
+    import re
+    cel = lambda texto, r, c: (lambda m: json.loads(m.group(1)) if m else '')(
+        re.search(r'\[%d,%d,("(?:[^"\\]|\\.)*")' % (r, c), texto))
+    cart = (REPO / 'apps-script' / 'R53Cartoes1.gs').read_text(encoding='utf-8')
+    ficha = (REPO / 'apps-script' / 'Ficha.gs').read_text(encoding='utf-8')
+    return cel(cart, 356, 18), cel(ficha, 42, 308), cel(ficha, 38, 221), cel(ficha, 37, 221)
+
+
 def conta_gerada():
-    """A fórmula de R356 da FICHA AMALDIÇOADA como o gerador escreveu no R53Cartoes1.gs, e a que o editor da Classe
+    """(Antes da etapa 3.) A fórmula de R356 da FICHA AMALDIÇOADA como o gerador escreveu no R53Cartoes1.gs, e a que o editor da Classe
     reescreve (EditorR53.gs); as duas precisam ser a mesma."""
     import json
     import re
@@ -183,15 +215,21 @@ def conta_gerada():
 
 
 class ContaMontagemMaxima(unittest.TestCase):
+    # 26/11/2026 (etapa 3 da versão rápida): a conta deixou de ser montada pelo editor R53 (o cartão da Máxima é de
+    # preencher). O teste confere a conta leve da DADOS_AM com a mesma regra; o editor não tem mais contexto da Máxima
+    # do personagem. A conferência antiga (falhas_conta, conta_gerada) fica no arquivo, sem rodar.
     def test_conta_gerada_sem_base_nem_forma(self):
-        no_cartao, editor = conta_gerada()
-        self.assertEqual(falhas_conta(no_cartao), [], no_cartao)
-        self.assertTrue(editor, 'o editor não tem a conta da Máxima')
-        for f in editor:
-            self.assertEqual(f, no_cartao, 'o editor reescreve a conta diferente do cartão')
+        montagem, kv, hm38, hm37 = conta_leve()
+        self.assertEqual(falhas_conta_leve(montagem, kv, hm38, hm37), [], (montagem, kv[:200], hm38[:200]))
+        _, editor = conta_gerada()
+        self.assertEqual(editor, [], 'o editor R53 voltou a reescrever a conta da Máxima do personagem')
 
     def test_defeito_plantado_conta_antiga_acende(self):
         self.assertTrue(falhas_conta(CONTA_ANTIGA), 'a conta antiga (base e Forma) passou sem ser vista')
+        montagem, kv, hm38, hm37 = conta_leve()
+        com_forma = hm38 + "+IFERROR(VLOOKUP('FICHA AMALDIÇOADA'!$J$356,'DADOS_FORMAS'!$FF$2:$FJ$17,3,FALSE),0)"
+        self.assertTrue(falhas_conta_leve(montagem, kv, com_forma, hm37), 'HM38 com a Forma passou sem ser vista')
+        self.assertTrue(falhas_conta_leve('=DADOS_AM!$KV$41', kv, hm38, hm37), 'MONTAGEM apontando errado passou')
 
 
 # R68 (livro v0.379, 14/11/2026): as seções de Controle passam a dar o reforço à Máxima sem dano.
