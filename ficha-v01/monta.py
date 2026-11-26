@@ -523,6 +523,24 @@ for e in LAYOUT["estilos"]:
         "number_format": fmt,
     })
 
+# 26/11/2026 (etapa 3 da versão rápida): o menu de alcance do cartão de preencher lê a escada de alcance da DADOS_FORMAS
+_df = next(a for a in LAYOUT["abas"] if a["nome"] == "DADOS_FORMAS")
+_esc = [r[0] for r in _df["celulas"] if r[1] == "escada_alcance.0"]
+assert len(_esc) == 1, "a DADOS_FORMAS sem a escada de alcance"
+import re
+_ce = re.match(r"([A-Z]+)(\d+)$", _esc[0])
+_val = {r[0]: r[1] for r in _df["celulas"]}
+_n = 0
+while _val.get(f"{_ce[1]}{int(_ce[2]) + 1 + _n}") not in (None, ""):
+    _n += 1
+assert _n >= 5, "a escada de alcance da DADOS_FORMAS veio curta"
+_faixa_esc = f"'DADOS_FORMAS'!${_ce[1]}${int(_ce[2]) + 1}:${_ce[1]}${int(_ce[2]) + _n}"
+for a in LAYOUT["abas"]:
+    for m in a["menus"]:
+        if m.get("formula") == ficha_amaldicoada.ESCADA_ALCANCE:
+            m["formula"] = _faixa_esc
+print(f"o menu de alcance dos cartões lê {_faixa_esc}")
+
 for a in LAYOUT["abas"]:
     ws = wb.create_sheet(a["nome"])
     ws.sheet_state = a["estado"]

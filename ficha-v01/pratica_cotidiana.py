@@ -23,6 +23,19 @@ def aplica(layout, tr, analise=None):
         raise ValueError('Registro anterior de cartões divergente')
     base = copy.deepcopy(next(g for g in tr['contextos'] if g['id'] == 'classe0.5'))
     rbase = coordinate_to_tuple(base['cel']['nome'])[0]
+    # 26/11/2026 (etapa 3 da versão rápida): o cartão de Classe 0 do personagem é leve. A linha dele na FICHA AMALDIÇOADA
+    # só aponta para a conta da DADOS_AM (a tabela "classe 0 anotada"); as duas vagas novas ganham duas linhas a mais
+    # nessa tabela, logo abaixo da quinta, nas mesmas colunas
+    leve = base.get('leve', False)
+    zrow, zcols = None, set()
+    if leve:
+        zref = re.fullmatch(r"='?DADOS_AM'?!\$([A-Z]+)\$(\d+)", cells[AM][base['cel']['dano']][1] or '')
+        if not zref:
+            raise ValueError('Classe 0 leve sem referência à DADOS_AM')
+        zrow = int(zref[2])
+        cz = next(coordinate_to_tuple(v[0])[1] for v in abas['DADOS_AM']['celulas']
+                  if coordinate_to_tuple(v[0])[0] == 1 and v[1] == 'classe 0 anotada')
+        zcols = set(range(cz, cz + 8))
     # Só há uma linha vazia antes da Liberação. Acrescentar o bloco no fim
     # evita deslocar esse título e todos os contratos que vêm depois dele.
     start = abas[AM]['linhas'] + 2
@@ -40,7 +53,7 @@ def aplica(layout, tr, analise=None):
             v = [pos, value, style]
             cells[owner][pos] = v
             abas[owner]['celulas'].append(v)
-    def mapper(ui, row, editor):
+    def mapper(ui, row, editor, zalvo=None):
         def coord(owner, text):
             m = re.fullmatch(r'(\$?)([A-Z]+)(\$?)([0-9]+)', text)
             if not m:
@@ -52,6 +65,8 @@ def aplica(layout, tr, analise=None):
                 n = row
             elif owner == R.EDITOR and base['editor'] <= n < base['editor'] + R.PASSO:
                 n += editor - base['editor']
+            elif owner == 'DADOS_AM' and zalvo and n == zrow and coordinate_to_tuple(m[2] + '1')[1] in zcols:
+                n = zalvo
             return m[1] + m[2] + m[3] + str(n)
         def formula(value, owner):
             if not isinstance(value, str) or not value.startswith('='):
@@ -71,7 +86,8 @@ def aplica(layout, tr, analise=None):
         row = max(coordinate_to_tuple(v[0])[0] for v in abas[R.DADOS]['celulas']) + 1
         editor = 5 + len(tr['contextos']) * R.PASSO
         ui = entry + i
-        coord, formula = mapper(ui, row, editor)
+        zalvo = zrow + 1 + i if leve else None
+        coord, formula = mapper(ui, row, editor, zalvo)
         g = copy.deepcopy(base)
         g.update(id='classe0.' + str(6 + i), linha=row, editor=editor)
         def move(value):
@@ -83,11 +99,14 @@ def aplica(layout, tr, analise=None):
                 return {k: move(v) for k, v in value.items()}
             return value
         for k in ('cel', 'entradas_diretas', 'menus_diretos', 'funcoes_diretas'):
-            g[k] = move(g[k])
+            if k in g:
+                g[k] = move(g[k])
         delta = ui - rbase
         for k in ('area_editor', 'area_escrita'):
-            g[k] = [g[k][0] + delta, g[k][1], g[k][2] + delta, g[k][3]]
-        g['gravacoes_diretas'] = [[a + delta, b, c + delta, d] for a, b, c, d in base['gravacoes_diretas']]
+            if k in g:
+                g[k] = [g[k][0] + delta, g[k][1], g[k][2] + delta, g[k][3]]
+        if 'gravacoes_diretas' in base:
+            g['gravacoes_diretas'] = [[a + delta, b, c + delta, d] for a, b, c, d in base['gravacoes_diretas']]
         g['campos'] = {k: v + editor - base['editor'] for k, v in base['campos'].items()}
         for owner, predicate in ((AM, lambda r: r == rbase),
                                  (R.DADOS, lambda r: r == base['linha']),
@@ -117,6 +136,44 @@ def aplica(layout, tr, analise=None):
             for p, note in list(abas[owner].get('notas', {}).items()):
                 if predicate(coordinate_to_tuple(p)[0]):
                     abas[owner]['notas'][coord(owner, p)] = note
+        if leve:
+            # a conta leve das duas linhas novas: a da quinta Classe 0, sem o portão de nível (a vaga vem da Prática)
+            for pos, value, *rest in list(abas['DADOS_AM']['celulas']):
+                r_, c_ = coordinate_to_tuple(pos)
+                if r_ == zrow and c_ in zcols:
+                    target = L(c_) + str(zalvo)
+                    if target in cells['DADOS_AM'] and cells['DADOS_AM'][target][1] is not None:
+                        raise ValueError('Extensão sobrescreveria DADOS_AM!' + target)
+                    value = formula(value, 'DADOS_AM')
+                    if c_ == min(zcols):
+                        value = 'Classe 0 · ' + str(6 + i)
+                    elif isinstance(value, str):
+                        value = value.replace('=IF(5>', '=IF(0>').replace('=IF(OR(5>', '=IF(OR(0>')
+                    put('DADOS_AM', target, value, rest[0] if rest else None)
+            # os menus de Forma e de peças da linha de Classe 0, nas duas linhas novas
+            for m in list(abas[AM]['menus']):
+                novos = []
+                for parte in m['onde'].split():
+                    c1, r1, c2, r2 = range_boundaries(parte)
+                    if r1 <= rbase <= r2 and r1 != r2:
+                        novos.append(f'{L(c1)}{ui}' if c1 == c2 else f'{L(c1)}{ui}:{L(c2)}{ui}')
+                if novos:
+                    abas[AM]['menus'].append({**copy.deepcopy(m), 'onde': ' '.join(novos)})
+            def da_conta(k):
+                z = re.fullmatch(r"='?DADOS_AM'?!\$([A-Z]+)\$(\d+)", cells[AM][g['cel'][k]][1] or '')
+                if not z:
+                    raise ValueError('Classe 0 da Prática sem referência à DADOS_AM: ' + g['cel'][k])
+                return z[1] + z[2]
+            name = R.ref(AM, g['cel']['nome'])
+            pos = da_conta('dano')
+            put('DADOS_AM', pos, f'=IF({name}="","",IF({DC}!$B$134<>2,"Requer Prática Cotidiana",IF({DC}!$B$135>{total},'
+                                 f'"Revisar limite de Classe 0",{cells["DADOS_AM"][pos][1][1:]})))')
+            pos = da_conta('alcance')
+            put('DADOS_AM', pos, f'=IF({DC}!${BONUS[0]}${BONUS[1:]}=2,{cells["DADOS_AM"][pos][1][1:]},"")')
+            tr['formulas'][g['id']] = {}
+            g['formulas'] = {}
+            tr['contextos'].append(g)
+            continue
         for m in g['menus_diretos'].values():
             abas[AM]['menus'].append(copy.deepcopy(m))
         newform = {coord(AM, p): formula(v, AM) for p, v in tr['formulas'][base['id']].items()}
@@ -147,7 +204,7 @@ def aplica(layout, tr, analise=None):
         if r1 == r2 == rbase - 5:
             # No exemplar antigo, P:Q ainda estava mesclado e escondia "USAR".
             # O cabeçalho novo deve ter as duas caixas independentes.
-            if c1 == 16 and c2 == 17:
+            if c1 == 16 and c2 == 17 and not leve:
                 continue
             abas[AM]['mescladas'].append(f'{L(c1)}{start+2}:{L(c2)}{start+2}')
     for r, text in ((start, 'CLASSE 0 · VAGAS ADICIONAIS DE PRÁTICA COTIDIANA'),

@@ -19,7 +19,7 @@ const lockTrace=[];let locked=false;
 const box={console,PropertiesService:{getDocumentProperties:()=>({getProperty:k=>props.get(k)||null,setProperty:(k,v)=>props.set(k,v)})},LockService:{getDocumentLock:()=>({tryLock(){locked=true;lockTrace.push('acquire');return true;},releaseLock(){assert(locked);assert.strictEqual(lockTrace.at(-1),'flush');locked=false;lockTrace.push('release');}})},SpreadsheetApp:{getActive:()=>ss,flush(){assert(locked);lockTrace.push('flush');},newDataValidation(){let o={};for(const k of ['requireCheckbox','requireValueInList','requireFormulaSatisfied','setAllowInvalid'])o[k]=function(...v){this[k+'_args']=v;return this;};o.build=function(){return {...this};};return o;}}};
 box.Utilities={DigestAlgorithm:{SHA_256:1},Charset:{UTF_8:1},base64Decode:s=>Buffer.from(s,'base64'),newBlob:x=>x,ungzip:x=>({getDataAsString:()=>require('zlib').gunzipSync(x).toString('utf8')}),computeDigest:(_,s)=>Array.from(require('crypto').createHash('sha256').update(s).digest())};
 vm.createContext(box);vm.runInContext(fs.readFileSync(process.argv[2]||'apps-script/EditorR53.gs','utf8'),box);
-const cfg=box.R53_EDITOR_,fields=cfg.campos.map(f=>f[0]);eq(cfg.esquema,3);eq(cfg.contextos.length,251);eq([...cfg.contextos.slice(-2).map(g=>g.id)],['classe0.6','classe0.7']);eq(!!cfg.paineis,false);
+const cfg=box.R53_EDITOR_,fields=cfg.campos.map(f=>f[0]);eq(cfg.esquema,3);eq(cfg.contextos.length,204);eq([...cfg.contextos].every(g=>g.id.startsWith('entidade.')),true);// 26/11/2026 (etapa 3): só as entidadeseq(!!cfg.paineis,false);
 // Uma cópia começa sem propriedades: editar Caminho/Trilha não pode iniciar
 // a recuperação de 251 cartões antes das automações da FICHA.
 for(const cell of ['D11','N11']){
@@ -36,7 +36,10 @@ for(const g of cfg.contextos){
 }
 // Cópia nova: as propriedades do documento não vão junto. Editar fora dos
 // cartões guarda o amparo atual sem varrer os 251 (estourava 30 s no Google).
-for(const [aba,cell] of [['CARTEIRA','A1'],['FICHA AMALDIÇOADA','B500'],['INVOCAÇÕES','A1'],['CONFIGURAÇÃO','A1']]){
+// 26/11/2026 (etapa 3): na FICHA AMALDIÇOADA só a linha das Famílias relê o Amparo; o B500 não lê nada
+{props.delete('r53_amparo_direto');box.R53_REF_CACHE_={};io.length=0;
+ eq(box.r53Editar_({source:ss,range:ss.getSheetByName('FICHA AMALDIÇOADA').getRange('B500')}),false);eq(io,[]);}
+for(const [aba,cell] of [['CARTEIRA','A1'],['INVOCAÇÕES','A1'],['CONFIGURAÇÃO','A1']]){
  props.delete('r53_amparo_direto');box.R53_REF_CACHE_={};io.length=0;
  eq(box.r53Editar_({source:ss,range:ss.getSheetByName(aba).getRange(cell)}),false);
  eq(io,['read:'+cfg.amparo.aba]);eq(JSON.parse(props.get('r53_amparo_direto')),Array(13).fill('Normal'));
@@ -48,7 +51,8 @@ for(const [aba,cell] of [['CARTEIRA','A1'],['FICHA AMALDIÇOADA','B500'],['INVOC
  eq(inv.getRange(esp.funcoes_diretas.cura).getValue(),'—');eq(io.includes('read:FICHA AMALDIÇOADA'),false);
  ss.getSheetByName(cfg.amparo.aba).getRange(cfg.amparo.faixa).setValues([Array(13).fill('Normal')]);box.R53_REF_CACHE_={};box.r53SincronizarFamilias_(ss);
  eq(inv.getRange(esp.funcoes_diretas.cura).getValue(),cura);props.delete('r53_amparo_direto');}
-const first=cfg.contextos.find(g=>g.id==='feitico.1'),sh=ss.getSheetByName(first.aba);
+const first=cfg.contextos.find(g=>g.id==='entidade.1.esp.2'),// 26/11/2026 (etapa 3): era o feitico.1
+ sh=ss.getSheetByName(first.aba);
 function read(g,cl,k){return box.r53LerVersao_(ss,g,cl)[fields.indexOf(k)];}
 function edit(g,p,v,old){let r=ss.getSheetByName(g.aba).getRange(p);r.setValue(v);return box.r53Editar_({range:r,source:ss,oldValue:old});}
 function cl(g,next,old){eq(edit(g,g.cel.classe,next,String(old)),true);}
@@ -62,13 +66,13 @@ cl(first,1,2);
 cl(first,3,1);edit(first,first.funcoes_diretas.dano,3);edit(first,first.funcoes_diretas.cura,2);eq(read(first,3,'pontos1'),3);eq(read(first,3,'pontos2'),2);
 cl(first,4,3);eq(read(first,4,'preparada'),false);eq(sh.getRange(first.funcoes_diretas.dano).getValue(),0);edit(first,first.funcoes_diretas.dano,4);cl(first,3,4);eq(sh.getRange(first.funcoes_diretas.dano).getValue(),3);eq(sh.getRange(first.funcoes_diretas.cura).getValue(),2);eq(read(first,4,'pontos1'),4);
 edit(first,first.funcoes_diretas.dano,-1);eq(sh.getRange(first.funcoes_diretas.dano).getValue(),3);edit(first,first.funcoes_diretas.dano,1.5);eq(read(first,3,'pontos1'),3);edit(first,first.funcoes_diretas.dano,'=1+1');eq(read(first,3,'pontos1'),3);
-props.set('r53_amparo_direto',JSON.stringify(Array(13).fill('Normal')));ss.getSheetByName(cfg.amparo.aba).getRange(cfg.amparo.faixa).setValues([['Fechada',...Array(12).fill('Normal')]]);box.R53_REF_CACHE_={};box.r53SincronizarFamilias_(ss);eq(sh.getRange(first.funcoes_diretas.cura).getValue(),'—');eq(read(first,3,'pontos2'),2);edit(first,first.funcoes_diretas.cura,99);eq(sh.getRange(first.funcoes_diretas.cura).getValue(),'—');eq(read(first,3,'pontos2'),2);
+props.set('r53_amparo_direto',JSON.stringify(Array(13).fill('Normal')));ss.getSheetByName(cfg.amparo.aba).getRange(cfg.amparo.faixa).setValues([['Normal','Fechada',...Array(11).fill('Normal')]]);box.R53_REF_CACHE_={};box.r53SincronizarFamilias_(ss);eq(sh.getRange(first.funcoes_diretas.cura).getValue(),'—');eq(read(first,3,'pontos2'),2);edit(first,first.funcoes_diretas.cura,99);eq(sh.getRange(first.funcoes_diretas.cura).getValue(),'—');eq(read(first,3,'pontos2'),2);
 ss.getSheetByName(cfg.amparo.aba).getRange(cfg.amparo.faixa).setValues([Array(13).fill('Normal')]);box.R53_REF_CACHE_={};box.r53SincronizarFamilias_(ss);eq(sh.getRange(first.funcoes_diretas.cura).getValue(),2);
 const entity=cfg.contextos.find(g=>g.id==='entidade.1.esp.1');cl(entity,3,1);edit(entity,entity.funcoes_diretas.dano,6);eq(read(entity,3,'pontos1'),6);eq(read(first,3,'pontos1'),3);
 // R67 (7b645e5): a PV temporária virou função da Máxima, com a porta do Amparo.
 // Com Amparo Normal a caixa fica livre e desmarcada (false); antes era '—' fixo.
-const maximum=cfg.contextos.find(g=>g.id==='maxima.1');edit(maximum,maximum.funcoes_diretas.dano,true);edit(maximum,maximum.funcoes_diretas.cura,true);eq(ss.getSheetByName(maximum.aba).getRange(maximum.funcoes_diretas.dano).getValue(),false);eq(read(maximum,7,'funcao2'),'Cura');eq(ss.getSheetByName(maximum.aba).getRange(maximum.funcoes_diretas.vt).getValue(),false);
-const zero=cfg.contextos.find(g=>g.id==='classe0.1');edit(zero,zero.funcoes_diretas.dano,true);eq(read(zero,0,'funcao1'),'Dano');
+const maximum=cfg.contextos.find(g=>g.id==='entidade.1.maxima.1');edit(maximum,maximum.funcoes_diretas.dano,true);edit(maximum,maximum.funcoes_diretas.cura,true);eq(ss.getSheetByName(maximum.aba).getRange(maximum.funcoes_diretas.dano).getValue(),false);eq(read(maximum,7,'funcao2'),'Cura');eq(ss.getSheetByName(maximum.aba).getRange(maximum.funcoes_diretas.vt).getValue(),false);
+const zero=cfg.contextos.find(g=>g.id==='entidade.1.bas.1');edit(zero,zero.funcoes_diretas.dano,true);eq(read(zero,0,'funcao1'),'Dano');
 const lib=cfg.contextos.find(g=>g.id==='entidade.1.liberacao.1');edit(lib,lib.funcoes_diretas.dano,4);eq(read(lib,3,'pontos1'),4);eq(Object.keys(lib.entradas_diretas).includes('m4'),true);eq(ss.getSheetByName(lib.aba).getRange(lib.funcoes_diretas.cura).getValue(),'—');
 // Native Sheets rejects a blocked dash under an existing strict checkbox rule.
 const lastMaximum=cfg.contextos.find(g=>g.id==='entidade.12.maxima.1');

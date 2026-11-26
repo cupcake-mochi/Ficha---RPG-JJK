@@ -1,4 +1,15 @@
 'use strict';
+// 26/11/2026 (etapa 3 da versão rápida): APOSENTADO. Este teste conferia o alcance dos benefícios nos 36 cartões de feitiço, na montagem R53 do
+// personagem. Esses cartões viraram de preencher e saíram da montagem; quem confere o cartão novo é o
+// cartao_preencher.js. O teste antigo continua abaixo, sem rodar, e no histórico do git.
+{
+  const c = {};
+  require('node:vm').runInNewContext(require('../../medidas/carregar-ficha').fontes(), c);
+  const pessoal = Array.from(c.R53_EDITOR_.contextos, g => g.id).filter(id => !/^entidade\./.test(id));
+  require('node:assert/strict').deepEqual(pessoal, [], 'o personagem voltou para a montagem R53');
+  console.log(JSON.stringify({resultado: 'OK', aposentado: 'etapa 3 da versão rápida'}));
+  process.exit(0);
+}
 
 const assert = require('node:assert/strict');
 const fs = require('node:fs');

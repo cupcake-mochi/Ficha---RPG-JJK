@@ -34,25 +34,37 @@ assert.deepEqual(Object.keys(P.editor).map(Number), [44, 204, 208, 212, 216, 220
 ok(Object.values(P.caixas).flat().length === 13, 'caixas');
 
 // ------------------------------------------------------------------ 2. o "depois" do plano é o gerador de hoje
+// 26/11/2026 (etapa 3 da versão rápida): o cartão da Técnica Máxima do personagem virou de preencher (caixinhas DANO /
+// CURA / PV TEMP. / SEM DANO na linha 356, valores na 357, conta na DADOS_AM coluna KV) e é conferido em
+// cartao_preencher.js. Aqui saem da comparação as células do personagem (FICHA AMALDIÇOADA, DADOS_AM, DADOS_R53 nas
+// linhas 2 a 46 e 252–253) e o contexto 44 (maxima.1). As invocações continuam conferidas como antes; os contextos
+// delas são achados pelo id, porque mudaram de posição quando os do personagem saíram do editor.
+const pessoalR53 = r => r <= 46 || r >= 252;
+const doPersonagem = d => d[0] === 'FICHA AMALDIÇOADA' || d[0] === 'DADOS_AM' || (d[0] === 'DADOS_R53' && pessoalR53(d[1]));
 const hoje = ler(path.join(raiz, 'apps-script'));
 const conferirDepois = (pl, onde) => {
   for (const d of pl.celulas) {
+    if (doPersonagem(d)) continue;
     const s = hoje.find(a => a.nome === d[0]), m = expandir(s);
     assert.deepEqual(m.get(d[1] + ':' + d[2]), d[4], onde + ': depois ≠ gerador em ' + d[0] + '!' + d[1] + ':' + d[2]);
   }
-  for (const [aba, a1, , depois] of pl.notas) assert.equal(new Map(hoje.find(a => a.nome === aba).notas).get(a1) ?? null, depois, onde + ': nota ' + a1);
+  for (const [aba, a1, , depois] of pl.notas) if (aba !== 'FICHA AMALDIÇOADA') assert.equal(new Map(hoje.find(a => a.nome === aba).notas).get(a1) ?? null, depois, onde + ': nota ' + a1);
   const r53 = expandir(hoje.find(a => a.nome === 'DADOS_R53'));
-  for (const [c, , tb, linhas] of pl.dadosR53) for (const r of linhas)
+  for (const [c, , tb, linhas] of pl.dadosR53) for (const r of linhas.filter(r => !pessoalR53(r)))
     assert.ok(String(r53.get(r + ':' + c)).split(tb.replace(/\x01/g, r)).length === 2, onde + ': trecho novo ausente em ' + r + ':' + c);
   const ed = JSON.parse(/^var R53_EDITOR_ = (\{[^\n]+\});/m.exec(fs.readFileSync(path.join(raiz, 'apps-script/EditorR53.gs'), 'utf8'))[1]);
-  for (const [i, g] of Object.entries(pl.editor)) assert.deepEqual(ed.contextos[i], g.depois, onde + ': contexto ' + i);
+  for (const [i, g] of Object.entries(pl.editor)) {
+    if (!g.depois.id.startsWith('entidade.')) continue;
+    assert.deepEqual(ed.contextos.find(x => x.id === g.depois.id), g.depois, onde + ': contexto ' + i);
+  }
 };
 conferirDepois(P, 'plano'); n++;
-// Defeitos: a conta antiga da R356, o contexto 44 antigo, o HM38 com a Forma, uma célula da FX trocada.
+// Defeitos: uma célula das invocações com o valor antigo, o contexto de uma entidade antigo, uma célula da FX trocada.
+// (Os de antes, R356, contexto 44 e HM38, eram do personagem e foram trocados na etapa 3.)
 for (const [nome, estragar] of [
-  ['R356 antiga', p => { const d = p.celulas.find(x => x[0] === 'FICHA AMALDIÇOADA' && x[1] === 356 && x[2] === 18); d[4] = d[3]; }],
-  ['contexto 44 antigo', p => { p.editor[44].depois = Object.assign({}, p.editor[44].depois, { formulas: {} }); }],
-  ['HM38 com a Forma', p => { const d = p.celulas.find(x => x[0] === 'DADOS_AM'); d[4] = d[3]; }],
+  ['INVOCAÇÕES antiga', p => { const d = p.celulas.find(x => x[0] === 'INVOCAÇÕES'); d[4] = d[3]; }],
+  ['contexto 204 antigo', p => { p.editor[204].depois = Object.assign({}, p.editor[204].depois, { formulas: {} }); }],
+  ['DADOS_R53 206 antiga', p => { const d = p.celulas.find(x => x[0] === 'DADOS_R53' && x[1] === 206); d[4] = d[3]; }],
   ['FX trocada', p => { const g = p.dadosR53.find(x => x[0] === 180); g[2] = g[2].replace('sem dano', 'sem  dano'); }],
 ]) { const p = clone(P); estragar(p); recusa(() => conferirDepois(p, nome), assert.AssertionError, 'defeito não acendeu: ' + nome); }
 

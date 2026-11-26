@@ -69,18 +69,19 @@ def aplica(layout,tr):
     expandir(layout,tr)
     cells={n:{v[0]:v for v in a['celulas']} for n,a in abas.items()}
     originals={n:{p:v[1] for p,v in cm.items()} for n,cm in cells.items()}
-    old_contexts={g['id']:copy.deepcopy(g['cel']) for g in tr['contextos']}
+    old_contexts={g['id']:copy.deepcopy(g['cel']) for g in R.pesados(tr)}
 
     styles={}
     src=cells['FICHA AMALDIÇOADA']
     for k,pos,bg in [('label','D73','492D4D'),('input','E73','311E33'),('result','E70','251727')]:
-        style=copy.deepcopy(layout['estilos'][src[pos][2]])
+        # 26/11/2026 (etapa 3): sem os cartões R53 do personagem, a E70 pode não existir; o estilo é refeito abaixo
+        style=copy.deepcopy(layout['estilos'][(src.get(pos) or src.get('D73') or next(iter(src.values())))[2]])
         style[0]=['Roboto',9,'FBE4EF',k=='label',False];style[1]=bg
         style[2]={edge:['thin','B377BB'] for edge in ['left','right','top','bottom']}
         style[3]=['center','center',True,0];style[4]='General'
         layout['estilos'].append(style);styles[k]=len(layout['estilos'])-1
     tr['areas_diretas']=[]
-    for g in tr['contextos']:
+    for g in R.pesados(tr):
         owner=g['aba'];a=abas[owner];cm=cells[owner];cel=g['cel'];row=g['linha'];out=tr['formulas'][g['id']]
         g.pop('abrir_editor',None);g['entradas_diretas']={};g['menus_diretos']={}
         g['fixa']=g['modo'] in ['Classe 0','Básica','Técnica Máxima','Máxima de entidade']
@@ -289,7 +290,7 @@ def aplica(layout,tr):
     # Clear obsolete menus; install strict direct controls, including blank slots.
     for owner in ['FICHA AMALDIÇOADA','INVOCAÇÕES']:
         a=abas[owner];areas=[range_boundaries(v['faixa']) for v in tr['areas_diretas'] if v['aba']==owner]
-        inputs={p for g in tr['contextos'] if g['aba']==owner for p in g['entradas_diretas'].values()}
+        inputs={p for g in R.pesados(tr) if g['aba']==owner for p in g['entradas_diretas'].values()}
         def affected(p):
             c,r,cc,rr=range_boundaries(p)
             return any(not(cc<ca or c>cb or rr<ra or r>rb) for ca,ra,cb,rb in areas) or p in inputs
@@ -297,7 +298,7 @@ def aplica(layout,tr):
         for v in a['menus']:
             places=[p for p in v['onde'].split() if not affected(p)]
             if places:menus.append({**v,'onde':' '.join(places)})
-        for g in tr['contextos']:
+        for g in R.pesados(tr):
             if g['aba']==owner:menus+=list(g['menus_diretos'].values())
         a['menus']=menus
     abas[R.EDITOR]['estado']='hidden';abas[R.EDITOR]['menus']=[]
@@ -307,7 +308,7 @@ def aplica(layout,tr):
     # Move consumers of relocated anchors, never freshly authored formulas.
     from openpyxl.formula import Tokenizer
     moves={}
-    for g in tr['contextos']:
+    for g in R.pesados(tr):
         old=old_contexts[g['id']]
         for k in ['forma','dano','acao']:
             if k not in old or k not in g['cel']:continue
@@ -348,7 +349,7 @@ def aplica(layout,tr):
                     text=(prefix+'!' if prefix else '')+':'.join(parts)
                 output.append(text)
             item[1]='='+''.join(output)
-    for g in tr['contextos']:
+    for g in R.pesados(tr):
         tr['formulas'][g['id']]={p:cells[g['aba']][p][1] for p in tr['formulas'][g['id']]}
         # Four bulk writes replace dozens of cell-by-cell round trips. Every
         # rectangle covers complete merges and preserves formulas between inputs.
@@ -376,4 +377,4 @@ def aplica(layout,tr):
 
 def configuracao(tr):
     keys=['id','aba','cel','classes','editor','linha','area_editor','area_escrita','gravacoes_diretas','classe_maxima','entradas_diretas','menus_diretos','fixa','portas','funcoes_diretas','entidade','modo']
-    return dict(amparo=dict(aba=R.CATALOGO,faixa='X10:AJ10'),esquema=3,storage=R.EDITOR,data=R.DADOS,campos=R.CAMPOS,defaults={k:R.DEFAULTS_EDITOR[k] for k,_,_ in R.CAMPOS},contextos=[{**{k:g[k] for k in keys if k in g},'formulas':tr['formulas'][g['id']]} for g in tr['contextos']])
+    return dict(amparo=dict(aba=R.CATALOGO,faixa='X10:AJ10'),familias_am=tr.get('familias_am'),esquema=3,storage=R.EDITOR,data=R.DADOS,campos=R.CAMPOS,defaults={k:R.DEFAULTS_EDITOR[k] for k,_,_ in R.CAMPOS},contextos=[{**{k:g[k] for k in keys if k in g},'formulas':tr['formulas'][g['id']]} for g in R.pesados(tr)])

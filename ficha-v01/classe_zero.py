@@ -9,7 +9,7 @@ def aplica(layout, tr):
     amal, custom, dados = 'FICHA AMALDIÇOADA', 'DADOS_CUSTOM', R.DADOS
     nomes = [amal, custom, dados]
     cells = {a['nome']: {c[0]: c for c in a['celulas']}
-             for a in layout['abas'] if a['nome'] in nomes}
+             for a in layout['abas'] if a['nome'] in nomes + ['DADOS_AM']}
     col = tr['colunas']
     plano = []
     limite = 'DADOS_CUSTOM!$B$135>DADOS_AM!$HM$10'
@@ -37,7 +37,29 @@ def aplica(layout, tr):
     # As escolhas que ficam guardadas em vagas indisponíveis não consomem o teto.
     mudar(custom, 'B135', f'={contagem(comuns)}+IF($B$134=2,{contagem(extras)},0)')
 
+    import re
     for g in contextos:
+        if g.get('leve'):
+            # 26/11/2026 (etapa 3 da versão rápida): a linha de Classe 0 é a da FICHA AMALDIÇOADA, com a conta leve da
+            # DADOS_AM (carta_zero). O limite de repertório segura o dano; a Melhoria Leve de benefício (Guarda, Impulso,
+            # Firmeza) usa o alcance de benefício, 1,5 m no Toque e 4,5 m nas outras Formas
+            def alvo(k):
+                m = re.fullmatch(r"='?DADOS_AM'?!\$([A-Z]+)\$(\d+)", cells[amal][g['cel'][k]][1] or '')
+                if not m:
+                    raise ValueError('Classe 0 leve sem referência à DADOS_AM: ' + g['cel'][k])
+                return m[1] + m[2]
+            mel, forma = (R.ref(amal, (g['cel'][k][0] if isinstance(g['cel'][k], list) else g['cel'][k])) for k in ('mel', 'forma'))
+            pos = alvo('alcance')
+            antes = cells['DADOS_AM'][pos][1]
+            beneficio = ','.join(f'{mel}="{nome}"' for nome in ('Guarda', 'Impulso', 'Firmeza'))
+            mudar('DADOS_AM', pos, f'=IF(OR({beneficio}),IF({forma}="Toque","1,5 m","4,5 m"),{antes[1:]})')
+            if g in extras:
+                continue
+            pos = alvo('dano')
+            antes = cells['DADOS_AM'][pos][1]
+            nome = R.ref(amal, g['cel']['nome'])
+            mudar('DADOS_AM', pos, f'=IF({nome}="","",IF({limite},"Revisar limite de Classe 0",{antes[1:]}))')
+            continue
         row = g['linha']
         saida = lambda k: R.ref(dados, '$'+col[k]+'$'+str(row))
         pos = g['cel']['alcance']

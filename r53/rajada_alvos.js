@@ -6,9 +6,13 @@ const {deslocaFormula} = require('../medidas/sheets-de-mentira');
 
 const aba = 'DADOS_R53';
 const colunas = [89, 94, 138, 180]; // CK, CP, EH, FX
-const linhas = [...Array.from({length: 249}, (_, i) => i + 2), 252, 253];
+// 26/11/2026 (etapa 3 da versão rápida): os cartões do personagem (linhas 2 a 46, e a 252 e a 253 da Prática) viraram de
+// preencher e não têm mais montagem na DADOS_R53. Ficam as linhas das invocações
+const pessoais = [...Array.from({length: 45}, (_, i) => i + 2), 252, 253];
+const linhas = Array.from({length: 204}, (_, i) => i + 47);
 
-function formulas(pasta = path.join(__dirname, '../apps-script'), colunasAlvo = colunas) {
+// 26/11/2026 (etapa 3): linhasAlvo deixa quem chama pular as linhas do personagem, que ficaram sem montagem
+function formulas(pasta = path.join(__dirname, '../apps-script'), colunasAlvo = colunas, linhasAlvo = linhas) {
   const fontes = fs.readdirSync(pasta).filter(n => /^R53Dados\d+\.gs$/.test(n));
   const alvos = new Map();
   for (const nome of fontes) {
@@ -30,7 +34,7 @@ function formulas(pasta = path.join(__dirname, '../apps-script'), colunasAlvo = 
   const fonte = fs.readFileSync(path.join(pasta, 'R53Dados.gs'), 'utf8');
   const spec = /^var ABAS_R53_DADOS_ = (\[.*\]);$/m.exec(fonte);
   const [{abaixo}] = JSON.parse(spec[1]);
-  return linhas.flatMap(r => colunasAlvo.map(c => {
+  return linhasAlvo.flatMap(r => colunasAlvo.map(c => {
     const bloco = abaixo.find(([inicio, esq, fim, dir]) =>
       inicio < r && r <= fim && esq <= c && c <= dir);
     const origem = bloco && alvos.get(bloco[0] + ':' + c);
@@ -41,4 +45,4 @@ function formulas(pasta = path.join(__dirname, '../apps-script'), colunasAlvo = 
   }));
 }
 
-module.exports = {aba, colunas, linhas, formulas};
+module.exports = {aba, colunas, linhas, pessoais, formulas};

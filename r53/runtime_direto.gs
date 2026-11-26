@@ -218,7 +218,11 @@ function r53Editar_(e) {
  // logo depois, e sem sincronizar o Amparo ficaria velho até outra edição fora dos cartões.
  var portador=owner==='CARTEIRA'&&range.getRow()>=9&&range.getLastRow()<=12&&range.getColumn()>=15&&range.getLastColumn()<=34&&
   !(typeof R53_LIVRE_PROP_==='string'&&PropertiesService.getDocumentProperties().getProperty(R53_LIVRE_PROP_));
- if(!gs.length){if(!portador)r53SincronizarFamilias_(ss);return false;}
+ // 26/11/2026 (etapa 3 da versão rápida): os cartões do personagem viraram de preencher e saíram daqui. Na FICHA
+ // AMALDIÇOADA, só a linha das Famílias muda o Amparo; reler o Amparo esperava o recálculo em toda edição de cartão.
+ var fa=owner==='FICHA AMALDIÇOADA'&&R53_EDITOR_.familias_am,fa1=fa&&r53Pos_(fa[0]),fa2=fa&&r53Pos_(fa[1]);
+ var semFamilia=!!fa&&!(range.getLastRow()>=fa1[0]&&range.getRow()<=fa2[0]&&range.getLastColumn()>=fa1[1]&&range.getColumn()<=fa2[1]);
+ if(!gs.length){if(!portador&&!semFamilia)r53SincronizarFamilias_(ss);return false;}
  // Capture before waiting: an older Class callback may overwrite the visible
  // cell while this newer input event is queued. Scalar events retain e.value.
  // 26/10/2026: numa célula só, o e.value já é o valor; reler a célula custava uma ida ao servidor.

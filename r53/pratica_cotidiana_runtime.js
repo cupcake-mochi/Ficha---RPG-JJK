@@ -9,7 +9,11 @@ function dados(deltas=require('./diagnostico-android/classe_zero_plano.json'), t
  const editor=JSON.parse(/^var R53_EDITOR_ = (\{[^\n]+\});/.exec(fs.readFileSync(path.join(root,'apps-script/EditorR53.gs'),'utf8'))[1]);
  const input=new Set(editor.contextos.slice(249).flatMap(g=>[g.cel.nome,...Object.values(g.entradas_diretas)]));
  const correcoes=new Map(deltas.map(d=>[JSON.stringify([d.aba,d.r,d.c]),d]));
- const valores = p.cells.filter(x=>x.aba!=='MONTAGENS'&&!(x.aba==='FICHA AMALDIÇOADA'&&(input.has(x.a1)||x.depois===null||x.depois===undefined))).map(x=>{
+ // 26/11/2026 (etapa 3 da versão rápida): as duas linhas de Classe 0 da Prática viraram cartão leve (a conta mora na
+ // DADOS_AM, e a caixa só aponta para ela). A montagem R53 delas (FICHA AMALDIÇOADA 565 a 567 e DADOS_R53) não volta
+ // mais; ficam os textos da seção e a conta das vagas (DADOS_CUSTOM e DADOS_AM)
+ const leve=x=>x.aba==='DADOS_R53'||(x.aba==='FICHA AMALDIÇOADA'&&/^[A-Z]+56[5-7]$/.test(x.a1));
+ const valores = p.cells.filter(x=>x.aba!=='MONTAGENS'&&!leve(x)&&!(x.aba==='FICHA AMALDIÇOADA'&&(input.has(x.a1)||x.depois===null||x.depois===undefined))).map(x=>{
   const m=/^([A-Z]+)(\d+)$/.exec(x.a1),c=[...m[1]].reduce((a,v)=>26*a+v.charCodeAt(0)-64,0);
   const alvo=correcoes.get(JSON.stringify([x.aba,+m[2],c]));
   if(alvo&&alvo.antes!==x.depois)throw Error('Recuperação de Prática divergente: '+x.a1);
@@ -38,13 +42,19 @@ function gerarMontagem(alvos){
 function r53PraticaMontagem_(){if(!R53_PRATICA_MONTAGEM_)R53_PRATICA_MONTAGEM_=JSON.parse(Utilities.ungzip(Utilities.newBlob(Utilities.base64Decode(${JSON.stringify(comprimir(moldes))}),'application/gzip')).getDataAsString('UTF-8'));return R53_PRATICA_MONTAGEM_;}
 `;
 }
-function gerar(deltas, tempo=deltas===undefined?require('./diagnostico-android/tempo_feiticos_plano.json'):[], rajada=deltas===undefined&&tempo.length?rajadaAlvos.formulas(undefined,colunasMontagem).concat(require('./liberacoes').formulas()):[]){
+function gerar(deltas, tempo=deltas===undefined?require('./diagnostico-android/tempo_feiticos_plano.json'):[], rajada=deltas===undefined&&tempo.length?rajadaAlvos.formulas(undefined,colunasMontagem,rajadaAlvos.linhas):[]){
  if(deltas===undefined&&rajada.length){
   const porCelula=new Map(rajada.map(d=>[d.r+':'+d.c,d]));
   for(const d of require('./diagnostico-android/repertorio_trilha_plano.json').filter(d=>d.aba==='DADOS_R53'))porCelula.set(d.r+':'+d.c,d);
   rajada=[...porCelula.values()];
  }
  deltas ??= require('./diagnostico-android/classe_zero_plano.json');
+ // 26/11/2026 (etapa 3 da versão rápida): as linhas do personagem na DADOS_R53 (2 a 46, e a 252 e a 253 da Prática)
+ // ficaram vazias, sem montagem. Só as das invocações continuam sendo repostas (as Liberações, 38 a 40, nem entram)
+ const pessoal=r=>r<=46||r>=252;
+ rajada=rajada.filter(d=>!pessoal(d.r));
+ deltas=deltas.filter(d=>!(d.aba==='DADOS_R53'&&pessoal(d.r)));
+ tempo=tempo.filter(d=>!(d.aba==='DADOS_R53'&&pessoal(d.r)));
  const efeitos=tempo.filter(d=>d.aba==='DADOS_R53');
  const classeZero=deltas.filter(d=>d.aba==='DADOS_R53');
  const payload=comprimir(dados(deltas,efeitos));
@@ -81,13 +91,15 @@ ${dadosMontagem}function r53PraticaRestaurar_(e){
  if(!data.length&&!fronteira)return false;
  var locale=sheet.getParent().getSpreadsheetLocale();
  function value(v){return typeof v==='string'&&v.charAt(0)==='='?r53CargaFormulaNoIdioma_(v,locale):v;}
- if(name==='DADOS_R53'${classeZero.length?'&&toca(252,1,253,183)':''}){
+ // (26/11/2026, etapa 3: sem a Classe 0 da Prática na DADOS_R53, o bloco das linhas 252 e 253 não é gerado)
+ ${classeZero.length?`if(name==='DADOS_R53'&&toca(252,1,253,183)){
   var a=Math.max(r1,252),b=Math.min(r2,253),l=Math.max(c1,1),h=Math.min(c2,183),rows=[];
   for(var r=a;r<=b;r++){var line=[];for(var c=l;c<=h;c++){var found=data.filter(function(v){return v[1]===r&&v[2]===c;});if(found.length!==1)throw Error('Prática: célula calculada ausente');line.push(value(found[0][3]));}rows.push(line);}
   sheet.getRange(a,l,rows.length,h-l+1).setValues(rows);
-  ${classeZero.length?`if(dentro(252,1,253,183))return true;
-  data=data.filter(function(v){return v[1]<252;});`:'return dentro(252,1,253,183);'}
+  if(dentro(252,1,253,183))return true;
+  data=data.filter(function(v){return v[1]<252;});
  }
+`:''}
  // Agrupa por coluna e tipo: textos permanecem textos, inclusive apóstrofos e "0".
  data.sort(function(a,b){return a[2]-b[2]||a[1]-b[1];});var groups=[];
  data.forEach(function(v){var rich=typeof v[3]==='string'&&v[3].charAt(0)!=='=',last=groups[groups.length-1];if(!last||last.c!==v[2]||last.rich!==rich||last.r+last.rows.length!==v[1]){last={r:v[1],c:v[2],rich:rich,rows:[]};groups.push(last);}var val=value(v[3]);
@@ -112,4 +124,4 @@ ${dadosMontagem}function r53PraticaRestaurar_(e){
 }
 function reverterFonte(src){if(src.split(GUARDA).length!==2)throw Error('Guarda de Prática divergente');return src.replace(GUARDA,'');}
 module.exports={dados,gerar,colunasMontagem,GUARDA,reverterFonte};
-if(require.main===module){const code=gerar();new Function(code);fs.writeFileSync(path.join(root,'apps-script/PraticaCotidiana.gs'),code);console.log(JSON.stringify({bytes:code.length,alvos:dados(undefined,require('./diagnostico-android/tempo_feiticos_plano.json').filter(d=>d.aba==='DADOS_R53')).length+rajadaAlvos.formulas(undefined,colunasMontagem).length}));}
+if(require.main===module){const code=gerar();new Function(code);fs.writeFileSync(path.join(root,'apps-script/PraticaCotidiana.gs'),code);console.log(JSON.stringify({bytes:code.length,alvos:dados(undefined,require('./diagnostico-android/tempo_feiticos_plano.json').filter(d=>d.aba==='DADOS_R53')).length+rajadaAlvos.formulas(undefined,colunasMontagem,rajadaAlvos.linhas).length}));}

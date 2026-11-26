@@ -30,7 +30,7 @@ def preco_execucao(preco, classe):
 def aplica(layout, tr):
     abas = {a['nome']: a for a in layout['abas']}
     ficha, amal = 'FICHA', 'FICHA AMALDIÇOADA'
-    cells = {a: {c[0]: c for c in abas[a]['celulas']} for a in [ficha, amal]}
+    cells = {a: {c[0]: c for c in abas[a]['celulas']} for a in [ficha, amal, 'DADOS_AM']}
     plano = []
 
     def mudar(aba, pos, depois, cartao=None):
@@ -58,6 +58,27 @@ def aplica(layout, tr):
     ))
     for g in tr['contextos']:
         if g['aba'] != amal or g['modo'] == 'Classe 0':
+            continue
+        if g.get('leve'):
+            # 26/11/2026 (etapa 3 da versão rápida): o cartão de preencher mostra o PE da DADOS_AM. A caixa do cartão só
+            # aponta para lá; a conta de Integridade entra na própria DADOS_AM, no PE base (3 × Classe, 4,5 × na
+            # Liberação, e o da Técnica Máxima)
+            alvo = re.fullmatch(r"='?DADOS_AM'?!\$([A-Z]+)\$(\d+)", cells[amal][g['cel']['pe']][1] or '')
+            if not alvo:
+                raise ValueError('PE do cartão leve sem referência à DADOS_AM: ' + g['cel']['pe'])
+            pos = alvo[1] + alvo[2]
+            before = cells['DADOS_AM'][pos][1]
+            if g['modo'] == 'Técnica Máxima':
+                m = re.fullmatch(r'=IF\((.+)=0,"—",(\d+)\*(.+)\)', before)
+                if not m:
+                    raise ValueError('PE da Técnica Máxima divergente: ' + pos)
+                after = f'=IF({m[1]}=0,"—",{preco_execucao(m[2] + "*" + m[3], m[3])})'
+            else:
+                base = re.compile(r'(IF\((\$[A-Z]+\d+)=1,CEILING\(4\.5\*(\$[A-Z]+\d+),1\),3\*\3\))&" PE"')
+                after, total = base.subn(lambda m: preco_execucao(m[1], m[3]), before)
+                if total != 1:
+                    raise ValueError('PE base do cartão leve ausente ou duplicado: ' + pos)
+            mudar('DADOS_AM', pos, after)
             continue
         pos = g['cel'].get('execucao_resumo') or g['cel']['pe']
         row = g['linha']

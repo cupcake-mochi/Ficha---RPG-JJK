@@ -29,6 +29,8 @@ for (const d of p.plano) {
  const antesConjuracao = posterior ? posterior.depois : revisao ? revisao.depois : d.depois;
  const ultima = !d.addr && conjuracao.find(x => x.aba === d.aba && x.r === d.r && x.c === d.c);
  if (ultima) t(() => assert.equal(ultima.antes, antesConjuracao));
+ // 26/11/2026 (etapa 3 da versão rápida): a nota das Melhorias do cartão foi reescrita para o cartão de preencher
+ if (d.aba === 'FICHA AMALDIÇOADA' && d.addr) { t(() => assert.ok(atual.startsWith('Escreva uma Melhoria por caixa'), d.addr)); continue; }
  t(() => assert.equal(atual, ultima ? ultima.depois : antesConjuracao));
 }
 for(const locale of ['pt_BR','en_US']){

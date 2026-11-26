@@ -11,7 +11,13 @@ vm.runInContext(p.molde(),ctx);
 const key=d=>d.aba+'!'+(d.addr||d.r+','+d.c);
 assert.equal(new Set(p.plano.map(key)).size,p.plano.length);
 const val=(abas,d)=>{let a=abas.find(a=>a.nome===d.aba);return d.addr?a.notas.find(v=>v[0]===d.addr)?.[1]:a.vals.find(v=>v[0]===d.r&&v[1]===d.c)?.[2];};
-for(const d of p.plano)assert.equal(val(ctx.ABAS,d),d.depois,key(d));
+// 26/11/2026 (etapa 3 da versão rápida): a lista de caixas calculadas da DADOS_AM (coluna KV) ganhou as linhas da
+// Técnica Máxima completa, e o que vinha abaixo desceu (a bênção foi de KV67 para KV70). Nessa coluna a fórmula nova é
+// procurada pelo conteúdo e tem de aparecer uma vez só; nas outras células, a comparação continua pela posição.
+for(const d of p.plano){
+ if(d.aba==='DADOS_AM'&&d.c===308&&!d.addr){const am=ctx.ABAS.find(a=>a.nome==='DADOS_AM');assert.equal(am.vals.filter(v=>v[1]===308&&v[2]===d.depois).length,1,key(d));continue;}
+ assert.equal(val(ctx.ABAS,d),d.depois,key(d));
+}
 const abas=[...new Set(p.plano.map(d=>d.aba))].map(nome=>({nome,vals:[],notas:[]}));
 for(const d of p.plano){let a=abas.find(a=>a.nome===d.aba);(d.addr?a.notas:a.vals).push(d.addr?[d.addr,d.antes]:[d.r,d.c,d.antes,0]);}
 const ruim=JSON.parse(JSON.stringify(abas)),d=p.plano.at(-1),a=ruim.find(a=>a.nome===d.aba);
