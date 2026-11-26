@@ -10,14 +10,11 @@ const {norm} = require('../diagnostico-android/preparar_pratica_cotidiana');
 const {formulas} = require('../rajada_alvos');
 const rt = require('../pratica_cotidiana_runtime');
 
-// 26/11/2026 (etapa 3): só as linhas das invocações (47 a 250) têm montagem; 204 linhas × 4 colunas
+// 26/11/2026 (etapa 4 da versão rápida): nenhuma linha tem mais montagem (o personagem saiu na etapa 3, as invocações
+// nesta). A rajada não tem alvo, e a restauração da prática cotidiana não escreve nada nem carrega o pacote.
 const alvos = formulas();
-assert.equal(alvos.length, 816);
-assert.equal(new Set(alvos.map(d => d.r + ':' + d.c)).size, 816);
-assert.ok(alvos.every(d => d.r !== 251 && d.aba === 'DADOS_R53'));
-
-const alvosRecuperacao = formulas(undefined, rt.colunasMontagem);
-assert.equal(alvosRecuperacao.length, 1020);
+assert.equal(alvos.length, 0);
+assert.equal(formulas(undefined, rt.colunasMontagem).length, 0);
 let loads = 0;
 const ctx = vm.createContext({
   Utilities: {
@@ -43,40 +40,16 @@ function editar(aba, r, c, rr = r, cc = c) {
       getName: () => aba,
       getParent: () => ({getSpreadsheetLocale: () => 'pt_BR'}),
       getRange: (row, col) => ({
-        setValues: values => values.forEach((line, y) => line.forEach((v, x) => {
-          const key = (row + y) + ':' + (col + x);
-          assert.ok(!writes.has(key), 'Escrita duplicada: ' + key);
-          writes.set(key, v);
-        })),
+        setValues: values => values.forEach((line, y) => line.forEach((v, x) => writes.set((row + y) + ':' + (col + x), v))),
       }),
     }),
   }});
 }
 assert.equal(editar('FICHA', 2, 89), false);
-assert.equal(loads, 0);
-assert.equal(editar('DADOS_R53', 47, 89, 250, 181), false);
-const legados = rt.dados(undefined, require('../diagnostico-android/tempo_feiticos_plano.json')
-  .filter(d => d.aba === 'DADOS_R53')).filter(([aba, r, c]) =>
-  aba === 'DADOS_R53' && r >= 47 && r <= 250 && c >= 89 && c <= 181);
-const esperados = new Set([
-  ...alvosRecuperacao.filter(d => d.r <= 250).map(d => d.r + ':' + d.c),
-  ...legados.map(([, r, c]) => r + ':' + c),
-]);
-assert.deepEqual(new Set(writes.keys()), esperados);
-for (const d of alvosRecuperacao.filter(d => d.r <= 250)) {
-  assert.equal(writes.get(d.r + ':' + d.c), formulaLocal(d.depois, 'pt_BR'));
-}
-assert.equal(loads, 2);
-assert.equal(editar('DADOS_R53', 47, 104), true);
-assert.equal(writes.size, 1);
-assert.equal(writes.get('47:104'), formulaLocal(alvosRecuperacao.find(d => d.r === 47 && d.c === 104).depois, 'pt_BR'));
-assert.equal(editar('DADOS_R53', 251, 89), false);
+assert.equal(editar('DADOS_R53', 2, 89, 253, 181), false);
 assert.equal(writes.size, 0);
-for (const d of alvosRecuperacao.filter(d => d.r > 250)) {
-  assert.equal(editar(d.aba, d.r, d.c), true);
-  assert.equal(writes.get(d.r + ':' + d.c), formulaLocal(d.depois, 'pt_BR'));
-}
-assert.equal(loads, 2);
+assert.equal(editar('DADOS_R53', 47, 104), false);
+assert.equal(writes.size, 0);
 
 assert.throws(() => p.prepararCodigo('outro projeto'), /PR75/);
 if (process.argv[2]) {
@@ -87,8 +60,8 @@ if (process.argv[2]) {
       ...d, sheetId: 40, value: formulaLocal(d.depois, locale),
     }))};
     const plano = p.prepararCelulas(snapshot);
-    assert.equal(plano.pedidos.length, 816);
-    assert.equal(plano.reverter(plano.final).length, 816);
+    assert.equal(plano.pedidos.length, alvos.length);
+    assert.equal(plano.reverter(plano.final).length, alvos.length);
     for (const [i, q] of plano.pedidos.entries()) {
       const d = alvos[i];
       assert.notEqual(snapshot.cells[i].value, formulaLocal(d.depois, locale));

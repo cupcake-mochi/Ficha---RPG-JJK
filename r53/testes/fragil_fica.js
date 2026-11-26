@@ -1,4 +1,5 @@
 'use strict';
+// 26/11/2026 (etapa 4 da versão rápida): nenhuma linha tem mais montagem na DADOS_R53 (as invocações também saíram)
 // 26/11/2026 (etapa 3 da versão rápida): só as linhas das invocações (47 a 250) têm montagem na DADOS_R53
 
 const assert = require('node:assert/strict');
@@ -9,8 +10,8 @@ const {formulaLocal} = require('../diagnostico-android/preparar_pilha_5156');
 const {norm} = require('../diagnostico-android/preparar_pratica_cotidiana');
 
 const alvos = p.formulas();
-assert.equal(alvos.length, 612);
-assert.deepEqual([...new Set(alvos.map(d => d.c))], [89, 94, 180]);
+assert.equal(alvos.length, 0);
+assert.deepEqual([...new Set(alvos.map(d => d.c))], []);
 assert.ok(alvos.every(d => d.aba === 'DADOS_R53' && d.r !== 251));
 assert.throws(() => p.prepararCodigo('outro projeto'), /PR76/);
 
@@ -23,8 +24,8 @@ if (process.argv[2]) {
     }))};
     const plano = p.prepararCelulas(snapshot);
     const reversao = plano.reverter(plano.final);
-    assert.equal(plano.pedidos.length, 612);
-    assert.equal(reversao.length, 612);
+    assert.equal(plano.pedidos.length, alvos.length);
+    assert.equal(reversao.length, alvos.length);
     for (const [i, pedido] of plano.pedidos.entries()) {
       const d = alvos[i];
       const q = pedido.updateCells;

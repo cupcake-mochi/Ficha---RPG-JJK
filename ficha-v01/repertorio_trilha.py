@@ -19,8 +19,11 @@ NOTA_SELETOR = ('Escolha Essência ou Inteligência ao receber Repertório do Co
                 'A troca deste campo não apaga as montagens já registradas.')
 
 
-def formulas(row):
-    """Tabela aditiva em DA16:DD28, sem deslocar os endereços existentes."""
+def formulas(row, nomes=None):
+    """Tabela aditiva em DA16:DD28, sem deslocar os endereços existentes.
+
+    26/11/2026 (etapa 4 da versão rápida): `nomes` são as três caixas de nome do repertório da entidade. O cartão é de
+    preencher e não passa mais pela DADOS_R53: as escolhas usadas contam as caixas preenchidas (resposta 4 dele)."""
     r = row + 15
     attr = (f'IF(\'{IV}\'!${SELETOR[0]}${SELETOR[1:]}="Essência",'
             'IFERROR(VALUE(FICHA!$AJ$21),-1),IFERROR(VALUE(FICHA!$AB$21),-1))')
@@ -32,10 +35,13 @@ def formulas(row):
     quota = (f'=LET(atributo,{attr},IF({caminho},'
              f'IF({principal},IF($DB$2>=2,INT($FO{row}>=8)+INT($FO{row}>=16)+INT($FO{row}>=24),0),'
              f'IF(AND({conjunto},$DB$2>=27,{escolhido},{valido}),INT(atributo/2),0)),0))')
-    used = (f'=COUNTIFS(DADOS_R53!$A$2:$A$253,"entidade."&$DD{row}&".ext.*",'
-            # O nome vem sem coerção: números e booleanos também ocupam vaga.
-            # "<>" ignora o resultado vazio da fórmula, preservando esses tipos.
-            f'DADOS_R53!$B$2:$B$253,"<>")+COUNTIF($FF{row}:$FH{row},"?*")')
+    if nomes:
+        used = '=' + '+'.join(f'N(LEN({n}&"")>0)' for n in nomes) + f'+COUNTIF($FF{row}:$FH{row},"?*")'
+    else:
+        used = (f'=COUNTIFS(DADOS_R53!$A$2:$A$253,"entidade."&$DD{row}&".ext.*",'
+                # O nome vem sem coerção: números e booleanos também ocupam vaga.
+                # "<>" ignora o resultado vazio da fórmula, preservando esses tipos.
+                f'DADOS_R53!$B$2:$B$253,"<>")+COUNTIF($FF{row}:$FH{row},"?*")')
     warning = (f'=IF($DC{r}=0,"",LET(atributo,{attr},TEXTJOIN(" · ",TRUE,'
                f'IF({caminho},"","Repertório extra exige Evocador"),'
                f'IF(OR({principal},{conjunto}),"","Trilha sem escolhas extras"),'
@@ -75,14 +81,18 @@ def aplica(layout, tr):
                          ('repertório da Trilha', 'limite extra', 'escolhas extras usadas', 'revisão dos extras')):
         put(DI, col+'16', name)
     for row in range(2, 14):
-        for col, value in formulas(row).items():
-            if col+str(row+15) in maps[DI]:
-                raise ValueError('Área de suporte ocupada: '+col+str(row+15))
-            put(DI, col+str(row+15), value)
         cards = [g for g in tr['contextos'] if g['id'].startswith(f'entidade.{row-1}.ext.')]
         if len(cards) != 3:
             raise ValueError('Três cartões extras por entidade são obrigatórios')
+        nomes = [f"'{IV}'!" + g['cel']['nome'] for g in cards]
+        for col, value in formulas(row, nomes).items():
+            if col+str(row+15) in maps[DI]:
+                raise ValueError('Área de suporte ocupada: '+col+str(row+15))
+            put(DI, col+str(row+15), value)
         for g in cards:
+            # 26/11/2026 (etapa 4): cartão leve não tem linha de aviso na DADOS_R53; a revisão aparece no cabeçalho
+            if g.get('leve'):
+                continue
             a1 = 'GA'+str(g['linha'])
             old = maps['DADOS_R53'][a1][1]
             put('DADOS_R53', a1, '=TEXTJOIN(" · ",TRUE,'+old[1:]+f',\'{DI}\'!$DD${row+15})')
@@ -124,4 +134,4 @@ def suporte(layout, tr):
     """Vizinhos inalterados para recuperar o bloco FY:FZ:GA em conjunto."""
     cells = {c[0]: c[1] for a in layout['abas'] if a['nome'] == 'DADOS_R53' for c in a['celulas']}
     return [dict(aba='DADOS_R53', r=g['linha'], c=c, depois=cells[col+str(g['linha'])])
-            for g in tr['contextos'] if g.get('extra') for col, c in [('FY', 181), ('FZ', 182)]]
+            for g in tr['contextos'] if g.get('extra') and not g.get('leve') for col, c in [('FY', 181), ('FZ', 182)]]

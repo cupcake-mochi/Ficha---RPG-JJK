@@ -52,7 +52,7 @@ def plano_contagem(plano, criterio_anterior='?*'):
     for d in plano:
         if d['aba'] != DI or d['c'] not in (239, 270):
             continue
-        atual = contagem(d['r'])
+        atual = _CONTAGEM_ATUAL.get(d['r'], contagem(d['r']))
         if d['depois'].count(atual) != 1:
             raise ValueError('Contagem normal divergente')
         deltas.append(dict(aba=DI, r=d['r'], c=d['c'],
@@ -63,13 +63,19 @@ def plano_contagem(plano, criterio_anterior='?*'):
     return deltas
 
 
+# 26/11/2026 (etapa 4 da versão rápida): a contagem de cada linha, para o plano de migração achar o termo atual
+_CONTAGEM_ATUAL = {}
+
+
 def formulas(row, nomes, tipos):
     if len(nomes) != 8 or len(set(nomes)) != 8:
         raise ValueError('São necessárias oito identidades normais por entidade')
     stage, nivel, classe, capacidade = (f'${c}{row}' for c in ('FL', 'FO', 'FP', 'GV'))
-    # Conta identidades no registro leve, não as sete versões de cada cartão.
-    # Os IDs excluem básicas, extras da Trilha e trunfos sem listas de endereços.
-    conhecidas = contagem(row)
+    # 26/11/2026 (etapa 4): o cartão da invocação é de preencher e não passa mais pela DADOS_R53. Conta as oito caixas
+    # de nome de especial da entidade, direto na INVOCAÇÕES (resposta 3 dele: "contar as caixas de nome preenchidas").
+    # Nome não vazio ocupa vaga mesmo quando não é texto
+    conhecidas = '(' + '+'.join(f'N(LEN({n}&"")>0)' for n in nomes) + ')'
+    _CONTAGEM_ATUAL[row] = conhecidas
     custo = f'SWITCH({stage},"Incompleta",2,"Completa",3,"Sem Barreiras",5,0)'
     total = f'{conhecidas}+{custo}'
     hab = (f'=LET(conhecidas,{conhecidas},dominio,{custo},'

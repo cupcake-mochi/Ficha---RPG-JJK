@@ -121,14 +121,17 @@ def pesados(tr):
     """Os contextos que ainda usam a montagem R53. 26/11/2026 (etapa 3 da versão rápida): os cartões do personagem
     (aba FICHA AMALDIÇOADA) viraram de preencher e ficam 'leves': continuam na lista, nas mesmas linhas da DADOS_R53 e
     nos mesmos blocos da MONTAGENS (nenhum endereço anda), mas sem fórmula, sem editor e sem tocar no cartão. As chaves
-    r53.* deles continuam na ANALISE, vazias, para o bot achar a exportação completa."""
+    r53.* deles continuam na ANALISE, vazias, para o bot achar a exportação completa. 26/11/2026 (etapa 4): os das
+    invocações também viraram de preencher, e a lista de pesados ficou vazia. As abas da montagem continuam, ocas, só
+    para nenhum endereço andar; saem quando a ficha for refeita."""
     return [g for g in tr['contextos'] if not g.get('leve')]
 
 
 def aplica(layout,fam,inv,personagem):
     ctx=contextos(fam,inv)
     for g in ctx:
-        if g['aba']=='FICHA AMALDIÇOADA':g['leve']=True
+        # 26/11/2026: etapa 3, o personagem; etapa 4, as invocações. Todo cartão é de preencher
+        g['leve']=True
     abas={a['nome']:a for a in layout['abas']}
     if any(n in abas for n in [EDITOR,DADOS,CATALOGO]):raise ValueError('R53 já aplicada')
     cells={n:{v[0]:v for v in a['celulas']} for n,a in abas.items()}

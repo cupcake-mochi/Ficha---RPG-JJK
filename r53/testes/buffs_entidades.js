@@ -52,7 +52,9 @@ for (const [v, esperado] of casos) assert.ok(Object.is(ajuste(v) + 0, esperado +
 // O leitor de 10/11 (buff decimal) é a camada seguinte: descascada antes de comparar com este plano.
 const dados = require('../diagnostico-android/preparar_buff_decimal').reverterModelo(require('../diagnostico-android/preparar_aviso_atributo').reverterModelo(require('../diagnostico-android/preparar_menu_oficios').reverterModelo(require('../diagnostico-android/preparar_especializacao').reverterModelo(require('../diagnostico-android/preparar_texto_extra').reverterModelo(require('../diagnostico-android/preparar_corte_xp_missao').reverterModelo(ler('apps-script'))))))).find(a => a.nome === 'DADOS_INVOC');
 const formulas = expandir(dados);
+// 26/11/2026 (etapa 4): o delta cita as linhas da INVOCAÇÕES de antes (vale pras oficiais); passa pela régua nova.
+const { texto: linhaNova } = require('../remapa_etapa4');
 for (const d of delta) {
-  assert.equal(formulas.get(d.r + ':' + d.c), d.depois, 'Modelo e plano divergem em ' + chave(d));
+  assert.equal(formulas.get(d.r + ':' + d.c), linhaNova(d.depois), 'Modelo e plano divergem em ' + chave(d));
 }
 console.log('Buff/Debuff das entidades: 168 alvos, geração, aplicação e reversão em pt_BR e en_US.');

@@ -58,6 +58,14 @@ const conferirDepois = (pl, onde) => {
     assert.deepEqual(ed.contextos.find(x => x.id === g.depois.id), g.depois, onde + ': contexto ' + i);
   }
 };
+// 26/11/2026 (etapa 4 da versão rápida): a seção 2 ficou APOSENTADA. Os cartões das invocações (a Técnica Máxima inclusive)
+// viraram de preencher como os do personagem: saíram da DADOS_R53 e do editor, e as células da INVOCAÇÕES desceram com a lista
+// de perícias. O "depois" do plano R67 continua valendo pras oficiais, mas não é mais o gerador de hoje; o cartão novo é
+// conferido em cartao_preencher_invocacao.js. A conferência antiga fica abaixo, sem rodar.
+const r53Hoje = ler(path.join(raiz, 'apps-script')).find(a => a.nome === 'DADOS_R53');
+ok(!/^var R53_EDITOR_ = .*"entidade\./m.test(fs.readFileSync(path.join(raiz, 'apps-script/EditorR53.gs'), 'utf8')), 'cartão de entidade voltou pro editor');
+ok(!r53Hoje || ![...expandir(r53Hoje).values()].some(v => /PV TEMP\./.test(String(v))), 'a Máxima voltou pra DADOS_R53');
+if (false) {
 conferirDepois(P, 'plano'); n++;
 // Defeitos: uma célula das invocações com o valor antigo, o contexto de uma entidade antigo, uma célula da FX trocada.
 // (Os de antes, R356, contexto 44 e HM38, eram do personagem e foram trocados na etapa 3.)
@@ -67,6 +75,7 @@ for (const [nome, estragar] of [
   ['DADOS_R53 206 antiga', p => { const d = p.celulas.find(x => x[0] === 'DADOS_R53' && x[1] === 206); d[4] = d[3]; }],
   ['FX trocada', p => { const g = p.dadosR53.find(x => x[0] === 180); g[2] = g[2].replace('sem dano', 'sem  dano'); }],
 ]) { const p = clone(P); estragar(p); recusa(() => conferirDepois(p, nome), assert.AssertionError, 'defeito não acendeu: ' + nome); }
+}
 
 // ------------------------------------------------- 3. (opcional) o plano sai igual do gerador f474691 -> 0ac372f
 let regerado = false;

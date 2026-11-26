@@ -32,7 +32,10 @@ for (const locale of ['pt_BR', 'en_US']) {
 
 const dados = ler('apps-script').find(a => a.nome === 'DADOS_INVOC');
 const formulas = expandir(dados);
+// 26/11/2026 (etapa 4 da versão rápida): cada fileira da INVOCAÇÕES ganhou 11 linhas (a lista de perícias). O delta
+// congelado (o remendo das oficiais) cita as linhas de antes; passa pela régua nova e tem de bater endereço a endereço.
+const { texto: linhaNova } = require('../remapa_etapa4');
 for (const d of delta) {
-  assert.equal(formulas.get(d.r + ':' + d.c), d.depois, 'Modelo e plano divergem em ' + chave(d));
+  assert.equal(formulas.get(d.r + ':' + d.c), linhaNova(d.depois), 'Modelo e plano divergem em ' + chave(d));
 }
 console.log('Atributos das entidades: 60 alvos, geração, aplicação e reversão em pt_BR e en_US.');

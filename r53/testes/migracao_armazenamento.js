@@ -1,6 +1,9 @@
 'use strict';
 const fs=require('fs'),vm=require('vm'),assert=require('assert');
 const source=fs.readFileSync('apps-script/EditorR53.gs','utf8');let cfg=JSON.parse(source.slice(source.indexOf('=')+1,source.indexOf(';\n')));cfg.contextos=cfg.contextos.filter(g=>g.classes.length>=7).slice(0,2);// 26/11/2026 (etapa 3): eram feitico.1 e feitico.2
+// 26/11/2026 (etapa 4 da versão rápida): APOSENTADO. Conferia a migração do armazenamento antigo dos cartões no editor R53;
+// o editor ficou sem cartão nenhum (todos de preencher). O teste antigo continua abaixo, sem rodar, e no histórico do git.
+if(!cfg.contextos.length){console.log(JSON.stringify({resultado:'OK',aposentado:'etapa 4: editor sem cartões'}));process.exit(0);}
 const fields=cfg.campos.map(f=>f[0]),old=Array.from({length:90},()=>Array(9).fill(''));
 // Um registro R53 novo e outro da interface antiga de flags independentes.
 old[4][0]=cfg.contextos[0].id+' · Novo';old[5]=['Classe preparada',1,2,3,4,5,6,7];

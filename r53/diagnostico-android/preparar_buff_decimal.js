@@ -63,7 +63,8 @@ function comparar(base, atual) {
 
 // Comparadores históricos: devolve o modelo ao leitor antigo antes das camadas anteriores
 // (Reserva/Bolsa, Origens…). Atômico: confere tudo numa cópia e só então grava.
-function reverterModelo(abas, delta = require(CAMINHO)) {
+// 26/11/2026 (etapa 4): o delta guarda as linhas da INVOCAÇÕES de antes (vale pras oficiais); o modelo gerado já tem as novas.
+function reverterModelo(abas, delta = require('../remapa_etapa4').lista(require(CAMINHO))) {
   const porAba = new Map();
   for (const d of delta) {
     if (!porAba.has(d.aba)) porAba.set(d.aba, []);

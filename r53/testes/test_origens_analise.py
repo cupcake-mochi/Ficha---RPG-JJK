@@ -35,7 +35,9 @@ class OrigensTest(unittest.TestCase):
 
     def test_lista_intervalo_extremos_absolutos_aba_repetida(self):
         value = '="\'INVOCAÇÕES\'!$D$52:\'INVOCAÇÕES\'!$H$251  FICHA!D92 FICHA!D103"'
-        expected = '="\'INVOCAÇÕES\'!$D$65:\'INVOCAÇÕES\'!$H$277  FICHA!D105 FICHA!D129"'
+        # 26/11/2026 (etapa 4): a fileira da INVOCAÇÕES ficou mais alta (passo 209, era 198); a 2ª inserção caiu na 261,
+        # depois da 251, que agora só passa pela 1ª (+13)
+        expected = '="\'INVOCAÇÕES\'!$D$65:\'INVOCAÇÕES\'!$H$264  FICHA!D105 FICHA!D129"'
         self.assertEqual(R.mover(value, E.coord), expected)
         self.assertEqual(R.mover("'INVOCAÇÕES'!D:D", E.coord), "'INVOCAÇÕES'!D:D")
         self.assertEqual(R.mover("'INVOCAÇÕES'!52:53", E.coord), "'INVOCAÇÕES'!65:66")

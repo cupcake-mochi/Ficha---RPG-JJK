@@ -130,6 +130,12 @@ let falhas = 0;
   falhas += conferir(M, antes, 'reabrir');
 }
 
+// 26/11/2026 (etapa 4 da versão rápida): nenhum cartão passa mais pela montagem R53, então não sobra cartão pessoal com
+// Cura ou PV temp. pra gravar fechado. Os casos 2 a 5 só rodam quando houver um; o caso 1 continua valendo.
+const temCartao = montar().preenchidos.length > 0;
+if (!temCartao) console.log('\n(2) a (5) pulados: nenhum cartão na montagem R53 (etapa 4).');
+if (temCartao) {
+
 // (2) Um cartão gravado com o Amparo fechado (r53Gravar_, como numa edição de outro campo dele): a reabertura traz o
 // valor novo.
 {
@@ -187,5 +193,7 @@ let falhas = 0;
   falhas += conferir(M, antes, 'reabrir sem nada guardado');
 }
 
-console.log(falhas ? '\nFALHOU: ' + falhas + ' problema(s).' : '\nOK: todas as células voltaram ao valor certo nos cinco casos.');
+}
+
+console.log(falhas ? '\nFALHOU: ' + falhas + ' problema(s).' : '\nOK: todas as células voltaram ao valor certo ' + (temCartao ? 'nos cinco casos.' : 'no caso 1.'));
 process.exit(falhas ? 1 : 0);

@@ -1,4 +1,5 @@
 'use strict';
+// 26/11/2026 (etapa 4 da versão rápida): nenhuma linha tem mais montagem na DADOS_R53 (as invocações também saíram)
 const fs=require('fs'),vm=require('vm'),assert=require('assert');let checks=0;const io=[];let enforceValidation=false;
 function eq(a,b){assert.deepStrictEqual(a,b);checks++;}
 function pos(a){let m=/^([A-Z]+)(\d+)(?::([A-Z]+)(\d+))?$/.exec(a.replace(/\$/g,''));assert(m,a);const col=s=>[...s].reduce((a,c)=>a*26+c.charCodeAt(0)-64,0);return [+m[2],col(m[1]),+(m[4]||m[2]),col(m[3]||m[1])];}
@@ -19,7 +20,7 @@ const lockTrace=[];let locked=false;
 const box={console,PropertiesService:{getDocumentProperties:()=>({getProperty:k=>props.get(k)||null,setProperty:(k,v)=>props.set(k,v)})},LockService:{getDocumentLock:()=>({tryLock(){locked=true;lockTrace.push('acquire');return true;},releaseLock(){assert(locked);assert.strictEqual(lockTrace.at(-1),'flush');locked=false;lockTrace.push('release');}})},SpreadsheetApp:{getActive:()=>ss,flush(){assert(locked);lockTrace.push('flush');},newDataValidation(){let o={};for(const k of ['requireCheckbox','requireValueInList','requireFormulaSatisfied','setAllowInvalid'])o[k]=function(...v){this[k+'_args']=v;return this;};o.build=function(){return {...this};};return o;}}};
 box.Utilities={DigestAlgorithm:{SHA_256:1},Charset:{UTF_8:1},base64Decode:s=>Buffer.from(s,'base64'),newBlob:x=>x,ungzip:x=>({getDataAsString:()=>require('zlib').gunzipSync(x).toString('utf8')}),computeDigest:(_,s)=>Array.from(require('crypto').createHash('sha256').update(s).digest())};
 vm.createContext(box);vm.runInContext(fs.readFileSync(process.argv[2]||'apps-script/EditorR53.gs','utf8'),box);
-const cfg=box.R53_EDITOR_,fields=cfg.campos.map(f=>f[0]);eq(cfg.esquema,3);eq(cfg.contextos.length,204);eq([...cfg.contextos].every(g=>g.id.startsWith('entidade.')),true);// 26/11/2026 (etapa 3): só as entidadeseq(!!cfg.paineis,false);
+const cfg=box.R53_EDITOR_,fields=cfg.campos.map(f=>f[0]);eq(cfg.esquema,3);eq(cfg.contextos.length,0);eq([...cfg.contextos].every(g=>g.id.startsWith('entidade.')),true);// 26/11/2026 (etapa 3): só as entidadeseq(!!cfg.paineis,false);
 // Uma cópia começa sem propriedades: editar Caminho/Trilha não pode iniciar
 // a recuperação de 251 cartões antes das automações da FICHA.
 for(const cell of ['D11','N11']){
@@ -44,6 +45,10 @@ for(const [aba,cell] of [['CARTEIRA','A1'],['INVOCAÇÕES','A1'],['CONFIGURAÇÃ
  eq(box.r53Editar_({source:ss,range:ss.getSheetByName(aba).getRange(cell)}),false);
  eq(io,['read:'+cfg.amparo.aba]);eq(JSON.parse(props.get('r53_amparo_direto')),Array(13).fill('Normal'));
 }
+// 26/11/2026 (etapa 4 da versão rápida): daqui pra baixo APOSENTADO. O resto conferia a edição dos cartões das entidades no
+// editor R53 (Classe, pontos, Amparo/Família, Máxima). Os cartões das invocações viraram de preencher e o editor ficou sem
+// cartão nenhum; quem confere o cartão novo é o cartao_preencher_invocacao.js. O código antigo continua abaixo, sem rodar.
+if(!cfg.contextos.length){console.log(JSON.stringify({checks,resultado:'OK',aposentado:'etapa 4: editor sem cartões'}));process.exit(0);}
 // Com o estado guardado, fechar uma Família ainda acerta só os cartões dela.
 {const esp=cfg.contextos.find(g=>g.id==='entidade.1.esp.1'),inv=ss.getSheetByName(esp.aba),cura=inv.getRange(esp.funcoes_diretas.cura).getValue();
  ss.getSheetByName(cfg.amparo.aba).getRange(cfg.amparo.faixa).setValues([['Normal','Fechada',...Array(11).fill('Normal')]]);box.R53_REF_CACHE_={};io.length=0;

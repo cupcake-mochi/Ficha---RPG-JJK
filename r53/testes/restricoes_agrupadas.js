@@ -1,4 +1,5 @@
 'use strict';
+// 26/11/2026 (etapa 4 da versão rápida): nenhuma linha tem mais montagem na DADOS_R53 (as invocações também saíram)
 // 26/11/2026 (etapa 3 da versão rápida): só as linhas das invocações (47 a 250) têm montagem na DADOS_R53
 
 const assert = require('node:assert/strict');
@@ -12,18 +13,13 @@ const {norm} = require('../diagnostico-android/preparar_pratica_cotidiana');
 const {gerar} = require('../pratica_cotidiana_runtime');
 
 const alvos = p.formulas();
-assert.equal(alvos.length, 612);
-assert.deepEqual([...new Set(alvos.map(d => d.c))], [89, 94, 104]);
+assert.equal(alvos.length, 0);
+assert.deepEqual([...new Set(alvos.map(d => d.c))], []);
 assert.ok(alvos.every(d => d.aba === 'DADOS_R53' && d.r !== 251));
 assert.throws(() => p.prepararCodigo('outro projeto'), /PR79/);
 
-const runtime = blocoRecuperacao(gerar());
-const base64 = /^function r53PraticaMontagem_.*base64Decode\("([^"]+)"\)/m.exec(runtime)[1];
-const recuperadas = new Map();
-for (const [coluna, molde, linhas] of JSON.parse(zlib.gunzipSync(Buffer.from(base64, 'base64')))) {
-  for (const linha of linhas) recuperadas.set(linha + ':' + coluna, molde.replace(/\x01/g, String(linha)));
-}
-for (const {r, c, depois} of alvos) assert.equal(recuperadas.get(r + ':' + c), depois);
+// 26/11/2026 (etapa 4): sem montagem nenhuma, o código da Prática não leva mais a recuperação das montagens.
+assert.doesNotMatch(blocoRecuperacao(gerar()), /r53PraticaMontagem_|R53_PRATICA_MONTAGEM_/);
 
 if (process.argv[2]) {
   const dir = process.argv[2];

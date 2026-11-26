@@ -254,14 +254,16 @@ def aplica(layout, fiv):
         fi = '$'+ix._letras(fiv['col']['ficha'])+str(r)
         core = f'INDEX({core_table},{fi},0)'
         extra = f'INDEX({extra_table},{fi},0)'
-        for key in ('x0', 'x1', 'x2', 'x3', 'x4'):
+        # 26/11/2026 (etapa 4 da versão rápida): no cartão de preencher só a Forma confere a Família (o nome da peça é
+        # livre, e o desconto da Livre vem do peso escolhido no menu): x1 a x4 e os preços k1 a k4 não leem mais Família
+        for key in ('x0',):
             coord = iv._a1(fiv['col'][key], r)
             old = cells[iv.DADOS_IV][coord][1]
             new = amplia_countif(old, core, extra)
             if old == new:
                 raise ValueError('Aplicação não lê a Família esperada: '+coord)
             put(iv.DADOS_IV, coord, new)
-        for k in range(1, iv.N_MEL+1):
+        for k in ():                                  # 26/11/2026: o desconto saiu (ver acima)
             coord = iv._a1(fiv['col']['k'+str(k)], r)
             old = cells[iv.DADOS_IV][coord][1]
             fk = '$'+ix._letras(fiv['col']['f'+str(k)])+str(r)

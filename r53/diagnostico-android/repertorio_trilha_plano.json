@@ -46,7 +46,7 @@
     "r": 17,
     "c": 107,
     "antes": null,
-    "depois": "=COUNTIFS(DADOS_R53!$A$2:$A$253,\"entidade.\"&$DD2&\".ext.*\",DADOS_R53!$B$2:$B$253,\"<>\")+COUNTIF($FF2:$FH2,\"?*\")"
+    "depois": "=N(LEN('INVOCAÇÕES'!J184&\"\")>0)+N(LEN('INVOCAÇÕES'!P184&\"\")>0)+N(LEN('INVOCAÇÕES'!V184&\"\")>0)+COUNTIF($FF2:$FH2,\"?*\")"
   },
   {
     "aba": "DADOS_INVOC",
@@ -56,29 +56,8 @@
     "depois": "=IF($DC17=0,\"\",LET(atributo,IF('INVOCAÇÕES'!$D$35=\"Essência\",IFERROR(VALUE(FICHA!$AJ$21),-1),IFERROR(VALUE(FICHA!$AB$21),-1)),TEXTJOIN(\" · \",TRUE,IF(FICHA!$D$11=\"Evocador\",\"\",\"Repertório extra exige Evocador\"),IF(OR($DB$4=\"Invocação Principal\",$DB$4=\"Múltiplas Invocações\"),\"\",\"Trilha sem escolhas extras\"),IF(AND($DB$4=\"Invocação Principal\",$DB$2<2),\"Trilha exige nível 2 do invocador\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2<27),\"Repertório do Conjunto: nível mínimo 27 do invocador\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\")=FALSE),\"Escolha Essência ou Inteligência em O CONJUNTO\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\"),AND(atributo>=0,atributo=INT(atributo))=FALSE),\"Atributo permanente inválido\",\"\"),IF($DC17>$DB17,\"Escolhas extras excedidas: \"&$DC17&\"/\"&$DB17,\"\"))))"
   },
   {
-    "aba": "DADOS_R53",
-    "r": 57,
-    "c": 183,
-    "antes": "=TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$57<>0,'DADOS_R53'!$AS$57<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$2101:$I$2101,1,MATCH('DADOS_R53'!$C$57,'MONTAGENS'!$B$2096:$I$2096,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!K178),'INVOCAÇÕES'!K178>0))),IF(NOT('DADOS_R53'!$AS$57<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$57<>0,'DADOS_R53'!$AS$57<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$2103:$I$2103,1,MATCH('DADOS_R53'!$C$57,'MONTAGENS'!$B$2096:$I$2096,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!L178),'INVOCAÇÕES'!L178>0))),IF(NOT('DADOS_R53'!$AS$57<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\"))",
-    "depois": "=TEXTJOIN(\" · \",TRUE,TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$57<>0,'DADOS_R53'!$AS$57<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$2101:$I$2101,1,MATCH('DADOS_R53'!$C$57,'MONTAGENS'!$B$2096:$I$2096,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!K178),'INVOCAÇÕES'!K178>0))),IF(NOT('DADOS_R53'!$AS$57<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$57<>0,'DADOS_R53'!$AS$57<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$2103:$I$2103,1,MATCH('DADOS_R53'!$C$57,'MONTAGENS'!$B$2096:$I$2096,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!L178),'INVOCAÇÕES'!L178>0))),IF(NOT('DADOS_R53'!$AS$57<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\")),'DADOS_INVOC'!$DD$17)"
-  },
-  {
-    "aba": "DADOS_R53",
-    "r": 58,
-    "c": 183,
-    "antes": "=TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$58<>0,'DADOS_R53'!$AS$58<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$2139:$I$2139,1,MATCH('DADOS_R53'!$C$58,'MONTAGENS'!$B$2134:$I$2134,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!Q178),'INVOCAÇÕES'!Q178>0))),IF(NOT('DADOS_R53'!$AS$58<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$58<>0,'DADOS_R53'!$AS$58<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$2141:$I$2141,1,MATCH('DADOS_R53'!$C$58,'MONTAGENS'!$B$2134:$I$2134,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!R178),'INVOCAÇÕES'!R178>0))),IF(NOT('DADOS_R53'!$AS$58<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\"))",
-    "depois": "=TEXTJOIN(\" · \",TRUE,TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$58<>0,'DADOS_R53'!$AS$58<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$2139:$I$2139,1,MATCH('DADOS_R53'!$C$58,'MONTAGENS'!$B$2134:$I$2134,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!Q178),'INVOCAÇÕES'!Q178>0))),IF(NOT('DADOS_R53'!$AS$58<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$58<>0,'DADOS_R53'!$AS$58<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$2141:$I$2141,1,MATCH('DADOS_R53'!$C$58,'MONTAGENS'!$B$2134:$I$2134,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!R178),'INVOCAÇÕES'!R178>0))),IF(NOT('DADOS_R53'!$AS$58<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\")),'DADOS_INVOC'!$DD$17)"
-  },
-  {
-    "aba": "DADOS_R53",
-    "r": 59,
-    "c": 183,
-    "antes": "=TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$59<>0,'DADOS_R53'!$AS$59<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$2177:$I$2177,1,MATCH('DADOS_R53'!$C$59,'MONTAGENS'!$B$2172:$I$2172,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!W178),'INVOCAÇÕES'!W178>0))),IF(NOT('DADOS_R53'!$AS$59<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$59<>0,'DADOS_R53'!$AS$59<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$2179:$I$2179,1,MATCH('DADOS_R53'!$C$59,'MONTAGENS'!$B$2172:$I$2172,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!X178),'INVOCAÇÕES'!X178>0))),IF(NOT('DADOS_R53'!$AS$59<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\"))",
-    "depois": "=TEXTJOIN(\" · \",TRUE,TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$59<>0,'DADOS_R53'!$AS$59<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$2177:$I$2177,1,MATCH('DADOS_R53'!$C$59,'MONTAGENS'!$B$2172:$I$2172,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!W178),'INVOCAÇÕES'!W178>0))),IF(NOT('DADOS_R53'!$AS$59<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$59<>0,'DADOS_R53'!$AS$59<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$2179:$I$2179,1,MATCH('DADOS_R53'!$C$59,'MONTAGENS'!$B$2172:$I$2172,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!X178),'INVOCAÇÕES'!X178>0))),IF(NOT('DADOS_R53'!$AS$59<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\")),'DADOS_INVOC'!$DD$17)"
-  },
-  {
     "aba": "INVOCAÇÕES",
-    "r": 170,
+    "r": 181,
     "c": 9,
     "antes": "REPERTÓRIO DA TRILHA · só o Evocador: as escolhas a mais da Invocação Principal e do Repertório do Conjunto",
     "depois": "=IF('DADOS_INVOC'!$DD$17<>\"\",\"REVISAR · \",\"\")&\"REPERTÓRIO DA TRILHA · \"&'DADOS_INVOC'!$DC$17&\"/\"&'DADOS_INVOC'!$DB$17&IF('DADOS_INVOC'!$DD$17<>\"\",\" · \"&'DADOS_INVOC'!$DD$17,\"\")"
@@ -102,7 +81,7 @@
     "r": 18,
     "c": 107,
     "antes": null,
-    "depois": "=COUNTIFS(DADOS_R53!$A$2:$A$253,\"entidade.\"&$DD3&\".ext.*\",DADOS_R53!$B$2:$B$253,\"<>\")+COUNTIF($FF3:$FH3,\"?*\")"
+    "depois": "=N(LEN('INVOCAÇÕES'!J426&\"\")>0)+N(LEN('INVOCAÇÕES'!P426&\"\")>0)+N(LEN('INVOCAÇÕES'!V426&\"\")>0)+COUNTIF($FF3:$FH3,\"?*\")"
   },
   {
     "aba": "DADOS_INVOC",
@@ -112,29 +91,8 @@
     "depois": "=IF($DC18=0,\"\",LET(atributo,IF('INVOCAÇÕES'!$D$35=\"Essência\",IFERROR(VALUE(FICHA!$AJ$21),-1),IFERROR(VALUE(FICHA!$AB$21),-1)),TEXTJOIN(\" · \",TRUE,IF(FICHA!$D$11=\"Evocador\",\"\",\"Repertório extra exige Evocador\"),IF(OR($DB$4=\"Invocação Principal\",$DB$4=\"Múltiplas Invocações\"),\"\",\"Trilha sem escolhas extras\"),IF(AND($DB$4=\"Invocação Principal\",$DB$2<2),\"Trilha exige nível 2 do invocador\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2<27),\"Repertório do Conjunto: nível mínimo 27 do invocador\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\")=FALSE),\"Escolha Essência ou Inteligência em O CONJUNTO\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\"),AND(atributo>=0,atributo=INT(atributo))=FALSE),\"Atributo permanente inválido\",\"\"),IF($DC18>$DB18,\"Escolhas extras excedidas: \"&$DC18&\"/\"&$DB18,\"\"))))"
   },
   {
-    "aba": "DADOS_R53",
-    "r": 70,
-    "c": 183,
-    "antes": "=TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$70<>0,'DADOS_R53'!$AS$70<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$2595:$I$2595,1,MATCH('DADOS_R53'!$C$70,'MONTAGENS'!$B$2590:$I$2590,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!K409),'INVOCAÇÕES'!K409>0))),IF(NOT('DADOS_R53'!$AS$70<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$70<>0,'DADOS_R53'!$AS$70<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$2597:$I$2597,1,MATCH('DADOS_R53'!$C$70,'MONTAGENS'!$B$2590:$I$2590,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!L409),'INVOCAÇÕES'!L409>0))),IF(NOT('DADOS_R53'!$AS$70<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\"))",
-    "depois": "=TEXTJOIN(\" · \",TRUE,TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$70<>0,'DADOS_R53'!$AS$70<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$2595:$I$2595,1,MATCH('DADOS_R53'!$C$70,'MONTAGENS'!$B$2590:$I$2590,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!K409),'INVOCAÇÕES'!K409>0))),IF(NOT('DADOS_R53'!$AS$70<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$70<>0,'DADOS_R53'!$AS$70<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$2597:$I$2597,1,MATCH('DADOS_R53'!$C$70,'MONTAGENS'!$B$2590:$I$2590,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!L409),'INVOCAÇÕES'!L409>0))),IF(NOT('DADOS_R53'!$AS$70<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\")),'DADOS_INVOC'!$DD$18)"
-  },
-  {
-    "aba": "DADOS_R53",
-    "r": 71,
-    "c": 183,
-    "antes": "=TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$71<>0,'DADOS_R53'!$AS$71<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$2633:$I$2633,1,MATCH('DADOS_R53'!$C$71,'MONTAGENS'!$B$2628:$I$2628,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!Q409),'INVOCAÇÕES'!Q409>0))),IF(NOT('DADOS_R53'!$AS$71<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$71<>0,'DADOS_R53'!$AS$71<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$2635:$I$2635,1,MATCH('DADOS_R53'!$C$71,'MONTAGENS'!$B$2628:$I$2628,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!R409),'INVOCAÇÕES'!R409>0))),IF(NOT('DADOS_R53'!$AS$71<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\"))",
-    "depois": "=TEXTJOIN(\" · \",TRUE,TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$71<>0,'DADOS_R53'!$AS$71<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$2633:$I$2633,1,MATCH('DADOS_R53'!$C$71,'MONTAGENS'!$B$2628:$I$2628,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!Q409),'INVOCAÇÕES'!Q409>0))),IF(NOT('DADOS_R53'!$AS$71<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$71<>0,'DADOS_R53'!$AS$71<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$2635:$I$2635,1,MATCH('DADOS_R53'!$C$71,'MONTAGENS'!$B$2628:$I$2628,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!R409),'INVOCAÇÕES'!R409>0))),IF(NOT('DADOS_R53'!$AS$71<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\")),'DADOS_INVOC'!$DD$18)"
-  },
-  {
-    "aba": "DADOS_R53",
-    "r": 72,
-    "c": 183,
-    "antes": "=TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$72<>0,'DADOS_R53'!$AS$72<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$2671:$I$2671,1,MATCH('DADOS_R53'!$C$72,'MONTAGENS'!$B$2666:$I$2666,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!W409),'INVOCAÇÕES'!W409>0))),IF(NOT('DADOS_R53'!$AS$72<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$72<>0,'DADOS_R53'!$AS$72<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$2673:$I$2673,1,MATCH('DADOS_R53'!$C$72,'MONTAGENS'!$B$2666:$I$2666,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!X409),'INVOCAÇÕES'!X409>0))),IF(NOT('DADOS_R53'!$AS$72<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\"))",
-    "depois": "=TEXTJOIN(\" · \",TRUE,TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$72<>0,'DADOS_R53'!$AS$72<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$2671:$I$2671,1,MATCH('DADOS_R53'!$C$72,'MONTAGENS'!$B$2666:$I$2666,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!W409),'INVOCAÇÕES'!W409>0))),IF(NOT('DADOS_R53'!$AS$72<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$72<>0,'DADOS_R53'!$AS$72<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$2673:$I$2673,1,MATCH('DADOS_R53'!$C$72,'MONTAGENS'!$B$2666:$I$2666,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!X409),'INVOCAÇÕES'!X409>0))),IF(NOT('DADOS_R53'!$AS$72<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\")),'DADOS_INVOC'!$DD$18)"
-  },
-  {
     "aba": "INVOCAÇÕES",
-    "r": 401,
+    "r": 423,
     "c": 9,
     "antes": "REPERTÓRIO DA TRILHA · só o Evocador: as escolhas a mais da Invocação Principal e do Repertório do Conjunto",
     "depois": "=IF('DADOS_INVOC'!$DD$18<>\"\",\"REVISAR · \",\"\")&\"REPERTÓRIO DA TRILHA · \"&'DADOS_INVOC'!$DC$18&\"/\"&'DADOS_INVOC'!$DB$18&IF('DADOS_INVOC'!$DD$18<>\"\",\" · \"&'DADOS_INVOC'!$DD$18,\"\")"
@@ -158,7 +116,7 @@
     "r": 19,
     "c": 107,
     "antes": null,
-    "depois": "=COUNTIFS(DADOS_R53!$A$2:$A$253,\"entidade.\"&$DD4&\".ext.*\",DADOS_R53!$B$2:$B$253,\"<>\")+COUNTIF($FF4:$FH4,\"?*\")"
+    "depois": "=N(LEN('INVOCAÇÕES'!J668&\"\")>0)+N(LEN('INVOCAÇÕES'!P668&\"\")>0)+N(LEN('INVOCAÇÕES'!V668&\"\")>0)+COUNTIF($FF4:$FH4,\"?*\")"
   },
   {
     "aba": "DADOS_INVOC",
@@ -168,29 +126,8 @@
     "depois": "=IF($DC19=0,\"\",LET(atributo,IF('INVOCAÇÕES'!$D$35=\"Essência\",IFERROR(VALUE(FICHA!$AJ$21),-1),IFERROR(VALUE(FICHA!$AB$21),-1)),TEXTJOIN(\" · \",TRUE,IF(FICHA!$D$11=\"Evocador\",\"\",\"Repertório extra exige Evocador\"),IF(OR($DB$4=\"Invocação Principal\",$DB$4=\"Múltiplas Invocações\"),\"\",\"Trilha sem escolhas extras\"),IF(AND($DB$4=\"Invocação Principal\",$DB$2<2),\"Trilha exige nível 2 do invocador\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2<27),\"Repertório do Conjunto: nível mínimo 27 do invocador\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\")=FALSE),\"Escolha Essência ou Inteligência em O CONJUNTO\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\"),AND(atributo>=0,atributo=INT(atributo))=FALSE),\"Atributo permanente inválido\",\"\"),IF($DC19>$DB19,\"Escolhas extras excedidas: \"&$DC19&\"/\"&$DB19,\"\"))))"
   },
   {
-    "aba": "DADOS_R53",
-    "r": 83,
-    "c": 183,
-    "antes": "=TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$83<>0,'DADOS_R53'!$AS$83<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$3089:$I$3089,1,MATCH('DADOS_R53'!$C$83,'MONTAGENS'!$B$3084:$I$3084,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!K640),'INVOCAÇÕES'!K640>0))),IF(NOT('DADOS_R53'!$AS$83<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$83<>0,'DADOS_R53'!$AS$83<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$3091:$I$3091,1,MATCH('DADOS_R53'!$C$83,'MONTAGENS'!$B$3084:$I$3084,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!L640),'INVOCAÇÕES'!L640>0))),IF(NOT('DADOS_R53'!$AS$83<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\"))",
-    "depois": "=TEXTJOIN(\" · \",TRUE,TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$83<>0,'DADOS_R53'!$AS$83<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$3089:$I$3089,1,MATCH('DADOS_R53'!$C$83,'MONTAGENS'!$B$3084:$I$3084,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!K640),'INVOCAÇÕES'!K640>0))),IF(NOT('DADOS_R53'!$AS$83<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$83<>0,'DADOS_R53'!$AS$83<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$3091:$I$3091,1,MATCH('DADOS_R53'!$C$83,'MONTAGENS'!$B$3084:$I$3084,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!L640),'INVOCAÇÕES'!L640>0))),IF(NOT('DADOS_R53'!$AS$83<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\")),'DADOS_INVOC'!$DD$19)"
-  },
-  {
-    "aba": "DADOS_R53",
-    "r": 84,
-    "c": 183,
-    "antes": "=TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$84<>0,'DADOS_R53'!$AS$84<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$3127:$I$3127,1,MATCH('DADOS_R53'!$C$84,'MONTAGENS'!$B$3122:$I$3122,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!Q640),'INVOCAÇÕES'!Q640>0))),IF(NOT('DADOS_R53'!$AS$84<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$84<>0,'DADOS_R53'!$AS$84<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$3129:$I$3129,1,MATCH('DADOS_R53'!$C$84,'MONTAGENS'!$B$3122:$I$3122,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!R640),'INVOCAÇÕES'!R640>0))),IF(NOT('DADOS_R53'!$AS$84<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\"))",
-    "depois": "=TEXTJOIN(\" · \",TRUE,TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$84<>0,'DADOS_R53'!$AS$84<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$3127:$I$3127,1,MATCH('DADOS_R53'!$C$84,'MONTAGENS'!$B$3122:$I$3122,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!Q640),'INVOCAÇÕES'!Q640>0))),IF(NOT('DADOS_R53'!$AS$84<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$84<>0,'DADOS_R53'!$AS$84<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$3129:$I$3129,1,MATCH('DADOS_R53'!$C$84,'MONTAGENS'!$B$3122:$I$3122,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!R640),'INVOCAÇÕES'!R640>0))),IF(NOT('DADOS_R53'!$AS$84<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\")),'DADOS_INVOC'!$DD$19)"
-  },
-  {
-    "aba": "DADOS_R53",
-    "r": 85,
-    "c": 183,
-    "antes": "=TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$85<>0,'DADOS_R53'!$AS$85<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$3165:$I$3165,1,MATCH('DADOS_R53'!$C$85,'MONTAGENS'!$B$3160:$I$3160,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!W640),'INVOCAÇÕES'!W640>0))),IF(NOT('DADOS_R53'!$AS$85<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$85<>0,'DADOS_R53'!$AS$85<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$3167:$I$3167,1,MATCH('DADOS_R53'!$C$85,'MONTAGENS'!$B$3160:$I$3160,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!X640),'INVOCAÇÕES'!X640>0))),IF(NOT('DADOS_R53'!$AS$85<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\"))",
-    "depois": "=TEXTJOIN(\" · \",TRUE,TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$85<>0,'DADOS_R53'!$AS$85<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$3165:$I$3165,1,MATCH('DADOS_R53'!$C$85,'MONTAGENS'!$B$3160:$I$3160,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!W640),'INVOCAÇÕES'!W640>0))),IF(NOT('DADOS_R53'!$AS$85<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$85<>0,'DADOS_R53'!$AS$85<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$3167:$I$3167,1,MATCH('DADOS_R53'!$C$85,'MONTAGENS'!$B$3160:$I$3160,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!X640),'INVOCAÇÕES'!X640>0))),IF(NOT('DADOS_R53'!$AS$85<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\")),'DADOS_INVOC'!$DD$19)"
-  },
-  {
     "aba": "INVOCAÇÕES",
-    "r": 632,
+    "r": 665,
     "c": 9,
     "antes": "REPERTÓRIO DA TRILHA · só o Evocador: as escolhas a mais da Invocação Principal e do Repertório do Conjunto",
     "depois": "=IF('DADOS_INVOC'!$DD$19<>\"\",\"REVISAR · \",\"\")&\"REPERTÓRIO DA TRILHA · \"&'DADOS_INVOC'!$DC$19&\"/\"&'DADOS_INVOC'!$DB$19&IF('DADOS_INVOC'!$DD$19<>\"\",\" · \"&'DADOS_INVOC'!$DD$19,\"\")"
@@ -214,7 +151,7 @@
     "r": 20,
     "c": 107,
     "antes": null,
-    "depois": "=COUNTIFS(DADOS_R53!$A$2:$A$253,\"entidade.\"&$DD5&\".ext.*\",DADOS_R53!$B$2:$B$253,\"<>\")+COUNTIF($FF5:$FH5,\"?*\")"
+    "depois": "=N(LEN('INVOCAÇÕES'!J910&\"\")>0)+N(LEN('INVOCAÇÕES'!P910&\"\")>0)+N(LEN('INVOCAÇÕES'!V910&\"\")>0)+COUNTIF($FF5:$FH5,\"?*\")"
   },
   {
     "aba": "DADOS_INVOC",
@@ -224,29 +161,8 @@
     "depois": "=IF($DC20=0,\"\",LET(atributo,IF('INVOCAÇÕES'!$D$35=\"Essência\",IFERROR(VALUE(FICHA!$AJ$21),-1),IFERROR(VALUE(FICHA!$AB$21),-1)),TEXTJOIN(\" · \",TRUE,IF(FICHA!$D$11=\"Evocador\",\"\",\"Repertório extra exige Evocador\"),IF(OR($DB$4=\"Invocação Principal\",$DB$4=\"Múltiplas Invocações\"),\"\",\"Trilha sem escolhas extras\"),IF(AND($DB$4=\"Invocação Principal\",$DB$2<2),\"Trilha exige nível 2 do invocador\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2<27),\"Repertório do Conjunto: nível mínimo 27 do invocador\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\")=FALSE),\"Escolha Essência ou Inteligência em O CONJUNTO\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\"),AND(atributo>=0,atributo=INT(atributo))=FALSE),\"Atributo permanente inválido\",\"\"),IF($DC20>$DB20,\"Escolhas extras excedidas: \"&$DC20&\"/\"&$DB20,\"\"))))"
   },
   {
-    "aba": "DADOS_R53",
-    "r": 96,
-    "c": 183,
-    "antes": "=TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$96<>0,'DADOS_R53'!$AS$96<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$3583:$I$3583,1,MATCH('DADOS_R53'!$C$96,'MONTAGENS'!$B$3578:$I$3578,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!K871),'INVOCAÇÕES'!K871>0))),IF(NOT('DADOS_R53'!$AS$96<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$96<>0,'DADOS_R53'!$AS$96<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$3585:$I$3585,1,MATCH('DADOS_R53'!$C$96,'MONTAGENS'!$B$3578:$I$3578,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!L871),'INVOCAÇÕES'!L871>0))),IF(NOT('DADOS_R53'!$AS$96<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\"))",
-    "depois": "=TEXTJOIN(\" · \",TRUE,TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$96<>0,'DADOS_R53'!$AS$96<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$3583:$I$3583,1,MATCH('DADOS_R53'!$C$96,'MONTAGENS'!$B$3578:$I$3578,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!K871),'INVOCAÇÕES'!K871>0))),IF(NOT('DADOS_R53'!$AS$96<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$96<>0,'DADOS_R53'!$AS$96<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$3585:$I$3585,1,MATCH('DADOS_R53'!$C$96,'MONTAGENS'!$B$3578:$I$3578,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!L871),'INVOCAÇÕES'!L871>0))),IF(NOT('DADOS_R53'!$AS$96<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\")),'DADOS_INVOC'!$DD$20)"
-  },
-  {
-    "aba": "DADOS_R53",
-    "r": 97,
-    "c": 183,
-    "antes": "=TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$97<>0,'DADOS_R53'!$AS$97<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$3621:$I$3621,1,MATCH('DADOS_R53'!$C$97,'MONTAGENS'!$B$3616:$I$3616,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!Q871),'INVOCAÇÕES'!Q871>0))),IF(NOT('DADOS_R53'!$AS$97<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$97<>0,'DADOS_R53'!$AS$97<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$3623:$I$3623,1,MATCH('DADOS_R53'!$C$97,'MONTAGENS'!$B$3616:$I$3616,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!R871),'INVOCAÇÕES'!R871>0))),IF(NOT('DADOS_R53'!$AS$97<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\"))",
-    "depois": "=TEXTJOIN(\" · \",TRUE,TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$97<>0,'DADOS_R53'!$AS$97<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$3621:$I$3621,1,MATCH('DADOS_R53'!$C$97,'MONTAGENS'!$B$3616:$I$3616,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!Q871),'INVOCAÇÕES'!Q871>0))),IF(NOT('DADOS_R53'!$AS$97<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$97<>0,'DADOS_R53'!$AS$97<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$3623:$I$3623,1,MATCH('DADOS_R53'!$C$97,'MONTAGENS'!$B$3616:$I$3616,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!R871),'INVOCAÇÕES'!R871>0))),IF(NOT('DADOS_R53'!$AS$97<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\")),'DADOS_INVOC'!$DD$20)"
-  },
-  {
-    "aba": "DADOS_R53",
-    "r": 98,
-    "c": 183,
-    "antes": "=TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$98<>0,'DADOS_R53'!$AS$98<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$3659:$I$3659,1,MATCH('DADOS_R53'!$C$98,'MONTAGENS'!$B$3654:$I$3654,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!W871),'INVOCAÇÕES'!W871>0))),IF(NOT('DADOS_R53'!$AS$98<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$98<>0,'DADOS_R53'!$AS$98<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$3661:$I$3661,1,MATCH('DADOS_R53'!$C$98,'MONTAGENS'!$B$3654:$I$3654,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!X871),'INVOCAÇÕES'!X871>0))),IF(NOT('DADOS_R53'!$AS$98<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\"))",
-    "depois": "=TEXTJOIN(\" · \",TRUE,TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$98<>0,'DADOS_R53'!$AS$98<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$3659:$I$3659,1,MATCH('DADOS_R53'!$C$98,'MONTAGENS'!$B$3654:$I$3654,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!W871),'INVOCAÇÕES'!W871>0))),IF(NOT('DADOS_R53'!$AS$98<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$98<>0,'DADOS_R53'!$AS$98<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$3661:$I$3661,1,MATCH('DADOS_R53'!$C$98,'MONTAGENS'!$B$3654:$I$3654,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!X871),'INVOCAÇÕES'!X871>0))),IF(NOT('DADOS_R53'!$AS$98<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\")),'DADOS_INVOC'!$DD$20)"
-  },
-  {
     "aba": "INVOCAÇÕES",
-    "r": 863,
+    "r": 907,
     "c": 9,
     "antes": "REPERTÓRIO DA TRILHA · só o Evocador: as escolhas a mais da Invocação Principal e do Repertório do Conjunto",
     "depois": "=IF('DADOS_INVOC'!$DD$20<>\"\",\"REVISAR · \",\"\")&\"REPERTÓRIO DA TRILHA · \"&'DADOS_INVOC'!$DC$20&\"/\"&'DADOS_INVOC'!$DB$20&IF('DADOS_INVOC'!$DD$20<>\"\",\" · \"&'DADOS_INVOC'!$DD$20,\"\")"
@@ -270,7 +186,7 @@
     "r": 21,
     "c": 107,
     "antes": null,
-    "depois": "=COUNTIFS(DADOS_R53!$A$2:$A$253,\"entidade.\"&$DD6&\".ext.*\",DADOS_R53!$B$2:$B$253,\"<>\")+COUNTIF($FF6:$FH6,\"?*\")"
+    "depois": "=N(LEN('INVOCAÇÕES'!J1152&\"\")>0)+N(LEN('INVOCAÇÕES'!P1152&\"\")>0)+N(LEN('INVOCAÇÕES'!V1152&\"\")>0)+COUNTIF($FF6:$FH6,\"?*\")"
   },
   {
     "aba": "DADOS_INVOC",
@@ -280,29 +196,8 @@
     "depois": "=IF($DC21=0,\"\",LET(atributo,IF('INVOCAÇÕES'!$D$35=\"Essência\",IFERROR(VALUE(FICHA!$AJ$21),-1),IFERROR(VALUE(FICHA!$AB$21),-1)),TEXTJOIN(\" · \",TRUE,IF(FICHA!$D$11=\"Evocador\",\"\",\"Repertório extra exige Evocador\"),IF(OR($DB$4=\"Invocação Principal\",$DB$4=\"Múltiplas Invocações\"),\"\",\"Trilha sem escolhas extras\"),IF(AND($DB$4=\"Invocação Principal\",$DB$2<2),\"Trilha exige nível 2 do invocador\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2<27),\"Repertório do Conjunto: nível mínimo 27 do invocador\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\")=FALSE),\"Escolha Essência ou Inteligência em O CONJUNTO\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\"),AND(atributo>=0,atributo=INT(atributo))=FALSE),\"Atributo permanente inválido\",\"\"),IF($DC21>$DB21,\"Escolhas extras excedidas: \"&$DC21&\"/\"&$DB21,\"\"))))"
   },
   {
-    "aba": "DADOS_R53",
-    "r": 109,
-    "c": 183,
-    "antes": "=TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$109<>0,'DADOS_R53'!$AS$109<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$4077:$I$4077,1,MATCH('DADOS_R53'!$C$109,'MONTAGENS'!$B$4072:$I$4072,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!K1102),'INVOCAÇÕES'!K1102>0))),IF(NOT('DADOS_R53'!$AS$109<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$109<>0,'DADOS_R53'!$AS$109<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$4079:$I$4079,1,MATCH('DADOS_R53'!$C$109,'MONTAGENS'!$B$4072:$I$4072,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!L1102),'INVOCAÇÕES'!L1102>0))),IF(NOT('DADOS_R53'!$AS$109<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\"))",
-    "depois": "=TEXTJOIN(\" · \",TRUE,TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$109<>0,'DADOS_R53'!$AS$109<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$4077:$I$4077,1,MATCH('DADOS_R53'!$C$109,'MONTAGENS'!$B$4072:$I$4072,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!K1102),'INVOCAÇÕES'!K1102>0))),IF(NOT('DADOS_R53'!$AS$109<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$109<>0,'DADOS_R53'!$AS$109<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$4079:$I$4079,1,MATCH('DADOS_R53'!$C$109,'MONTAGENS'!$B$4072:$I$4072,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!L1102),'INVOCAÇÕES'!L1102>0))),IF(NOT('DADOS_R53'!$AS$109<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\")),'DADOS_INVOC'!$DD$21)"
-  },
-  {
-    "aba": "DADOS_R53",
-    "r": 110,
-    "c": 183,
-    "antes": "=TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$110<>0,'DADOS_R53'!$AS$110<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$4115:$I$4115,1,MATCH('DADOS_R53'!$C$110,'MONTAGENS'!$B$4110:$I$4110,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!Q1102),'INVOCAÇÕES'!Q1102>0))),IF(NOT('DADOS_R53'!$AS$110<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$110<>0,'DADOS_R53'!$AS$110<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$4117:$I$4117,1,MATCH('DADOS_R53'!$C$110,'MONTAGENS'!$B$4110:$I$4110,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!R1102),'INVOCAÇÕES'!R1102>0))),IF(NOT('DADOS_R53'!$AS$110<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\"))",
-    "depois": "=TEXTJOIN(\" · \",TRUE,TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$110<>0,'DADOS_R53'!$AS$110<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$4115:$I$4115,1,MATCH('DADOS_R53'!$C$110,'MONTAGENS'!$B$4110:$I$4110,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!Q1102),'INVOCAÇÕES'!Q1102>0))),IF(NOT('DADOS_R53'!$AS$110<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$110<>0,'DADOS_R53'!$AS$110<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$4117:$I$4117,1,MATCH('DADOS_R53'!$C$110,'MONTAGENS'!$B$4110:$I$4110,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!R1102),'INVOCAÇÕES'!R1102>0))),IF(NOT('DADOS_R53'!$AS$110<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\")),'DADOS_INVOC'!$DD$21)"
-  },
-  {
-    "aba": "DADOS_R53",
-    "r": 111,
-    "c": 183,
-    "antes": "=TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$111<>0,'DADOS_R53'!$AS$111<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$4153:$I$4153,1,MATCH('DADOS_R53'!$C$111,'MONTAGENS'!$B$4148:$I$4148,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!W1102),'INVOCAÇÕES'!W1102>0))),IF(NOT('DADOS_R53'!$AS$111<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$111<>0,'DADOS_R53'!$AS$111<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$4155:$I$4155,1,MATCH('DADOS_R53'!$C$111,'MONTAGENS'!$B$4148:$I$4148,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!X1102),'INVOCAÇÕES'!X1102>0))),IF(NOT('DADOS_R53'!$AS$111<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\"))",
-    "depois": "=TEXTJOIN(\" · \",TRUE,TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$111<>0,'DADOS_R53'!$AS$111<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$4153:$I$4153,1,MATCH('DADOS_R53'!$C$111,'MONTAGENS'!$B$4148:$I$4148,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!W1102),'INVOCAÇÕES'!W1102>0))),IF(NOT('DADOS_R53'!$AS$111<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$111<>0,'DADOS_R53'!$AS$111<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$4155:$I$4155,1,MATCH('DADOS_R53'!$C$111,'MONTAGENS'!$B$4148:$I$4148,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!X1102),'INVOCAÇÕES'!X1102>0))),IF(NOT('DADOS_R53'!$AS$111<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\")),'DADOS_INVOC'!$DD$21)"
-  },
-  {
     "aba": "INVOCAÇÕES",
-    "r": 1094,
+    "r": 1149,
     "c": 9,
     "antes": "REPERTÓRIO DA TRILHA · só o Evocador: as escolhas a mais da Invocação Principal e do Repertório do Conjunto",
     "depois": "=IF('DADOS_INVOC'!$DD$21<>\"\",\"REVISAR · \",\"\")&\"REPERTÓRIO DA TRILHA · \"&'DADOS_INVOC'!$DC$21&\"/\"&'DADOS_INVOC'!$DB$21&IF('DADOS_INVOC'!$DD$21<>\"\",\" · \"&'DADOS_INVOC'!$DD$21,\"\")"
@@ -326,7 +221,7 @@
     "r": 22,
     "c": 107,
     "antes": null,
-    "depois": "=COUNTIFS(DADOS_R53!$A$2:$A$253,\"entidade.\"&$DD7&\".ext.*\",DADOS_R53!$B$2:$B$253,\"<>\")+COUNTIF($FF7:$FH7,\"?*\")"
+    "depois": "=N(LEN('INVOCAÇÕES'!J1394&\"\")>0)+N(LEN('INVOCAÇÕES'!P1394&\"\")>0)+N(LEN('INVOCAÇÕES'!V1394&\"\")>0)+COUNTIF($FF7:$FH7,\"?*\")"
   },
   {
     "aba": "DADOS_INVOC",
@@ -336,29 +231,8 @@
     "depois": "=IF($DC22=0,\"\",LET(atributo,IF('INVOCAÇÕES'!$D$35=\"Essência\",IFERROR(VALUE(FICHA!$AJ$21),-1),IFERROR(VALUE(FICHA!$AB$21),-1)),TEXTJOIN(\" · \",TRUE,IF(FICHA!$D$11=\"Evocador\",\"\",\"Repertório extra exige Evocador\"),IF(OR($DB$4=\"Invocação Principal\",$DB$4=\"Múltiplas Invocações\"),\"\",\"Trilha sem escolhas extras\"),IF(AND($DB$4=\"Invocação Principal\",$DB$2<2),\"Trilha exige nível 2 do invocador\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2<27),\"Repertório do Conjunto: nível mínimo 27 do invocador\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\")=FALSE),\"Escolha Essência ou Inteligência em O CONJUNTO\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\"),AND(atributo>=0,atributo=INT(atributo))=FALSE),\"Atributo permanente inválido\",\"\"),IF($DC22>$DB22,\"Escolhas extras excedidas: \"&$DC22&\"/\"&$DB22,\"\"))))"
   },
   {
-    "aba": "DADOS_R53",
-    "r": 122,
-    "c": 183,
-    "antes": "=TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$122<>0,'DADOS_R53'!$AS$122<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$4571:$I$4571,1,MATCH('DADOS_R53'!$C$122,'MONTAGENS'!$B$4566:$I$4566,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!K1333),'INVOCAÇÕES'!K1333>0))),IF(NOT('DADOS_R53'!$AS$122<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$122<>0,'DADOS_R53'!$AS$122<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$4573:$I$4573,1,MATCH('DADOS_R53'!$C$122,'MONTAGENS'!$B$4566:$I$4566,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!L1333),'INVOCAÇÕES'!L1333>0))),IF(NOT('DADOS_R53'!$AS$122<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\"))",
-    "depois": "=TEXTJOIN(\" · \",TRUE,TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$122<>0,'DADOS_R53'!$AS$122<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$4571:$I$4571,1,MATCH('DADOS_R53'!$C$122,'MONTAGENS'!$B$4566:$I$4566,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!K1333),'INVOCAÇÕES'!K1333>0))),IF(NOT('DADOS_R53'!$AS$122<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$122<>0,'DADOS_R53'!$AS$122<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$4573:$I$4573,1,MATCH('DADOS_R53'!$C$122,'MONTAGENS'!$B$4566:$I$4566,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!L1333),'INVOCAÇÕES'!L1333>0))),IF(NOT('DADOS_R53'!$AS$122<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\")),'DADOS_INVOC'!$DD$22)"
-  },
-  {
-    "aba": "DADOS_R53",
-    "r": 123,
-    "c": 183,
-    "antes": "=TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$123<>0,'DADOS_R53'!$AS$123<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$4609:$I$4609,1,MATCH('DADOS_R53'!$C$123,'MONTAGENS'!$B$4604:$I$4604,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!Q1333),'INVOCAÇÕES'!Q1333>0))),IF(NOT('DADOS_R53'!$AS$123<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$123<>0,'DADOS_R53'!$AS$123<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$4611:$I$4611,1,MATCH('DADOS_R53'!$C$123,'MONTAGENS'!$B$4604:$I$4604,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!R1333),'INVOCAÇÕES'!R1333>0))),IF(NOT('DADOS_R53'!$AS$123<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\"))",
-    "depois": "=TEXTJOIN(\" · \",TRUE,TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$123<>0,'DADOS_R53'!$AS$123<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$4609:$I$4609,1,MATCH('DADOS_R53'!$C$123,'MONTAGENS'!$B$4604:$I$4604,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!Q1333),'INVOCAÇÕES'!Q1333>0))),IF(NOT('DADOS_R53'!$AS$123<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$123<>0,'DADOS_R53'!$AS$123<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$4611:$I$4611,1,MATCH('DADOS_R53'!$C$123,'MONTAGENS'!$B$4604:$I$4604,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!R1333),'INVOCAÇÕES'!R1333>0))),IF(NOT('DADOS_R53'!$AS$123<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\")),'DADOS_INVOC'!$DD$22)"
-  },
-  {
-    "aba": "DADOS_R53",
-    "r": 124,
-    "c": 183,
-    "antes": "=TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$124<>0,'DADOS_R53'!$AS$124<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$4647:$I$4647,1,MATCH('DADOS_R53'!$C$124,'MONTAGENS'!$B$4642:$I$4642,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!W1333),'INVOCAÇÕES'!W1333>0))),IF(NOT('DADOS_R53'!$AS$124<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$124<>0,'DADOS_R53'!$AS$124<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$4649:$I$4649,1,MATCH('DADOS_R53'!$C$124,'MONTAGENS'!$B$4642:$I$4642,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!X1333),'INVOCAÇÕES'!X1333>0))),IF(NOT('DADOS_R53'!$AS$124<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\"))",
-    "depois": "=TEXTJOIN(\" · \",TRUE,TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$124<>0,'DADOS_R53'!$AS$124<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$4647:$I$4647,1,MATCH('DADOS_R53'!$C$124,'MONTAGENS'!$B$4642:$I$4642,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!W1333),'INVOCAÇÕES'!W1333>0))),IF(NOT('DADOS_R53'!$AS$124<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$124<>0,'DADOS_R53'!$AS$124<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$4649:$I$4649,1,MATCH('DADOS_R53'!$C$124,'MONTAGENS'!$B$4642:$I$4642,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!X1333),'INVOCAÇÕES'!X1333>0))),IF(NOT('DADOS_R53'!$AS$124<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\")),'DADOS_INVOC'!$DD$22)"
-  },
-  {
     "aba": "INVOCAÇÕES",
-    "r": 1325,
+    "r": 1391,
     "c": 9,
     "antes": "REPERTÓRIO DA TRILHA · só o Evocador: as escolhas a mais da Invocação Principal e do Repertório do Conjunto",
     "depois": "=IF('DADOS_INVOC'!$DD$22<>\"\",\"REVISAR · \",\"\")&\"REPERTÓRIO DA TRILHA · \"&'DADOS_INVOC'!$DC$22&\"/\"&'DADOS_INVOC'!$DB$22&IF('DADOS_INVOC'!$DD$22<>\"\",\" · \"&'DADOS_INVOC'!$DD$22,\"\")"
@@ -382,7 +256,7 @@
     "r": 23,
     "c": 107,
     "antes": null,
-    "depois": "=COUNTIFS(DADOS_R53!$A$2:$A$253,\"entidade.\"&$DD8&\".ext.*\",DADOS_R53!$B$2:$B$253,\"<>\")+COUNTIF($FF8:$FH8,\"?*\")"
+    "depois": "=N(LEN('INVOCAÇÕES'!AC184&\"\")>0)+N(LEN('INVOCAÇÕES'!AI184&\"\")>0)+N(LEN('INVOCAÇÕES'!AO184&\"\")>0)+COUNTIF($FF8:$FH8,\"?*\")"
   },
   {
     "aba": "DADOS_INVOC",
@@ -392,29 +266,8 @@
     "depois": "=IF($DC23=0,\"\",LET(atributo,IF('INVOCAÇÕES'!$D$35=\"Essência\",IFERROR(VALUE(FICHA!$AJ$21),-1),IFERROR(VALUE(FICHA!$AB$21),-1)),TEXTJOIN(\" · \",TRUE,IF(FICHA!$D$11=\"Evocador\",\"\",\"Repertório extra exige Evocador\"),IF(OR($DB$4=\"Invocação Principal\",$DB$4=\"Múltiplas Invocações\"),\"\",\"Trilha sem escolhas extras\"),IF(AND($DB$4=\"Invocação Principal\",$DB$2<2),\"Trilha exige nível 2 do invocador\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2<27),\"Repertório do Conjunto: nível mínimo 27 do invocador\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\")=FALSE),\"Escolha Essência ou Inteligência em O CONJUNTO\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\"),AND(atributo>=0,atributo=INT(atributo))=FALSE),\"Atributo permanente inválido\",\"\"),IF($DC23>$DB23,\"Escolhas extras excedidas: \"&$DC23&\"/\"&$DB23,\"\"))))"
   },
   {
-    "aba": "DADOS_R53",
-    "r": 135,
-    "c": 183,
-    "antes": "=TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$135<>0,'DADOS_R53'!$AS$135<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$5065:$I$5065,1,MATCH('DADOS_R53'!$C$135,'MONTAGENS'!$B$5060:$I$5060,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AD178),'INVOCAÇÕES'!AD178>0))),IF(NOT('DADOS_R53'!$AS$135<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$135<>0,'DADOS_R53'!$AS$135<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$5067:$I$5067,1,MATCH('DADOS_R53'!$C$135,'MONTAGENS'!$B$5060:$I$5060,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AE178),'INVOCAÇÕES'!AE178>0))),IF(NOT('DADOS_R53'!$AS$135<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\"))",
-    "depois": "=TEXTJOIN(\" · \",TRUE,TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$135<>0,'DADOS_R53'!$AS$135<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$5065:$I$5065,1,MATCH('DADOS_R53'!$C$135,'MONTAGENS'!$B$5060:$I$5060,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AD178),'INVOCAÇÕES'!AD178>0))),IF(NOT('DADOS_R53'!$AS$135<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$135<>0,'DADOS_R53'!$AS$135<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$5067:$I$5067,1,MATCH('DADOS_R53'!$C$135,'MONTAGENS'!$B$5060:$I$5060,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AE178),'INVOCAÇÕES'!AE178>0))),IF(NOT('DADOS_R53'!$AS$135<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\")),'DADOS_INVOC'!$DD$23)"
-  },
-  {
-    "aba": "DADOS_R53",
-    "r": 136,
-    "c": 183,
-    "antes": "=TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$136<>0,'DADOS_R53'!$AS$136<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$5103:$I$5103,1,MATCH('DADOS_R53'!$C$136,'MONTAGENS'!$B$5098:$I$5098,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AJ178),'INVOCAÇÕES'!AJ178>0))),IF(NOT('DADOS_R53'!$AS$136<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$136<>0,'DADOS_R53'!$AS$136<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$5105:$I$5105,1,MATCH('DADOS_R53'!$C$136,'MONTAGENS'!$B$5098:$I$5098,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AK178),'INVOCAÇÕES'!AK178>0))),IF(NOT('DADOS_R53'!$AS$136<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\"))",
-    "depois": "=TEXTJOIN(\" · \",TRUE,TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$136<>0,'DADOS_R53'!$AS$136<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$5103:$I$5103,1,MATCH('DADOS_R53'!$C$136,'MONTAGENS'!$B$5098:$I$5098,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AJ178),'INVOCAÇÕES'!AJ178>0))),IF(NOT('DADOS_R53'!$AS$136<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$136<>0,'DADOS_R53'!$AS$136<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$5105:$I$5105,1,MATCH('DADOS_R53'!$C$136,'MONTAGENS'!$B$5098:$I$5098,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AK178),'INVOCAÇÕES'!AK178>0))),IF(NOT('DADOS_R53'!$AS$136<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\")),'DADOS_INVOC'!$DD$23)"
-  },
-  {
-    "aba": "DADOS_R53",
-    "r": 137,
-    "c": 183,
-    "antes": "=TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$137<>0,'DADOS_R53'!$AS$137<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$5141:$I$5141,1,MATCH('DADOS_R53'!$C$137,'MONTAGENS'!$B$5136:$I$5136,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AP178),'INVOCAÇÕES'!AP178>0))),IF(NOT('DADOS_R53'!$AS$137<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$137<>0,'DADOS_R53'!$AS$137<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$5143:$I$5143,1,MATCH('DADOS_R53'!$C$137,'MONTAGENS'!$B$5136:$I$5136,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AQ178),'INVOCAÇÕES'!AQ178>0))),IF(NOT('DADOS_R53'!$AS$137<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\"))",
-    "depois": "=TEXTJOIN(\" · \",TRUE,TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$137<>0,'DADOS_R53'!$AS$137<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$5141:$I$5141,1,MATCH('DADOS_R53'!$C$137,'MONTAGENS'!$B$5136:$I$5136,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AP178),'INVOCAÇÕES'!AP178>0))),IF(NOT('DADOS_R53'!$AS$137<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$137<>0,'DADOS_R53'!$AS$137<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$5143:$I$5143,1,MATCH('DADOS_R53'!$C$137,'MONTAGENS'!$B$5136:$I$5136,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AQ178),'INVOCAÇÕES'!AQ178>0))),IF(NOT('DADOS_R53'!$AS$137<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\")),'DADOS_INVOC'!$DD$23)"
-  },
-  {
     "aba": "INVOCAÇÕES",
-    "r": 170,
+    "r": 181,
     "c": 28,
     "antes": "REPERTÓRIO DA TRILHA · só o Evocador: as escolhas a mais da Invocação Principal e do Repertório do Conjunto",
     "depois": "=IF('DADOS_INVOC'!$DD$23<>\"\",\"REVISAR · \",\"\")&\"REPERTÓRIO DA TRILHA · \"&'DADOS_INVOC'!$DC$23&\"/\"&'DADOS_INVOC'!$DB$23&IF('DADOS_INVOC'!$DD$23<>\"\",\" · \"&'DADOS_INVOC'!$DD$23,\"\")"
@@ -438,7 +291,7 @@
     "r": 24,
     "c": 107,
     "antes": null,
-    "depois": "=COUNTIFS(DADOS_R53!$A$2:$A$253,\"entidade.\"&$DD9&\".ext.*\",DADOS_R53!$B$2:$B$253,\"<>\")+COUNTIF($FF9:$FH9,\"?*\")"
+    "depois": "=N(LEN('INVOCAÇÕES'!AC426&\"\")>0)+N(LEN('INVOCAÇÕES'!AI426&\"\")>0)+N(LEN('INVOCAÇÕES'!AO426&\"\")>0)+COUNTIF($FF9:$FH9,\"?*\")"
   },
   {
     "aba": "DADOS_INVOC",
@@ -448,29 +301,8 @@
     "depois": "=IF($DC24=0,\"\",LET(atributo,IF('INVOCAÇÕES'!$D$35=\"Essência\",IFERROR(VALUE(FICHA!$AJ$21),-1),IFERROR(VALUE(FICHA!$AB$21),-1)),TEXTJOIN(\" · \",TRUE,IF(FICHA!$D$11=\"Evocador\",\"\",\"Repertório extra exige Evocador\"),IF(OR($DB$4=\"Invocação Principal\",$DB$4=\"Múltiplas Invocações\"),\"\",\"Trilha sem escolhas extras\"),IF(AND($DB$4=\"Invocação Principal\",$DB$2<2),\"Trilha exige nível 2 do invocador\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2<27),\"Repertório do Conjunto: nível mínimo 27 do invocador\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\")=FALSE),\"Escolha Essência ou Inteligência em O CONJUNTO\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\"),AND(atributo>=0,atributo=INT(atributo))=FALSE),\"Atributo permanente inválido\",\"\"),IF($DC24>$DB24,\"Escolhas extras excedidas: \"&$DC24&\"/\"&$DB24,\"\"))))"
   },
   {
-    "aba": "DADOS_R53",
-    "r": 148,
-    "c": 183,
-    "antes": "=TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$148<>0,'DADOS_R53'!$AS$148<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$5559:$I$5559,1,MATCH('DADOS_R53'!$C$148,'MONTAGENS'!$B$5554:$I$5554,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AD409),'INVOCAÇÕES'!AD409>0))),IF(NOT('DADOS_R53'!$AS$148<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$148<>0,'DADOS_R53'!$AS$148<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$5561:$I$5561,1,MATCH('DADOS_R53'!$C$148,'MONTAGENS'!$B$5554:$I$5554,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AE409),'INVOCAÇÕES'!AE409>0))),IF(NOT('DADOS_R53'!$AS$148<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\"))",
-    "depois": "=TEXTJOIN(\" · \",TRUE,TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$148<>0,'DADOS_R53'!$AS$148<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$5559:$I$5559,1,MATCH('DADOS_R53'!$C$148,'MONTAGENS'!$B$5554:$I$5554,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AD409),'INVOCAÇÕES'!AD409>0))),IF(NOT('DADOS_R53'!$AS$148<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$148<>0,'DADOS_R53'!$AS$148<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$5561:$I$5561,1,MATCH('DADOS_R53'!$C$148,'MONTAGENS'!$B$5554:$I$5554,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AE409),'INVOCAÇÕES'!AE409>0))),IF(NOT('DADOS_R53'!$AS$148<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\")),'DADOS_INVOC'!$DD$24)"
-  },
-  {
-    "aba": "DADOS_R53",
-    "r": 149,
-    "c": 183,
-    "antes": "=TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$149<>0,'DADOS_R53'!$AS$149<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$5597:$I$5597,1,MATCH('DADOS_R53'!$C$149,'MONTAGENS'!$B$5592:$I$5592,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AJ409),'INVOCAÇÕES'!AJ409>0))),IF(NOT('DADOS_R53'!$AS$149<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$149<>0,'DADOS_R53'!$AS$149<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$5599:$I$5599,1,MATCH('DADOS_R53'!$C$149,'MONTAGENS'!$B$5592:$I$5592,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AK409),'INVOCAÇÕES'!AK409>0))),IF(NOT('DADOS_R53'!$AS$149<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\"))",
-    "depois": "=TEXTJOIN(\" · \",TRUE,TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$149<>0,'DADOS_R53'!$AS$149<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$5597:$I$5597,1,MATCH('DADOS_R53'!$C$149,'MONTAGENS'!$B$5592:$I$5592,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AJ409),'INVOCAÇÕES'!AJ409>0))),IF(NOT('DADOS_R53'!$AS$149<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$149<>0,'DADOS_R53'!$AS$149<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$5599:$I$5599,1,MATCH('DADOS_R53'!$C$149,'MONTAGENS'!$B$5592:$I$5592,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AK409),'INVOCAÇÕES'!AK409>0))),IF(NOT('DADOS_R53'!$AS$149<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\")),'DADOS_INVOC'!$DD$24)"
-  },
-  {
-    "aba": "DADOS_R53",
-    "r": 150,
-    "c": 183,
-    "antes": "=TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$150<>0,'DADOS_R53'!$AS$150<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$5635:$I$5635,1,MATCH('DADOS_R53'!$C$150,'MONTAGENS'!$B$5630:$I$5630,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AP409),'INVOCAÇÕES'!AP409>0))),IF(NOT('DADOS_R53'!$AS$150<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$150<>0,'DADOS_R53'!$AS$150<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$5637:$I$5637,1,MATCH('DADOS_R53'!$C$150,'MONTAGENS'!$B$5630:$I$5630,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AQ409),'INVOCAÇÕES'!AQ409>0))),IF(NOT('DADOS_R53'!$AS$150<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\"))",
-    "depois": "=TEXTJOIN(\" · \",TRUE,TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$150<>0,'DADOS_R53'!$AS$150<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$5635:$I$5635,1,MATCH('DADOS_R53'!$C$150,'MONTAGENS'!$B$5630:$I$5630,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AP409),'INVOCAÇÕES'!AP409>0))),IF(NOT('DADOS_R53'!$AS$150<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$150<>0,'DADOS_R53'!$AS$150<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$5637:$I$5637,1,MATCH('DADOS_R53'!$C$150,'MONTAGENS'!$B$5630:$I$5630,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AQ409),'INVOCAÇÕES'!AQ409>0))),IF(NOT('DADOS_R53'!$AS$150<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\")),'DADOS_INVOC'!$DD$24)"
-  },
-  {
     "aba": "INVOCAÇÕES",
-    "r": 401,
+    "r": 423,
     "c": 28,
     "antes": "REPERTÓRIO DA TRILHA · só o Evocador: as escolhas a mais da Invocação Principal e do Repertório do Conjunto",
     "depois": "=IF('DADOS_INVOC'!$DD$24<>\"\",\"REVISAR · \",\"\")&\"REPERTÓRIO DA TRILHA · \"&'DADOS_INVOC'!$DC$24&\"/\"&'DADOS_INVOC'!$DB$24&IF('DADOS_INVOC'!$DD$24<>\"\",\" · \"&'DADOS_INVOC'!$DD$24,\"\")"
@@ -494,7 +326,7 @@
     "r": 25,
     "c": 107,
     "antes": null,
-    "depois": "=COUNTIFS(DADOS_R53!$A$2:$A$253,\"entidade.\"&$DD10&\".ext.*\",DADOS_R53!$B$2:$B$253,\"<>\")+COUNTIF($FF10:$FH10,\"?*\")"
+    "depois": "=N(LEN('INVOCAÇÕES'!AC668&\"\")>0)+N(LEN('INVOCAÇÕES'!AI668&\"\")>0)+N(LEN('INVOCAÇÕES'!AO668&\"\")>0)+COUNTIF($FF10:$FH10,\"?*\")"
   },
   {
     "aba": "DADOS_INVOC",
@@ -504,29 +336,8 @@
     "depois": "=IF($DC25=0,\"\",LET(atributo,IF('INVOCAÇÕES'!$D$35=\"Essência\",IFERROR(VALUE(FICHA!$AJ$21),-1),IFERROR(VALUE(FICHA!$AB$21),-1)),TEXTJOIN(\" · \",TRUE,IF(FICHA!$D$11=\"Evocador\",\"\",\"Repertório extra exige Evocador\"),IF(OR($DB$4=\"Invocação Principal\",$DB$4=\"Múltiplas Invocações\"),\"\",\"Trilha sem escolhas extras\"),IF(AND($DB$4=\"Invocação Principal\",$DB$2<2),\"Trilha exige nível 2 do invocador\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2<27),\"Repertório do Conjunto: nível mínimo 27 do invocador\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\")=FALSE),\"Escolha Essência ou Inteligência em O CONJUNTO\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\"),AND(atributo>=0,atributo=INT(atributo))=FALSE),\"Atributo permanente inválido\",\"\"),IF($DC25>$DB25,\"Escolhas extras excedidas: \"&$DC25&\"/\"&$DB25,\"\"))))"
   },
   {
-    "aba": "DADOS_R53",
-    "r": 161,
-    "c": 183,
-    "antes": "=TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$161<>0,'DADOS_R53'!$AS$161<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$6053:$I$6053,1,MATCH('DADOS_R53'!$C$161,'MONTAGENS'!$B$6048:$I$6048,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AD640),'INVOCAÇÕES'!AD640>0))),IF(NOT('DADOS_R53'!$AS$161<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$161<>0,'DADOS_R53'!$AS$161<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$6055:$I$6055,1,MATCH('DADOS_R53'!$C$161,'MONTAGENS'!$B$6048:$I$6048,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AE640),'INVOCAÇÕES'!AE640>0))),IF(NOT('DADOS_R53'!$AS$161<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\"))",
-    "depois": "=TEXTJOIN(\" · \",TRUE,TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$161<>0,'DADOS_R53'!$AS$161<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$6053:$I$6053,1,MATCH('DADOS_R53'!$C$161,'MONTAGENS'!$B$6048:$I$6048,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AD640),'INVOCAÇÕES'!AD640>0))),IF(NOT('DADOS_R53'!$AS$161<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$161<>0,'DADOS_R53'!$AS$161<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$6055:$I$6055,1,MATCH('DADOS_R53'!$C$161,'MONTAGENS'!$B$6048:$I$6048,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AE640),'INVOCAÇÕES'!AE640>0))),IF(NOT('DADOS_R53'!$AS$161<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\")),'DADOS_INVOC'!$DD$25)"
-  },
-  {
-    "aba": "DADOS_R53",
-    "r": 162,
-    "c": 183,
-    "antes": "=TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$162<>0,'DADOS_R53'!$AS$162<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$6091:$I$6091,1,MATCH('DADOS_R53'!$C$162,'MONTAGENS'!$B$6086:$I$6086,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AJ640),'INVOCAÇÕES'!AJ640>0))),IF(NOT('DADOS_R53'!$AS$162<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$162<>0,'DADOS_R53'!$AS$162<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$6093:$I$6093,1,MATCH('DADOS_R53'!$C$162,'MONTAGENS'!$B$6086:$I$6086,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AK640),'INVOCAÇÕES'!AK640>0))),IF(NOT('DADOS_R53'!$AS$162<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\"))",
-    "depois": "=TEXTJOIN(\" · \",TRUE,TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$162<>0,'DADOS_R53'!$AS$162<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$6091:$I$6091,1,MATCH('DADOS_R53'!$C$162,'MONTAGENS'!$B$6086:$I$6086,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AJ640),'INVOCAÇÕES'!AJ640>0))),IF(NOT('DADOS_R53'!$AS$162<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$162<>0,'DADOS_R53'!$AS$162<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$6093:$I$6093,1,MATCH('DADOS_R53'!$C$162,'MONTAGENS'!$B$6086:$I$6086,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AK640),'INVOCAÇÕES'!AK640>0))),IF(NOT('DADOS_R53'!$AS$162<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\")),'DADOS_INVOC'!$DD$25)"
-  },
-  {
-    "aba": "DADOS_R53",
-    "r": 163,
-    "c": 183,
-    "antes": "=TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$163<>0,'DADOS_R53'!$AS$163<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$6129:$I$6129,1,MATCH('DADOS_R53'!$C$163,'MONTAGENS'!$B$6124:$I$6124,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AP640),'INVOCAÇÕES'!AP640>0))),IF(NOT('DADOS_R53'!$AS$163<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$163<>0,'DADOS_R53'!$AS$163<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$6131:$I$6131,1,MATCH('DADOS_R53'!$C$163,'MONTAGENS'!$B$6124:$I$6124,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AQ640),'INVOCAÇÕES'!AQ640>0))),IF(NOT('DADOS_R53'!$AS$163<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\"))",
-    "depois": "=TEXTJOIN(\" · \",TRUE,TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$163<>0,'DADOS_R53'!$AS$163<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$6129:$I$6129,1,MATCH('DADOS_R53'!$C$163,'MONTAGENS'!$B$6124:$I$6124,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AP640),'INVOCAÇÕES'!AP640>0))),IF(NOT('DADOS_R53'!$AS$163<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$163<>0,'DADOS_R53'!$AS$163<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$6131:$I$6131,1,MATCH('DADOS_R53'!$C$163,'MONTAGENS'!$B$6124:$I$6124,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AQ640),'INVOCAÇÕES'!AQ640>0))),IF(NOT('DADOS_R53'!$AS$163<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\")),'DADOS_INVOC'!$DD$25)"
-  },
-  {
     "aba": "INVOCAÇÕES",
-    "r": 632,
+    "r": 665,
     "c": 28,
     "antes": "REPERTÓRIO DA TRILHA · só o Evocador: as escolhas a mais da Invocação Principal e do Repertório do Conjunto",
     "depois": "=IF('DADOS_INVOC'!$DD$25<>\"\",\"REVISAR · \",\"\")&\"REPERTÓRIO DA TRILHA · \"&'DADOS_INVOC'!$DC$25&\"/\"&'DADOS_INVOC'!$DB$25&IF('DADOS_INVOC'!$DD$25<>\"\",\" · \"&'DADOS_INVOC'!$DD$25,\"\")"
@@ -550,7 +361,7 @@
     "r": 26,
     "c": 107,
     "antes": null,
-    "depois": "=COUNTIFS(DADOS_R53!$A$2:$A$253,\"entidade.\"&$DD11&\".ext.*\",DADOS_R53!$B$2:$B$253,\"<>\")+COUNTIF($FF11:$FH11,\"?*\")"
+    "depois": "=N(LEN('INVOCAÇÕES'!AC910&\"\")>0)+N(LEN('INVOCAÇÕES'!AI910&\"\")>0)+N(LEN('INVOCAÇÕES'!AO910&\"\")>0)+COUNTIF($FF11:$FH11,\"?*\")"
   },
   {
     "aba": "DADOS_INVOC",
@@ -560,29 +371,8 @@
     "depois": "=IF($DC26=0,\"\",LET(atributo,IF('INVOCAÇÕES'!$D$35=\"Essência\",IFERROR(VALUE(FICHA!$AJ$21),-1),IFERROR(VALUE(FICHA!$AB$21),-1)),TEXTJOIN(\" · \",TRUE,IF(FICHA!$D$11=\"Evocador\",\"\",\"Repertório extra exige Evocador\"),IF(OR($DB$4=\"Invocação Principal\",$DB$4=\"Múltiplas Invocações\"),\"\",\"Trilha sem escolhas extras\"),IF(AND($DB$4=\"Invocação Principal\",$DB$2<2),\"Trilha exige nível 2 do invocador\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2<27),\"Repertório do Conjunto: nível mínimo 27 do invocador\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\")=FALSE),\"Escolha Essência ou Inteligência em O CONJUNTO\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\"),AND(atributo>=0,atributo=INT(atributo))=FALSE),\"Atributo permanente inválido\",\"\"),IF($DC26>$DB26,\"Escolhas extras excedidas: \"&$DC26&\"/\"&$DB26,\"\"))))"
   },
   {
-    "aba": "DADOS_R53",
-    "r": 174,
-    "c": 183,
-    "antes": "=TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$174<>0,'DADOS_R53'!$AS$174<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$6547:$I$6547,1,MATCH('DADOS_R53'!$C$174,'MONTAGENS'!$B$6542:$I$6542,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AD871),'INVOCAÇÕES'!AD871>0))),IF(NOT('DADOS_R53'!$AS$174<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$174<>0,'DADOS_R53'!$AS$174<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$6549:$I$6549,1,MATCH('DADOS_R53'!$C$174,'MONTAGENS'!$B$6542:$I$6542,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AE871),'INVOCAÇÕES'!AE871>0))),IF(NOT('DADOS_R53'!$AS$174<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\"))",
-    "depois": "=TEXTJOIN(\" · \",TRUE,TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$174<>0,'DADOS_R53'!$AS$174<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$6547:$I$6547,1,MATCH('DADOS_R53'!$C$174,'MONTAGENS'!$B$6542:$I$6542,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AD871),'INVOCAÇÕES'!AD871>0))),IF(NOT('DADOS_R53'!$AS$174<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$174<>0,'DADOS_R53'!$AS$174<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$6549:$I$6549,1,MATCH('DADOS_R53'!$C$174,'MONTAGENS'!$B$6542:$I$6542,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AE871),'INVOCAÇÕES'!AE871>0))),IF(NOT('DADOS_R53'!$AS$174<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\")),'DADOS_INVOC'!$DD$26)"
-  },
-  {
-    "aba": "DADOS_R53",
-    "r": 175,
-    "c": 183,
-    "antes": "=TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$175<>0,'DADOS_R53'!$AS$175<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$6585:$I$6585,1,MATCH('DADOS_R53'!$C$175,'MONTAGENS'!$B$6580:$I$6580,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AJ871),'INVOCAÇÕES'!AJ871>0))),IF(NOT('DADOS_R53'!$AS$175<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$175<>0,'DADOS_R53'!$AS$175<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$6587:$I$6587,1,MATCH('DADOS_R53'!$C$175,'MONTAGENS'!$B$6580:$I$6580,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AK871),'INVOCAÇÕES'!AK871>0))),IF(NOT('DADOS_R53'!$AS$175<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\"))",
-    "depois": "=TEXTJOIN(\" · \",TRUE,TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$175<>0,'DADOS_R53'!$AS$175<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$6585:$I$6585,1,MATCH('DADOS_R53'!$C$175,'MONTAGENS'!$B$6580:$I$6580,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AJ871),'INVOCAÇÕES'!AJ871>0))),IF(NOT('DADOS_R53'!$AS$175<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$175<>0,'DADOS_R53'!$AS$175<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$6587:$I$6587,1,MATCH('DADOS_R53'!$C$175,'MONTAGENS'!$B$6580:$I$6580,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AK871),'INVOCAÇÕES'!AK871>0))),IF(NOT('DADOS_R53'!$AS$175<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\")),'DADOS_INVOC'!$DD$26)"
-  },
-  {
-    "aba": "DADOS_R53",
-    "r": 176,
-    "c": 183,
-    "antes": "=TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$176<>0,'DADOS_R53'!$AS$176<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$6623:$I$6623,1,MATCH('DADOS_R53'!$C$176,'MONTAGENS'!$B$6618:$I$6618,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AP871),'INVOCAÇÕES'!AP871>0))),IF(NOT('DADOS_R53'!$AS$176<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$176<>0,'DADOS_R53'!$AS$176<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$6625:$I$6625,1,MATCH('DADOS_R53'!$C$176,'MONTAGENS'!$B$6618:$I$6618,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AQ871),'INVOCAÇÕES'!AQ871>0))),IF(NOT('DADOS_R53'!$AS$176<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\"))",
-    "depois": "=TEXTJOIN(\" · \",TRUE,TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$176<>0,'DADOS_R53'!$AS$176<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$6623:$I$6623,1,MATCH('DADOS_R53'!$C$176,'MONTAGENS'!$B$6618:$I$6618,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AP871),'INVOCAÇÕES'!AP871>0))),IF(NOT('DADOS_R53'!$AS$176<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$176<>0,'DADOS_R53'!$AS$176<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$6625:$I$6625,1,MATCH('DADOS_R53'!$C$176,'MONTAGENS'!$B$6618:$I$6618,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AQ871),'INVOCAÇÕES'!AQ871>0))),IF(NOT('DADOS_R53'!$AS$176<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\")),'DADOS_INVOC'!$DD$26)"
-  },
-  {
     "aba": "INVOCAÇÕES",
-    "r": 863,
+    "r": 907,
     "c": 28,
     "antes": "REPERTÓRIO DA TRILHA · só o Evocador: as escolhas a mais da Invocação Principal e do Repertório do Conjunto",
     "depois": "=IF('DADOS_INVOC'!$DD$26<>\"\",\"REVISAR · \",\"\")&\"REPERTÓRIO DA TRILHA · \"&'DADOS_INVOC'!$DC$26&\"/\"&'DADOS_INVOC'!$DB$26&IF('DADOS_INVOC'!$DD$26<>\"\",\" · \"&'DADOS_INVOC'!$DD$26,\"\")"
@@ -606,7 +396,7 @@
     "r": 27,
     "c": 107,
     "antes": null,
-    "depois": "=COUNTIFS(DADOS_R53!$A$2:$A$253,\"entidade.\"&$DD12&\".ext.*\",DADOS_R53!$B$2:$B$253,\"<>\")+COUNTIF($FF12:$FH12,\"?*\")"
+    "depois": "=N(LEN('INVOCAÇÕES'!AC1152&\"\")>0)+N(LEN('INVOCAÇÕES'!AI1152&\"\")>0)+N(LEN('INVOCAÇÕES'!AO1152&\"\")>0)+COUNTIF($FF12:$FH12,\"?*\")"
   },
   {
     "aba": "DADOS_INVOC",
@@ -616,29 +406,8 @@
     "depois": "=IF($DC27=0,\"\",LET(atributo,IF('INVOCAÇÕES'!$D$35=\"Essência\",IFERROR(VALUE(FICHA!$AJ$21),-1),IFERROR(VALUE(FICHA!$AB$21),-1)),TEXTJOIN(\" · \",TRUE,IF(FICHA!$D$11=\"Evocador\",\"\",\"Repertório extra exige Evocador\"),IF(OR($DB$4=\"Invocação Principal\",$DB$4=\"Múltiplas Invocações\"),\"\",\"Trilha sem escolhas extras\"),IF(AND($DB$4=\"Invocação Principal\",$DB$2<2),\"Trilha exige nível 2 do invocador\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2<27),\"Repertório do Conjunto: nível mínimo 27 do invocador\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\")=FALSE),\"Escolha Essência ou Inteligência em O CONJUNTO\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\"),AND(atributo>=0,atributo=INT(atributo))=FALSE),\"Atributo permanente inválido\",\"\"),IF($DC27>$DB27,\"Escolhas extras excedidas: \"&$DC27&\"/\"&$DB27,\"\"))))"
   },
   {
-    "aba": "DADOS_R53",
-    "r": 187,
-    "c": 183,
-    "antes": "=TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$187<>0,'DADOS_R53'!$AS$187<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$7041:$I$7041,1,MATCH('DADOS_R53'!$C$187,'MONTAGENS'!$B$7036:$I$7036,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AD1102),'INVOCAÇÕES'!AD1102>0))),IF(NOT('DADOS_R53'!$AS$187<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$187<>0,'DADOS_R53'!$AS$187<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$7043:$I$7043,1,MATCH('DADOS_R53'!$C$187,'MONTAGENS'!$B$7036:$I$7036,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AE1102),'INVOCAÇÕES'!AE1102>0))),IF(NOT('DADOS_R53'!$AS$187<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\"))",
-    "depois": "=TEXTJOIN(\" · \",TRUE,TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$187<>0,'DADOS_R53'!$AS$187<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$7041:$I$7041,1,MATCH('DADOS_R53'!$C$187,'MONTAGENS'!$B$7036:$I$7036,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AD1102),'INVOCAÇÕES'!AD1102>0))),IF(NOT('DADOS_R53'!$AS$187<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$187<>0,'DADOS_R53'!$AS$187<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$7043:$I$7043,1,MATCH('DADOS_R53'!$C$187,'MONTAGENS'!$B$7036:$I$7036,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AE1102),'INVOCAÇÕES'!AE1102>0))),IF(NOT('DADOS_R53'!$AS$187<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\")),'DADOS_INVOC'!$DD$27)"
-  },
-  {
-    "aba": "DADOS_R53",
-    "r": 188,
-    "c": 183,
-    "antes": "=TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$188<>0,'DADOS_R53'!$AS$188<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$7079:$I$7079,1,MATCH('DADOS_R53'!$C$188,'MONTAGENS'!$B$7074:$I$7074,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AJ1102),'INVOCAÇÕES'!AJ1102>0))),IF(NOT('DADOS_R53'!$AS$188<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$188<>0,'DADOS_R53'!$AS$188<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$7081:$I$7081,1,MATCH('DADOS_R53'!$C$188,'MONTAGENS'!$B$7074:$I$7074,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AK1102),'INVOCAÇÕES'!AK1102>0))),IF(NOT('DADOS_R53'!$AS$188<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\"))",
-    "depois": "=TEXTJOIN(\" · \",TRUE,TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$188<>0,'DADOS_R53'!$AS$188<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$7079:$I$7079,1,MATCH('DADOS_R53'!$C$188,'MONTAGENS'!$B$7074:$I$7074,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AJ1102),'INVOCAÇÕES'!AJ1102>0))),IF(NOT('DADOS_R53'!$AS$188<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$188<>0,'DADOS_R53'!$AS$188<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$7081:$I$7081,1,MATCH('DADOS_R53'!$C$188,'MONTAGENS'!$B$7074:$I$7074,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AK1102),'INVOCAÇÕES'!AK1102>0))),IF(NOT('DADOS_R53'!$AS$188<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\")),'DADOS_INVOC'!$DD$27)"
-  },
-  {
-    "aba": "DADOS_R53",
-    "r": 189,
-    "c": 183,
-    "antes": "=TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$189<>0,'DADOS_R53'!$AS$189<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$7117:$I$7117,1,MATCH('DADOS_R53'!$C$189,'MONTAGENS'!$B$7112:$I$7112,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AP1102),'INVOCAÇÕES'!AP1102>0))),IF(NOT('DADOS_R53'!$AS$189<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$189<>0,'DADOS_R53'!$AS$189<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$7119:$I$7119,1,MATCH('DADOS_R53'!$C$189,'MONTAGENS'!$B$7112:$I$7112,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AQ1102),'INVOCAÇÕES'!AQ1102>0))),IF(NOT('DADOS_R53'!$AS$189<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\"))",
-    "depois": "=TEXTJOIN(\" · \",TRUE,TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$189<>0,'DADOS_R53'!$AS$189<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$7117:$I$7117,1,MATCH('DADOS_R53'!$C$189,'MONTAGENS'!$B$7112:$I$7112,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AP1102),'INVOCAÇÕES'!AP1102>0))),IF(NOT('DADOS_R53'!$AS$189<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$189<>0,'DADOS_R53'!$AS$189<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$7119:$I$7119,1,MATCH('DADOS_R53'!$C$189,'MONTAGENS'!$B$7112:$I$7112,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AQ1102),'INVOCAÇÕES'!AQ1102>0))),IF(NOT('DADOS_R53'!$AS$189<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\")),'DADOS_INVOC'!$DD$27)"
-  },
-  {
     "aba": "INVOCAÇÕES",
-    "r": 1094,
+    "r": 1149,
     "c": 28,
     "antes": "REPERTÓRIO DA TRILHA · só o Evocador: as escolhas a mais da Invocação Principal e do Repertório do Conjunto",
     "depois": "=IF('DADOS_INVOC'!$DD$27<>\"\",\"REVISAR · \",\"\")&\"REPERTÓRIO DA TRILHA · \"&'DADOS_INVOC'!$DC$27&\"/\"&'DADOS_INVOC'!$DB$27&IF('DADOS_INVOC'!$DD$27<>\"\",\" · \"&'DADOS_INVOC'!$DD$27,\"\")"
@@ -662,7 +431,7 @@
     "r": 28,
     "c": 107,
     "antes": null,
-    "depois": "=COUNTIFS(DADOS_R53!$A$2:$A$253,\"entidade.\"&$DD13&\".ext.*\",DADOS_R53!$B$2:$B$253,\"<>\")+COUNTIF($FF13:$FH13,\"?*\")"
+    "depois": "=N(LEN('INVOCAÇÕES'!AC1394&\"\")>0)+N(LEN('INVOCAÇÕES'!AI1394&\"\")>0)+N(LEN('INVOCAÇÕES'!AO1394&\"\")>0)+COUNTIF($FF13:$FH13,\"?*\")"
   },
   {
     "aba": "DADOS_INVOC",
@@ -672,29 +441,8 @@
     "depois": "=IF($DC28=0,\"\",LET(atributo,IF('INVOCAÇÕES'!$D$35=\"Essência\",IFERROR(VALUE(FICHA!$AJ$21),-1),IFERROR(VALUE(FICHA!$AB$21),-1)),TEXTJOIN(\" · \",TRUE,IF(FICHA!$D$11=\"Evocador\",\"\",\"Repertório extra exige Evocador\"),IF(OR($DB$4=\"Invocação Principal\",$DB$4=\"Múltiplas Invocações\"),\"\",\"Trilha sem escolhas extras\"),IF(AND($DB$4=\"Invocação Principal\",$DB$2<2),\"Trilha exige nível 2 do invocador\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2<27),\"Repertório do Conjunto: nível mínimo 27 do invocador\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\")=FALSE),\"Escolha Essência ou Inteligência em O CONJUNTO\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\"),AND(atributo>=0,atributo=INT(atributo))=FALSE),\"Atributo permanente inválido\",\"\"),IF($DC28>$DB28,\"Escolhas extras excedidas: \"&$DC28&\"/\"&$DB28,\"\"))))"
   },
   {
-    "aba": "DADOS_R53",
-    "r": 200,
-    "c": 183,
-    "antes": "=TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$200<>0,'DADOS_R53'!$AS$200<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$7535:$I$7535,1,MATCH('DADOS_R53'!$C$200,'MONTAGENS'!$B$7530:$I$7530,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AD1333),'INVOCAÇÕES'!AD1333>0))),IF(NOT('DADOS_R53'!$AS$200<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$200<>0,'DADOS_R53'!$AS$200<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$7537:$I$7537,1,MATCH('DADOS_R53'!$C$200,'MONTAGENS'!$B$7530:$I$7530,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AE1333),'INVOCAÇÕES'!AE1333>0))),IF(NOT('DADOS_R53'!$AS$200<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\"))",
-    "depois": "=TEXTJOIN(\" · \",TRUE,TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$200<>0,'DADOS_R53'!$AS$200<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$7535:$I$7535,1,MATCH('DADOS_R53'!$C$200,'MONTAGENS'!$B$7530:$I$7530,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AD1333),'INVOCAÇÕES'!AD1333>0))),IF(NOT('DADOS_R53'!$AS$200<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$200<>0,'DADOS_R53'!$AS$200<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$7537:$I$7537,1,MATCH('DADOS_R53'!$C$200,'MONTAGENS'!$B$7530:$I$7530,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AE1333),'INVOCAÇÕES'!AE1333>0))),IF(NOT('DADOS_R53'!$AS$200<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\")),'DADOS_INVOC'!$DD$28)"
-  },
-  {
-    "aba": "DADOS_R53",
-    "r": 201,
-    "c": 183,
-    "antes": "=TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$201<>0,'DADOS_R53'!$AS$201<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$7573:$I$7573,1,MATCH('DADOS_R53'!$C$201,'MONTAGENS'!$B$7568:$I$7568,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AJ1333),'INVOCAÇÕES'!AJ1333>0))),IF(NOT('DADOS_R53'!$AS$201<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$201<>0,'DADOS_R53'!$AS$201<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$7575:$I$7575,1,MATCH('DADOS_R53'!$C$201,'MONTAGENS'!$B$7568:$I$7568,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AK1333),'INVOCAÇÕES'!AK1333>0))),IF(NOT('DADOS_R53'!$AS$201<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\"))",
-    "depois": "=TEXTJOIN(\" · \",TRUE,TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$201<>0,'DADOS_R53'!$AS$201<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$7573:$I$7573,1,MATCH('DADOS_R53'!$C$201,'MONTAGENS'!$B$7568:$I$7568,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AJ1333),'INVOCAÇÕES'!AJ1333>0))),IF(NOT('DADOS_R53'!$AS$201<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$201<>0,'DADOS_R53'!$AS$201<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$7575:$I$7575,1,MATCH('DADOS_R53'!$C$201,'MONTAGENS'!$B$7568:$I$7568,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AK1333),'INVOCAÇÕES'!AK1333>0))),IF(NOT('DADOS_R53'!$AS$201<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\")),'DADOS_INVOC'!$DD$28)"
-  },
-  {
-    "aba": "DADOS_R53",
-    "r": 202,
-    "c": 183,
-    "antes": "=TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$202<>0,'DADOS_R53'!$AS$202<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$7611:$I$7611,1,MATCH('DADOS_R53'!$C$202,'MONTAGENS'!$B$7606:$I$7606,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AP1333),'INVOCAÇÕES'!AP1333>0))),IF(NOT('DADOS_R53'!$AS$202<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$202<>0,'DADOS_R53'!$AS$202<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$7613:$I$7613,1,MATCH('DADOS_R53'!$C$202,'MONTAGENS'!$B$7606:$I$7606,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AQ1333),'INVOCAÇÕES'!AQ1333>0))),IF(NOT('DADOS_R53'!$AS$202<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\"))",
-    "depois": "=TEXTJOIN(\" · \",TRUE,TEXTJOIN(\" · \",TRUE,IF(AND(NOT(AND('DADOS_R53'!$C$202<>0,'DADOS_R53'!$AS$202<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$7611:$I$7611,1,MATCH('DADOS_R53'!$C$202,'MONTAGENS'!$B$7606:$I$7606,0))=\"Cura\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AP1333),'INVOCAÇÕES'!AP1333>0))),IF(NOT('DADOS_R53'!$AS$202<>\"Fechada\"),\"Amparo Fechada: função de cura salva indisponível\",\"Classe 0 (Básica): função de cura salva indisponível\"),\"\"),IF(AND(NOT(AND('DADOS_R53'!$C$202<>0,'DADOS_R53'!$AS$202<>\"Fechada\")),OR(IFERROR(INDEX('MONTAGENS'!$B$7613:$I$7613,1,MATCH('DADOS_R53'!$C$202,'MONTAGENS'!$B$7606:$I$7606,0))=\"PV temporários\",FALSE),AND(ISNUMBER('INVOCAÇÕES'!AQ1333),'INVOCAÇÕES'!AQ1333>0))),IF(NOT('DADOS_R53'!$AS$202<>\"Fechada\"),\"Amparo Fechada: função de vida temporária salva indisponível\",\"Classe 0 (Básica): função de vida temporária salva indisponível\"),\"\")),'DADOS_INVOC'!$DD$28)"
-  },
-  {
     "aba": "INVOCAÇÕES",
-    "r": 1325,
+    "r": 1391,
     "c": 28,
     "antes": "REPERTÓRIO DA TRILHA · só o Evocador: as escolhas a mais da Invocação Principal e do Repertório do Conjunto",
     "depois": "=IF('DADOS_INVOC'!$DD$28<>\"\",\"REVISAR · \",\"\")&\"REPERTÓRIO DA TRILHA · \"&'DADOS_INVOC'!$DC$28&\"/\"&'DADOS_INVOC'!$DB$28&IF('DADOS_INVOC'!$DD$28<>\"\",\" · \"&'DADOS_INVOC'!$DD$28,\"\")"

@@ -291,7 +291,8 @@ function r53LivreXp_(e) {
   }
 }
 // Âncoras TEMP dos seis pares de entidades. A paridade com redutores é testada.
-const TEMP_INVOC = [13, 244, 475, 706, 937, 1168].flatMap(r => [23, 42].map(c => [r, c, r, c]));
+// 26/11/2026 (etapa 4): as linhas andaram com a lista de perícias; o remapa traz as de antes pras novas.
+const TEMP_INVOC = [13, 244, 475, 706, 937, 1168].map(require("./remapa_etapa4").linha).flatMap(r => [23, 42].map(c => [r, c, r, c]));
 const XP_FONTE = [r53LivreXpNivel_, r53LivreXpNota_, r53LivreXp_].map(String).join('\n');
 
 function fonte(mapa, hashModulo, hashCatalogo, gatilhos, marcas, delta) {

@@ -26,10 +26,11 @@ for(const locale of ['pt_BR','en_US']){
  const ctx=vm.createContext({Utilities:{base64Decode:s=>Buffer.from(s,'base64'),newBlob:x=>x,ungzip:x=>{loads++;return{getDataAsString:()=>z.gunzipSync(x).toString()};}},SpreadsheetApp:{newRichTextValue:()=>({setText(text){this.text=text;return this;},build(){return {rich:this.text};}})},r53CargaFormulaNoIdioma_:formulaLocal});
  vm.runInContext(rt.gerar(),ctx);
  function editar(name,r,c,rr=r,cc=c){writes.length=0;return ctx.r53ExpansaoRestaurar_({range:{getRow:()=>r,getLastRow:()=>rr,getColumn:()=>c,getLastColumn:()=>cc,getSheet:()=>({getName:()=>name,getParent:()=>({getSpreadsheetLocale:()=>locale}),getRange:(r,c)=>({setValues:rows=>rows.forEach((line,i)=>writes.push({r:r+i,c,value:line[0]})),setRichTextValues:rows=>rows.forEach((line,i)=>writes.push({r:r+i,c,value:line[0].rich.slice(1)}))})})}});}
- assert.equal(editar('INVOCAÇÕES',226,15),false);assert.equal(editar('DADOS_INVOC',2,240),false);assert.equal(editar('ANALISE',2947,3),false);assert.equal(loads,0);
+  // 26/11/2026 (etapa 4): a linha 226 da INVOCAÇÕES desceu pra 237 com a lista de perícias
+ assert.equal(editar('INVOCAÇÕES',237,15),false);assert.equal(editar('DADOS_INVOC',2,240),false);assert.equal(editar('ANALISE',2947,3),false);assert.equal(loads,0);
  for(const d of plano){assert.equal(editar(d.aba,d.r,d.c),true);assert.deepEqual(writes,[{r:d.r,c:d.c,value:formulaLocal(d.depois,locale)}]);}
  assert.equal(editar('DADOS_INVOC',2,268,13,270),true);assert.equal(writes.length,36);assert.ok(writes.every(w=>[268,269,270].includes(w.c)));
- assert.equal(editar('ANALISE',2948,3,2948,4),true);assert.equal(writes.length,2);assert.equal(writes[0].value,"'INVOCAÇÕES'!Q226");
+ assert.equal(editar('ANALISE',2948,3,2948,4),true);assert.equal(writes.length,2);assert.equal(writes[0].value,"'INVOCAÇÕES'!Q237");
  assert.equal(editar('ANALISE',2948,1,2948,4),true);assert.equal(writes.length,4);assert.equal(writes[0].value,'invocacao.1.exp.acerto');
  assert.equal(loads,1);
  const abas=[{nome:'DADOS_INVOC',vals:plano.filter(d=>d.aba==='DADOS_INVOC'&&d.r===2).map(d=>[d.r,d.c,d.antes,2]),abaixo:[[2,239,13,268],[2,270,13,270]]},{nome:'ANALISE',vals:plano.filter(d=>d.aba==='ANALISE').map(d=>[d.r,d.c,d.antes,0])},{nome:'INVOCAÇÕES',vals:[],notas:[]}];

@@ -107,8 +107,13 @@ F_TIT, F_NOME, F_ROT, F_TXT, F_TXT_FIM, F_N1, F_N2, F_N3, F_ALC, F_MEL, F_RES, F
 ALT = 21
 ALT_TRUNFO = 8
 # 07/10/2026: a foto ficou mais alta que larga (480 por 546 px), pedido do Mizuki, e a ficha desceu três linhas
-O = {"hab": 46, "h": 48, "tal": 70, "mais": 80, "m": 82, "trilha": 148, "x": 150, "talx": 172, "trunfos": 177, "lib": 179,
-     "tm": 188, "fim": 195}
+# 26/11/2026 (etapa 4 da versão rápida): a lista inteira de perícias entra embaixo da definição, e o resto desce 11 linhas
+O = {"per": 46, "hab": 57, "h": 59, "tal": 81, "mais": 91, "m": 93, "trilha": 159, "x": 161, "talx": 183, "trunfos": 188,
+     "lib": 190, "tm": 199, "fim": 206}
+N_PER_LIN = 8                                # perícias por bloco na lista: três blocos lado a lado
+# a ação do cartão de preencher, num menu (o nome da peça é livre, então a ficha não deduz mais a ação dela)
+ACOES_DA_ENTIDADE = ("Atuação básica", "Padrão", "Bônus", "Reação", "Ação Completa", "Padrão · em dois turnos",
+                     "Ação Completa · em dois turnos")
 PASSO_LIN = O["fim"] + 3
 ABRE_BAS, ABRE_ESP = (1, 11), (1, 4, 8, 12, 16, 20, 24, 28)
 # as dez cartas na ordem em que o nível abre: a primeira fileira é o que uma entidade de nível baixo tem
@@ -271,6 +276,12 @@ def celulas_da_ficha(r, k):
          "acerto": _a1(b[0], r + 25), "fis": _a1(b[3], r + 25),
          "per_rot": _a1(b[0], r + 28), "per": [_a1(b[0], r + 29 + i) for i in range(N_PER)],
          "perb": [_a1(b[3], r + 29 + i) for i in range(N_PER)],
+         # 26/11/2026 (etapa 4): a lista inteira, embaixo da definição. "per" e "perb" ficam só como endereço (a ANALISE
+         # ainda exporta as sete chaves antigas; as caixas ficam vazias)
+         "per_tit": _a1(a[0], r + O["per"]), "per_bd": _a1(c[3], r + O["per"]),
+         "per_lista": [{"nome": _a1(x[0], r + O["per"] + 2 + i % N_PER_LIN), "atr": _a1(x[2], r + O["per"] + 2 + i % N_PER_LIN),
+                        "treinada": _a1(x[3], r + O["per"] + 2 + i % N_PER_LIN), "total": _a1(x[4], r + O["per"] + 2 + i % N_PER_LIN)}
+                       for i, x in ((i, (a, b, c)[i // N_PER_LIN]) for i in range(3 * N_PER_LIN))],
          # --- a mesa
          "vida": _a1(c[0], r + 4), "vida_max": _a1(c[1], r + 4), "temp": _a1(c[2], r + 4), "delta": _a1(c[3], r + 4),
          "reserva_rot": _a1(c[4], r + 3), "reserva": _a1(c[4], r + 4), "barra": _a1(c[0], r + 6),
@@ -306,15 +317,19 @@ def celulas_da_ficha(r, k):
 
 
 def celulas_da_carta(r0, c0):
-    """os endereços das caixas de uma carta de habilidade"""
+    """os endereços das caixas de uma carta de habilidade. 26/11/2026 (etapa 4 da versão rápida): o cartão é de
+    preencher, como o do personagem. O dano, a ação, o alcance, o nome de cada peça e o peso dela são do jogador; ao lado
+    de cada Melhoria e de cada Restrição fica o menu do peso ("preco" e "dev"), e a linha do AMPLIAR virou as caixinhas
+    Inescapável e Certeiro ("ines" e "cert") e o LIMITE ("ampliar", o mesmo endereço de antes)"""
     a, b, c, d, e = (c0 + k for k in range(5))
     return {"titulo": _a1(a, r0 + F_TIT), "classe": _a1(a, r0 + F_NOME), "nome": _a1(b, r0 + F_NOME), "estado": _a1(e, r0 + F_NOME),
             "como": _a1(a, r0 + F_TXT), "forma": _a1(a, r0 + F_N1), "dano": _a1(c, r0 + F_N1), "pe": _a1(e, r0 + F_N1),
             "tdano": _a1(a, r0 + F_N2), "rmenu": _a1(c, r0 + F_N2), "acao": _a1(a, r0 + F_N3), "resolve": _a1(c, r0 + F_N3),
             "alcance": _a1(a, r0 + F_ALC),
-            "mel": [_a1(b, r0 + F_MEL + i) for i in range(N_MEL)], "preco": [_a1(e, r0 + F_MEL + i) for i in range(N_MEL)],
-            "res": [_a1(b, r0 + F_RES + i) for i in range(N_RES)], "dev": [_a1(e, r0 + F_RES + i) for i in range(N_RES)],
-            "conta": _a1(b, r0 + F_CONTA), "ampliar": _a1(b, r0 + F_AMP), "avisos": _a1(a, r0 + F_AV)}
+            "mel": [_a1(b, r0 + F_MEL + i) for i in range(N_MEL)], "preco": [_a1(d, r0 + F_MEL + i) for i in range(N_MEL)],
+            "res": [_a1(b, r0 + F_RES + i) for i in range(N_RES)], "dev": [_a1(d, r0 + F_RES + i) for i in range(N_RES)],
+            "conta": _a1(b, r0 + F_CONTA), "ines": _a1(b, r0 + F_AMP), "cert": _a1(d, r0 + F_AMP),
+            "ampliar": _a1(b, r0 + F_AMP + 1), "avisos": _a1(a, r0 + F_AV)}
 
 
 def celulas_do_conjunto():
@@ -472,8 +487,11 @@ def trocas(layout, cor_da_barra=None):
             o[f"ut{k}"] = ajuste_textual(_A(g['btr'][k], IV))
         for k in range(N_FAM):
             o[f"f{k}"] = da(g["fam"][k])
-        for k in range(N_PER):
-            o[f"per{k}"] = da(g["per"][k])
+        # 26/11/2026 (etapa 4): as sete colunas das perícias escolhidas no menu ficam no lugar (nenhuma coluna da DADOS_INVOC
+        # anda). A primeira lê o Buff/Debuff do limite; as outras ficam vazias
+        o["per0"] = ajuste_textual(_A(g["per_bd"], IV))
+        for k in range(1, N_PER):
+            o[f"per{k}"] = ""
         for k in range(N_TAL):
             o[f"tal{k}"] = da(g["tal"][k])
         for k in range(N_TALX):
@@ -528,20 +546,11 @@ def trocas(layout, cor_da_barra=None):
         for k, (nome_tr, atr) in enumerate(TESTES):
             base = P("vf") if atr is None else P(f"t{atr}")
             o[f"tr{k}"] = f'={base}+IF({P("trT")}="{nome_tr}",{MAE},0)+{P(f"ut{k}")}'
-        o["nper"] = f'=4+INT({P("p3")}/2)'
-        # O bônus preenchido confirma que a escolha ainda resolve no catálogo.
-        # Compare os nomes diretamente para não interpretar caracteres como curingas.
-        escolhas = []
-        for k in range(N_PER):
-            bonus = P(f"d_pb{k}")
-            primeira = "TRUE"
-            if k:
-                nomes_anteriores = Rg("per0", f"per{k - 1}")
-                bonus_anteriores = Rg("d_pb0", f"d_pb{k - 1}")
-                anteriores = f'SUMPRODUCT(IFERROR(({nomes_anteriores}={P(f"per{k}")})*({bonus_anteriores}<>""),0))'
-                primeira = f'{anteriores}=0'
-            escolhas.append(f'IFERROR(IF(AND({bonus}<>"",{primeira}),1,0),0)')
-        o["tper"] = '=SUM(' + ','.join(escolhas) + ')'
+        # 26/11/2026 (etapa 4, pedido dele): a lista inteira com uma caixinha Treinada em cada perícia, como na ficha do
+        # jogador. O limite é 4 + metade da Inteligência, para baixo, mais o Buff/Debuff do limite
+        o["nper"] = f'=4+INT({P("p3")}/2)+{P("per0")}'
+        marcadas = [_A(x["treinada"], IV) for x in g["per_lista"][:len(R["pericias"])]]
+        o["tper"] = "=" + "+".join(f'IF({x}=TRUE,1,0)' for x in marcadas)
         o["esp"] = f"=INT((2+{nn}/2)/2)"
         o["nbas"] = f"=IF({nn}>={ABRE_BAS[1]},2,1)"
         o["ntal"] = f'=1+{P("marc")}'
@@ -586,18 +595,12 @@ def trocas(layout, cor_da_barra=None):
                        '&" m",".",",")')
         for k in range(4):
             o[f"d_tr{k}"] = f'={sinal(P(f"tr{k}"))}'
-        validas = f'COUNTIF({Rg("d_pb0", f"d_pb{N_PER - 1}")},"?*")'
-        repetidas = f'{validas}>{P("tper")}'
-        fora_do_catalogo = f'COUNTIF({PER},"?*")>{validas}'
         excesso_pericias = f'{P("tper")}>{P("nper")}'
-        o["d_per"] = (f'=IF(OR({repetidas},{fora_do_catalogo},{excesso_pericias}),"{T_ERRO} ","")'
-                      f'&"PERÍCIAS · "&{P("tper")}&" DE "&{P("nper")}'
-                      f'&IF({repetidas}," · REPETIDA","")'
-                      f'&IF({fora_do_catalogo}," · FORA DO CATÁLOGO","")'
+        o["d_per"] = (f'=IF({excesso_pericias},"{T_ERRO} ","")'
+                      f'&"PERÍCIAS TREINADAS · "&{P("tper")}&" DE "&{P("nper")}'
                       f'&IF({excesso_pericias}," · ACIMA DO LIMITE","")')
         for k in range(N_PER):
-            pk = P(f"per{k}")
-            o[f"d_pb{k}"] = f'=IF({pk}="","",IFERROR({sinal(f"(INDEX({TT},1,MATCH(VLOOKUP({pk},{PERICIAS},2,FALSE),{ATRIBUTOS},0))+{MAE})")},""))'
+            o[f"d_pb{k}"] = ""
         o["d_res"] = f'=IF({P("tipo")}="{DOMADA}","RESERVA · MÁX. "&{P("resmax")},"RESERVA DE PE")'
         # 07/10/2026: o equipamento é um inventário pequeno, e a entidade não leva item por conta própria. O Mizuki: "carga, a
         # q a invocação carrega, ela em si n pode carregar itens, lembra? precisa de caracteristica"; e, do desenho: "n era
@@ -717,111 +720,97 @@ def trocas(layout, cor_da_barra=None):
     FAMT = _faixa(colf["f0"], 2, colf[f"f{N_FAM - 1}"], 1 + len(LUG))
 
     def linha_de_carta(n, carta):
+        """26/11/2026 (etapa 4 da versão rápida): a conta leve do cartão de preencher, no molde da do personagem (etapa 3).
+        O jogador escreve o nome de cada peça e escolhe o peso dela num menu; a ficha tira o preço (ou a devolução) da
+        tabela de preços DAS INVOCAÇÕES pela Classe, soma, e mostra a conta, o limite e os avisos. O dano, a ação e o
+        alcance são do jogador. As colunas são as mesmas da conta montada (nenhuma coluna da DADOS_INVOC anda); as que a
+        conta leve não usa ficam vazias."""
         i, tipo, num, cel, titulo, abre = carta
         P = lambda k: f"${L(col[k])}{n}"
         Rg = lambda a, b: f"${L(col[a])}{n}:${L(col[b])}{n}"
-        M, RR, BB, KK, CC, NN = Rg("m1", f"m{N_MEL}"), Rg("r1", f"r{N_RES}"), Rg("b1", f"b{N_RES}"), Rg("k0", f"k{N_MEL}"), Rg("c1", f"c{N_RES}"), Rg("n1", "n6")
-        WW = Rg("w1", f"w{N_MEL}")
-        tem_m = lambda nome: f'COUNTIF({M},"{nome}")'
-        tem_b = lambda nome: f'COUNTIF({BB},"{nome}")'
-        tem = lambda nome: f'({tem_m(nome)}+{tem_b(nome)})'
+        M, RR, CC = Rg("m1", f"m{N_MEL}"), Rg("r1", f"r{N_RES}"), Rg("c1", f"c{N_RES}")
         Cc, forma, lf, fi = P("classe"), P("forma"), P("lf"), P("ficha")
         da_forma = lambda k: f"IF({lf}=0,0,INDEX({forma_col(k)},{lf}))"
         da_ficha = lambda k: f"INDEX({FCOL(k)},{fi})"
         FAMS = f"INDEX({FAMT},{fi},0)"
+        cx = lambda k: _A(cel[k], IV)
         o = {"lugar": f"Ficha {i + 1} · {titulo.capitalize()}", "ficha": i + 1, "tipo": TIPO[tipo], "abre": abre, "tit": titulo,
-             "classe": 0 if tipo == "bas" else f"=MAX({0 if tipo == 'ext' else 1},MIN({n_classes},N({_A(cel['classe'], IV)})))",
-             "nome": f'={_A(cel["nome"], IV)}&""', "forma": f'={_A(cel["forma"], IV)}&""', "tdano": f'={_A(cel["tdano"], IV)}&""',
-             "rmenu": f'={_A(cel["rmenu"], IV)}&""'}
+             "classe": 0 if tipo == "bas" else f"=MAX({0 if tipo == 'ext' else 1},MIN({n_classes},N({cx('classe')})))",
+             "nome": f'={cx("nome")}&""', "forma": f'={cx("forma")}&""', "tdano": f'={cx("tdano")}&""',
+             "rmenu": f'={cx("rmenu")}&""'}
         for k in range(N_MEL):
             o[f"m{k + 1}"] = f'={_A(cel["mel"][k], IV)}&""'
         for k in range(N_RES):
             o[f"r{k + 1}"] = f'={_A(cel["res"][k], IV)}&""'
-        # --- daqui para baixo a fórmula é a mesma em toda linha
+        vazias = ([f"f{k}" for k in range(1, N_MEL + 1)] + [f"w{k}" for k in range(1, N_MEL + 1)] +
+                  [f"x{k}" for k in range(1, N_MEL + 1)] + [f"b{k}" for k in range(1, N_RES + 1)] + [f"n{j}" for j in range(1, 7)] +
+                  ["rdz", "dL", "dM", "dep", "q2"] + [f"d{c['classe']}" for c in R["classes"]] + [f"t{c['classe']}" for c in R["classes"]] +
+                  [f"pt{k}" for k in range(1, N_MEL + 1)] + [f"dt{k}" for k in range(1, N_RES + 1)])
+        o.update({k: "" for k in vazias})
+        # --- daqui para baixo
         o["tem"] = f'=IF({P("nome")}<>"",1,0)'
         o["nv"], o["mx"], o["db"] = "=" + da_ficha("n"), "=" + da_ficha("cl"), "=" + da_ficha("db")
         o["atk"], o["cdf"] = "=" + da_ficha("atq"), "=" + da_ficha("cd")
         o["lf"] = f"=IFERROR(MATCH({forma},{forma_col(0)},0),0)"
-        for k in range(1, N_MEL + 1):
-            mk, fk, wk = P(f"m{k}"), P(f"f{k}"), P(f"w{k}")
-            o[f"f{k}"] = f'=IFERROR(VLOOKUP({mk},{PECAS},2,FALSE),"")'
-            o[f"w{k}"] = f"=IFERROR(VLOOKUP({mk},{PECAS},3,FALSE),0)"
-            # o código de preço: o peso, e três a mais se a Família é uma das Livres da ficha
-            o[f"k{k}"] = f'=IF(OR({wk}=0,{Cc}=0),0,{wk}+3*IF(AND({fk}<>"",OR({fk}={da_ficha("f0")},{fk}={da_ficha("f1")})),1,0))'
-            o[f"x{k}"] = f'=IF(OR({wk}=0,{fk}=""),0,IF(COUNTIF({FAMS},{fk})=0,1,0))'
-        # a Forma não recebe o desconto da Família Livre
+        # a Forma: o código de preço dela (não recebe o desconto da Família Livre), e a Família que ela pede
         o["k0"] = f"=IF({Cc}=0,0,{da_forma(2)})"
         o["x0"] = f'=IF({lf}=0,0,IF(INDEX({forma_col(1)},{lf})="",0,IF(COUNTIF({FAMS},INDEX({forma_col(1)},{lf}))=0,1,0)))'
-        o["ct"] = "=" + "+".join(f"IFERROR(VLOOKUP({P(f'm{k}')},{PECAS},4,FALSE),0)" for k in range(1, N_MEL + 1))
-        o["ptr"] = "=" + "+".join(f"IFERROR(VLOOKUP({P(f'm{k}')},{PECAS},6,FALSE),0)" for k in range(1, N_MEL + 1))
-        o["rdz"] = "=TEXTJOIN(\", \",TRUE," + ",".join(f'IF(IFERROR(VLOOKUP({P(f"m{k}")},{PECAS},5,FALSE),0)=1,{P(f"m{k}")},"")' for k in range(1, N_MEL + 1)) + ")"
-        o["emb"], o["tp"], o["tr"] = "=" + da_forma(3), "=" + da_forma(4), "=" + da_forma(6)
+        # o peso de cada Melhoria, num menu: o preço sai da tabela das invocações (Leve, Média, Pesada e as três Livres)
+        for k in range(1, N_MEL + 1):
+            peso = _A(cel["preco"][k - 1], IV)
+            o[f"k{k}"] = (f"=IF({Cc}=0,0," + "".join(f'IF({peso}="{p}",INDEX({PRECOS},MAX(1,{Cc}),{j}),' for j, p in enumerate(fa.PESOS_MELHORIA, 1))
+                          + "0" + ")" * len(fa.PESOS_MELHORIA) + ")")
+        # e o de cada Restrição: a Leve devolve metade da Classe, para cima; a Média, a Classe
         for k in range(1, N_RES + 1):
-            o[f"c{k}"] = f"=IFERROR(VLOOKUP({P(f'r{k}')},{RES},3,FALSE),0)"
-            o[f"b{k}"] = f'=IFERROR(VLOOKUP({P(f"r{k}")},{RES},2,FALSE),"")'
-        for j in range(1, 7):
-            o[f"n{j}"] = f"=COUNTIF({KK},{j})"
-        o["dL"] = f"=COUNTIF({CC},1)"
-        o["dM"] = f"=COUNTIF({CC},2)+{P('emb')}"
+            peso = _A(cel["dev"][k - 1], IV)
+            o[f"c{k}"] = f'=IF({Cc}=0,0,IF({peso}="Leve",CEILING({Cc}/2,1),IF({peso}="Média",{Cc},0)))'
+        o["emb"], o["tp"], o["tr"] = "=" + da_forma(3), "=" + da_forma(4), "=" + da_forma(6)
+        o["lg"] = f'=IF({cx("ines")}=TRUE,1,0)'                 # a caixinha Inescapável
+        o["mr"] = f'=IF({cx("cert")}=TRUE,1,0)'                 # a caixinha Certeiro
         o["nm"] = f'=COUNTIF({M},"?*")'
         o["nr"] = f'=COUNTIF({RR},"?*")+{P("emb")}'
-        o["g"] = f"=IF({Cc}=0,0,SUMPRODUCT({NN},INDEX({PRECOS},MAX(1,{Cc}),0)))"
-        o["dv0"] = f"=IF({Cc}=0,0,{P('dL')}*CEILING({Cc}/2,1)+{P('dM')}*{Cc})"
+        # as peças escritas sem peso viram aviso
+        o["ct"] = "=" + "+".join(f'IF(AND({P(f"m{k}")}<>"",{_A(cel["preco"][k - 1], IV)}=""),1,0)' for k in range(1, N_MEL + 1))
+        o["ptr"] = "=" + "+".join(f'IF(AND({P(f"r{k}")}<>"",{_A(cel["dev"][k - 1], IV)}=""),1,0)' for k in range(1, N_RES + 1))
+        soma_m = f"SUM({Rg('k1', f'k{N_MEL}')})"
+        o["g"] = f"=IF({Cc}=0,0,IF({P('k0')}=0,0,INDEX({PRECOS},MAX(1,{Cc}),{P('k0')}))+{soma_m})"
+        # a Restrição embutida da Forma devolve a Classe, como uma Média
+        o["dv0"] = f"=IF({Cc}=0,0,SUM({CC})+{P('emb')}*{Cc})"
         o["dv"] = f"=MIN(2*{Cc},{P('dv0')})"
-        # 10/10/2026 (B45): "Restrição paga Melhorias, nunca a Forma." A especial é montada como feitiço, e a devolução
-        # aproveitada para no gasto em Melhorias: o gasto todo menos o preço da Forma (o código de preço dela é o k0)
-        o["usa"] = f"=MIN({P('dv')},{P('g')}-IF({P('k0')}=0,0,INDEX({PRECOS},MAX(1,{Cc}),{P('k0')})))"
+        # 10/10/2026 (B45): "Restrição paga Melhorias, nunca a Forma"
+        o["usa"] = f"=MIN({P('dv')},{soma_m})"
         o["perde"] = f"={P('dv')}-{P('usa')}"
         o["pts"] = f"=IF({Cc}=0,0,INDEX({PONTOS},MAX(1,{Cc})))"
         o["s"] = f"={P('pts')}-{P('g')}+{P('usa')}"
-        # na básica o dano são os dados do nível, e a Melhoria Leve tira um. 10/10/2026 (B45), o livro final: a Restrição
-        # Leve "devolve o dado que a Melhoria tirou, sem criar pontos de montagem"
+        # na básica o dano são os dados do nível, e a Melhoria Leve tira um; a Restrição Leve devolve o dado
         o["d"] = f"=IF({Cc}=0,MAX(0,{P('db')}-IF(AND({P('nm')}>0,COUNTIF({RR},\"?*\")=0),1,0)),MAX(0,{P('s')}))"
-        o["dep"] = f"=IF({Cc}=0,0,(" + "+".join(f"IF({tem_m(x)}>0,1,0)" for x in fa.SOMAM_METADE) + f")*FLOOR({P('d')}/2,1))"
-        for c in R["classes"]:
-            k = c["classe"]
-            gk = f"SUMPRODUCT({NN},{preco_da_classe(k)})"
-            gmk = f"{gk}-IF({P('k0')}=0,0,INDEX({preco_da_classe(k)},1,{P('k0')}))"      # o gasto em Melhorias, sem a Forma
-            o[f"d{k}"] = f"=MAX(0,{c['pontos']}-{gk}+MIN({2 * k},{P('dL')}*{math.ceil(k / 2)}+{P('dM')}*{k},{gmk}))"
-            dk, tp = P(f"d{k}"), P("tp")
-            o[f"t{k}"] = (f'=IF({tp}=2,3*{dk}&" de vida temp.",IF({tp}=3,"sem dano",IF({dk}=0,IF({tp}=1,"sem cura","sem dano"),'
-                          f'IF({tp}=1,"cura ","")&{dk}&"d8")))')
         NV, MAXC = P("nv"), P("mx")
-        cac, tudo, ines = "Corpo a Corpo", "Tudo ou Nada", "Inescapável"
+        ines, cert = P("lg"), P("mr")
+        lim = f"INDEX({LIMITE},MAX(1,{Cc}))"
+        nao_leve = lambda cels: "+".join(f'IF(AND({_A(x, IV)}<>"",LEFT({_A(x, IV)},4)<>"Leve"),1,0)' for x in cels)
         erros = [
             _se(f'{P("abre")}>{NV}', f'"Este lugar abre no nível "&{P("abre")}'),
             _se(f"{Cc}>{MAXC}", f'"Classe "&{Cc}&": o nível "&{NV}&" libera até a "&{MAXC}'),
             _se(f'{P("x0")}=1', f'"A Forma "&{forma}&" pede "&INDEX({forma_col(1)},{lf})&" aberta"'),
             _se(f'AND({Cc}=0,{lf}>0,{da_forma(10)}=0)', f'{forma}&" não existe na Classe 0"'),
-        ] + [_se(f'{P(f"x{k}")}=1', f'"Família Fechada: "&{P(f"m{k}")}') for k in range(1, N_MEL + 1)] + [
-            _se(f'AND({Cc}>0,{P("nm")}>INDEX({LIMITE},MAX(1,{Cc})))', f'{P("nm")}&" Melhorias: a Classe "&{Cc}&" aceita "&INDEX({LIMITE},MAX(1,{Cc}))'),
+            _se(f'AND({Cc}>0,{P("nm")}>{lim})', f'{P("nm")}&" Melhorias: a Classe "&{Cc}&" aceita "&{lim}'),
             _se(f'AND({Cc}=0,{P("nm")}>1)', '"A básica aceita uma Melhoria"'),
-            _se(f'AND({Cc}=0,COUNTIF({WW},">1")>0)', '"A básica só aceita Melhoria Leve"'),
+            _se(f'AND({Cc}=0,{nao_leve(cel["preco"])}>0)', '"A básica só aceita Melhoria Leve"'),
             _se(f'AND({Cc}>0,{P("nr")}>{N_RES})', f'{P("nr")}&" Restrições"&IF({P("emb")}=1,", contando a que a Forma "&{forma}&" já traz","")&": o limite é {N_RES}"'),
             _se(f'AND({Cc}=0,COUNTIF({RR},"?*")>1)', '"A básica aceita uma Restrição Leve"'),
-            _se(f'AND({Cc}=0,COUNTIF({CC},2)>0)', '"A básica só aceita Restrição Leve"'),
+            _se(f'AND({Cc}=0,{nao_leve(cel["dev"])}>0)', '"A básica só aceita Restrição Leve"'),
             _se(f'AND({Cc}>0,{P("s")}<0)', f'"Orçamento estourado: faltam "&(-{P("s")})&IF({P("s")}<-1," pontos"," ponto")'),
-            _se("+".join(f"IFERROR(VLOOKUP({P(f'r{k}')},{RES},4,FALSE),0)" for k in range(1, N_RES + 1)) + ">1",
-                f'{P("b1")}&" e "&{P("b2")}&" são as duas de frequência"'),
-        ] + [_se(f"AND({tem(a)}>0,{tem(b)}>0)", f'"{a} não entra com {b}"') for a, b in R["pares"]] + [
-            _se(f'AND({tem_b(cac)}>0,{P("emb")}=0,OR({forma}="Cone",{forma}="Linha"))', f'"{cac} não entra em "&{forma}'),
-            _se(f'AND({tem_b(cac)}>0,{P("emb")}=1)', f'"A Forma "&{forma}&" já traz o {cac}"'),
-            _se(f'AND({tem_b(tudo)}>0,{P("tr")}=0)', f'"{tudo} só entra em habilidade de Teste de Resistência"'),
-            _se(f'AND({tem_m(ines)}>0,OR({P("nm")}>1,{P("nr")}>0))', f'"{ines} não aceita outra peça"'),
-            _se(f'AND({Cc}>0,{P("d")}*IF({tem_m(fa.MULTIPLICA[0])}>0,{fa.MULTIPLICA[1]},1)+{P("dep")}>4*{Cc})',
-                f'({P("d")}*IF({tem_m(fa.MULTIPLICA[0])}>0,{fa.MULTIPLICA[1]},1)+{P("dep")})&" dados somando repetições'
-                f'"&IF({tem_m(fa.MULTIPLICA[0])}>0," e o Remate","")&": o teto da Classe "&{Cc}&" é "&4*{Cc}'),
+            _se(f'AND({ines}=1,{cert}=1)', '"Inescapável e Certeiro: marque só um"'),
+            _se(f'AND({ines}=1,OR({P("nm")}>1,{P("nr")}>0))', '"Inescapável não aceita outra peça"'),
         ]
         conta_txt = lambda x: f'IF({x}="",0,(LEN({x})-LEN(SUBSTITUTE({x}," · ","")))/3+1)'
         o["erros"] = f'=IF({P("tem")}=0,"",TEXTJOIN(" · ",TRUE,{",".join(erros)}))'
         o["ne"] = "=" + conta_txt(P("erros"))
-        com_dano = f'AND({Cc}>0,{P("tp")}=0)'
         avisos = [
             _se(f'{P("dv0")}>2*{Cc}', f'"A devolução parou no teto de "&2*{Cc}'),
             _se(f'{P("perde")}>0', f'"Devolução perdida: "&{P("perde")}&IF({P("perde")}>1," pontos"," ponto")&" sem Melhoria para pagar"'),
-            _se(f'AND({P("ct")}>0,{com_dano},{P("d")}=0)', '"Controle sem dano: uma rodada a mais e CD +2"'),
-            _se(f'AND({P("ct")}>0,{com_dano},{P("d")}>0,{P("d")}<={Cc})', '"Controle com saldo até a Classe: uma rodada a mais"'),
-            _se(f'AND({Cc}>0,{P("rdz")}<>"")', f'"Efeito de "&{P("rdz")}&" pela Classe "&MAX(1,{Cc}-1)'),
+            _se(f'{P("ct")}>0', f'{P("ct")}&IF({P("ct")}>1," Melhorias sem peso"," Melhoria sem peso")'),
+            _se(f'{P("ptr")}>0', f'{P("ptr")}&IF({P("ptr")}>1," Restrições sem peso"," Restrição sem peso")'),
         ]
         o["avisos"] = f'=IF({P("tem")}=0,"",TEXTJOIN(" · ",TRUE,{",".join(avisos)}))'
         o["na"] = "=" + conta_txt(P("avisos"))
@@ -830,43 +819,26 @@ def trocas(layout, cor_da_barra=None):
         o["linha"] = (f'=IF({P("tem")}=0,"",IF({P("ne")}+{P("na")}=0,"{DENTRO}",{P("erros")}&IF(AND({P("ne")}>0,{P("na")}>0)," · ","")&{P("avisos")}))')
         o["titulo"] = f'=IF({P("abre")}>{NV},{P("tit")}&" · ABRE NO NÍVEL "&{P("abre")},{P("tit")})'
         o["pe"] = f'=IF({P("tem")}=0,"",IF({Cc}=0,"Sem PE",3*{Cc}&" PE"))'
-        o["acao"] = (f'=IF({P("tem")}=0,"",IF({Cc}=0,"A atuação básica dela",IF({tem_b("Atrasar")}>0,"Sua Ação Completa",IF({tem_m("Rápido")}>0,"Sua Bônus",'
-                     f'IF({tem_m("Reação")}>0,"Sua Reação","Sua Padrão")))&" + a básica dela"&IF({tem_m("Reação")}>0," e a coletiva","")'
-                     f'&IF({tem_b("Carregar")}>0," · em dois turnos","")))')
-        # a resolução: a do menu, ou a que a Forma traz
+        o["acao"] = f'=IF({P("tem")}=0,"",{cx("acao")}&"")'
+        # a resolução: a do menu, ou a que a Forma traz; as caixinhas mudam o resultado
         o["rs"] = f'=IF({P("rmenu")}<>"",{P("rmenu")},IF({lf}=0,"",INDEX({forma_col(5)},{lf})))'
         rs = P("rs")
-        atq_total = f'({P("atk")}+2*IF({tem_m("Precisão")}>0,1,0))'
-        o["resolve"] = (f'=IF(OR({P("tem")}=0,{lf}=0),"",IF({tem_m(ines)}>0,"Automático",IF({rs}="Ataque",IF({P("atk")}="","Ataque","Ataque "&{sinal(atq_total)})&IF({P("ptr")}>0," · TR"&IF({P("cdf")}="",""," CD "&{P("cdf")}),""),'
-                        f'IF(LEFT({rs},2)="TR",{rs}&IF({P("cdf")}="",""," · CD "&{P("cdf")})&IF({tem_m("Certeiro")}>0," · metade",""),"Sem rolagem"))))')
-        tC = f'INDEX({Rg("t1", f"t{n_classes}")},1,MAX(1,{Cc}))'
-        tC = f'UPPER(LEFT({tC},1))&MID({tC},2,99)'
-        tipo_do_dano = f'IF({P("tdano")}="",""," "&{P("tdano")})'
-        o["dano"] = (f'=IF(OR({P("tem")}=0,{lf}=0),"",IF({Cc}=0,IF(OR({P("tp")}>=1,{P("d")}=0),"Sem dano",{P("d")}&"d6"&{tipo_do_dano}),'
-                     f'IF(OR({P("tp")}>=1,{P("d")}=0),{tC},{tC}&{tipo_do_dano}&IF({P("dep")}>0," · +"&{P("dep")}&"d8",""))))')
-        o["lg"] = f'={tem_m("Longe")}+3*{tem_m("Muito Longe")}'
-        o["mr"] = f'={tem_m("Maior")}+3*{tem_m("Muito Maior")}'
-        grau = lambda k: f'IF({lf}=0,0,CHOOSE(1+INDEX({forma_col(k)},{lf}),0,{P("lg")},{P("mr")},{P("lg")}+{P("mr")}))'
-        o["q1"], o["q2"] = "=" + grau(7), "=" + grau(8)
+        o["resolve"] = (f'=IF(OR({P("tem")}=0,{lf}=0),"",IF({ines}=1,"Automático",IF({rs}="Ataque",IF({P("atk")}="","Ataque","Ataque "&{sinal(P("atk"))}),'
+                        f'IF(LEFT({rs},2)="TR",{rs}&IF({P("cdf")}="",""," · CD "&{P("cdf")})&IF({cert}=1," · metade",""),"Sem rolagem"))))')
+        o["dano"] = f'=IF({P("tem")}=0,"",{cx("dano")}&"")'
+        # o alcance base da Forma na faixa da Classe, sem degrau subido: aparece na CONTA, e vale quando o jogador deixa
+        # o alcance do cartão em branco
         na_tabela = f"({lf}-1)*4+IF({Cc}=0,1,IF({Cc}<=5,2,IF({Cc}=6,3,4)))"
-        alvos = tem_m("Mais Um")
-        o["alcance"] = (f'=IF(OR({P("tem")}=0,{lf}=0),"",INDEX({ALC1},{na_tabela},1+MIN({G_ - 1},{P("q1")}))&'
-                        f'INDEX({ALC2},{na_tabela},1+MIN({G_ - 1},{P("q2")}))&'
-                        f'IF(INDEX({forma_col(9)},{lf})=1,IF({alvos}>0," · +"&{alvos}&IF({alvos}>1," alvos"," alvo"),"")&'
-                        f'IF({tem_m("Rajada")}>0,IF({Cc}=0," · 1 tiro"," · "&(MAX(1,{Cc}-1)+1)&" tiros"),""),""))')
+        o["q1"] = f'=IF({lf}=0,"",INDEX({ALC1},{na_tabela},1)&INDEX({ALC2},{na_tabela},1))'
+        o["alcance"] = f'=IF({P("tem")}=0,"",IF({cx("alcance")}&""="",{P("q1")},{cx("alcance")}&""))'
         o["conta"] = (f'=IF({P("tem")}=0,"",IF({Cc}=0,{P("db")}&"d6"&IF({P("nm")}>0," − 1 = "&{P("d")}&"d6"," da básica do nível "&{NV}),'
-                      f'{P("pts")}&" − "&{P("g")}&" + "&{P("usa")}&" = "&{P("s")}&" · teto "&4*{Cc}&"d8"&'
-                      f'IF({P("emb")}=1," · a Forma devolve "&{Cc},"")&IF({P("perde")}>0," · perde "&{P("perde")},"")))')
-        termos = [f'IF(AND({k}>{Cc},{k}<={MAXC}),"{k} → "&{P(f"t{k}")}&", {3 * k} PE","")' for k in range(2, n_classes + 1)]
-        o["ampliar"] = (f'=IF({P("tem")}=0,"",IF({Cc}=0,"A básica não amplia: os dados dela sobem com o nível",IF({Cc}>={MAXC},'
-                        f'"Já está na maior Classe que o nível liberou",TEXTJOIN(" · ",TRUE,{",".join(termos)}))))')
-        pesos = ",".join(f'"{p}"' for p in list(fa.NOME_DO_PESO) + [p + " · Livre" for p in fa.NOME_DO_PESO])
-        for k in range(1, N_MEL + 1):
-            kk, wk = P(f"k{k}"), P(f"w{k}")
-            o[f"pt{k}"] = (f'=IF(OR({P("tem")}=0,{wk}=0),"",IF({Cc}=0,"−1 dado","−"&INDEX({PRECOS},MAX(1,{Cc}),MAX(1,{kk}))&" · "&CHOOSE(MAX(1,{kk}),{pesos})))')
-        for k in range(1, N_RES + 1):
-            c = P(f"c{k}")
-            o[f"dt{k}"] = f'=IF(OR({P("tem")}=0,{P(f"r{k}")}=""),"",IF({Cc}=0,"não devolve","+"&IF({c}=1,CEILING({Cc}/2,1),{Cc})))'
+                      f'{P("pts")}&" − "&{P("g")}&IF({P("usa")}>0," + "&{P("usa")},"")&" = "&{P("d")}&"d8 · teto "&4*{Cc}&"d8")'
+                      f'&IF({P("q1")}<>""," · alcance base "&{P("q1")},""))')
+        o["ampliar"] = (f'=IF({P("tem")}=0,"",IF({Cc}=0,"Básica: uma Melhoria Leve e uma Restrição Leve",'
+                        f'"Melhorias: "&{P("nm")}&" de "&{lim}&" · Restrições: "&{P("nr")}&" de {N_RES}"&IF({P("emb")}=1," (a Forma já traz uma)","")))')
+        falta = [k for k in nomes if k not in o]
+        if falta:
+            raise SystemExit(f"ficha_invocacoes: a conta leve do cartão esqueceu as colunas {falta}")
         return [o[k] for k in nomes]
 
     D.tabela("cartas", [("conta de habilidade" if k == "lugar" else k) for k in nomes], [[None] for _ in cartas])
@@ -933,7 +905,19 @@ NOTAS = {
     "tr": "O atributo do teste, mais a sua maestria no treinado. O Físico usa Força ou Destreza, a que você escolher embaixo.",
     "acerto": "Escolhido na montagem. Vale para o ataque e para a CD. Com arma empunhada, o ataque usa o atributo da arma e tem "
               "desvantagem, porque a entidade não tem treino em armas.",
-    "pericias": "4 + metade da Inteligência, para baixo. O número ao lado é o atributo da perícia mais a sua maestria.",
+    "pericias": "Quantas perícias ela tem treinadas, e o limite: 4 + metade da Inteligência, para baixo, mais o Buff/Debuff do "
+                "limite. A lista com as caixinhas fica embaixo da DEFINIÇÃO.",
+    "per_bd": "Buff/Debuff do limite de perícias: o que você digitar aqui soma, ou tira, do limite (4 + metade da Inteligência).",
+    "per_treinada": "Marque as perícias em que ela tem treino. O total é o atributo dela, mais a sua maestria quando marcada.",
+    "dano_carta": "Escreva o dano da habilidade (ex.: 3d8 Cortante). A CONTA embaixo mostra quantos dados os pontos pagam.",
+    "acao_carta": "A ação que você gasta para ela usar a habilidade. A básica é a atuação básica dela.",
+    "alcance_carta": "Escreva o alcance e a área. Em branco, vale o alcance base da Forma, que aparece na CONTA.",
+    "preco": "O peso da Melhoria: Leve, Média ou Pesada (com · Livre quando ela é de uma Família Livre). A ficha tira o "
+             "preço da tabela das invocações pela Classe. O nome da Melhoria é livre.",
+    "devolve": "O peso da Restrição: a Leve devolve metade da Classe (para cima), a Média devolve a Classe. A devolução só "
+               "paga Melhorias, nunca a Forma.",
+    "marcas": "Inescapável: a habilidade acerta sozinha (Automático). Certeiro: o TR passa a valer metade no sucesso. "
+              "Marque só uma, e só se a peça estiver nas Melhorias.",
     "delta": "Escreva −9 ou +5 e aperte Enter: a ficha aplica na vida atual e limpa a caixa. A perda gasta a vida temporária "
              "primeiro, e a vida não passa da máxima."
              " Enquanto o número está aqui, a caixa fica âmbar: ainda não foi aplicado. Se continuar depois de um minuto, ele se perdeu (o Google às vezes descarta edições rápidas em sequência): confira o atual e digite de novo.",
@@ -964,8 +948,9 @@ NOTAS = {
                     "Classe 0 e não custa PE.",
     "tdano": "Cada ataque tem o seu tipo de dano. A aparência de energia pura usa Força.",
     "rmenu": "Registre em COMO É a resolução por ataque ou Teste de Resistência, o TR e os detalhes de cada efeito. A Forma define a entrega; a função é escolhida separadamente.",
-    "melhorias": "As Classes 1 e 2 aceitam 2 Melhorias, a 3 e a 4 aceitam 3, e da 5 em diante 4. A Forma não conta. O menu só traz "
-                 "as Famílias abertas, e a da Família Livre sai mais barata. A básica aceita uma Melhoria Leve, que custa um dado.",
+    "melhorias": "As Classes 1 e 2 aceitam 2 Melhorias, a 3 e a 4 aceitam 3, e da 5 em diante 4. A Forma não conta. Escreva o "
+                 "nome e escolha o peso ao lado; a da Família Livre sai mais barata. A básica aceita uma Melhoria Leve, que "
+                 "custa um dado.",
     "restricoes": "Até duas Restrições. Toque e Aura não trazem Corpo a Corpo embutido. Toque tem devolução própria nas Classes 1 a 7, fora das vagas, quando não é exclusivamente pessoal; Aura paga Leve. Toque e Aura não aceitam Queima-Roupa. As devoluções só recuperam gasto real nas Melhorias, nunca a base ou a Forma. Na básica, uma Restrição Leve válida recupera no máximo o dado retirado pela Melhoria.",
     "ampliar": "A mesma especial usada numa Classe maior, até a maior que o nível dela liberou. A conta inteira é refeita.",
     "trilha": "Só o Evocador: as escolhas a mais da Invocação Principal (níveis 8, 16 e 24 da invocação) e do Repertório do Conjunto "
@@ -1015,33 +1000,43 @@ def _carta(f, tr, r0, c0, i, n_ficha, tipo, com_nota):
     f.add("rot", a, r0 + F_ROT, e, r0 + F_ROT, "COMO É")
     assert f.add("txt", a, r0 + F_TXT, e, r0 + F_TXT_FIM) == cel["como"]
     assert f.add("cel", a, r0 + F_N1, b, r0 + F_N1, FORMA_INICIAL) == cel["forma"]
-    assert f.add("dano", c, r0 + F_N1, d, r0 + F_N1, v("dano")) == cel["dano"]
+    # 26/11/2026 (etapa 4 da versão rápida): o cartão é de preencher, como o do personagem. Dano, ação, alcance, as
+    # Melhorias com o peso e as Restrições com o peso são do jogador; o PE, o como resolve, a conta e os avisos são da ficha
+    assert f.add("cel", c, r0 + F_N1, d, r0 + F_N1, None, nota("dano_carta")) == cel["dano"]
     assert f.add("dano", e, r0 + F_N1, e, r0 + F_N1, v("pe")) == cel["pe"]
     assert f.add("cel", a, r0 + F_N2, b, r0 + F_N2, None, nota("tdano")) == cel["tdano"]
     assert f.add("cel", c, r0 + F_N2, e, r0 + F_N2, None, nota("rmenu")) == cel["rmenu"]
-    assert f.add("cel", a, r0 + F_N3, b, r0 + F_N3, v("acao")) == cel["acao"]
+    assert f.add("cel", a, r0 + F_N3, b, r0 + F_N3, ACOES_DA_ENTIDADE[0 if tipo == "bas" else 1], nota("acao_carta")) == cel["acao"]
     assert f.add("cel", c, r0 + F_N3, e, r0 + F_N3, v("resolve")) == cel["resolve"]
-    assert f.add("peq", a, r0 + F_ALC, e, r0 + F_ALC, v("alcance")) == cel["alcance"]
+    assert f.add("cel", a, r0 + F_ALC, e, r0 + F_ALC, None, nota("alcance_carta")) == cel["alcance"]
     f.add("rot", a, r0 + F_MEL, a, r0 + F_MEL + N_MEL - 1, "MELHORIAS", nota("melhorias"))
     for k in range(N_MEL):
-        assert f.add("cel_esq", b, r0 + F_MEL + k, d, r0 + F_MEL + k) == cel["mel"][k]
-        f.add("peq", e, r0 + F_MEL + k, e, r0 + F_MEL + k, v(f"pt{k + 1}"))
+        assert f.add("cel_esq", b, r0 + F_MEL + k, c, r0 + F_MEL + k) == cel["mel"][k]
+        assert f.add("cel", d, r0 + F_MEL + k, e, r0 + F_MEL + k, None, nota("preco") if k == 0 else None) == cel["preco"][k]
     f.add("rot", a, r0 + F_RES, a, r0 + F_RES + N_RES - 1, "RESTRIÇÕES", nota("restricoes"))
     for k in range(N_RES):
-        assert f.add("cel_esq", b, r0 + F_RES + k, d, r0 + F_RES + k) == cel["res"][k]
-        f.add("peq", e, r0 + F_RES + k, e, r0 + F_RES + k, v(f"dt{k + 1}"))
+        assert f.add("cel_esq", b, r0 + F_RES + k, c, r0 + F_RES + k) == cel["res"][k]
+        assert f.add("cel", d, r0 + F_RES + k, e, r0 + F_RES + k, None, nota("devolve") if k == 0 else None) == cel["dev"][k]
     f.add("rot", a, r0 + F_CONTA, a, r0 + F_CONTA, "CONTA")
     assert f.add("conta", b, r0 + F_CONTA, e, r0 + F_CONTA, v("conta")) == cel["conta"]
-    f.add("rot", a, r0 + F_AMP, a, r0 + F_AMP + 1, "AMPLIAR", nota("ampliar"))
-    assert f.add("conta", b, r0 + F_AMP, e, r0 + F_AMP + 1, v("ampliar")) == cel["ampliar"]
+    f.add("rot", a, r0 + F_AMP, a, r0 + F_AMP, "MARCAS", nota("marcas"))
+    assert f.add("cel", b, r0 + F_AMP, b, r0 + F_AMP, False) == cel["ines"]
+    f.add("peq", c, r0 + F_AMP, c, r0 + F_AMP, "Inescapável")
+    assert f.add("cel", d, r0 + F_AMP, d, r0 + F_AMP, False) == cel["cert"]
+    f.add("peq", e, r0 + F_AMP, e, r0 + F_AMP, "Certeiro")
+    f.add("rot", a, r0 + F_AMP + 1, a, r0 + F_AMP + 1, "LIMITE")
+    assert f.add("conta", b, r0 + F_AMP + 1, e, r0 + F_AMP + 1, v("ampliar")) == cel["ampliar"]
     assert f.add("conta", a, r0 + F_AV, e, r0 + ALT - 1, v("linha")) == cel["avisos"]
     if tipo != "bas":
         f.menu(cel["classe"], D.faixa("classe0" if tipo == "ext" else "classe", so=0, aba=DI))
     f.menu(cel["forma"], M["forma0"] if tipo == "bas" else M["forma"])
     f.menu(cel["tdano"], D.faixa("danos", aba=DI))
     f.menu(cel["rmenu"], D.faixa("resolve", aba=DI))
-    f.menu(f"{cel['mel'][0]}:{cel['mel'][-1]}", M["leve"] if tipo == "bas" else M["mel"])
-    f.menu(f"{cel['res'][0]}:{cel['res'][-1]}", D.faixa("res", so=4 if tipo == "bas" else 0, aba=DI))
+    f.menu(cel["acao"], '"' + ",".join(ACOES_DA_ENTIDADE) + '"')
+    for k in range(N_MEL):
+        f.menu(cel["preco"][k], '"' + ",".join(fa.PESOS_MELHORIA) + '"')
+    for k in range(N_RES):
+        f.menu(cel["dev"][k], '"' + ",".join(fa.PESOS_RESTRICAO) + '"')
 
 
 def aba(layout, tr):
@@ -1193,11 +1188,9 @@ def aba(layout, tr):
         f.menu(g["acerto"], D.faixa("atributos", aba=DI))
         assert caixa(b[3], B5, r + 24, "FÍSICO USA", "Força", "cel") == g["fis"]
         f.menu(g["fis"], D.faixa("fisico", aba=DI))
+        # 26/11/2026 (etapa 4): os sete menus de perícia saíram; a lista inteira, com a caixinha Treinada, fica embaixo da
+        # definição. Aqui fica só o contador (a nota dele diz onde está a lista)
         assert f.add("rot", b[0], r + 28, B5, r + 28, v("d_per"), nota("pericias")) == g["per_rot"]
-        for n in range(N_PER):
-            assert f.add("cel_esq", b[0], r + 29 + n, b[2], r + 29 + n) == g["per"][n]
-            assert f.add("cel", b[3], r + 29 + n, B5, r + 29 + n, v(f"d_pb{n}")) == g["perb"][n]
-        f.menu(f"{g['per'][0]}:{g['per'][-1]}", D.faixa("pericias", so=0, aba=DI))
         # as Famílias, embaixo das perícias (até 07/10/2026 ficavam embaixo da foto, que cresceu)
         assert f.add("rot", b[0], r + 37, B5, r + 37, v("d_fam"), nota("familias")) == g["fam_rot"]
         for n, rot in enumerate(("LIVRE", "LIVRE · TRILHA", "ABERTA", "ABERTA", "ABERTA · TRILHA")):
@@ -1246,6 +1239,26 @@ def aba(layout, tr):
         assert caixa(c[0], C5, r + 35, "CORPO, SENTIDOS E COMUNICAÇÃO", None, "txt", nota("corpo"), alt=5) == g["corpo"]
         # --- embaixo: a definição, e as habilidades
         assert caixa(A1, C5, r + 42, "DEFINIÇÃO", None, "txt", nota("definicao")) == g["def"]
+        # 26/11/2026 (etapa 4, pedido dele): a lista inteira de perícias, como na ficha do jogador. Cada linha tem o
+        # atributo, a caixinha Treinada e o total (o atributo dela, mais a sua maestria quando treinada). No canto, o
+        # contador e o Buff/Debuff do limite
+        rp = r + O["per"]
+        assert f.add("rot", A1, rp, c[1], rp, v("d_per"), nota("pericias")) == g["per_tit"]
+        f.add("rot", c[2], rp, c[2], rp, "B/D LIMITE", nota("per_bd"))
+        assert f.add("bd", c[3], rp, C5, rp, 0, nota("per_bd")) == g["per_bd"]
+        for x in (a, b, c):
+            for k, rot in ((0, "PERÍCIA"), (2, "ATR."), (3, "TREINADA"), (4, "TOTAL")):
+                f.add("rot", x[k], rp + 1, x[1] if k == 0 else x[k], rp + 1, rot)
+        siglas = dict(ATRS)
+        for n, ((nome_per, atr), cx_) in enumerate(zip(R["pericias"], g["per_lista"])):
+            k_atr = [nome for nome, _ in ATRS].index(atr)
+            col_n = ix._lc(cx_["nome"])[1]
+            assert f.add("cel_esq", col_n, ix._lc(cx_["nome"])[0], col_n + 1, ix._lc(cx_["nome"])[0], nome_per) == cx_["nome"]
+            assert f.add("peq", *([ix._lc(cx_["atr"])[1], ix._lc(cx_["atr"])[0]] * 2), siglas[atr]) == cx_["atr"]
+            assert f.add("cel", *([ix._lc(cx_["treinada"])[1], ix._lc(cx_["treinada"])[0]] * 2), False,
+                         nota("per_treinada") if n == 0 else None) == cx_["treinada"]
+            total = f'({FI(f"t{k_atr}", i)}+IF({_A(cx_["treinada"], IV)}=TRUE,{H["maestria"]},0))'
+            assert f.add("cel", *([ix._lc(cx_["total"])[1], ix._lc(cx_["total"])[0]] * 2), f"={sinal(total)}") == cx_["total"]
         assert f.add("lote", A1, r + O["hab"], C5, r + O["hab"], v("d_hab")) == g["hab"]
         com_nota = i == 0
         for n_c, carta in enumerate(tr["cartas"]):

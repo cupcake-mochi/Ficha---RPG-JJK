@@ -354,9 +354,9 @@ def aplica(layout, fam, inv, criacao):
                 value=cells[owner][a1][1]
                 changed=canoniza_contagens(value,old,new,names)
                 if changed != value: put(owner,a1,changed)
-            # 26/11/2026: no cartão de preencher do personagem o nome é livre (o preço vem do menu de peso), então não
-            # confere se a peça existe no catálogo. As invocações continuam conferindo
-            if owner==fa.DADOS_AM: continue
+            # 26/11/2026: no cartão de preencher o nome é livre (o preço vem do menu de peso), então não confere se a
+            # peça existe no catálogo. Etapa 3, o personagem; etapa 4, as invocações
+            continue
             unknown=[]
             for kind,prefix,count,name_range in [
                     ('Melhoria','m',4,faixa(MEL,15,2,15,mtotal+1)),
