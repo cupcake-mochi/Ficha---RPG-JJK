@@ -870,12 +870,18 @@ def trocas(layout, CAT=None, TEC=None):
         conta_txt = lambda x: f'IF({x}="",0,(LEN({x})-LEN(SUBSTITUTE({x}," · ","")))/3+1)'
         o["erros"] = f'=IF({P("tem")}=0,"",TEXTJOIN(" · ",TRUE,{",".join(erros)}))'
         o["ne"] = "=" + conta_txt(P("erros"))
+        nd8 = f'IFERROR(VALUE(REGEXEXTRACT(LOWER({_A(cel["dano"], AM)}&""),"([0-9]+) *d8")),0)'
         avisos = [
             _se(f'{P("dv0")}>2*{Cc}', f'"A devolução parou no teto de "&2*{Cc}'),
             # a devolução do Toque que sobra se perde sem aviso: um Toque sem Melhoria é montagem comum, não engano
             _se(f'{P("perde")}>{dtq}', f'"Devolução perdida: "&({P("perde")}-{dtq})&IF({P("perde")}-{dtq}>1," pontos"," ponto")&" sem Melhoria para pagar"'),
             _se(f'{P("ct")}>0', f'{P("ct")}&IF({P("ct")}>1," Melhorias sem peso"," Melhoria sem peso")'),
             _se(f'{P("ptr")}>0', f'{P("ptr")}&IF({P("ptr")}>1," Restrições sem peso"," Restrição sem peso")'),
+            # 27/11/2026 (pente fino, achado 4, ok dele): o dano é caixa de escrever. Cada ponto que sobra vira 1d8 (livro,
+            # "Funções e pontos que sobram"); o primeiro "Nd8" escrito acima dos pontos vira aviso. Com o orçamento já
+            # estourado o erro basta
+            _se(f'AND({P("s")}>=0,{nd8}>{P("d")})',
+                f'"Dano escrito "&{nd8}&"d8: a conta dá "&{P("d")}&IF({P("d")}=1," ponto"," pontos")'),
         ]
         o["avisos"] = f'=IF({P("tem")}=0,"",TEXTJOIN(" · ",TRUE,{",".join(avisos)}))'
         o["na"] = "=" + conta_txt(P("avisos"))
