@@ -30,6 +30,11 @@ const RAIZ = __dirname;
 const GS = fs.readFileSync(path.join(RAIZ, 'apps-script', 'Codigo.gs'), 'utf8');
 // 06/10/2026: a INVOCAÇÕES e a DADOS_INVOC moram no Invocacoes.gs, que se junta ao ABAS quando carrega
 const FICHA_SRC = require('./medidas/carregar-ficha.js').fontes();
+// 27/11/2026: o construir() instala o salário no fim (salarioNaMontagem_). O salário escreve por cima do que o ABAS pede
+// (CONFIGURAÇÃO K35:Q95, CARTEIRA AH3:AT3, FICHA PESSOAL O85:W86) e cria três abas ocultas. As conferências da montagem
+// comparam a planilha com o ABAS, então rodam sem o Salarios.gs; o cenário "O SALÁRIO NO construir()" confere o salário.
+const FICHA_SEM_SALARIO = require('./medidas/carregar-ficha.js').fontes(require('./medidas/carregar-ficha.js').arquivos().filter((n) => n !== 'Salarios.gs'));
+const ABAS_DO_SALARIO = ['DADOS_SALARIOS', 'SALÁRIOS', 'EXTRATO'];
 // 05/10/2026: o texto das habilidades mora num terceiro arquivo do projeto, e o Apps Script junta os .gs num escopo só
 const HAB_SRC = fs.readFileSync(path.join(RAIZ, 'apps-script', 'Habilidades.gs'), 'utf8');
 // O ABAS como o script o usa: o Ficha.gs escreve por extenso, quando carrega, as fileiras de cartas que são cópia
@@ -101,7 +106,7 @@ if (!process.env.REG_CONSTRUIR_CARREGAMENTO_JA_CONFERIDO) {
 
 // ---------------------------------------------------------------------------------------------
 console.log('O construir() DO COMEÇO AO FIM');
-const S = criaSheets(FICHA_SRC, HAB_SRC + '\n' + GS);
+const S = criaSheets(FICHA_SEM_SALARIO, HAB_SRC + '\n' + GS);
 let erro = null;
 try { montaCompleta(S); } catch (e) { erro = e; }
 ok('o construir() roda inteiro, sem chamar nada que o Apps Script não tem e sem sair de nenhuma aba', !erro, erro ? erro.message : '');
@@ -926,7 +931,28 @@ cacheXP.forEach(([k,f])=>{dadosXP.v.delete(k);dadosXP.f.set(k,f);});
   let erroU = null;
   try { const so = U.ss.getSheets()[0]; U.ss.insertSheet('__montando__', 0); U.ss.deleteSheet(so); U.ctx.construir(); while (/rode a função continuar\(\)/.test(U.P.registro)) U.ctx.continuar(); } catch (e) { erroU = e; }
   ok('o construir() numa planilha em que só sobrou a __montando__ aproveita a aba e monta a ficha inteira, sem deixar a de rascunho',
-     !erroU && U.P.abas.map((a) => a.nome).join('|') === ABAS.map((a) => a.nome).join('|') && U.P.locale === 'pt_BR', erroU ? erroU.message : U.P.abas.map((a) => a.nome).join(', '));
+     !erroU && U.P.abas.map((a) => a.nome).join('|') === ABAS.map((a) => a.nome).concat(ABAS_DO_SALARIO).join('|') && U.P.locale === 'pt_BR', erroU ? erroU.message : U.P.abas.map((a) => a.nome).join(', '));
+  }
+  if (global.gc) global.gc();
+  // 27/11/2026: O SALÁRIO NO construir(). Antes ele só entrava rodando instalarSalarios() pelo editor, e a ficha nova
+  // nascia sem a caixa ± GASTO / GANHO, sem o extrato e com a emissão da CARTEIRA presa no HOJE()
+  {
+  const Z = criaSheets(FICHA_SRC, HAB_SRC + '\n' + GS);
+  let erroZ = null;
+  try { montaCompleta(Z); } catch (e) { erroZ = e; }
+  const nomes = Z.P.abas.map((a) => a.nome), cfg = Z.acha('CONFIGURAÇÃO'), pp = Z.acha('FICHA PESSOAL'), ct = Z.acha('CARTEIRA');
+  ok('o construir() instala o salário e diz no registro', !erroZ && /salário: instalado/.test(Z.P.registro), erroZ ? erroZ.message : String(Z.P.registro).slice(-300));
+  ok('o salário cria as três abas dele no fim, ocultas, sem tirar nenhuma do ABAS do lugar',
+     nomes.join('|') === ABAS.map((a) => a.nome).concat(ABAS_DO_SALARIO).join('|') && ABAS_DO_SALARIO.every((n) => Z.acha(n).oculta), nomes.slice(-4).join(', '));
+  ok('o painel do salário fica em CONFIGURAÇÃO K35, abaixo do índice das listas', cfg.v.get('35,11') === '14 · EMISSÃO E SALÁRIOS', String(cfg.v.get('35,11')));
+  ok('a FICHA PESSOAL ganha a caixa ± GASTO / GANHO e o TOTAL DISPONÍVEL soma o extrato',
+     pp.v.get('85,15') === '± GASTO / GANHO' && pp.v.get('85,23') === 'TOTAL DISPONÍVEL' && /EXTRATO!B2:B/.test(pp.f.get('86,23') || ''), `${pp.v.get('85,15')} · ${pp.f.get('86,23')}`);
+  ok('a CARTEIRA mostra a data de emissão da CONFIGURAÇÃO, e não a de hoje', /CONFIGURAÇÃO'!O38/.test(ct.f.get('3,34') || ''), String(ct.f.get('3,34')));
+  ok('o salário não grava fórmula antes da aba citada, nem fora do idioma, e a planilha termina em português', !Z.P.orfas.length && Z.P.locale === 'pt_BR',
+     Z.P.orfas.slice(0, 3).join(' · ') + ' · ' + Z.P.locale);
+  let erroZ2 = null; const antesZ = assinatura(Z.P);
+  try { Z.ctx.acabar(); } catch (e) { erroZ2 = e; }
+  ok('o acabar() numa ficha com o salário já instalado não muda nada', !erroZ2 && assinatura(Z.P) === antesZ && Z.P.abas.length === nomes.length, erroZ2 ? erroZ2.message : 'mudou');
   }
   if (global.gc) global.gc();
   // e o erro do serviço na volta ao português não esconde o erro da montagem
@@ -974,7 +1000,9 @@ ok('clicar numa célula e abrir a planilha não estouram', !erroSel, erroSel ? e
 } else {
 console.log('\nO ACABAMENTO, SOZINHO · ' + FASE);
 // uma montagem limpa serve de referência; nela o acabar() roda de novo, e numa terceira o relógio corre
-let R = criaSheets(FICHA_SRC, GS); montaCompleta(R);
+// 27/11/2026: sem o Salarios.gs, como as conferências da fase principal: o relógio de mentira não é data, e o salário
+// guarda o dia. O salário que não cabe no prazo tem o caso dele, logo depois do de 19/11.
+let R = criaSheets(FICHA_SEM_SALARIO, GS); montaCompleta(R);
 const antes = assinatura(R.P);
 if (FASE === 'acabamento') {
 let erroAc = null;
@@ -984,7 +1012,7 @@ ok('rodar o acabar() numa ficha pronta não muda nada: mesmas notas, sem duplica
 // o relógio que corre: cada olhada no relógio adianta um minuto, e a montagem das abas passa do teto
 let agora = 0;
 class RelogioQueCorre { getTime() { agora += 60000; return agora; } }
-const L = criaSheets(FICHA_SRC, GS, { Date: RelogioQueCorre });
+const L = criaSheets(FICHA_SEM_SALARIO, GS, { Date: RelogioQueCorre });
 // aqui a montagem das abas não para no meio (isso é o teste de baixo): o que se cobra é a vez passada ao acabar()
 L.ctx.LIMITE_DA_EXECUCAO_ = Infinity;
 L.ctx.LIMITE_DA_CRIACAO_ = Infinity; // este caso isola o acabamento, não a preparação
@@ -1012,7 +1040,7 @@ if (FASE === 'acabamento') {
 let agora = 0, cortou = null;
 const anda = (s) => { agora += s * 1000; if (agora > 360000 && !cortou) cortou = 'passou dos 360 s em ' + Math.round(agora / 1000) + 's'; };
 class RelogioDe19 extends Date { getTime() { return agora; } }
-const T = criaSheets(FICHA_SRC, GS, { Date: RelogioDe19 });
+const T = criaSheets(FICHA_SEM_SALARIO, GS, { Date: RelogioDe19 });
 T.ctx.LIMITE_DA_EXECUCAO_ = Infinity; T.ctx.LIMITE_DA_CRIACAO_ = Infinity; // a montagem das abas cabe; o que se cobra é o acabamento
 const medido = { menusSuspensos_: 254, corDeEstado_: 9, notasDeRegra_: 5.1, configurarPessoal_: 4.7, notasDosTipos_: 2.1,
                  ligarSaltos_: 3.9, configurarPaleta_: 2.8, tirarTravasDeFormula_: 5, otimizarAnaliseAndroid: 6.6,
@@ -1034,6 +1062,19 @@ agora = 0;
 try { T.ctx.acabar(); } catch (e) { erroT19 = e; }
 ok('e o acabar() depois dela, sem prazo, fecha a ficha igual à de uma montagem que não parou',
    !erroT19 && /^ACABAMENTO PRONTO em /.test(T.P.registro) && assinatura(T.P) === antes, erroT19 ? erroT19.message : T.P.registro.slice(0, 160));
+// 27/11/2026: o salário que não cabe no prazo do construir() fica para o acabar(), e o acabar() o instala
+{
+const Q = criaSheets(FICHA_SRC, GS);
+Q.ctx.CUSTO_DO_SALARIO_ = Infinity;
+let erroQ = null;
+try { Q.ctx.construir(); let v = 0; while (Q.P.props.montagem_parada !== undefined && v++ < ABAS.length) Q.ctx.continuar(); } catch (e) { erroQ = e; }
+ok('o salário que não cabe no prazo fica para o acabar(), e a montagem avisa que falta o acabar()',
+   !erroQ && /o salário fica para o acabar\(\)/.test(Q.P.registro) && /FALTA O ACABAMENTO: rode a função acabar\(\)/.test(Q.P.registro) && !Q.acha('SALÁRIOS'),
+   erroQ ? erroQ.message : Q.P.registro.slice(0, 200));
+try { Q.ctx.acabar(); } catch (e) { erroQ = e; }
+ok('e o acabar() instala o salário', !erroQ && /salário: instalado/.test(Q.P.registro) && ['DADOS_SALARIOS', 'SALÁRIOS', 'EXTRATO'].every((n) => Q.acha(n) && Q.acha(n).oculta),
+   erroQ ? erroQ.message : Q.P.registro.slice(-200));
+}
 }
 
 if (FASE === 'acabamento') {
@@ -1043,7 +1084,7 @@ if (global.gc) global.gc();
 // e sem aviso. Aqui cada aba leva 10 s (260 s no total) e os menus os 218 s daquela noite; o relógio só anda aí.
 let agora = 0;
 class RelogioParado extends Date { getTime() { return agora; } }
-const M = criaSheets(FICHA_SRC, GS, { Date: RelogioParado });
+const M = criaSheets(FICHA_SEM_SALARIO, GS, { Date: RelogioParado });
 M.ctx.LIMITE_DA_EXECUCAO_ = Infinity; M.ctx.LIMITE_DA_CRIACAO_ = Infinity; // as abas cabem todas numa execução
 const montaDeVerdade = M.ctx.montarAba_, menusDeVerdade = M.ctx.menusSuspensos_;
 let abasMontadas = 0, menusFeitos = 0, erroM = null;
@@ -1082,7 +1123,7 @@ console.log('\nA MONTAGEM QUE NÃO CABE NUMA EXECUÇÃO (07/10/2026, a INVOCAÇ�
 // o mesmo relógio que corre, agora com o limite de verdade: a montagem para antes de começar a aba que não cabe
 let agora = 0;
 class RelogioQueCorre { getTime() { agora += 60000; return agora; } }
-const C = criaSheets(FICHA_SRC, GS, { Date: RelogioQueCorre });
+const C = criaSheets(FICHA_SEM_SALARIO, GS, { Date: RelogioQueCorre });
 let erroC = null;
 try { C.ctx.construir(); } catch (e) { erroC = e; }
 const parada = () => (C.P.props.montagem_parada === undefined ? null : Number(C.P.props.montagem_parada));
@@ -1169,7 +1210,7 @@ ok('o acabar() tira as travas de fórmula de uma ficha montada antes (3) e deixa
    !erroT && JSON.stringify(ficaram) === JSON.stringify(['do mestre: não mexer']) && /3 trava\(s\) de antes retirada\(s\)/.test(registroT) && assinatura(R.P) === antes,
    erroT ? erroT.message : `${JSON.stringify(ficaram)} · ${registroT.slice(0, 160)}`);
 
-const semAba = criaSheets(FICHA_SRC, GS);
+const semAba = criaSheets(FICHA_SEM_SALARIO, GS);
 let erroS = null;
 try { semAba.ctx.acabar(); } catch (e) { erroS = e; }
 ok('o acabar() numa planilha sem a ficha para com um recado, e não mexe no idioma', !!erroS && /rode construir\(\) antes/.test(erroS.message) && semAba.P.locale === 'en_US', erroS ? erroS.message : 'não parou');
