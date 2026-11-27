@@ -16,7 +16,7 @@ const REAIS = {
   Group: 'collapse expand getControlIndex getDepth getRange isCollapsed remove',
   Protection: 'setDescription getDescription setWarningOnly isWarningOnly remove getRange addEditor addEditors removeEditor removeEditors getEditors canEdit setRange getProtectionType canDomainEdit setDomainEdit getRangeName setRangeName setNamedRange setUnprotectedRanges getUnprotectedRanges',
   NamedRange: 'getName getRange remove setName setRange',
-  DataValidationBuilder: 'setAllowInvalid requireValueInList requireValueInRange requireCheckbox setHelpText build requireFormulaSatisfied requireNumberBetween requireTextContains copy withCriteria',
+  DataValidationBuilder: 'setAllowInvalid requireValueInList requireValueInRange requireCheckbox setHelpText build requireFormulaSatisfied requireNumberBetween requireNumberGreaterThanOrEqualTo requireDate requireTextContains copy withCriteria',
   ConditionalFormatRuleBuilder: 'whenFormulaSatisfied whenTextContains whenTextDoesNotContain whenTextEqualTo whenTextStartsWith whenTextEndsWith whenCellEmpty whenCellNotEmpty whenNumberGreaterThan whenNumberLessThan whenNumberEqualTo whenNumberBetween setBackground setFontColor setBold setItalic setUnderline setStrikethrough setRanges build copy',
   RichTextValueBuilder: 'build setLinkUrl setText setTextStyle',
   TextStyleBuilder: 'build setBold setFontFamily setFontSize setForegroundColor setForegroundColorObject setItalic setStrikethrough setUnderline',
@@ -81,7 +81,7 @@ function criaSheets(FICHA_SRC, GS, extras) {
   function criaAba(nome) {
     const A = { nome, maxR: 1000, maxC: 26, v: new Map(), f: new Map(), notas: new Map(), merges: [], dv: new Map(), cf: [], caixas: new Set(),
                 fmt: new Map(), prot: [], oculta: false, grade: true, congeladas: 0, profL: new Map(), profC: new Map(), fechL: [], fechC: [], posL: 'AFTER', posC: 'AFTER',
-                bordas: 0, larg: new Map(), alt: new Map(), est: new Map(), lados: new Map(), ricos: new Map(), links: new Map(), ocultasL: new Set() };
+                bordas: 0, larg: new Map(), alt: new Map(), est: new Map(), lados: new Map(), ricos: new Map(), links: new Map(), ocultasL: new Set(), ocultasC: new Set() };
     const poe = (i, j, que, val) => { const k = i + ',' + j; if (!A.est.has(k)) A.est.set(k, {}); A.est.get(k)[que] = val; };
     const borda = (r, c, nl, nc, a) => { if (a.length !== 8) throw new Error('setBorder quer oito argumentos'); A.bordas++;
       const marca = (i, j, lado) => A.lados.set(i + ',' + j + ',' + lado, a[6] + '|' + a[7]);
@@ -225,6 +225,8 @@ function criaSheets(FICHA_SRC, GS, extras) {
         shiftRowGroupDepth: (d) => { for (let i = r; i < r + nl; i++) A.profL.set(i, (A.profL.get(i) || 0) + d); return R; },
         shiftColumnGroupDepth: (d) => { for (let j = c; j < c + nc; j++) A.profC.set(j, (A.profC.get(j) || 0) + d); return R; },
         setDataValidation: (regra) => { if (!regra || !regra.__regra) throw new Error('setDataValidation sem regra montada'); cada((i, j) => A.dv.set(i + ',' + j, regra)); return R; },
+        // 27/11/2026: o salário limpa o menu antigo da caixa antes de pôr o dele
+        clearDataValidations: () => { cada((i, j) => { A.dv.delete(i + ',' + j); A.caixas.delete(i + ',' + j); }); return R; },
         getDataValidation: () => A.dv.get(r + ',' + c) || null,
         protect: () => { const p = { desc: '', aviso: false, a1: R.getA1Notation() }; A.prot.push(p);
           const api = rigoroso('Protection', { setDescription: (d) => { p.desc = d; return api; }, getDescription: () => p.desc, setWarningOnly: (b) => { p.aviso = b; return api; },
@@ -236,7 +238,9 @@ function criaSheets(FICHA_SRC, GS, extras) {
       });
       return R;
     };
-    const porA1 = (a1) => { const p = partes(a1); return range(p.r, p.c, p.nl, p.nc); };
+    // 27/11/2026: a faixa aberta embaixo (A2:G, J2:J), que o salário usa, vai até a última linha da aba, como no Sheets
+    const porA1 = (a1) => { const ab = /^\$?([A-Z]+)\$?(\d+):\$?([A-Z]+)$/.exec(a1);
+      const p = ab ? partes(`${ab[1]}${ab[2]}:${ab[3]}${Math.max(A.maxR, Number(ab[2]))}`) : partes(a1); return range(p.r, p.c, p.nl, p.nc); };
     const grupo = (prof, fechados, idx, d, que) => {
       if ((prof.get(idx) || 0) < d) throw new Error(`${que}(${idx}, ${d}): não há grupo dessa profundidade ali, na aba ${nome}`);
       let a = idx, b = idx;
@@ -260,6 +264,9 @@ function criaSheets(FICHA_SRC, GS, extras) {
       insertColumnsAfter: (depois, n) => { if (depois !== A.maxC) throw new Error('o teste só insere colunas no fim'); A.maxC += n; },
       insertRowsAfter: (depois, n) => { if (depois !== A.maxR) throw new Error('o teste só insere linhas no fim'); A.maxR += n; },
       setColumnWidths: (ini, n, px) => { dentro(1, ini, 1, n, 'setColumnWidths'); for (let j = ini; j < ini + n; j++) A.larg.set(j, px); },
+      // 27/11/2026: o salário (Salarios.gs) entra no fim do construir() e acerta a largura de uma coluna e oculta outra
+      setColumnWidth: (col, px) => { dentro(1, col, 1, 1, 'setColumnWidth'); A.larg.set(col, px); return A.api; },
+      hideColumns: (col, n) => { if (n === undefined) n = 1; dentro(1, col, 1, n, 'hideColumns'); for (let j = col; j < col + n; j++) A.ocultasC.add(j); },
       setRowHeights: (ini, n, px) => { dentro(ini, 1, n, 1, 'setRowHeights'); for (let i = ini; i < ini + n; i++) A.alt.set(i, px); },
       // 09/10/2026: a linha do aviso da paleta, que passou a ter duas linhas de texto
       setRowHeight: (lin, px) => { dentro(lin, 1, 1, 1, 'setRowHeight'); A.alt.set(lin, px); },
@@ -344,6 +351,12 @@ function criaSheets(FICHA_SRC, GS, extras) {
   const ctx = {
     console: { log: () => {} }, Logger: { log: (m) => { P.registro = String(m); P.registros.push(String(m)); } }, Date, Math, JSON,
     Utilities: { sleep: () => {}, base64Decode: (s) => Array.from(Buffer.from(s, 'base64')), base64Encode: (a) => Buffer.from(a).toString('base64'),
+      // 27/11/2026: o salário guarda o dia de Brasília (salarioHoje_), e só escreve yyyy, MM, dd, HH e mm
+      formatDate: (d, tz, fmt) => { const q = Object.fromEntries(new Intl.DateTimeFormat('en-CA', { timeZone: tz, year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' })
+        .formatToParts(d).map((x) => [x.type, x.value])); const t = { yyyy: q.year, MM: q.month, dd: q.day, HH: q.hour, mm: q.minute };
+        if (fmt.replace(/yyyy|MM|dd|HH|mm/g, '').match(/[A-Za-z]/)) throw new Error('formatDate: formato que o ensaio não imita: ' + fmt);
+        return fmt.replace(/yyyy|MM|dd|HH|mm/g, (k) => t[k]); },
+      getUuid: () => require('crypto').randomUUID(),
       DigestAlgorithm:{SHA_256:'SHA_256'}, Charset:{UTF_8:'UTF_8'},
       computeDigest:(alg,text,charset)=>{if(alg!=='SHA_256'||charset!=='UTF_8')throw Error('Digest não suportado pelo ensaio');return Array.from(require('crypto').createHash('sha256').update(text,'utf8').digest());},
       // 19/11/2026: os módulos leves do R53 (Caminho.gs, PaletaAndroid.gs...) moram em gzip dentro do script
@@ -381,6 +394,11 @@ function criaSheets(FICHA_SRC, GS, extras) {
         requireFormulaSatisfied: (f) => { if (typeof f !== 'string' || f[0] !== '=') throw new Error('requireFormulaSatisfied sem fórmula');
           confereFormula('validação por fórmula', f); o.formula = f; return api; },
         requireValueInRange: (r, seta) => { if (!r || typeof r.getA1Notation !== 'function') throw new Error('requireValueInRange sem faixa'); o.faixa = r.getSheet().getName() + '!' + r.getA1Notation(); return api; },
+        // 27/11/2026: as caixas do salário (data de emissão, intervalo, meta, parcela, valores) e a ajuda da caixa ± GASTO / GANHO
+        requireDate: () => { o.data = true; return api; },
+        requireNumberBetween: (a, b) => { if (!(typeof a === 'number' && typeof b === 'number' && a <= b)) throw new Error('requireNumberBetween com limites inválidos'); o.entre = [a, b]; return api; },
+        requireNumberGreaterThanOrEqualTo: (a) => { if (typeof a !== 'number') throw new Error('requireNumberGreaterThanOrEqualTo sem número'); o.minimo = a; return api; },
+        setHelpText: (t) => { o.ajuda = String(t); return api; },
         build: () => o }); return api; },
       newConditionalFormatRule: () => { const o = { __regraCf: true }; const api = rigoroso('ConditionalFormatRuleBuilder', {
         whenFormulaSatisfied: (f) => { o.formula = f; return api; }, whenTextContains: (t) => { if (!t) throw new Error('whenTextContains sem texto'); o.contem = t; return api; },

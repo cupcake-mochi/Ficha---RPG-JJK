@@ -604,6 +604,9 @@ function montar_() {
   if (!falta) {
     try { feito.push(conferirSaltos_(ss)); } catch (err) { feito.push('saltos NÃO conferidos: ' + err.message); }
     rel.etapa('saltos conferidos');
+    // 27/11/2026: o salário, se couber no prazo; se não, fica para o acabar() (ver salarioNaMontagem_)
+    var sal = salarioNaMontagem_(rel, true);
+    if (sal === false) { falta = true; feito.push('o salário fica para o acabar()'); } else if (sal) feito.push(sal);
   }
 
   var seg = Math.round(rel.passou() / 1000);
@@ -666,6 +669,31 @@ function acabamento_(ss, feito, rel) {
 }
 
 /**
+ * 27/11/2026 (pente fino da versão rápida; pedido do Mizuki: "construir() instala"): a ficha nova nasce com o módulo de
+ * salário do Salarios.gs: as abas SALÁRIOS, DADOS_SALARIOS e EXTRATO, o painel da CONFIGURAÇÃO, a emissão da CARTEIRA e
+ * a caixa ± dos ienes na FICHA PESSOAL. Antes, só o editor instalava, e a ficha gerada saía sem nada disso.
+ * Roda depois da volta ao português, porque o instalador escreve fórmula com ponto e vírgula. Ele é idempotente: numa
+ * ficha que já tem o módulo, só confere. Um erro não derruba a montagem: o recado diz para rodar instalarSalarios().
+ * Os acionadores do diário não entram aqui (eles pedem autorização e não acompanham uma cópia).
+ * Devolve null sem o Salarios.gs, false quando não cabe no prazo, e o recado nos outros casos.
+ */
+var CUSTO_DO_SALARIO_ = 30000;
+function salarioNaMontagem_(rel, comPrazo) {
+  if (typeof instalarSalarios !== 'function') return null;
+  if (comPrazo && rel.passou() + CUSTO_DO_SALARIO_ > PRAZO_DO_ACABAMENTO_) return false;
+  try {
+    instalarSalarios();
+    rel.etapa('salário');
+    // o instalador volta calado quando outra execução segura a trava da planilha (salarioBloqueado_)
+    if (typeof salarioPronto_ === 'function' && !salarioPronto_(SpreadsheetApp.getActive()))
+      return 'salário NÃO instalado (a planilha estava ocupada): rode instalarSalarios()';
+    return 'salário: instalado';
+  } catch (err) {
+    return 'salário NÃO instalado (' + err.message + '): rode instalarSalarios()';
+  }
+}
+
+/**
  * Só o acabamento, numa planilha que o construir() já montou. Rode esta se o construir() avisar que faltou o
  * acabamento, ou se ele tiver parado no meio dele. A regra de cor é escrita com vírgula e ponto, então o idioma
  * vai para o inglês enquanto ela roda, como no construir().
@@ -690,6 +718,8 @@ function soOAcabamento_() {
   if (erroDoIdioma) throw new Error('o acabamento terminou, mas a planilha ficou em inglês (' + erroDoIdioma.message + '): rode o acabar() de novo.');
   try { feito.push(conferirSaltos_(ss)); } catch (err) { feito.push('saltos NÃO conferidos: ' + err.message); }
   rel.etapa('saltos conferidos');
+  var sal = salarioNaMontagem_(rel, false);
+  if (sal) feito.push(sal);
   Logger.log('ACABAMENTO PRONTO em ' + Math.round(rel.passou() / 1000) + 's · ' + feito.join(' · ') + ' · tempos: ' + ETAPAS_.join(', '));
 }
 
