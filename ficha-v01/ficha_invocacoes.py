@@ -192,7 +192,8 @@ def regras():
         g = do_fund[f["nome"]]
         if fa.PESO.get(f["custa"], 0) != g["peso"] or int(f["embutida"]) != g["embutida"]:
             raise SystemExit(f"ficha_invocacoes: a Forma {f['nome']} da entidade nao custa mais o que custa no Fundamento")
-        formas.append({"nome": f["nome"], "exige": f["exige"] or "", "peso": g["peso"], "embutida": g["embutida"], "tipo": g["tipo"],
+        formas.append({"nome": f["nome"], "exige": f["exige"] or "", "peso": g["peso"], "embutida": g["embutida"],
+                       "devolve": g.get("devolve", ""), "tipo": g["tipo"],
                        "resolve": "Ataque" if g["resolve"] == "Acerto" else "TR" if g["tr"] else "—", "tr": g["tr"],
                        "grau1": g["grau1"], "grau2": g["grau2"], "alvos": g["alvos"],
                        "na_zero": int(f["nome"] not in ("Cura", "Onda"))})
@@ -719,6 +720,14 @@ def trocas(layout, cor_da_barra=None):
             cartas.append((i, tipo, n, celulas_da_carta(*pos), titulo, abre))
     FAMT = _faixa(colf["f0"], 2, colf[f"f{N_FAM - 1}"], 1 + len(LUG))
 
+    def devolucao_da_forma(forma, Cc):
+        """A devolução própria da Forma (o Toque devolve Leve), como na conta do personagem (ficha_amaldicoada)."""
+        leves = [f["nome"] for f in R["formas"] if f.get("devolve") == "Leve"]
+        if any(f.get("devolve") not in ("", "Leve") for f in R["formas"]) or not leves:
+            raise SystemExit("ficha_invocacoes: a devolução própria das Formas do catálogo mudou (o Toque devolve Leve)")
+        quem = ",".join(f'{forma}="{x}"' for x in leves)
+        return f"IF(OR({quem}),CEILING({Cc}/2,1),0)"
+
     def linha_de_carta(n, carta):
         """26/11/2026 (etapa 4 da versão rápida): a conta leve do cartão de preencher, no molde da do personagem (etapa 3).
         O jogador escreve o nome de cada peça e escolhe o peso dela num menu; a ficha tira o preço (ou a devolução) da
@@ -774,8 +783,11 @@ def trocas(layout, cor_da_barra=None):
         o["ptr"] = "=" + "+".join(f'IF(AND({P(f"r{k}")}<>"",{_A(cel["dev"][k - 1], IV)}=""),1,0)' for k in range(1, N_RES + 1))
         soma_m = f"SUM({Rg('k1', f'k{N_MEL}')})"
         o["g"] = f"=IF({Cc}=0,0,IF({P('k0')}=0,0,INDEX({PRECOS},MAX(1,{Cc}),{P('k0')}))+{soma_m})"
-        # a Restrição embutida da Forma devolve a Classe, como uma Média
-        o["dv0"] = f"=IF({Cc}=0,0,SUM({CC})+{P('emb')}*{Cc})"
+        # a Restrição embutida da Forma devolve a Classe, como uma Média.
+        # 27/11/2026 (pente fino, ok dele): o Toque devolve a Leve da Classe, fora das vagas (livro, cap. das entidades:
+        # "Especial de Classe 1. Toque + Precisão [...] A conta é 2 − 1 + 1 = 2d8"). A básica (Classe 0) fica sem ela.
+        dtq = devolucao_da_forma(forma, Cc)
+        o["dv0"] = f"=IF({Cc}=0,0,SUM({CC})+{P('emb')}*{Cc}+{dtq})"
         o["dv"] = f"=MIN(2*{Cc},{P('dv0')})"
         # 10/10/2026 (B45): "Restrição paga Melhorias, nunca a Forma"
         o["usa"] = f"=MIN({P('dv')},{soma_m})"
@@ -808,7 +820,8 @@ def trocas(layout, cor_da_barra=None):
         o["ne"] = "=" + conta_txt(P("erros"))
         avisos = [
             _se(f'{P("dv0")}>2*{Cc}', f'"A devolução parou no teto de "&2*{Cc}'),
-            _se(f'{P("perde")}>0', f'"Devolução perdida: "&{P("perde")}&IF({P("perde")}>1," pontos"," ponto")&" sem Melhoria para pagar"'),
+            # a devolução do Toque que sobra se perde sem aviso: um Toque sem Melhoria é montagem comum, não engano
+            _se(f'{P("perde")}>{dtq}', f'"Devolução perdida: "&({P("perde")}-{dtq})&IF({P("perde")}-{dtq}>1," pontos"," ponto")&" sem Melhoria para pagar"'),
             _se(f'{P("ct")}>0', f'{P("ct")}&IF({P("ct")}>1," Melhorias sem peso"," Melhoria sem peso")'),
             _se(f'{P("ptr")}>0', f'{P("ptr")}&IF({P("ptr")}>1," Restrições sem peso"," Restrição sem peso")'),
         ]

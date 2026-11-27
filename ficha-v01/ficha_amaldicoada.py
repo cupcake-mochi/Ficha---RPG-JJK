@@ -300,7 +300,7 @@ def regras(CAT=None, TEC=None):
     for n, f in CAT["formas"].items():
         res = "TR" if n in ["Explosão","Aura","Cone","Linha"] else "Ataque"
         formas.append({"nome": n, "familia": f["familia"], "peso": PESO[f["custa"]] if f["custa"] else 0,
-                       "embutida": int("embutido" in f), "tipo": TIPO_DE_DANO.get(n, 0),
+                       "embutida": int("embutido" in f), "devolve": f.get("devolucao_toque") or "", "tipo": TIPO_DE_DANO.get(n, 0),
                        "resolve": "Acerto" if res.startswith("Ataque") else "TR, metade" if res.startswith("TR") else "Automático",
                        "tr": int(res.startswith("TR")),
                        "grau1": GRAU[ALCANCE[n][0][2]], "grau2": GRAU[ALCANCE[n][1][2]] if ALCANCE[n][1] else 0,
@@ -781,6 +781,17 @@ def trocas(layout, CAT=None, TEC=None):
     n_classes = len(R["classes"])
     H = {}                                   # as contas com nome, escritas mais abaixo; a conta de feitiço cita três delas
 
+    def devolucao_da_forma(forma, Cc):
+        """A devolução própria da Forma (o Toque devolve Leve), pelo nome que o catálogo marca. Fica fora das vagas de
+        Restrição e entra no mesmo teto de 2 × Classe. Leve é metade da Classe, para cima, como na Restrição Leve."""
+        leves = [f["nome"] for f in R["formas"] if f.get("devolve") == "Leve"]
+        if any(f.get("devolve") not in ("", "Leve") for f in R["formas"]):
+            raise SystemExit("ficha_amaldicoada: uma Forma do catálogo devolve um peso que a conta não conhece")
+        if not leves:
+            raise SystemExit("ficha_amaldicoada: nenhuma Forma do catálogo devolve Leve; o Toque perdeu a devolução?")
+        quem = ",".join(f'{forma}="{x}"' for x in leves)
+        return f"IF(OR({quem}),ROUNDUP({Cc}/2,0),0)"
+
     def linha_de_feitico(n, lugar):
         rot, lib, vaga, cel = lugar
         P = lambda k: f"${L(col[k])}{n}"
@@ -827,8 +838,12 @@ def trocas(layout, CAT=None, TEC=None):
         o["ptr"] = "=" + "+".join(f'IF(AND({P(f"r{i}")}<>"",{P(f"c{i}")}=0),1,0)' for i in range(1, N_RES + 1))
         soma_m = f"SUM({Rg('k1', f'k{N_MEL}')})"
         o["g"] = f"=IF({P('k0')}=0,0,INDEX({PRECOS},{Cc},{P('k0')}))+{soma_m}"
-        # a Restrição embutida da Forma devolve a Classe, como uma Média
-        o["dv0"] = f"=SUM({CC})+{P('emb')}*{Cc}"
+        # a Restrição embutida da Forma devolve a Classe, como uma Média.
+        # 27/11/2026 (pente fino, ok dele): a Forma que o catálogo marca com devolução Leve (o Toque) devolve a Leve da
+        # Classe, fora das vagas de Restrição (livro: "Toque tem custo zero e concede uma devolução Leve nas montagens
+        # comuns de Classes 1 a 7"; exemplo: Classe 3, Toque + Precisão, 9 − 2 + 2)
+        dtq = devolucao_da_forma(forma, Cc)
+        o["dv0"] = f"=SUM({CC})+{P('emb')}*{Cc}+{dtq}"
         o["dv"] = f"=MIN(2*{Cc},{P('dv0')})"
         # 10/10/2026 (B45): "Restrição paga Melhorias, nunca a Forma"
         o["usa"] = f"=MIN({P('dv')},{soma_m})"
@@ -857,7 +872,8 @@ def trocas(layout, CAT=None, TEC=None):
         o["ne"] = "=" + conta_txt(P("erros"))
         avisos = [
             _se(f'{P("dv0")}>2*{Cc}', f'"A devolução parou no teto de "&2*{Cc}'),
-            _se(f'{P("perde")}>0', f'"Devolução perdida: "&{P("perde")}&IF({P("perde")}>1," pontos"," ponto")&" sem Melhoria para pagar"'),
+            # a devolução do Toque que sobra se perde sem aviso: um Toque sem Melhoria é montagem comum, não engano
+            _se(f'{P("perde")}>{dtq}', f'"Devolução perdida: "&({P("perde")}-{dtq})&IF({P("perde")}-{dtq}>1," pontos"," ponto")&" sem Melhoria para pagar"'),
             _se(f'{P("ct")}>0', f'{P("ct")}&IF({P("ct")}>1," Melhorias sem peso"," Melhoria sem peso")'),
             _se(f'{P("ptr")}>0', f'{P("ptr")}&IF({P("ptr")}>1," Restrições sem peso"," Restrição sem peso")'),
         ]
