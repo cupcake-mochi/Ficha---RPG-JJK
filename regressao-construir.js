@@ -939,8 +939,20 @@ cacheXP.forEach(([k,f])=>{dadosXP.v.delete(k);dadosXP.f.set(k,f);});
   {
   const Z = criaSheets(FICHA_SRC, HAB_SRC + '\n' + GS);
   let erroZ = null;
+  // o que o salarioCriarPainel_ grava de altura, para comparar com a tabela do Codigo.gs
+  const criarPainel = Z.ctx.salarioCriarPainel_, gravadas = {};
+  Z.ctx.salarioCriarPainel_ = function (c, carteira) {
+    const real = c.setRowHeight; c.setRowHeight = (r, px) => { gravadas[r] = px; return real(r, px); };
+    try { return criarPainel(c, carteira); } finally { c.setRowHeight = real; }
+  };
   try { montaCompleta(Z); } catch (e) { erroZ = e; }
   const nomes = Z.P.abas.map((a) => a.nome), cfg = Z.acha('CONFIGURAÇÃO'), pp = Z.acha('FICHA PESSOAL'), ct = Z.acha('CARTEIRA');
+  const tabela = Z.ctx.ALTURAS_DO_SALARIO_, specCfg = ABAS.find((a) => a.nome === 'CONFIGURAÇÃO');
+  const ordena = (o) => JSON.stringify(Object.keys(o).map(Number).sort((x, y) => x - y).map((k) => [k, o[k]]));
+  ok('a tabela de alturas do Codigo.gs é a que o painel do salário grava', ordena(gravadas) === ordena(tabela), ordena(gravadas) + ' × ' + ordena(tabela));
+  ok('depois de instalar, cada linha do painel fica com a maior altura entre a montagem e o salário',
+     Object.keys(tabela).every((r) => cfg.alt.get(+r) === Math.max(specCfg.alturas[r] || 0, tabela[r])),
+     Object.keys(tabela).map((r) => `${r}:${cfg.alt.get(+r)}/${specCfg.alturas[r]}`).join(' '));
   ok('o construir() instala o salário e diz no registro', !erroZ && /salário: instalado/.test(Z.P.registro), erroZ ? erroZ.message : String(Z.P.registro).slice(-300));
   ok('o salário cria as três abas dele no fim, ocultas, sem tirar nenhuma do ABAS do lugar',
      nomes.join('|') === ABAS.map((a) => a.nome).concat(ABAS_DO_SALARIO).join('|') && ABAS_DO_SALARIO.every((n) => Z.acha(n).oculta), nomes.slice(-4).join(', '));
@@ -950,6 +962,20 @@ cacheXP.forEach(([k,f])=>{dadosXP.v.delete(k);dadosXP.f.set(k,f);});
   ok('a CARTEIRA mostra a data de emissão da CONFIGURAÇÃO, e não a de hoje', /CONFIGURAÇÃO'!O38/.test(ct.f.get('3,34') || ''), String(ct.f.get('3,34')));
   ok('o salário não grava fórmula antes da aba citada, nem fora do idioma, e a planilha termina em português', !Z.P.orfas.length && Z.P.locale === 'pt_BR',
      Z.P.orfas.slice(0, 3).join(' · ') + ' · ' + Z.P.locale);
+  // a última Família (vertical J1002) divide as linhas 74 a 77 com o painel do salário
+  {
+  const [lF, cF] = noPainel(1002, 10).split(',').map(Number), aF = letras(cF) + lF, abaF = Z.ss.getSheetByName('CONFIGURAÇÃO');
+  const pede = Z.ctx.ALTURAS_DO_SALARIO_, antesF = Object.keys(pede).map((r) => cfg.alt.get(+r));
+  let erroF = null;
+  const texto = 'Uma Família com uma descrição comprida, que estica o cartão. '.repeat(40).trim();
+  try {
+    abaF.getRange(aF).setValue(texto); Z.ctx.onEdit({ range: abaF.getRange(aF), value: texto });
+    abaF.getRange(aF).setValue(''); Z.ctx.onEdit({ range: abaF.getRange(aF), value: '', oldValue: texto });
+  } catch (e) { erroF = e; }
+  ok('escrever e apagar o texto da última Família não encolhe as linhas do painel do salário',
+     !erroF && lF === 74 && Object.keys(pede).every((r) => cfg.alt.get(+r) >= pede[r]) && antesF.every((h, i) => h >= pede[Object.keys(pede)[i]]),
+     erroF ? erroF.message : `${aF} · ` + Object.keys(pede).map((r) => `${r}:${cfg.alt.get(+r)}`).join(' '));
+  }
   let erroZ2 = null; const antesZ = assinatura(Z.P);
   try { Z.ctx.acabar(); } catch (e) { erroZ2 = e; }
   ok('o acabar() numa ficha com o salário já instalado não muda nada', !erroZ2 && assinatura(Z.P) === antesZ && Z.P.abas.length === nomes.length, erroZ2 ? erroZ2.message : 'mudou');

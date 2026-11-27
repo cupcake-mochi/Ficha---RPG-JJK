@@ -270,6 +270,8 @@ function criaSheets(FICHA_SRC, GS, extras) {
       setRowHeights: (ini, n, px) => { dentro(ini, 1, n, 1, 'setRowHeights'); for (let i = ini; i < ini + n; i++) A.alt.set(i, px); },
       // 09/10/2026: a linha do aviso da paleta, que passou a ter duas linhas de texto
       setRowHeight: (lin, px) => { dentro(lin, 1, 1, 1, 'setRowHeight'); A.alt.set(lin, px); },
+      // 27/11/2026: o painel do salário não encolhe a linha que a montagem fez mais alta. 21 px é a altura padrão do Sheets
+      getRowHeight: (lin) => { dentro(lin, 1, 1, 1, 'getRowHeight'); return A.alt.has(lin) ? A.alt.get(lin) : 21; },
       getRange: (a, b, c, d) => (typeof a === 'string' ? porA1(a) : range(a, b, c, d)),
       getRangeList: (lista) => { const rs = lista.map(porA1);
         // 19/11/2026: o que a lista faz igual em cada faixa (os módulos leves do R53 usam setNote e clearNote), repassado

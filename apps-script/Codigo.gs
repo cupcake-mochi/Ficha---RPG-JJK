@@ -1664,7 +1664,7 @@ function esticarCaixas_(e, nomeDaAba) {
       })
                  .filter(function (t) { return t !== ''; }).join(' · ');
     });
-    var h = alturasQueEsticam_(caixas, textos, MEDIDA_DAS_CARTAS_, x.minima, spec.horizontal ? spec.alturas : null);
+    var h = alturasQueEsticam_(caixas, textos, MEDIDA_DAS_CARTAS_, x.minima, pisosDaAba_(spec));
     // 26/10/2026 (4): numa célula só, com o texto de antes na mão (e.oldValue), a mesma conta com ele diz se alguma
     // altura muda; se nenhuma muda, não grava nada (gravar e o flush do fim custavam ~3-4 s medidos na cópia).
     if (local && l1 === l2 && c1 === c2) {
@@ -1679,7 +1679,7 @@ function esticarCaixas_(e, nomeDaAba) {
         }).filter(function (t) { return t !== ''; }).join(' · ');
       });
       if (achou) {
-        var hAntes = alturasQueEsticam_(caixas, antes, MEDIDA_DAS_CARTAS_, x.minima, spec.horizontal ? spec.alturas : null);
+        var hAntes = alturasQueEsticam_(caixas, antes, MEDIDA_DAS_CARTAS_, x.minima, pisosDaAba_(spec));
         if (Object.keys(h).every(function (l) { return h[l] === hAntes[l]; })) { n++; return; }
       }
     }
@@ -1694,6 +1694,23 @@ function esticarCaixas_(e, nomeDaAba) {
     n++;
   });
   return n;
+}
+
+// 27/11/2026: as alturas que o salarioCriarPainel_ (Salarios.gs) dá às linhas do painel 14 da CONFIGURAÇÃO (K35:Q95).
+// Na CONFIGURAÇÃO horizontal a altura de uma linha vale para todos os painéis lado a lado, e os cartões de Família
+// dividem estas linhas. A tabela mora aqui, e não no Salarios.gs, porque ele é conferido contra a cadeia de migrações
+// das oficiais (r53/testes/salario_lote.js); a regressao-construir.js confere que ela bate com o que o instalador grava.
+var ALTURAS_DO_SALARIO_ = {36: 38, 38: 30, 39: 30, 40: 30, 41: 30, 42: 30, 43: 30, 44: 30, 46: 54, 48: 30, 49: 30, 50: 30,
+  69: 30, 70: 30, 71: 30, 72: 30, 74: 54, 76: 48};
+
+// Na aba horizontal a altura de cada linha não desce da que a montagem deu; na CONFIGURAÇÃO com o salário, nem da dele.
+function pisosDaAba_(spec) {
+  if (!spec.horizontal) return null;
+  if (spec.nome !== 'CONFIGURAÇÃO' || typeof instalarSalarios !== 'function') return spec.alturas;
+  var p = {}, s = ALTURAS_DO_SALARIO_, k;
+  for (k in spec.alturas) p[k] = spec.alturas[k];
+  for (k in s) p[k] = Math.max(p[k] || 0, s[k]);
+  return p;
 }
 
 // os trechos do texto que vão em negrito: as linhas que são subtítulo do livro, [início, fim] de cada uma
