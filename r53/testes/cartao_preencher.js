@@ -52,7 +52,9 @@ for (let r = 2; r <= 40; r++) {
   }
   const acao = naFicha(am('acao', r)), alcance = naFicha(am('alcance', r));
   ok(/^"Padrão,Bônus,Reação,Rodada inteira,/.test(menus.get(acao) || ''), 'o menu da ação em ' + acao);
-  ok(menus.get(alcance) === "'DADOS_FORMAS'!$GH$2:$GH$7", 'o menu do alcance em ' + alcance);
+  // Etapa 5 da versão rápida (26/11/2026): a DADOS_FORMAS perdeu as colunas das Formas custom e a escada de alcance
+  // andou de GH para CW. O monta.py acha a escada pelo cabeçalho (escada_alcance.0); aqui só muda o endereço esperado.
+  ok(menus.get(alcance) === "'DADOS_FORMAS'!$CW$2:$CW$7", 'o menu do alcance em ' + alcance);
   ok(am('alcance', r).includes('$GX' + r + ','), 'em branco, o alcance não cai no alcance base, linha ' + r);
   // 26/11/2026: o peso da peça vem de um menu, e o preço (ou a devolução) sai da tabela da Classe; o nome é livre
   for (let i = 1; i <= 4; i++) {

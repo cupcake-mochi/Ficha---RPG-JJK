@@ -3,7 +3,7 @@ import indice_ficha as ix
 import json
 from pathlib import Path
 from custom_criacao import criterio, ref
-from custom_pecas import MEL, coord, faixa
+from custom_pecas import MEL, coord, faixa, LEVE
 
 
 def aplica(layout, pecas):
@@ -48,6 +48,11 @@ def aplica(layout, pecas):
         dst = nbook+n+1
         a1 = coord(g['r']+2, g['c'])
         source = ref(a1, 'CONFIGURAÇÃO')
+        if LEVE:
+            # 26/11/2026 (etapa 5): sem cadastro custom de Melhoria não há modalidade a escolher; só a chave da ANALISE
+            tr['entradas'].append((f'custom.melhoria.{n}.modalidade', a1, False))
+            tr['registros'].append(dict(n=n, modalidade=a1))
+            continue
         put(MEL, 'BR'+str(r), f'=IF(OR(ISBLANK({source}),{source}=""),"Melhoria",{source})')
         tr['entradas'].append((f'custom.melhoria.{n}.modalidade', a1, False))
         tr['registros'].append(dict(n=n, modalidade=a1))
@@ -90,6 +95,8 @@ def aplica(layout, pecas):
 
 
 def exporta(tr):
+    if LEVE:
+        return [[key, '', '', 'configuração'] for key, _, _ in tr['entradas']]
     return [[key, f'=IF(ISBLANK({ref(a1,"CONFIGURAÇÃO")}),"",{ref(a1,"CONFIGURAÇÃO")}&"")',
              ref(a1, 'CONFIGURAÇÃO').replace('$', ''), 'configuração']
             for key, a1, _ in tr['entradas']]

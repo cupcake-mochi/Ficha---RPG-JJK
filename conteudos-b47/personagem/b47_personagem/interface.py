@@ -29,9 +29,10 @@ def aplica(layout,contexto):
         raise ValueError('Contexto incompleto: '+', '.join(sorted(obrigatorios-set(contexto))))
     fam,inv,criacao,pecas=(contexto[k] for k in ('fam','inv','criacao','pecas'))
     livro=carregar()
-    desenho=desenhar(layout,contexto['inicio'],contexto['capacidades'])
+    leves=tuple(contexto.get('leves',()))
+    desenho=desenhar(layout,contexto['inicio'],contexto['capacidades'],leves)
     c=Contrato({k:contexto['capacidades'][k] for k in CAMPOS},desenho['fontes'],contexto['abas'],
-               criacao['catalogo_familias'],pecas['catalogos']['restricao'])
+               criacao['catalogo_familias'],pecas['catalogos']['restricao'],leves)
     p=emitir(livro,c)
     # A matriz de nove Famílias é explicitamente fornecida pelo metadata da
     # invocação, sem inventar nove cadastros por consumidor.
@@ -109,7 +110,7 @@ def aplica(layout,contexto):
             next(x for x in p.entradas if x['grupo']=='forma' and x['vaga']==g['n'] and x['campo']==k)['fonte']=new
             tr['legados_forma'].append(dict(vaga=g['n'],campo=k,antes=old,depois=new))
     sheet['colunas']=first+len(LEGADO_FORMA)-1
-    tr['entradas']=[(x[0],x[2].rsplit('!',1)[1],x[0].endswith('.mestre_viu')) for x in exportar(p,chave_contrato) if x[3]=='configuração' and not any(x[0].startswith('custom.forma.') and x[0].endswith('.'+k) for k in LEGADO_FORMA)]
+    tr['entradas']=[(x[0],x[2].rsplit('!',1)[1],x[0].endswith('.mestre_viu')) for x in exportar(p,chave_contrato) if x[3]=='configuração' and x[2] and not any(x[0].startswith('custom.forma.') and x[0].endswith('.'+k) for k in LEGADO_FORMA)]
     return tr
 
 
@@ -131,7 +132,10 @@ ROTULOS={'tipo':'TIPO','nome':'NOME','base':'BASE DO LIVRO','mestre_viu':'MESTRE
          'escolha':'ESCOLHA','rota':'ROTA','alcance_escada':'ESCADA DE ALCANCE','area_escada':'ESCADA DE ÁREA'}
 
 
-def desenhar(layout,inicio,capacidades):
+NOTA_LEVE={'forma':'Saiu na versão rápida: o cartão usa só as Formas do livro.'}
+
+
+def desenhar(layout,inicio,capacidades,leves=()):
     """Cartões no molde B:G/J:O aprovado, depois do fim informado.
 
     A organização definitiva de D continua com o integrador. Nenhum controle
@@ -164,6 +168,13 @@ def desenhar(layout,inicio,capacidades):
         if type(cap) is not int or not 1<=cap<=30: raise ValueError('Capacidade inválida: '+grupo)
         box(row,2,titulos[grupo],ec=15,kind='secao'); row+=3
         anteriores=[k for k in campos if k not in ('tipo','nome','mestre_viu','requisitos','efeito')]
+        altura=8+len(anteriores)+14
+        if grupo in leves:
+            # Etapa 5 da versão rápida: só o título e a nota. As linhas da seção continuam reservadas (nada abaixo anda).
+            box(row,2,NOTA_LEVE[grupo],ec=15,er=row+2,kind='nota',nota='Etapa 5 da versão rápida: o cadastro custom saiu.')
+            tr['fontes'][grupo]=[{k:'' for k in campos} for _ in range(cap)]
+            row+=((cap+1)//2)*altura+3
+            continue
         escalares=[k for k in anteriores if not(grupo=='forma' and k in LEGADO_FORMA)]
         altura=8+len(anteriores)+14
         tr['fontes'][grupo]=[]

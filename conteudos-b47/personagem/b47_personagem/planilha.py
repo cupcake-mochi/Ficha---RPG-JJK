@@ -46,6 +46,9 @@ class Contrato:
     abas: dict   # grupo -> nome reservado pelo integrador
     familias: str  # intervalo dos nomes de Famílias válidas (livro+custom)
     restricoes: object  # dict válido ou tabela viva [rótulo,nome,devolve,frequencia,menu leve]
+    # Etapa 5 da versão rápida (26/11/2026): grupos cujo cadastro custom saiu. As vagas continuam contadas (as chaves da
+    # ANALISE ficam no lugar, em branco), mas nenhuma fórmula lê a CONFIGURAÇÃO e as linhas custom ficam vazias.
+    leves: tuple = ()
 
 
 @dataclass
@@ -55,6 +58,9 @@ class Plano:
     entradas: list = field(default_factory=list)
     avisos: list = field(default_factory=list)
     validacoes: list = field(default_factory=list)
+    leves: tuple = ()
+    # Linhas reservadas por aba além das células escritas (linhas custom em branco no fim de uma tabela).
+    linhas: dict = field(default_factory=dict)
 
     def por(self, aba, cel, valor):
         destino = self.celulas.setdefault(aba, {})
@@ -92,7 +98,7 @@ def _normalizar(campo, expr):
 
 def emitir(livro, contrato):
     """Gera as três tabelas; nenhuma aba de produção é alterada aqui."""
-    p = Plano()
+    p = Plano(leves=tuple(contrato.leves))
     if len(set(contrato.abas.values())) != 3:
         raise ValueError('Cada catálogo precisa de aba própria reservada pelo contrato')
     for grupo, campos in CAMPOS.items():
@@ -135,6 +141,11 @@ def emitir(livro, contrato):
                 p.por(aba,L(col[k])+str(row),'=""' if value in (None,'') else value)
         for slot, fonte in enumerate(fontes, 1):
             r, dst = slot+1, len(book)+slot+1
+            if grupo in contrato.leves:
+                for k in campos:
+                    p.entradas.append(dict(grupo=grupo,vaga=slot,campo=k,fonte=''))
+                p.avisos.append(dict(grupo=grupo,vaga=slot,fonte=''))
+                continue
             for k in campos:
                 f = fonte[k]
                 p.por(aba,L(rawcol[k])+str(r),f'=IF(ISBLANK({f}),"",{f})')
@@ -308,10 +319,14 @@ def exportar(plano, nome_chave):
     linhas=[]
     for entrada in plano.entradas:
         g,n,k,f=entrada['grupo'],entrada['vaga'],entrada['campo'],entrada['fonte']
+        if g in plano.leves:
+            linhas.append([nome_chave(g,n,k,False),'','','configuração']);continue
         valor=f'=IF(ISBLANK({f}),"",{f}&"")' if k!='mestre_viu' else f'=N({f})&""'
         linhas.append([nome_chave(g,n,k,False),valor,f.replace('$',''),'configuração'])
     for aviso in plano.avisos:
         f=aviso['fonte']
+        if aviso['grupo'] in plano.leves:
+            linhas.append([nome_chave(aviso['grupo'],aviso['vaga'],'',True),'','','aviso']);continue
         linhas.append([nome_chave(aviso['grupo'],aviso['vaga'],'',True),'='+f+'&""',f.replace('$',''),'aviso'])
     keys=[x[0] for x in linhas]
     if len(set(keys))!=len(keys) or 'formato.versao' in keys or any(not isinstance(k,str) or not k for k in keys):

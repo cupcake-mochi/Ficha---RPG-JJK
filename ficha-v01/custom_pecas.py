@@ -14,6 +14,13 @@ from custom_criacao import criterio, ref, q, troca_refs
 from capacidades import MELHORIAS, RESTRICOES
 MEL = 'DADOS_MELHORIAS'
 RES = 'DADOS_RESTRICOES'
+# 26/11/2026 (etapa 5 da versão rápida, ok dele "Pode seguir"): a peça é escrita direto no cartão (nome livre + peso),
+# então os cadastros custom de Melhoria e Restrição saem da CONFIGURAÇÃO. As duas abas continuam do mesmo tamanho e com
+# as mesmas colunas (nada anda); as linhas custom ficam em branco, sem validação, sem o catálogo por dono (o menu de
+# cada entidade) e sem o cache de identidade da base. As chaves da ANALISE continuam, em branco.
+LEVE = True
+NOTA_LEVE = ('Saiu na versão rápida: escreva o nome da {peca} direto no cartão da técnica e escolha o peso no menu '
+             'ao lado. O preço sai da tabela da Classe.')
 PASSO_MEL, PASSO_RES = 26, 22
 
 
@@ -204,10 +211,21 @@ def aplica(layout, fam, inv, criacao):
         for c,label in enumerate(headers,1): d(sheet,1,c,label)
         for g in regs:
             r,dst=g['n']+1,nbook+g['n']+1
-            d(sheet,r,1,g['r']); d(sheet,r,2,g['c']-2); d(sheet,r,3,g['n'])
             fields=([('nome',4,0),('base',5,3),('familia',6,3),('peso',7,3),('exige_tr',8,3),
                      ('requisitos',11,0),('efeito',17,0),('mestre_viu',2,4)] if sheet==MEL else
                     [('nome',4,0),('base',5,3),('devolucao',6,3),('frequencia',7,3),('efeito',10,0),('mestre_viu',2,4)])
+            if LEVE:
+                # só as chaves da ANALISE (em branco); nenhuma célula na aba nem na CONFIGURAÇÃO
+                for key,_,_ in fields:
+                    tr['entradas'].append((f'custom.{kind}.{g["n"]}.{key}',g[key],key=='mestre_viu'))
+                if sheet==MEL:
+                    tr['entradas'].append((f'custom.melhoria.{g["n"]}.controle_compat',g['controle_compat'],True))
+                if g['n']==len(regs):
+                    # A última vaga ganha uma célula vazia (''): sem ela o gerador corta as linhas em branco do fim da
+                    # aba, e quem lê o catálogo inteiro (até a última vaga custom) passa a apontar para fora da grade.
+                    d(sheet,dst,start,'')
+                continue
+            d(sheet,r,1,g['r']); d(sheet,r,2,g['c']-2); d(sheet,r,3,g['n'])
             for c,(key,offset,delta) in enumerate(fields,4):
                 read_config(sheet,r,c,offset,delta,g)
                 tr['entradas'].append((f'custom.{kind}.{g["n"]}.{key}',g[key],key=='mestre_viu'))
@@ -294,10 +312,11 @@ def aplica(layout, fam, inv, criacao):
     # Índices próprios para entidades: mesmos campos e pesos, sem o estado da
     # técnica nem seu desconto. Cada entidade mantém as nove aberturas.
     mtotal=tr['limites'][MEL]['total']
-    for r in range(2,mtotal+2):
+    # Etapa 5: as cópias das linhas custom (em branco) saem; ficam as do livro.
+    for r in range(2,(tr['limites'][MEL]['livro'] if LEVE else mtotal)+2):
         for c,source in enumerate(['O','P','Q','T','Y','W'],33):
             d(MEL,r,c,'='+source+str(r))
-        for i in range(len(inv['fichas_c'])):
+        for i in range(0 if LEVE else len(inv['fichas_c'])):  # etapa 5: sem o menu por entidade (ninguém lê)
             own=[ref(coord(i+2,inv['colf']['f'+str(j)]),iv.DADOS_IV) for j in range(9)]
             opened='OR(P'+str(r)+'="",'+','.join('P'+str(r)+'='+rr for rr in own)+')'
             d(MEL,r,40+2*i,f'=IF({opened},O{r},"")')
@@ -315,7 +334,7 @@ def aplica(layout, fam, inv, criacao):
             for right in range(left,width):
                 old=fa._faixa(old_c+left,first,old_c+right,last).replace('$','')
                 mapping[(owner,old)]=faixa(new_sheet,start+left,2,start+right,total+1)
-    for i in range(len(inv['fichas_c'])):
+    for i in range(0 if LEVE else len(inv['fichas_c'])):
         for k in range(2):
             old=inv['D'].faixa('menu'+str(i),so=k).replace('$','')
             mapping[(iv.DADOS_IV,old)]=faixa(MEL,40+2*i+k,2,40+2*i+k,mtotal+1)
@@ -343,10 +362,11 @@ def aplica(layout, fam, inv, criacao):
         _,first,last,_=meta['D'].T[table]
         for k in range(1,5):
             d(owner,1,begin+k-1,'base da melhoria '+str(k))
-            for r in range(first,last+1):
+            # etapa 5: sem cadastro custom a base é o próprio nome; as colunas ficam reservadas (nada anda)
+            for r in (() if LEVE else range(first,last+1)):
                 raw='$'+coord(r,meta['col']['m'+str(k)])
                 d(owner,r,begin+k-1,f'=IF({raw}="","",IFERROR(VLOOKUP({criterio(raw)},{canonical_catalog},10,FALSE),{raw}))')
-        for r in range(first,last+1):
+        for r in (() if LEVE else range(first,last+1)):
             old='$'+coord(r,meta['col']['m1'])+':$'+coord(r,meta['col']['m4'])
             new='$'+coord(r,begin)+':$'+coord(r,begin+3)
             for c in meta['col'].values():
@@ -374,7 +394,7 @@ def aplica(layout, fam, inv, criacao):
     owner=fa.DADOS_AM; aba=ix._aba(layout,owner); cache=aba['colunas']+1
     d(owner,1,cache,'base da melhoria da classe 0')
     zcol,zfirst,zlast,_=fam['D'].T['carta_zero']
-    for r in range(zfirst,zlast+1):
+    for r in (() if LEVE else range(zfirst,zlast+1)):
         raw='$'+coord(r,zcol+2)
         canon='$'+coord(r,cache)
         d(owner,r,cache,f'=IF({raw}="","",IFERROR(VLOOKUP({criterio(raw)},{canonical_catalog},10,FALSE),{raw}))')
@@ -392,6 +412,11 @@ def aplica(layout, fam, inv, criacao):
     for regs,step,end in [(regs_m,PASSO_MEL,fim_m),(regs_r,PASSO_RES,fim_r)]:
         begin=regs[0]['r']
         box(begin-2,2,'MELHORIAS CUSTOM' if regs is regs_m else 'RESTRIÇÕES CUSTOM',ec=15,kind='secao')
+        if LEVE:
+            box(begin,2,NOTA_LEVE.format(peca='Melhoria' if regs is regs_m else 'Restrição'),er=begin+2,ec=15,kind='nota',
+                note='Etapa 5 da versão rápida: os cadastros custom saíram.')
+            config['linhas_alt'] += [[r,18.75] for r in range(begin-2,end+1)]
+            continue
         config.setdefault('copias',[]).append([begin,begin+step-2,
             [begin+i*step for i in range(1,len(regs)//2)],2,15,[[2,7],[10,15]],True])
         config['linhas_alt'] += [[r,18.75] for r in range(begin-2,end+1)]
@@ -412,6 +437,10 @@ def aplica(layout, fam, inv, criacao):
 
 def exporta(tr):
     out=[]
+    if LEVE:
+        # etapa 5: as chaves ficam, em branco (como as r53.* da etapa 3); o bot se ajusta na etapa 6
+        out=[[key,'','','configuração'] for key,_,_ in tr['entradas']]
+        return out+[[f'aviso.custom.{g["tipo"]}.{g["n"]}','','','aviso'] for g in tr['registros']]
     for key,a1,boolean in tr['entradas']:
         rr=ref(a1,'CONFIGURAÇÃO')
         value=f'=N({rr})&""' if boolean else f'=IF(ISBLANK({rr}),"",{rr}&"")'

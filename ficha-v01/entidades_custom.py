@@ -13,6 +13,12 @@ Regras: livro R52, "Tipos de entidade" (p. 366) e "Talentos da entidade" (p. 375
 - Autonomia, alma, nove Famílias e a ficha das 12 invocações não são tocadas.
 - Texto (DEFINIÇÃO, EFEITO, REQUISITOS) é registro: nunca vira automação.
 
+Etapa 5 da versão rápida (26/11/2026): os cadastros viraram lista simples. Tipo: NOME, VIDA, TALISMÃ, RESERVA DE PE e
+um texto livre (DESCRIÇÃO, no lugar do EFEITO). Talento: NOME, CATEGORIA DE EFEITO e EFEITO. Saíram a BASE DO LIVRO (a
+herança), o MESTRE VIU, a DEFINIÇÃO/REQUISITOS e os avisos. Os endereços dos cartões e das colunas não mudaram, e as
+chaves da ANALISE dos campos que saíram continuam no lugar, em branco. Sem base, vale o funcionamento normal descrito
+acima; um talento só entra nos menus com NOME e CATEGORIA.
+
 Nada aqui fixa endereço global: o início dos cartões vem de CONFIGURAÇÃO['linhas'] (ou do parâmetro
 `inicio`) e as capacidades são parâmetros. Capacidades, nomes de campo e chaves seguem o contrato
 comum (conteudos-b47/comum/, revisão 1); nome da aba oculta e formato ANALISE continuam proposta
@@ -73,6 +79,9 @@ CAMPOS = {'tipo': ['nome', 'mestre_viu', 'base', 'vida', 'talisma', 'reserva_pe'
           'talento': ['nome', 'mestre_viu', 'base', 'categoria', 'requisitos', 'efeito']}
 ROTULO = dict(vida='VIDA', talisma='TALISMÃ', reserva_pe='RESERVA DE PE')
 LISTAS = dict(vida=VIDA, talisma=TALISMA, reserva_pe=RESERVA, categoria=CES)
+# Etapa 5 da versão rápida: campos que saíram (a chave da ANALISE fica, em branco; nenhuma fórmula lê a célula).
+SAI = {'tipo': ('mestre_viu', 'base', 'definicao'), 'talento': ('mestre_viu', 'base', 'requisitos')}
+FICA = {k: [c for c in v if c not in SAI[k]] for k, v in CAMPOS.items()}
 CHAVE = {'tipo': 'tipo_entidade', 'talento': 'talento_entidade'}
 
 
@@ -140,10 +149,6 @@ def aplica(layout, contexto):
         d(1, OP[key], 'opções ' + key)
         for i, v in enumerate(vals, 2):
             d(i, OP[key], v)
-    d(1, OP['base_tipo'], 'base do tipo')
-    d(1, OP['base_talento'], 'base do talento')
-    d(2, OP['base_tipo'], 'Nenhuma')
-    d(2, OP['base_talento'], 'Nenhuma')
 
     # --- catálogo de tipos: livro espelhado da DADOS_INVOC + custom válido
     for c, h in [(TC['nome'], 'tipo de entidade'), (TC['vida'], 'vida de criação'), (TC['talisma'], 'usa talismã'),
@@ -154,43 +159,26 @@ def aplica(layout, contexto):
         d(r, TC['nome'], f'=IF(ISBLANK({src}),"",{src})')
         for c, v in zip((TC['vida'], TC['talisma'], TC['domada']), MODOS_DO_LIVRO.get(nome, (0, 0, 0))):
             d(r, c, v)
-        d(r + 1, OP['base_tipo'], f'={coord(r, TC["nome"])}')
     livro_tipos_nomes = faixa(TC['nome'], 2, TC['nome'], nbt + 1)
-    for c, h in [(TR['reg'], 'registro'), (TR['nome'], 'nome'), (TR['base'], 'base'), (TR['vida'], 'vida'),
-                 (TR['talisma'], 'talismã'), (TR['reserva_pe'], 'reserva de PE'), (TR['mestre_viu'], 'mestre viu'),
-                 (TR['definicao'], 'definição'), (TR['efeito'], 'efeito e requisitos'), (TR['idx'], 'linha da base'),
-                 (TR['erro'], 'problema')]:
+    for c, h in [(TR['reg'], 'registro'), (TR['nome'], 'nome'), (TR['vida'], 'vida'),
+                 (TR['talisma'], 'talismã'), (TR['reserva_pe'], 'reserva de PE'), (TR['efeito'], 'descrição')]:
         d(1, c, h)
-    nomes_t = faixa(TR['nome'], 2, TR['nome'], tipos + 1)
     for g in regs_t:
         r, dst = g['n'] + 1, nbt + g['n'] + 1
         d(r, TR['reg'], g['n'])
         for key in CAMPOS['tipo']:
+            tr['entradas'].append((f'custom.{CHAVE["tipo"]}.{g["n"]}.{key}', g[key], key == 'mestre_viu', key in SAI['tipo']))
+            if key in SAI['tipo']:
+                continue
             rr = ref(g[key], 'CONFIGURAÇÃO')
             d(r, TR[key], f'=IF(ISBLANK({rr}),"",{rr})')
-            tr['entradas'].append((f'custom.{CHAVE["tipo"]}.{g["n"]}.{key}', g[key], key == 'mestre_viu'))
-        cn, cb = coord(r, TR['nome']), coord(r, TR['base'])
-        ci = coord(r, TR['idx'])
-        d(r, TR['idx'], f'=IF(OR({cb}="",{cb}="Nenhuma"),0,IFERROR(MATCH({criterio(cb)},{livro_tipos_nomes},0),-1))')
-        opcoes = []
-        for key in ROTULO:
-            cv = coord(r, TR[key])
-            ok = ','.join(f'{cv}="{v}"' for v in LISTAS[key])
-            opcoes.append(f'IF(AND({cv}<>"",NOT(OR({ok}))),"{ROTULO[key]} inválida","")')
-        problemas = [f'IF(OR(NOT(ISTEXT({cn})),TRIM({cn})<>{cn}),"NOME precisa ser texto sem espaços nas pontas","")',
-                     f'IF(COUNTIF({nomes_t},{criterio(cn)})+COUNTIF({livro_tipos_nomes},{criterio(cn)})>1,"Nome repetido no livro ou custom","")',
-                     f'IF({ci}<0,"Escolha uma BASE DO LIVRO válida","")'] + opcoes + [
-                     f'IF(ISLOGICAL({coord(r, TR["mestre_viu"])}),"","MESTRE VIU deve ser caixa de seleção")']
-        algum = ','.join(f'{coord(r, TR[k])}<>""' for k in ('vida', 'talisma', 'reserva_pe', 'definicao', 'efeito'))
-        d(r, TR['erro'], f'=IF({cn}="",IF(OR({algum},{coord(r, TR["mestre_viu"])}=TRUE,AND({cb}<>"",{cb}<>"Nenhuma")),'
-                         f'"Preencha NOME",""),TEXTJOIN(" · ",TRUE,{",".join(problemas)}))')
+        cn = coord(r, TR['nome'])
         valido = coord(dst, TC['nome'])
-        d(dst, TC['nome'], f'=IF(AND({cn}<>"",{coord(r, TR["erro"])}=""),{cn},"")')
+        d(dst, TC['nome'], f'=IF({cn}<>"",{cn},"")')
         for key, col, liga in [('vida', TC['vida'], VIDA[1]), ('talisma', TC['talisma'], TALISMA[1]),
                                ('reserva_pe', TC['domada'], RESERVA[1])]:
             cv = coord(r, TR[key])
-            herda = f'IF({ci}>0,INDEX({faixa(col, 2, col, nbt + 1)},{ci}),0)'
-            d(dst, col, f'=IF({valido}="",0,IF({cv}="",{herda},IF({cv}="{liga}",1,0)))')
+            d(dst, col, f'=IF({valido}="",0,IF({cv}="{liga}",1,0))')
     tot_t = nbt + tipos
     TIPOS_UNIAO = faixa(TC['nome'], 2, TC['domada'], tot_t + 1)
     tr['catalogos'][CHAVE['tipo']] = TIPOS_UNIAO
@@ -204,40 +192,25 @@ def aplica(layout, contexto):
         for k, c in enumerate((LC['nome'], LC['ce'], LC['faz'], LC['trilha'])):
             src = D.celula('talentos', i, k, aba=iv.DI)
             d(r, c, f'=IF(ISBLANK({src}),"",{src})')
-        d(r + 1, OP['base_talento'], f'={coord(r, LC["nome"])}')
     livro_tal_nomes = faixa(LC['nome'], 2, LC['nome'], nbl + 1)
-    for c, h in [(LR['reg'], 'registro'), (LR['nome'], 'nome'), (LR['base'], 'base'), (LR['categoria'], 'categoria de efeito'),
-                 (LR['requisitos'], 'requisitos'), (LR['efeito'], 'efeito'), (LR['mestre_viu'], 'mestre viu'),
-                 (LR['idx'], 'linha da base'), (LR['erro'], 'problema')]:
+    for c, h in [(LR['reg'], 'registro'), (LR['nome'], 'nome'), (LR['categoria'], 'categoria de efeito'),
+                 (LR['efeito'], 'efeito')]:
         d(1, c, h)
-    nomes_l = faixa(LR['nome'], 2, LR['nome'], talentos + 1)
-    ces = faixa(OP['categoria'], 2, OP['categoria'], 1 + len(CES))
     for g in regs_l:
         r, dst = g['n'] + 1, nbl + g['n'] + 1
         d(r, LR['reg'], g['n'])
         for key in CAMPOS['talento']:
+            tr['entradas'].append((f'custom.{CHAVE["talento"]}.{g["n"]}.{key}', g[key], key == 'mestre_viu', key in SAI['talento']))
+            if key in SAI['talento']:
+                continue
             rr = ref(g[key], 'CONFIGURAÇÃO')
             d(r, LR[key], f'=IF(ISBLANK({rr}),"",{rr})')
-            tr['entradas'].append((f'custom.{CHAVE["talento"]}.{g["n"]}.{key}', g[key], key == 'mestre_viu'))
-        cn, cb, cc = coord(r, LR['nome']), coord(r, LR['base']), coord(r, LR['categoria'])
-        ci = coord(r, LR['idx'])
-        d(r, LR['idx'], f'=IF(OR({cb}="",{cb}="Nenhuma"),0,IFERROR(MATCH({criterio(cb)},{livro_tal_nomes},0),-1))')
-        problemas = [f'IF(OR(NOT(ISTEXT({cn})),TRIM({cn})<>{cn}),"NOME precisa ser texto sem espaços nas pontas","")',
-                     f'IF(COUNTIF({nomes_l},{criterio(cn)})+COUNTIF({livro_tal_nomes},{criterio(cn)})>1,"Nome repetido no livro ou custom","")',
-                     f'IF({ci}<0,"Escolha uma BASE DO LIVRO válida","")',
-                     f'IF(AND({cc}="",{ci}<=0),"Escolha CATEGORIA DE EFEITO","")',
-                     f'IF(AND({cc}<>"",NOT(IFERROR(AND(ISNUMBER({cc}),NOT(ISLOGICAL({cc})),{cc}=INT({cc}),{cc}>=1,{cc}<=3),FALSE))),"CATEGORIA DE EFEITO deve ser 1, 2 ou 3","")',
-                     f'IF(ISLOGICAL({coord(r, LR["mestre_viu"])}),"","MESTRE VIU deve ser caixa de seleção")']
-        algum = ','.join(f'{coord(r, LR[k])}<>""' for k in ('categoria', 'requisitos', 'efeito'))
-        d(r, LR['erro'], f'=IF({cn}="",IF(OR({algum},{coord(r, LR["mestre_viu"])}=TRUE,AND({cb}<>"",{cb}<>"Nenhuma")),'
-                         f'"Preencha NOME",""),TEXTJOIN(" · ",TRUE,{",".join(problemas)}))')
+        cn, cc = coord(r, LR['nome']), coord(r, LR['categoria'])
         valido = coord(dst, LC['nome'])
-        d(dst, LC['nome'], f'=IF(AND({cn}<>"",{coord(r, LR["erro"])}=""),{cn},"")')
-        livro = lambda col: f'INDEX({faixa(col, 2, col, nbl + 1)},{ci})'
-        d(dst, LC['ce'], f'=IF({valido}="",0,IF({cc}="",IF({ci}>0,{livro(LC["ce"])},0),VALUE({cc}&"")))')
-        efeito = f'IF({coord(r, LR["efeito"])}="",IF({ci}>0,{livro(LC["faz"])},""),{coord(r, LR["efeito"])})'
-        requisitos = coord(r, LR['requisitos'])
-        d(dst, LC['faz'], f'=IF({valido}="","",{efeito}&IF({requisitos}="","",CHAR(10)&"Requisitos: "&{requisitos}))')
+        # Sem os avisos, o talento só entra nos menus com NOME e CATEGORIA (o menu da categoria só aceita 1, 2 ou 3).
+        d(dst, LC['nome'], f'=IF(AND({cn}<>"",{cc}<>""),{cn},"")')
+        d(dst, LC['ce'], f'=IF({valido}="",0,IFERROR(VALUE({cc}&""),0))')
+        d(dst, LC['faz'], f'=IF({valido}="","",{coord(r, LR["efeito"])})')
         d(dst, LC['trilha'], f'=IF(AND({valido}<>"",{coord(dst, LC["ce"])}=1),{valido},"")')
     tot_l = nbl + talentos
     TALENTOS_UNIAO = faixa(LC['nome'], 2, LC['trilha'], tot_l + 1)
@@ -300,10 +273,8 @@ def aplica(layout, contexto):
         d(i,43,tipo_livro['corpo']);d(i,44,tipo_livro['ficha'])
     for g in regs_t:
         r,dst=g['n']+1,nbt+g['n']+1
-        for target,raw in [(43,TR['definicao']),(44,TR['efeito'])]:
-            value,base=coord(r,raw),coord(r,TR['idx'])
-            herdado=f'IF({base}>0,INDEX({faixa(target,2,target,nbt+1)},{base}),"")'
-            d(dst,target,f'=IF({coord(dst,TC["nome"])}="","",IF({value}="",{herdado},{value}))')
+        # Etapa 5: a DEFINIÇÃO saiu; o texto livre (DESCRIÇÃO) vai na coluna do efeito.
+        d(dst,44,f'=IF({coord(dst,TC["nome"])}="","",{coord(r,TR["efeito"])})')
     nomes_uniao = faixa(TC['nome'],2,TC['nome'],tot_t+1)
     for i,g in enumerate(fiv['fichas_c']):
         r=i+2;chosen=ref(g['tipo'],iv.NOME);idx=coord(r,39)
@@ -315,7 +286,7 @@ def aplica(layout, contexto):
                f'IF({efeito}="","","EFEITO E REQUISITOS"&CHAR(10)&{efeito}))')
     ix._aba(layout,iv.NOME)['notas_contextuais'] = dict(
         fonte=NOME,coluna=42,primeira=2,destinos=[g['tipo'] for g in fiv['fichas_c']],
-        gatilhos=[g[key] for g in regs_t for key in CAMPOS['tipo']])
+        gatilhos=[g[key] for g in regs_t for key in FICA['tipo']])
 
     # --- cartões na CONFIGURAÇÃO (molde do protótipo aprovado)
     styles = {v[0]: v[2] for v in config['celulas']}
@@ -345,20 +316,13 @@ def aplica(layout, contexto):
         for c in range(1, 17):
             if coord(r, c) not in cells['CONFIGURAÇÃO']:
                 put('CONFIGURAÇÃO', coord(r, c), None, st['fundo'])
-    base_note = ('Opcional. Em branco nos demais campos, uma base herda as automações do livro. '
-                 'Nenhuma permite conteúdo próprio. O texto não é interpretado como fórmula.')
     lista = lambda key: faixa(OP[key], 2, OP[key], 1 + len(LISTAS[key]))
 
-    def cabeca(g, titulo, bases, nb):
+    def cabeca(g, titulo):
         r, c = g['r'], g['c']
         box(r, c, f'{titulo} · {g["n"]}', ec=c + 5, kind='secao')
-        box(r + 1, c, 'NOME', ec=c + 3, kind='rotulo', note='Nome único. O menu da ficha reunirá o livro e os cadastros válidos.')
-        box(r + 1, c + 4, 'MESTRE VIU', ec=c + 5, kind='rotulo')
-        box(r + 2, c, ec=c + 3, note='Nome próprio do conteúdo criado com o mestre.')
-        box(r + 2, c + 4, False, ec=c + 5, kind='caixa', note='Lembrete marcado pelo jogador; aprovação é feita pelo bot, no chat.')
-        box(r + 4, c, 'BASE DO LIVRO', ec=c + 2, kind='rotulo', note=base_note)
-        box(r + 4, c + 3, 'Nenhuma', ec=c + 5, note=base_note)
-        menu(g['base'], faixa(OP[bases], 2, OP[bases], nb + 2))
+        box(r + 1, c, 'NOME', ec=c + 5, kind='rotulo', note='O menu da invocação reúne o livro e estes nomes.')
+        box(r + 2, c, ec=c + 5, note='Nome próprio do conteúdo criado com o mestre.')
 
     def campo(g, off, rotulo, key, note):
         r, c = g['r'], g['c']
@@ -371,33 +335,22 @@ def aplica(layout, contexto):
         box(r + off, c, rotulo, ec=c + 5, kind='rotulo', note=note)
         box(r + off + 1, c, er=r + ate, ec=c + 5, kind='texto', note=note)
 
-    def rodape(g, sheet_col, n):
-        r, c = g['r'], g['c']
-        rr = ref(coord(n + 1, sheet_col), NOME)
-        box(r + 26, c, f'=IF({rr}="","","⚠ "&{rr})', er=r + 27, ec=c + 5, kind='nota',
-            note='Problema do cadastro. Cadastros com problema ficam fora dos menus da ficha.')
-
     for g in regs_t:
-        cabeca(g, 'TIPO DE ENTIDADE', 'base_tipo', nbt)
-        campo(g, 5, 'VIDA', 'vida', 'Em branco herda a base; sem base usa a vida normal. Corpo de criação usa 4 + Constituição '
+        cabeca(g, 'TIPO DE ENTIDADE')
+        campo(g, 5, 'VIDA', 'vida', 'Em branco usa a vida normal da entidade. Corpo de criação usa 4 + Constituição '
               'por nível após o primeiro.')
-        campo(g, 6, 'TALISMÃ', 'talisma', 'Em branco herda a base; sem base não usa. Usar habilita a carga do talismã '
-              'na entrada da entidade.')
-        campo(g, 8, 'RESERVA DE PE', 'reserva_pe', 'Em branco herda a base; sem base usa a reserva normal. A opção domada '
-              'aplica o cálculo já publicado.')
-        area(g, 11, 'DEFINIÇÃO', 14, 'Corpo, natureza e características do tipo. Em branco herda a base; aparece na nota do seletor TIPO da invocação.')
-        area(g, 16, 'EFEITO E REQUISITOS', 24, 'Em branco herda a base. Aparece na nota do seletor TIPO; texto livre não cria automações. Revise a descrição ao sobrescrever campos mecânicos.')
-        rodape(g, TR['erro'], g['n'])
+        campo(g, 6, 'TALISMÃ', 'talisma', 'Em branco não usa. Usar habilita a carga do talismã na entrada da entidade.')
+        campo(g, 8, 'RESERVA DE PE', 'reserva_pe', 'Em branco usa a reserva normal. A opção domada aplica o cálculo já '
+              'publicado.')
+        area(g, 16, 'DESCRIÇÃO', 24, 'Texto livre do tipo: corpo, natureza, efeito e requisitos. Aparece na nota do '
+             'seletor TIPO da invocação; não cria automações.')
     for g in regs_l:
-        cabeca(g, 'TALENTO · ENTIDADE', 'base_talento', nbl)
-        campo(g, 5, 'CATEGORIA DE EFEITO', 'categoria', 'Em branco herda a base; sem base é obrigatória. Conferida com o teto '
+        cabeca(g, 'TALENTO · ENTIDADE')
+        campo(g, 5, 'CATEGORIA DE EFEITO', 'categoria', 'Obrigatória para o talento entrar nos menus. Conferida com o teto '
               'de cada ganho; as escolhas da Trilha aceitam só a Categoria 1.')
-        area(g, 11, 'REQUISITOS', 14, 'Exigências completas do Talento de entidade. Texto livre não cria automações.')
-        area(g, 16, 'EFEITO', 24, 'Descrição completa, exibida na carta existente. Em branco com base, usa o texto do livro.')
-        rodape(g, LR['erro'], g['n'])
+        area(g, 16, 'EFEITO', 24, 'Descrição completa, exibida na carta existente. Texto livre não cria automações.')
     # Áreas de texto esticam com o conteúdo (esticarCaixas_), por par de cartões vizinhos, como no custom_pecas.
-    for regs, areas in [(regs_t, [('definicao', 12, 3), ('efeito', 17, 8)]),
-                        (regs_l, [('requisitos', 12, 3), ('efeito', 17, 8)])]:
+    for regs, areas in [(regs_t, [('efeito', 17, 8)]), (regs_l, [('efeito', 17, 8)])]:
         for i in range(0, len(regs), 2):
             pair = regs[i:i + 2]
             for key, offset, height in areas:
@@ -419,12 +372,15 @@ def aplica(layout, contexto):
 def exporta(tr):
     """Linhas ANALISE propostas: cadastro cru (mesmo inválido) e aviso por registro, no fim do contrato."""
     out = []
-    for key, a1, booleano in tr['entradas']:
+    for key, a1, booleano, saiu in tr['entradas']:
+        if saiu:
+            out.append([key, '', '', 'configuração'])
+            continue
         rr = ref(a1, 'CONFIGURAÇÃO')
         valor = f'=N({rr})&""' if booleano else f'=IF(ISBLANK({rr}),"",{rr}&"")'
         out.append([key, valor, rr.replace('$', ''), 'configuração'])
-    for kind, col in [('tipo', TR['erro']), ('talento', LR['erro'])]:
+    # Etapa 5: os avisos saíram; a chave fica, em branco.
+    for kind in ('tipo', 'talento'):
         for g in tr['registros'][CHAVE[kind]]:
-            rr = ref(coord(g['n'] + 1, col), NOME)
-            out.append([f'aviso.custom.{CHAVE[kind]}.{g["n"]}', '=' + rr + '&""', rr.replace('$', ''), 'aviso'])
+            out.append([f'aviso.custom.{CHAVE[kind]}.{g["n"]}', '', '', 'aviso'])
     return out

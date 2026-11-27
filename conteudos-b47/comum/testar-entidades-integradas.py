@@ -64,7 +64,9 @@ class EntidadesIntegradas(unittest.TestCase):
                     self.assertIn(f'custom.{group}.{n}.nome',{x[0] for x in exported})
                 metadata=aba(layout,'INVOCAÇÕES')['notas_contextuais']
                 self.assertEqual(len(metadata['destinos']),12)
-                self.assertEqual(len(metadata['gatilhos']),8*nt)
+                # Etapa 5 da versão rápida (26/11/2026): o tipo virou lista simples (nome, vida, talismã, reserva, descrição);
+                # saíram mestre viu, base e definição, então a nota dispara em 5 campos por tipo, não 8.
+                self.assertEqual(len(metadata['gatilhos']),5*nt)
                 self.assertEqual(aba(layout,ec.NOME)['colunas'],44)
                 occupied=set()
                 for region in aba(layout,'CONFIGURAÇÃO')['mescladas']:
