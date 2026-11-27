@@ -148,10 +148,13 @@ const doPainel = (...ps) => (k) => { const c = Number(k.split(',')[1]); return p
        caixa(x.r+2,x.c+4) && !menu(x.r+5,x.c+3) && C.f.get(noPainel(x.r+5,x.c+3)) === `=IF('FICHA AMALDIÇOADA'!${x.o}="","Neutra",'FICHA AMALDIÇOADA'!${x.o})`
        && (FAm.dv.get(x.o.slice(1)+',15')||{}).faixa === 'DADOS_CRIACAO!M2:M4'),
      Array.from({length:10},(_,i)=>({r:939+Math.floor(i/2)*14,c:i%2===0?2:10})).map(x=>C.f.get(noPainel(x.r+5,x.c+3))).slice(0,2).join(' · '));
-  for (const [tipo,n,inicio,passo,campos] of [['Melhoria',30,1011,26,[5,6,7,8]],['Restrição',30,1404,22,[5,6,7]]]) {
-    ok(n+' cadastros de '+tipo+' conservam caixas e menus estritos até o último cartão',
-       Array.from({length:n},(_,i)=>({r:inicio+Math.floor(i/2)*passo,c:i%2===0?2:10})).every(x=>
-         caixa(x.r+2,x.c+4) && campos.every(d=>estrito(x.r+d,x.c+3))));
+  // 26/11/2026 (Etapa 5, 7b000b7): os 30 cadastros de Melhoria e de Restrição custom saíram da CONFIGURAÇÃO; as seções 06
+  // e 07 (painéis 6 e 7) ficam só com título e nota. Antes este teste conferia as caixas e os menus dos cartões, e falhava
+  // desde a Etapa 5; agora confere que nenhuma caixa ou menu voltou para esses painéis.
+  for (const [tipo, p] of [['Melhoria', 6], ['Restrição', 7]]) {
+    const cx = [...C.caixas].filter(doPainel(p)), mn = [...C.dv.keys()].filter(doPainel(p));
+    ok('a seção de ' + tipo + ' custom fica só com título e nota, sem caixa nem menu', cx.length === 0 && mn.length === 0,
+       cx.length + ' caixas, ' + mn.length + ' menus: ' + [...cx, ...mn].slice(0, 6).join(' · '));
   }
   // 26/10/2026, pedido do Mizuki (02a49a7): menu do catálogo só nas seis primeiras vagas de equipável (D92:D97), que
   // aceitam também o nome escrito; as duas últimas (D98, D99) e os itens guardados (D104, Z104) são de escrever, sem menu.
