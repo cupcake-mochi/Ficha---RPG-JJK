@@ -42,7 +42,7 @@ var CONTRATO_PERSONAGEM_ = [
       [7985,4,"aviso",0],[7986,1,"aviso.personagem.talento.7",0],[7986,2,"='DADOS_AM'!$LO8&\"\"",0],[7986,3,"=\"'DADOS_AM'!LO8\"",0],[7986,4,"aviso",0],[7987,1,"aviso.personagem.talento.8",0],[7987,2,"='DADOS_AM'!$LO9&\"\"",0],[7987,3,"=\"'DADOS_AM'!LO9\"",0],[7987,4,"aviso",0],[7988,1,"aviso.personagem.talento.9",0],[7988,2,"='DADOS_AM'!$LO10&\"\"",0],[7988,3,"=\"'DADOS_AM'!LO10\"",0],[7988,4,"aviso",0],[7989,1,"aviso.personagem.talento.10",0],[7989,2,"='DADOS_AM'!$LO11&\"\"",0],[7989,3,"=\"'DADOS_AM'!LO11\"",0],[7989,4,"aviso",0],[7990,1,"aviso.personagem.talento.11",0],[7990,2,"='DADOS_AM'!$LO12&\"\"",0],[7990,3,"=\"'DADOS_AM'!LO12\"",0],[7990,4,"aviso",0],[7991,1,"aviso.personagem.talento.12",0],[7991,2,"='DADOS_AM'!$LO13&\"\"",0],[7991,3,"=\"'DADOS_AM'!LO13\"",0],[7991,4,"aviso",0]
     ],
     "notas":[],
-    "geracao":"684dabdc54cb7886",
+    "geracao":"cb19dd6d73a12905",
     "arquivo":"PersonagemAnalise.gs"
   }
 ];
