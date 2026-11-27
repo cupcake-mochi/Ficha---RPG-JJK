@@ -264,6 +264,8 @@ _PERSONAGEM = b47_personagem.aplica(LAYOUT, dict(
     capacidades=_PCD_CONTRATO['capacidades'],
     inicio=indice_ficha._aba(LAYOUT, 'CONFIGURAÇÃO')['linhas']+4,
     abas={'forma':'DADOS_FORMAS','aptidao':'DADOS_APTIDOES','talento':'DADOS_TALENTOS'},
+    # Etapa 5 da versão rápida (26/11/2026): Forma custom saiu; as vagas ficam em branco no mesmo lugar.
+    leves=('forma',),
     chave_aviso_uso=lambda grupo,n: f'aviso.personagem.{grupo}.{n}'))
 import entidades_custom
 _ENTIDADES = entidades_custom.aplica(LAYOUT, dict(

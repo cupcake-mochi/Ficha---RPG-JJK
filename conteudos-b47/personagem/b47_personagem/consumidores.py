@@ -39,13 +39,22 @@ def pontes(plano, livro, contrato, ambiente):
         for c in range(width): plano.por(aba,L(start+c)+'1',nome+'.'+str(c))
         for r,values in enumerate(rows,2):
             if len(values)!=width: raise ValueError('Largura incorreta em '+nome)
-            for c,v in enumerate(values,start): plano.por(aba,L(c)+str(r),v)
+            for c,v in enumerate(values,start):
+                if v is not None: plano.por(aba,L(c)+str(r),v)
+        plano.linhas[aba]=max(plano.linhas.get(aba,0),len(rows)+1)
+        if rows and all(v is None for v in rows[-1]):
+            # Linha final em branco: uma célula vazia ('') segura o tamanho da aba (o gerador corta o fim vazio).
+            plano.por(aba,L(start)+str(len(rows)+1),'')
         tabelas[nome]=dict(aba=aba,coluna=start,primeiro=2,ultimo=len(rows)+1,largura=width,
                            intervalo=intervalo(aba,start,len(rows),width))
     t=plano.tabelas['forma']
     f=lambda k,r: ref(t['aba'],'$'+L(t['colunas'][k])+str(r))
     linhas_p,linhas_e=[],[]
+    # Etapa 5 da versão rápida: sem Forma custom, as linhas custom ficam em branco no mesmo lugar (None = célula vazia).
+    vazia=lambda r:'forma' in contrato.leves and r>=t['livro']+2
     for r in range(2,t['total']+2):
+        if vazia(r):
+            linhas_p.append([None]*15);linhas_e.append([None]*11);continue
         nome,fam,peso=f('nome',r),f('familia',r),f('peso',r)
         livre=f'IFERROR(VLOOKUP({criterio(fam)},{ambiente.familias_tabela},3,FALSE),0)'
         fech=f'IFERROR(VLOOKUP({criterio(fam)},{ambiente.familias_tabela},4,FALSE),0)'
@@ -71,6 +80,8 @@ def pontes(plano, livro, contrato, ambiente):
             for faixa in faixas:
                 for n in (1,2):
                     rr=len(cache)+2;indices[(r,faixa,n)]=rr
+                    if vazia(r):
+                        cache.append([None]*6);continue
                     dim=f('p'+str(n)+'_dimensao',r)
                     esc=f'IF({dim}="area",{f("area_escada",r)},{f("alcance_escada",r)})'
                     b=f'IF({dim}="area",{f("area_"+contexto+"_"+faixa,r)},{f("alcance_"+contexto+"_"+faixa,r)})'
@@ -82,6 +93,8 @@ def pontes(plano, livro, contrato, ambiente):
         rows=deepcopy(livro['alcances'][contexto])
         for r in range(t['livro']+2,t['total']+2):
             for faixa in faixas:
+                if vazia(r):
+                    rows.append([None]*13);continue
                 values=['='+f('nome',r)+'&'+q(' · '+faixa.replace('_',' '))]
                 for n in (1,2):
                     rr=indices[(r,faixa,n)]
@@ -103,6 +116,8 @@ def pontes(plano, livro, contrato, ambiente):
         if len(fams)!=9: raise ValueError('Entidade precisa preservar nove posições de Família')
         rows=[]
         for r in range(2,t['total']+2):
+            if vazia(r):
+                rows.append([None,None]);continue
             fam=f('familia',r)
             aberto='OR('+','.join(f'{fam}={x}' for x in fams)+f',{fam}="")'
             nome=f('nome',r)
@@ -181,7 +196,7 @@ def aplicar(layout,plano,pontes,fam,inv,contrato):
     for aba,cells in plano.celulas.items():
         tr['antes'][aba]={cel:None for cel in cells}
         tr['depois'][aba]=dict(cells)
-        maxrow=max(coordinate_from_string(c)[1] for c in cells)
+        maxrow=max([coordinate_from_string(c)[1] for c in cells]+[plano.linhas.get(aba,0)])
         layout['abas'].append(dict(nome=aba,estado='hidden',linhas=maxrow,colunas=_maxcol(cells),
             padrao=['Roboto',10,'#000000'],fundo_base='#FFFFFF',grade=False,paleta_fixa=True,
             celulas=[[c,v,None] for c,v in cells.items()],mescladas=[],menus=[],condicional=[],

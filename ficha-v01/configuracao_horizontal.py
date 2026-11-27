@@ -22,20 +22,21 @@ SECOES = [
     ('Tipos de entidade', 2386, 2527), ('Talentos de entidade', 2528, 2812),
 ]
 PASSO = 17  # coluna de identificação + dezesseis colunas do painel
+# Etapa 5 da versão rápida (26/11/2026): Melhorias, Restrições e Formas custom saíram; entidades viraram lista simples.
 ABERTURAS = {
     'Cadastros gerais': 'Cadastre aqui conteúdos próprios para aparecerem nos menus da ficha. Escolha o tipo e um nome único; MESTRE VIU é um lembrete de revisão, e a aprovação acontece no chat.',
     'Caminho e Trilha': 'Personalize Caminho e Trilha escolhendo uma base do livro ou preenchendo os campos próprios. Campos em branco herdam a base escolhida; confira os avisos de cada cadastro.',
     'Perícias': 'Crie Perícias próprias para os menus da ficha. Use um nome único, escolha uma base quando quiser herdar suas regras e preencha somente as diferenças.',
     'Ofícios': 'Cadastre Ofícios próprios para os menus da ficha. Escolha uma base para herdar seus campos ou descreva um Ofício novo; confira os requisitos e avisos antes de usá-lo.',
     'Famílias': 'Defina Famílias próprias e suas características para os conteúdos que as utilizam. Use nomes únicos e confira os avisos. Campos em branco herdam a base escolhida, quando houver.',
-    'Melhorias': 'Cadastre Melhorias próprias e seus valores. A base do livro fornece os campos deixados em branco; sem base, preencha os campos necessários. Confira os avisos antes de escolher na ficha.',
-    'Restrições': 'Cadastre Restrições próprias e suas condições de uso. Deixe em branco os campos que devem herdar a base do livro. A descrição registra a regra; texto livre não cria automação.',
+    'Melhorias': 'Saiu na versão rápida: escreva o nome da Melhoria direto no cartão da técnica e escolha o peso no menu ao lado. O preço sai da tabela da Classe.',
+    'Restrições': 'Saiu na versão rápida: escreva o nome da Restrição direto no cartão da técnica e escolha o peso no menu ao lado. O preço sai da tabela da Classe.',
     'Tipos de dano': 'Crie Tipos de dano para os menus da ficha. Escolha uma base do livro para herdar seus campos ou preencha os dados próprios. Confira as condições, os avisos e o efeito descrito.',
-    'Formas': 'A Forma define custo, Família de acesso e medidas. Funções e pontos são escolhidos no cartão; alvos, resolução e duração ficam em COMO É. Campos em branco herdam a base. ALC = alcance; P = personagem; E = entidade. As escadas definem a progressão de alcance e área.',
+    'Formas': 'Saiu na versão rápida: o cartão usa só as Formas do livro.',
     'Aptidões e Bênçãos': 'Crie Aptidões e Bênçãos do personagem escolhendo o tipo e, se desejar, uma base do livro. Campos em branco herdam essa base. Confira os requisitos, o efeito e os avisos do cadastro.',
     'Talentos': 'Cadastre Talentos do personagem. Use uma base do livro para herdar os campos em branco ou descreva um Talento próprio; confira os requisitos e avisos. Texto livre não cria automação.',
-    'Tipos de entidade': 'Defina Tipos de entidade para as invocações e demais entidades. Escolha uma base para herdar os campos em branco. PE = pontos de energia; confira os valores, requisitos e avisos.',
-    'Talentos de entidade': 'Cadastre Talentos usados por entidades. Escolha uma base do livro ou preencha os campos próprios e confira os requisitos. PE = pontos de energia; descrições em texto não criam automação.',
+    'Tipos de entidade': 'Lista simples de Tipos de entidade para as invocações: nome, vida, talismã, reserva de PE (pontos de energia) e uma descrição em texto. Em branco vale o normal da entidade; o texto não cria automação.',
+    'Talentos de entidade': 'Lista simples de Talentos de entidade: nome, categoria de efeito e efeito em texto. O talento só entra nos menus com nome e categoria; o texto não cria automação.',
 }
 
 
