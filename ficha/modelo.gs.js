@@ -677,12 +677,20 @@ function acabamento_(ss, feito, rel) {
  * Os acionadores do diário não entram aqui (eles pedem autorização e não acompanham uma cópia).
  * Devolve null sem o Salarios.gs, false quando não cabe no prazo, e o recado nos outros casos.
  */
-var CUSTO_DO_SALARIO_ = 30000;
+// 27/11/2026: medido numa cópia descartável (SALARIO base), o instalarSalarios() levou 65,5 s no Sheets de verdade
+var CUSTO_DO_SALARIO_ = 75000;
 function salarioNaMontagem_(rel, comPrazo) {
   if (typeof instalarSalarios !== 'function') return null;
   if (comPrazo && rel.passou() + CUSTO_DO_SALARIO_ > PRAZO_DO_ACABAMENTO_) return false;
   try {
+    var ss = SpreadsheetApp.getActive(), ja = typeof salarioPronto_ === 'function' && salarioPronto_(ss);
     instalarSalarios();
+    // o painel grava alturas fixas, e na CONFIGURAÇÃO horizontal a linha é de todos os painéis: fica a maior entre a da
+    // montagem e a do salário (pisosDaAba_, no Codigo.gs). Numa ficha que já tinha o salário, nada muda
+    if (!ja && typeof pisosDaAba_ === 'function') {
+      var cfg = ss.getSheetByName('CONFIGURAÇÃO'), pisos = pisosDaAba_(ABAS.filter(function (s) { return s.nome === 'CONFIGURAÇÃO'; })[0] || {});
+      if (cfg && pisos) Object.keys(ALTURAS_DO_SALARIO_).forEach(function (k) { cfg.setRowHeight(+k, pisos[k]); });
+    }
     rel.etapa('salário');
     // o instalador volta calado quando outra execução segura a trava da planilha (salarioBloqueado_)
     if (typeof salarioPronto_ === 'function' && !salarioPronto_(SpreadsheetApp.getActive()))
